@@ -1,0 +1,29 @@
+<div class="content tm-min-h">
+    <header class="flex-item navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+      <div>
+        <a class="navbar-brand" routerLink='/'>
+          <span class="d-lg-none">geoping</span>
+          <span class="d-none d-lg-block">geoping</span>
+        </a>
+        <button class="navbar-toggler" href="#" data-toggle="collapse" data-target="#nav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+  
+     
+    </header>
+    <article class="d-flex">
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </article>
+    <footer class="flex-item">Software development 2018</footer>
+  </div>
+  <div class="spinner center" *ngIf=spinnerIsVisible>
+    <div class="row justify-content-center ">
+      <div class="col align-self-center ">
+        <!-- <mat-spinner diameter=100>
+        </mat-spinner> -->
+      </div>
+    </div>
+  </div>

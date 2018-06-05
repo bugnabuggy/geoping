@@ -1,0 +1,16 @@
+<div class='container-fluid '>
+    <div class=tm-padding></div>
+    <form class="border rounded col-8 col-sm-6 col-md-5 col-lg-4 mx-auto tm-padding" (submit)="login($event)" #loginForm="ngForm">
+        <div class='col'>
+            <mat-form-field class="tm-full-width">
+                <input matInput  name="username" placeholder="Username" [(ngModel)]="username">
+            </mat-form-field>
+        </div>
+        <div class="col">
+                <mat-form-field class="tm-full-width">
+                        <input type="password" name="password" matInput placeholder="Password" [(ngModel)]="password">
+                    </mat-form-field>
+        </div>
+        <button mat-raised-button class='float-right'>Login</button>
+        <div class="clearfix"></div>
+    </form>
