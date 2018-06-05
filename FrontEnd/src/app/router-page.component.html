@@ -5,12 +5,12 @@
           <span class="d-lg-none">geoping</span>
           <span class="d-none d-lg-block">geoping</span>
         </a>
-        <button class="navbar-toggler" href="#" data-toggle="collapse" data-target="#nav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" routerLink='/two'>
+            <span class="d-none d-lg-block">two page</span>
+          </a>
       </div>
   
-     
+     <button mat-raised-button (click) = "logOut()" class="position-relative zindex-dropdown">log out</button>
     </header>
     <article class="d-flex">
       <main>
@@ -22,8 +22,8 @@
   <div class="spinner center" *ngIf=spinnerIsVisible>
     <div class="row justify-content-center ">
       <div class="col align-self-center ">
-        <!-- <mat-spinner diameter=100>
-        </mat-spinner> -->
+        <mat-spinner diameter=100>
+        </mat-spinner>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SecurityService } from './services/security.service';
 
 import { AppComponent } from './components/app.component';
 import { RouterPageComponent } from './router-page.component'
@@ -7,10 +8,11 @@ import { TwoPageComponent } from './components/two-page.component'
 import { LoginComponent } from './components/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'one', component: AppComponent },
-  { path: 'two', component: TwoPageComponent },
-  { path: 'login', component: LoginComponent}
+  { path: '', redirectTo: '/one', pathMatch: 'full' },
+  { path: 'one', component: AppComponent, canActivate:[SecurityService]},
+  { path: 'login', component: LoginComponent},
+  { path: 'two', component: TwoPageComponent, canActivate:[SecurityService]},
+  
 ];
 
 @NgModule({

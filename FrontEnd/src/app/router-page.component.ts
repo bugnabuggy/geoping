@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { UserService } from './services/user.service';
 
 
 @Component({
@@ -9,4 +10,13 @@ import { Component} from '@angular/core';
 
 export class RouterPageComponent  {
 
+  constructor(
+    private userSvc: UserService,
+    
+) {
+}
+
+  logOut(){
+    this.userSvc.logOut();
+  }
 }

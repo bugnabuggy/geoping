@@ -1,5 +1,6 @@
 import { Injectable, ApplicationRef } from '@angular/core';
 import { infoMarker } from '../models/infoMarker';
+import { UserService } from '../services/user.service';
 
 declare var google: any;
 
@@ -41,7 +42,10 @@ export class MapService {
     labelIndex: number = 1;
     infowindow = new google.maps.InfoWindow;
 
-    constructor(private ref: ApplicationRef) {
+    constructor(
+        private ref: ApplicationRef,
+        private userSvc: UserService
+    ) {
         this.moveMarkers = this.moveMarkers.bind(this);
         this.fillArrayLocationsMarkers = this.fillArrayLocationsMarkers.bind(this);
     }
@@ -201,6 +205,7 @@ export class MapService {
     }
 
     fillArrayLocationsMarkers(callback: (array) => any, startSettingSerialNumber) {
+        this.userSvc.spinnerIsVisible = true;
         let geocoder = new google.maps.Geocoder;
         let that = this;
         this.serialNumber = startSettingSerialNumber;
@@ -219,6 +224,7 @@ export class MapService {
             setTimeout(this.fillArrayLocationsMarkers, 1800, callback, this.serialNumber);
         }
         else {
+            this.userSvc.spinnerIsVisible = false;
             this.serialNumber++;
             this.index = 0;
         }

@@ -12,7 +12,6 @@ import { Observable} from 'rxjs/Observable';
 @Injectable()
 export class UserService {
     loginInProgress: boolean = false;
-    hideMenu: boolean = false;
     spinnerIsVisible: boolean = false;
 
     constructor(private http: HttpClient,

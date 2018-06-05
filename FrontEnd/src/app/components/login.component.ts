@@ -19,7 +19,6 @@ export class LoginComponent {
         private userSvc: UserService,
         private notifications: NotificationService
     ) {
-        this.userSvc.hideMenu = true;
     }
 
     login(e) {
@@ -27,7 +26,6 @@ export class LoginComponent {
 
         this.userSvc.logIn(this.username, this.password)
             .subscribe((data) => {
-                this.userSvc.hideMenu = false;
             }, (err) => {
                 this.notifications.showError(err.message);
             });

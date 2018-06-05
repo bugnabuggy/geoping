@@ -13,7 +13,7 @@ import { MapService } from './services/mapService';
 import { NotificationService } from './services/notification.service';
 import { SecurityService } from './services/security.service';
 import { UserService } from './services/user.service';
-
+import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 
 import {
@@ -25,7 +25,8 @@ import {
   MatTableModule,
   MatCardModule,
   MatListModule,
-  MatGridListModule
+  MatGridListModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -53,9 +54,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
-  providers: [MapService,SecurityService, NotificationService, UserService],
+  providers: [
+    MapService,
+    SecurityService, 
+    NotificationService, 
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [RouterPageComponent]
 })
 export class AppModule { }

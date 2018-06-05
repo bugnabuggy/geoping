@@ -54,14 +54,30 @@
     min-height: 100%;
   }
 
-
-
-
-
-
   article{
     flex:1;
     position: relative;
   }
   
-  
+   .zindex-dropdown{
+    z-index: 10;
+  }
+  .spinner{
+    background: black;
+    position:fixed;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    height: 100%; /* Высота максимальна */
+    left: 0; /* Нулевой отступ слева */
+    opacity: 0.50; /* Степень прозрачности */
+    top: 0; /* Нулевой отступ сверху */
+    width: 100%; /* Ширина максимальна */
+    z-index: 100; /* Заведомо быть НАД другими элементами */
+  }
