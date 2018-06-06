@@ -27,7 +27,7 @@ export class LoginComponent {
         this.userSvc.logIn(this.username, this.password)
             .subscribe((data) => {
             }, (err) => {
-                this.notifications.showError(err.message);
+                this.notifications.showError('wrong login or password');
             });
 
         return false;

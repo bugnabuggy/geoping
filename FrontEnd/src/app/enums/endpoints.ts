@@ -15,6 +15,7 @@ class Endpoints {
         },
         identity: {
             changePassword: Endpoints.baseUrl + 'api/Identity/password',
+            registration: Endpoints.baseUrl + 'api/User/registration',
             antiforgery: Endpoints.baseUrl + 'api/Identity/antiforgery'
         }
     };

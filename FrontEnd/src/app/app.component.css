@@ -59,6 +59,13 @@
     position: relative;
   }
   
+  .tm-padding{
+    padding: 1em;
+  }
+  
+  .tm-full-width{
+    width: 100%;
+  }
    .zindex-dropdown{
     z-index: 10;
   }

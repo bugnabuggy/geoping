@@ -6,10 +6,12 @@ import { AppComponent } from './components/app.component';
 import { RouterPageComponent } from './router-page.component'
 import { TwoPageComponent } from './components/two-page.component'
 import { LoginComponent } from './components/login.component';
+import { RegistrationComponent } from './components/registration.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/one', pathMatch: 'full' },
   { path: 'one', component: AppComponent, canActivate:[SecurityService]},
+  { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent},
   { path: 'two', component: TwoPageComponent, canActivate:[SecurityService]},
   

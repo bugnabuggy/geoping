@@ -92,4 +92,14 @@ export class UserService {
 
         return observable;
     }
+
+    registration(username, password) {
+        let url = Endpoints.api.identity.registration;
+        let observable = this.http.post(
+            url,
+            {login: username, password: password}
+        ).pipe(share());
+
+        return observable;
+    }
 }
