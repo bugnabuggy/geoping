@@ -1,0 +1,79 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Mocha tests",
+            "type": "node",
+            "request": "launch",
+            "stopOnEntry": false,
+            "program": "${workspaceRoot}\\node_modules\\mocha\\bin\\_mocha",
+            "args": [
+                "${workspaceRoot}/tools/startTest.js", 
+                "--require", 
+                "ts-node/register",
+                "--watch-extensions", 
+                "ts,tsx", 
+                "--require", 
+                "babel-register",
+                "--watch-extensions", 
+                "js",
+                "tests/**/*.spec.*"
+                
+            ],
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": null,
+            "protocol": "inspector",
+            "env": {
+                "NODE_ENV": "dev"
+            }
+        },
+        {
+            "name": "Mocha tests2",
+            "type": "node",
+            "request": "launch",
+            "stopOnEntry": false,
+            "program": "${workspaceRoot}\\node_modules\\mocha\\bin\\_mocha",
+            "args": [
+                "${workspaceRoot}/tools/startTest.js",
+                "'--opts mocha.opts'"
+            ],
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": null,
+            "protocol": "inspector",
+            "env": {
+                "NODE_ENV": "dev"
+            },
+            "port": 43587
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/cra-ts-antd\\tools\\server.js"
+        },
+        {
+            "name": "Launch",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/cra-ts-antd/tools/server.js",
+            "stopOnEntry": true,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+           // "externalConsole": false,
+            "sourceMaps": false,
+           // "outDir": null
+        }
+    ]
+}
