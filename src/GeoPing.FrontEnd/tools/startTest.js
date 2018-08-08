@@ -25,19 +25,19 @@ console.error = message => {
 const { document } = (new JSDOM('')).window;
 global.document = document;
 
-document.defaultView.localStorage = storage;
-document.defaultView.sessionStorage = storage;
+//document.defaultView.localStorage = storage;
+//document.defaultView.sessionStorage = storage;
 
 global.window = document.defaultView;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
-Object.keys(document.defaultView).forEach((property) => {
-  if (typeof global[property] === 'undefined') {
-    exposedProperties.push(property);
-    global[property] = document.defaultView[property];
-  }
-});
+//Object.keys(document.defaultView).forEach((property) => {
+  //if (typeof global[property] === 'undefined') {
+    //exposedProperties.push(property);
+   // global[property] = document.defaultView[property];
+ // }
+//});
 
 global.navigator = {
     userAgent: 'node.js'
