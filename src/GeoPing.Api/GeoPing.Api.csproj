@@ -26,4 +26,10 @@
     <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="C:\Users\ShefardAA\.nuget\packages\nlog.config\4.5.9\contentFiles\any\any\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
