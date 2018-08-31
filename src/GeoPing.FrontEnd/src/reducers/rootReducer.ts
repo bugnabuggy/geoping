@@ -2,15 +2,15 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 
-import { appReducer } from './appReducer';
-import { wishListReducer } from './wishListReduser';
+// import { sampleAppReducer } from './Sample.appReducer';
+// import { wishListReducer } from './Sample.wishListReduser';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
     form: formReducer,
-    wishList: wishListReducer,
-    appUser: appReducer,
+    // sampleWishList: wishListReducer,
+    // sampleLogin: sampleAppReducer,
     router: routerReducer,
     ...injectedReducers,
   });
-};
+}

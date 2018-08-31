@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { Switch } from 'react-router-dom';
 
-import { ListOfRoutes } from './routerComponent';
-import { map } from './routerMap';
+import Routes from './routesComponent';
 
 export const getRoutes = () => {
   return (
-    <Switch>
-      <ListOfRoutes
-        mapComponent={map}
-      />
-    </Switch>
+    <React.Fragment>
+      <Routes/>
+    </React.Fragment>
   );
 };

@@ -1,4 +1,5 @@
 import { get, post } from '../services/httpService';
+import { WISH_LIST } from '../DTO/Sample.constantsForReducer';
 
 export const getRecords = () => (dispatch: Function) => {
   get('http://localhost:3001')
@@ -31,13 +32,13 @@ export const sendNewUser = (data: any) => (dispatch: Function) => {
 };
 
 export function setVisibilityFilter(users: any) {
-  return { type: 'SET_VISIBILITY_FILTER', users };
-};
+  return { type: WISH_LIST.SET_VISIBILITY_FILTER, users };
+}
 
 export function getSpecialtyAction(specialty: any) {
-  return { type: 'GET_SPECIALTY', specialty };
-};
+  return { type: WISH_LIST.GET_SPECIALTY, specialty };
+}
 
 export function sendNewUserAction(users: any) {
-  return {type: 'SEND_NEW_USER', users};
-};
+  return {type: WISH_LIST.SEND_NEW_USER, users};
+}
