@@ -4,7 +4,7 @@ import * as path from 'path';
 import { yellow } from 'colors';
 
 const config = require ( '../webpack.dev' );
-const port = 3003;
+const port = 3000;
 const app = express ();
 const compiler = webpack ( config );
 

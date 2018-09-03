@@ -27,6 +27,9 @@ function getClientEnvironment() {
       (env, key) => {
         env[key] = process.env[key];
         return env;
+      },
+      {
+        NODE_ENV: process.env.NODE_ENV || 'development',
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
