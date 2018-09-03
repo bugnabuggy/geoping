@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
+using IdentityServer4;
 
 namespace GeoPing.Api
 {
@@ -29,9 +30,23 @@ namespace GeoPing.Api
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "api1";
+                });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            // Cofigure IdentityServer with in-memory stores, keys, clients and res
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients());
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -56,6 +71,8 @@ namespace GeoPing.Api
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {
