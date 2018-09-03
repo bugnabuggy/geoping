@@ -23,11 +23,13 @@ console.error = message => {
   throw new Error(message);
 };
 
-const {document} = (new JSDOM('')).window;
+const {document} = (new JSDOM('', {
+  url: 'http://localhost/',
+})).window;
 global.document = document;
 
-document.defaultView.localStorage = storage;
-document.defaultView.sessionStorage = storage;
+// document.defaultView.localStorage = storage;
+// document.defaultView.sessionStorage = storage;
 
 global.window = document.defaultView;
 
