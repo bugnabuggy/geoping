@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GeoPing.Api.Controllers
 {
-    [Route("identity")]
+    [Route("[Ccontroller]")]
     [Authorize]
     public class IdentityController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
         {
-            return new JsonResult(new Claim(ClaimTypes.Name, "User"));
+            return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
         }
 
 
