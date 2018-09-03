@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as toastr from 'toastr';
 import axios from 'axios';
 
-import AddNewUserForm from './forms/formNewUser';
+import AddNewUserForm from './forms/Sample.formNewUser';
 
 export class WishList extends React.Component<any, any> {
   constructor(props: any) {
@@ -23,13 +23,12 @@ export class WishList extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    this.props.getRecordsAction();
-    this.props.getSpecialtyAction();
+    // this.props.getRecordsAction();
+    // this.props.getSpecialtyAction();
   }
 
   sendFromServer = (value: any) => {
-    const that = this;
-    this.props.sendNewUserAction(value);
+    // this.props.sendNewUserAction(value);
   }
 
   getDataOfForm = (value: any, field: string) => {
@@ -58,16 +57,9 @@ export class WishList extends React.Component<any, any> {
       .then((response: any) => {
         console.log(response);
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         console.error(err);
       });
-  }
-
-  renderOptionsSelect = () => {
-    const options: Array<any> = this.props.specialty.map((list: any) => {
-      return (<option key={uuidv4()} value={list.id}>{list.specialty}</option>);
-    });
-    return options;
   }
 
   renderTableRow = () => {
@@ -82,7 +74,7 @@ export class WishList extends React.Component<any, any> {
           <td>{user.user_phone}</td>
           <td>{user.specialty_list && user.specialty_list.specialty}</td>
         </tr>
-      )
+      );
     });
     return rows;
   }
@@ -92,78 +84,18 @@ export class WishList extends React.Component<any, any> {
       <div className="table-margin">
         <div className="form-container">
           <div className="form-style">
-            {/* <AddNewUserForm 
-              propNamespace='fsdfasdf'
+            <AddNewUserForm
               specialty={this.props.specialty}
-            /> */}
-            {/* <Form onSubmit={this.handleSubmit} horizontal>
-              <FormGroup>
-                <ControlLabel>Name *</ControlLabel>{' '}
-                <FormControl
-                  type="text"
-                  name="user_name"
-                  placeholder="Enter Name"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Second Name *</ControlLabel>{' '}
-                <FormControl
-                  type="text"
-                  name="user_second_name"
-                  placeholder="Enter Second Name"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Age</ControlLabel>{' '}
-                <FormControl
-                  type="text"
-                  name="user_age"
-                  placeholder="Enter Age"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Address</ControlLabel>{' '}
-                <FormControl
-                  type="text"
-                  name="user_address"
-                  placeholder="Enter Address"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Phone</ControlLabel>{' '}
-                <FormControl
-                  type="text"
-                  name="user_phone"
-                  placeholder="Enter Phone"
-                />
-              </FormGroup>
-              <FormGroup controlId="formControlsSelect">
-                <ControlLabel>Select</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  placeholder="select"
-                  name="specialty_list_Id"
-                >
-                  {this.renderOptionsSelect()}
-                </FormControl>
-              </FormGroup>
-              <Button
-                bsStyle="primary"
-                type="submit"
-              // onClick={this.handleSubmit}
-              >
-                Loading
-          </Button>
-            </Form> */}
-            <Button
-                bsStyle="primary"
+            />
+            {/* <Button
+              bsStyle="primary"
               onClick={this.awsLambda}
             >
-                AWS Lambda
-            </Button>
+              AWS Lambda
+            </Button> */}
           </div>
         </div>
-        <Table responsive>
+        <Table responsive={true}>
           <thead>
             <tr>
               <th>#</th>

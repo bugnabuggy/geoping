@@ -6,7 +6,9 @@ const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const getClientEnvironment = require('./config/env');
 
+const env = getClientEnvironment();
 module.exports = merge(common, {
   devtool: 'inline-source-map',
   mode: 'production',
@@ -22,9 +24,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.DefinePlugin({
-      cutCode: JSON.stringify(true)
-    }),
+    new webpack.DefinePlugin(env.stringified),
     new UglifyJSPlugin({
       sourceMap: true
     }),
