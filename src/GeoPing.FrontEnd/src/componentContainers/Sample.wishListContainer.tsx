@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { WishList } from '../wishaList';
+import { WishList } from '../components/Sample.wishaList';
 
-import { getRecords, getSpecialty, sendNewUser } from '../../actions/wishListAction';
+import { getRecords, getSpecialty, sendNewUser } from '../actions/Sample.wishListAction';
 
 interface IWishListContainerProps {
   wishList: Array<any>;
@@ -12,10 +12,10 @@ interface IWishListContainerProps {
 
   getRecords: () => void;
   getSpecialty: () => void;
-  sendNewUser: (value: any) => void;
+  sendNewUser: ( value: any ) => void;
 }
 
-class WishListContainer extends React.Component<IWishListContainerProps, any> {
+class SampleWishListContainer extends React.Component<IWishListContainerProps, any> {
   render() {
     return (
       <div>
@@ -32,18 +32,18 @@ class WishListContainer extends React.Component<IWishListContainerProps, any> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ( state: any ) => {
   return {
     wishList: state.wishList.users,
     specialty: state.wishList.specialty,
   };
 };
 
-const mapDispatchToProps = (dispath: any) =>
-  bindActionCreators({
+const mapDispatchToProps = ( dispath: any ) =>
+  bindActionCreators ( {
     getRecords,
     getSpecialty,
     sendNewUser,
-  }, dispath);
+  },                   dispath );
 
-export default connect(mapStateToProps, mapDispatchToProps)(WishListContainer);
+export default connect ( mapStateToProps, mapDispatchToProps ) ( SampleWishListContainer );

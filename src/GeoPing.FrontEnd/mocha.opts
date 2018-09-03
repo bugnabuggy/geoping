@@ -1,5 +1,4 @@
 --require ts-node/register
---watch-extensions ts,tsx
 --require babel-register
---watch-extensions js
+--watch-extensions ts,tsx,js,jsx
 tests/**/*.spec.*

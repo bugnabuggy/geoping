@@ -1,6 +1,6 @@
 {
   "name": "testtsnodestart",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.1.4",
+    "@types/dotenv": "^4.0.3",
     "@types/enzyme": "^3.1.12",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/express": "^4.16.0",
@@ -27,6 +28,7 @@
     "@types/react-router-dom": "^4.3.0",
     "@types/react-router-redux": "^5.0.15",
     "@types/redux-form": "^7.4.3",
+    "@types/redux-logger": "^3.0.6",
     "@types/toastr": "^2.1.35",
     "@types/uuid": "^3.4.3",
     "@types/webpack": "^4.4.8",
@@ -63,9 +65,11 @@
     "raf-polyfill": "^1.0.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-form": "^7.4.2",
+    "redux-logger": "^3.0.6",
     "ts-node": "^7.0.0",
     "tsc": "^1.20150623.0",
     "tslint": "^5.11.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^2.9.2",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "uuid": "^3.3.2",
@@ -77,6 +81,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dotenv": "^6.0.0",
     "history": "^4.7.2",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
