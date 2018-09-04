@@ -31,7 +31,7 @@ global.document = document;
 // document.defaultView.localStorage = storage;
 // document.defaultView.sessionStorage = storage;
 
-global.window = document.defaultView;
+global.window = document.defaultView
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
