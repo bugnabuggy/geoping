@@ -1,63 +1,12 @@
 import * as React from 'react';
 import { LinkHeaderComponent } from './linkHeaderComponent';
 import IHeaderComponentProps from '../componentProps/headerComponentProps/headerComponentProps';
+import { mapLinksAuthorizedUser, mapLinksNotAuthorizedUser } from '../mapForComponents/mapsForHeader/mapsHeaderLinks';
 
 export class HeaderComponent extends React.Component<IHeaderComponentProps, any> {
 
-  mapLinks: any = [
-    {
-      text: 'Dashboard',
-      path: '/dashboard',
-      avatar: false,
-    },
-    {
-      text: 'Check in',
-      path: '/checkin',
-      avatar: false,
-    },
-    {
-      text: 'About',
-      path: '/',
-      avatar: false,
-    },
-    {
-      text: '%UserName%',
-      path: '/profile',
-      avatar: true,
-    }
-  ];
-
   renderLinkIfUserNotAuthorize = () => {
-    const login: any = {
-      text: 'Login',
-      path: '/login',
-      avatar: false,
-    };
-    const register: any = {
-      text: 'Register',
-      path: '/register',
-      avatar: false,
-    };
-    const about: any = {
-      text: 'About',
-      path: '/',
-      avatar: false,
-    };
-    const componentMap: any = {
-      '/': [
-        { ...login },
-        { ...register },
-      ],
-      '/login': [
-        { ...about },
-        { ...register },
-      ],
-      '/register': [
-        { ...about },
-        { ...login },
-      ],
-    };
-    return this.renderLinkIfUserAuthorized(componentMap[this.props.path]);
+    return this.renderLinkIfUserAuthorized(mapLinksNotAuthorizedUser[this.props.path]);
   }
 
   renderLinkIfUserAuthorized = ( mapComponent: Array<any> ) => {
@@ -83,7 +32,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
             Geo Ping
           </div>
           <div className="col-6 ml-auto text-right">
-            {false ? this.renderLinkIfUserAuthorized ( this.mapLinks ) : this.renderLinkIfUserNotAuthorize ()}
+            {false ? this.renderLinkIfUserAuthorized ( mapLinksAuthorizedUser ) : this.renderLinkIfUserNotAuthorize ()}
           </div>
         </div>
       </div>
