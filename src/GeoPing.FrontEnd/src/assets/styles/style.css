@@ -5,12 +5,20 @@ html, body {
   min-width: 470px;
 }
 
+main {
+  display: flex;
+}
+
 #app {
   height: 100vh;
   display: grid;
   grid-template-rows: minmax(70px, 100px) minmax(500px, 2fr) minmax(100px, 120px);
   grid-template-columns: 1fr;
   grid-gap: 5px;
+}
+
+#map {
+  height: 100%;
 }
 
 .header-container {

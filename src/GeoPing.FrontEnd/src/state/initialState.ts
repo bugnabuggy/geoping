@@ -7,6 +7,7 @@ import { profileState } from './profileState';
 import { tableUserState } from './tableUserState';
 import { userState } from './userState';
 import { headerState } from './headerState';
+import { googleMapState } from './googleMapState';
 
 const initialState: IinitialStateType = {
   allUsers: allUsersState,
@@ -17,6 +18,7 @@ const initialState: IinitialStateType = {
   tableUser: tableUserState,
   user: userState,
   header: headerState,
+  googleMap: googleMapState,
 };
 
 export default initialState;

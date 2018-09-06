@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
+using IdentityServer4;
 
 namespace GeoPing.Api
 {
@@ -29,9 +30,32 @@ namespace GeoPing.Api
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            // Removing cookie authentitication
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+            
+            // Setting password requirements 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            // Cofigure IdentityServer with in-memory stores, keys, clients and res
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryPersistedGrants()
+                .AddAspNetIdentity<ApplicationUser>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -55,7 +79,7 @@ namespace GeoPing.Api
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {
