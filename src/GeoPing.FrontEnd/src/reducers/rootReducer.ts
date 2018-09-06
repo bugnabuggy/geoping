@@ -9,6 +9,7 @@ import profileReducer from './profileReducer';
 import tableUserReducer from './tableUsersReducer';
 import checkinStatisticsReducer from './checkinStatisticsReducer';
 import checkinReducer from './checkinReducer';
+import googleMapReducer from './googleMapReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
@@ -20,6 +21,7 @@ export default function createReducer(injectedReducers: any) {
     tableUser: tableUserReducer,
     checkinStatistics: checkinStatisticsReducer,
     checkin: checkinReducer,
+    googleMap: googleMapReducer,
     router: routerReducer,
     ...injectedReducers,
   });
