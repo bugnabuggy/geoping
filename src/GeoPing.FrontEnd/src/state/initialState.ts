@@ -6,6 +6,7 @@ import { checkListState } from './checkListState';
 import { profileState } from './profileState';
 import { tableUserState } from './tableUserState';
 import { userState } from './userState';
+import { headerState } from './headerState';
 import { googleMapState } from './googleMapState';
 
 const initialState: IinitialStateType = {
@@ -16,6 +17,7 @@ const initialState: IinitialStateType = {
   profile: profileState,
   tableUser: tableUserState,
   user: userState,
+  header: headerState,
   googleMap: googleMapState,
 };
 

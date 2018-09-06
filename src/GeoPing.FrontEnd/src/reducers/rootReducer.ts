@@ -9,6 +9,7 @@ import profileReducer from './profileReducer';
 import tableUserReducer from './tableUsersReducer';
 import checkinStatisticsReducer from './checkinStatisticsReducer';
 import checkinReducer from './checkinReducer';
+import headerReducer from './headerReducer';
 import googleMapReducer from './googleMapReducer';
 
 export default function createReducer(injectedReducers: any) {
@@ -21,6 +22,7 @@ export default function createReducer(injectedReducers: any) {
     tableUser: tableUserReducer,
     checkinStatistics: checkinStatisticsReducer,
     checkin: checkinReducer,
+    header: headerReducer,
     googleMap: googleMapReducer,
     router: routerReducer,
     ...injectedReducers,
