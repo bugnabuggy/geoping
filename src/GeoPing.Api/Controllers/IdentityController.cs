@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GeoPing.Api.Controllers
 {
-    [Route("[Ccontroller]")]
+    [Route("[Controller]")]
     [Authorize]
     public class IdentityController : ControllerBase
     {
