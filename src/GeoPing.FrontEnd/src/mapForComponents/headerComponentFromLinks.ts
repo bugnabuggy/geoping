@@ -32,7 +32,7 @@ export const authorizedLinks: Array<any> = [
 
 export const notAuthorizedLinks: Array<any> = [
   {
-    path: '/#',
+    path: '/publicchecklist',
     label: 'Public checklists',
   },
   {
