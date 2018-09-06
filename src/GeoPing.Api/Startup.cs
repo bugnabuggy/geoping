@@ -31,12 +31,15 @@ namespace GeoPing.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Removing cookie authentitication
-
-            services.Configure<SecurityStampValidatorOptions>(options =>
+            services.ConfigureApplicationCookie(options =>
             {
-                options.ValidationInterval = TimeSpan.FromMinutes(10);
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
             });
-
+            
             // Setting password requirements 
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.Password.RequiredLength = 8;
