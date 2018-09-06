@@ -6,6 +6,7 @@ import { checkListState } from './checkListState';
 import { profileState } from './profileState';
 import { tableUserState } from './tableUserState';
 import { userState } from './userState';
+import { headerState } from './headerState';
 
 const initialState: IinitialStateType = {
   allUsers: allUsersState,
@@ -15,6 +16,7 @@ const initialState: IinitialStateType = {
   profile: profileState,
   tableUser: tableUserState,
   user: userState,
+  header: headerState,
 };
 
 export default initialState;
