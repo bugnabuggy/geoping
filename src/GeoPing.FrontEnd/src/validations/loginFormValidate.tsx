@@ -1,6 +1,5 @@
 export const validate = ( values: any) => {
   const errors: any = {};
-  console.log('values', values);
   if (!values.login) {
     errors.login = 'required to be filled out';
   }
