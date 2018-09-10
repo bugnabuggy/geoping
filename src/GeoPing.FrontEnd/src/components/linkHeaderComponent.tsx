@@ -3,16 +3,15 @@ import { Link } from 'react-router-dom';
 import ILinkHeaderComponentProps from '../componentProps/headerComponentProps/linkHeaderComponentProps';
 
 export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentProps, any> {
-  constructor(props: any) {
-    super(props);
+  constructor( props: any ) {
+    super ( props );
     this.state = {
       isDropdownAction: false,
     };
   }
 
-  renderLinks = ( props: any) => {
+  renderLinks = ( props: any ) => {
     const action: boolean = this.props.index === props.id;
-
     const elements: any = (
       <Link
         id={props.id}
@@ -65,7 +64,6 @@ export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentPro
             </li>
           )
         }
-
       </React.Fragment>
     );
   }

@@ -11,6 +11,8 @@ import checkinStatisticsReducer from './checkinStatisticsReducer';
 import checkinReducer from './checkinReducer';
 import headerReducer from './headerReducer';
 import googleMapReducer from './googleMapReducer';
+import tableHistoryReducer from './tableHistoryReducer';
+import modalReducer from './modalReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
@@ -23,7 +25,9 @@ export default function createReducer(injectedReducers: any) {
     checkinStatistics: checkinStatisticsReducer,
     checkin: checkinReducer,
     header: headerReducer,
+    tableHistory: tableHistoryReducer,
     googleMap: googleMapReducer,
+    modal: modalReducer,
     router: routerReducer,
     ...injectedReducers,
   });

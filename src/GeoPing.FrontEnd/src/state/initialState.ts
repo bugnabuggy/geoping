@@ -8,6 +8,8 @@ import { tableUserState } from './tableUserState';
 import { userState } from './userState';
 import { headerState } from './headerState';
 import { googleMapState } from './googleMapState';
+import { tableHistoryState } from './tsbleHistoryState';
+import { modalState } from './modalState';
 
 const initialState: IinitialStateType = {
   allUsers: allUsersState,
@@ -18,7 +20,10 @@ const initialState: IinitialStateType = {
   tableUser: tableUserState,
   user: userState,
   header: headerState,
+  tableHistory: tableHistoryState,
   googleMap: googleMapState,
+  modal: modalState,
+  router: {},
 };
 
 export default initialState;
