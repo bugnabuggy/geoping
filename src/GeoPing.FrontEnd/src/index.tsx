@@ -12,6 +12,31 @@ import { getRoutes } from './routers/getRoutes';
 import createReducer from './reducers/rootReducer';
 import initialState from './state/initialState';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faFilter,
+  faPlusCircle,
+  faTrashAlt,
+  faChartBar,
+  faShareSquare,
+  faCheck,
+  faUserPlus,
+  faMinus,
+  faMinusCircle,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add (
+  faFilter,
+  faPlusCircle,
+  faTrashAlt,
+  faChartBar,
+  faShareSquare,
+  faCheck,
+  faUserPlus,
+  faMinus,
+  faMinusCircle,
+);
+
 const history = createBrowserHistory ();
 
 const middleware = routerMiddleware ( history );
@@ -22,7 +47,7 @@ const store = createStore (
   composeWithDevTools (
     applyMiddleware (
       thunk,
-      logger,
+      // logger,
       middleware
     )
   )
