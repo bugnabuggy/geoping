@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,14 @@ namespace GeoPing.Api
 {
     public class Config
     {
+        private static IConfiguration Configuration;
+
+        public Config(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+
         // Defining the identity
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
@@ -46,8 +55,8 @@ namespace GeoPing.Api
                         new Secret("secret".Sha256())
                     },
 
-                    RedirectUris           = { "http://localhost:5000/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5000/signout-callback-oidc" },
+                    RedirectUris           = { Configuration.GetValue<string>("IdentityUrl:DefaultUrl") + "/signin-oidc" },
+                    PostLogoutRedirectUris = { Configuration.GetValue<string>("IdentityUrl:DefaultUrl") + "/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
