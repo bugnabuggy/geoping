@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
+using NLog;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace GeoPing.Api
 {
@@ -40,8 +43,10 @@ namespace GeoPing.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddNLog();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();

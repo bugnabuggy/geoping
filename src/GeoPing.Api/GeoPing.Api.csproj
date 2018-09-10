@@ -10,6 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
+    <PackageReference Include="NLog" Version="4.5.9" />
+    <PackageReference Include="NLog.Config" Version="4.5.9" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.2.1" />
+    <PackageReference Include="NLog.Targets.Syslog" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +24,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\ShefardAA\.nuget\packages\nlog.config\4.5.9\contentFiles\any\any\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
