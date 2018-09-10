@@ -14,8 +14,7 @@ import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
 export default class Routes extends React.Component<any, any> {
 
   render() {
-    const authorized: boolean = false;
-
+    const authorized: boolean = this.props.authorized;
     let component: any = null;
     if ( !authorized ) {
       component = (

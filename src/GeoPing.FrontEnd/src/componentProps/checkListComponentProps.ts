@@ -1,5 +1,7 @@
+import IDispatchFunction from '../DTO/types/dispatchFunction';
+
 export default interface ICheckListComponentProps {
   name: string;
 
-  showModalShare: () => ( dispatcj: Function ) => void;
+  showModalShare: () => ( dispatch: IDispatchFunction ) => void;
 }

@@ -8,7 +8,7 @@ import logger from 'redux-logger';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { getRoutes } from './routers/getRoutes';
+import GetRoutes from './routers/getRoutes';
 import createReducer from './reducers/rootReducer';
 import initialState from './state/initialState';
 
@@ -56,7 +56,7 @@ const store = createStore (
 ReactDOM.render (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      {getRoutes ()}
+      <GetRoutes/>
     </ConnectedRouter>
   </Provider>,
   document.getElementById ( 'app' )

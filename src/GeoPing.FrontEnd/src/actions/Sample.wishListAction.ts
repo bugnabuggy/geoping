@@ -1,7 +1,8 @@
 import { get, post } from '../services/httpService';
 import { WISH_LIST } from '../DTO/Sample.constantsForReducer';
+import IDispatchFunction from '../DTO/types/dispatchFunction';
 
-export const getRecords = () => (dispatch: Function) => {
+export const getRecords = () => (dispatch: IDispatchFunction) => {
   get('http://localhost:3001')
     .then((response: any) => {
       dispatch(setVisibilityFilter(response.data));
@@ -11,7 +12,7 @@ export const getRecords = () => (dispatch: Function) => {
     });
 };
 
-export const getSpecialty = () => (dispatch: Function) => {
+export const getSpecialty = () => (dispatch: IDispatchFunction) => {
   get('http://localhost:3001/specialty')
     .then((response: any) => {
       dispatch(getSpecialtyAction(response.data));
@@ -21,7 +22,7 @@ export const getSpecialty = () => (dispatch: Function) => {
     });
 };
 
-export const sendNewUser = (data: any) => (dispatch: Function) => {
+export const sendNewUser = (data: any) => (dispatch: IDispatchFunction) => {
   post('http://localhost:3001/hello', data)
     .then((response: any) => {
       dispatch(sendNewUserAction(response.data));

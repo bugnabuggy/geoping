@@ -1,3 +1,5 @@
-export const loadHistory = () => ( dispatch: Function ) => {
+import IDispatchFunction from '../DTO/types/dispatchFunction';
+
+export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
   return '';
 };

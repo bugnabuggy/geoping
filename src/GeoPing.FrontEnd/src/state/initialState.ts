@@ -23,6 +23,7 @@ const initialState: IinitialStateType = {
   tableHistory: tableHistoryState,
   googleMap: googleMapState,
   modal: modalState,
+  router: {},
 };
 
 export default initialState;

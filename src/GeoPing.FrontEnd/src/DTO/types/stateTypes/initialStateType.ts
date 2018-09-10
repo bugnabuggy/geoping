@@ -22,4 +22,5 @@ export default interface IinitialStateType {
   tableHistory: ITableHistoryStateType;
   googleMap: IGoogleMapType;
   modal: IModalStateType;
+  router: any;
 }

@@ -1,11 +1,13 @@
-export const loadProfileData = () => ( dispatch: Function ) => {
+import IDispatchFunction from '../DTO/types/dispatchFunction';
+
+export const loadProfileData = () => ( dispatch: IDispatchFunction ) => {
   return '';
 };
 
-export const chandePassword = ( newPassword: string ) => ( dispatch: Function ) => {
+export const chandePassword = ( newPassword: string ) => ( dispatch: IDispatchFunction ) => {
   return '';
 };
 
-export const upgradeAccount = () => ( dispatch: Function ) => {
+export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {
   return '';
 };

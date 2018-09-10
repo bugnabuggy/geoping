@@ -1,6 +1,6 @@
 export default interface IModalComponentProps {
   show: boolean;
-  close: Function;
+  close: () => void;
   // checkListName: string;
   title: string;
 }

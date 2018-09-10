@@ -12,6 +12,10 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
     this.props.editRouteAction ( e.target.id );
   };
 
+  handleAuthorization = ( e: any ) => {
+    this.props.authorizationUser ( 'email', 'pass' );
+  };
+
   renderLinks = ( linksMap: Array<any> ) => {
     const elements: Array<any> = linksMap.map ( ( item: any, index: number ) => {
       const key: string = `${index}_linkHeader`;
@@ -69,8 +73,11 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
           <div className="col-4 ml-5 logo-header">
             Geo Ping
           </div>
+          <div>
+            <button onClick={this.handleAuthorization}>Authorization</button>
+          </div>
           <div className="col-6 ml-auto nav nav-pills justify-content-end">
-            {false ? this.renderLinkAthorized () : this.renderLinkNotAuthorized ()}
+            {this.props.userAuthorization ? this.renderLinkAthorized () : this.renderLinkNotAuthorized ()}
           </div>
         </div>
       </nav>

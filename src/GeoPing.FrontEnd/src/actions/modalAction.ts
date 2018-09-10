@@ -1,10 +1,11 @@
 import { SHOW_MODAL_SHARE, CLOSE_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
+import IDispatchFunction from '../DTO/types/dispatchFunction';
 
-export const showModalShare = () => (dispatch: Function) => {
+export const showModalShare = () => (dispatch: IDispatchFunction) => {
   dispatch(showModalShareAction(true));
 };
 
-export const closeModalShare = () => (dispatch: Function) => {
+export const closeModalShare = () => (dispatch: IDispatchFunction) => {
   dispatch(closeModalShareAction(false));
 };
 
