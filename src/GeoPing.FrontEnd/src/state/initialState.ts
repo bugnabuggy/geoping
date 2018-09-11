@@ -10,6 +10,7 @@ import { headerState } from './headerState';
 import { googleMapState } from './googleMapState';
 import { tableHistoryState } from './tsbleHistoryState';
 import { modalState } from './modalState';
+import { publicCheckListState } from './publickCheckListState';
 
 const initialState: IinitialStateType = {
   allUsers: allUsersState,
@@ -23,6 +24,7 @@ const initialState: IinitialStateType = {
   tableHistory: tableHistoryState,
   googleMap: googleMapState,
   modal: modalState,
+  publicCheckList: publicCheckListState,
   router: {},
 };
 

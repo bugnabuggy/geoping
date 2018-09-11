@@ -9,6 +9,7 @@ import ICheckinStatisticsStateType from './checkinStatisticsStateType';
 import ICheckinStateType from './checkinStateType';
 import IAllUsersStateType from './allUsersStateType';
 import IModalStateType from './modalStateType';
+import IPublicCheckListType from './publicCheckListType';
 
 export default interface IinitialStateType {
   allUsers: IAllUsersStateType;
@@ -22,5 +23,6 @@ export default interface IinitialStateType {
   tableHistory: ITableHistoryStateType;
   googleMap: IGoogleMapType;
   modal: IModalStateType;
+  publicCheckList: IPublicCheckListType;
   router: any;
 }
