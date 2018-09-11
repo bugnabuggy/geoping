@@ -6,14 +6,14 @@ export default class CheckinPage extends React.Component<ICheckinPageProps, any>
 
   render() {
     return (
-      <React.Fragment>
-        <div className="col-6">
+      <div className="checkin-container">
+        <div className="checkin-form">
           Checkin
         </div>
-        <div className="col-6">
+        <div className="checkin-map">
           <GoogleMapComponentContainer />
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

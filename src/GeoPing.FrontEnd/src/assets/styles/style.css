@@ -3,17 +3,19 @@ html, body {
   padding: 0;
   height: 100%;
   min-width: 470px;
+  width: 100%;
 }
 
 main {
-  display: flex;
+  width: 100%;
 }
 
 #app {
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-rows: minmax(70px, 100px) minmax(500px, 2fr) minmax(100px, 120px);
-  grid-template-columns: 1fr;
+  grid-template-rows: minmax(70px, 100px) minmax(min-content, 1fr) minmax(100px, 120px);
+  grid-template-columns: 100%;
   grid-gap: 5px;
 }
 
@@ -34,11 +36,15 @@ li {
   list-style-type: none;
 }
 
-/* Header ******************************************************************/
-.header-container {
-  height: 100%;
-  border: solid 1px black;
+header {
+  width: 100%;
 }
+
+/* Header ******************************************************************/
+/*.header-container {*/
+/*height: 100%;*/
+/*border: solid 1px black;*/
+/*}*/
 
 .header-container-row {
   height: 100%;
@@ -63,7 +69,7 @@ header nav {
   padding: 0 20px 0 20px;
   height: 100%;
   display: grid;
-  grid-template-rows: [row1] 50px [row2] 30px [row3] minmax(100px, 1fr) [row4] 30px [row5] minmax(200px, 2fr) [row6];
+  grid-template-rows: [row1] 50px [row2] 30px [row3] minmax(200px, 500px) [row4] 30px [row5] minmax(200px, max-content) [row6];
   grid-template-columns: [col1] minmax(200px, 1fr) [col2] minmax(200px, 1fr) [col3];
   grid-gap: 10px;
 }
@@ -95,8 +101,8 @@ header nav {
 }
 
 .dashboard-table div {
-   height: 100%;
- }
+  height: 100%;
+}
 
 .dashboard-table div table {
   display: flex;
@@ -133,12 +139,12 @@ header nav {
 
 .dashboard-table-icon:hover, .dashboard-check-list-icon-filter:hover, .dashboard-check-list-icon-pluse:hover,
 .check-list-panel-item-icons:hover, .field-to-share-list-icon:hover, .field-to-share-list-icon-minus:hover,
-.add-user-to-share-list-icon:hover {
+.add-user-to-share-list-icon:hover, .list-item-icon-globe:hover, .list-item-icon-plus-square:hover {
   color: blue;
 }
 
 .check-list-panel-item-icons {
- width: 18px !important;
+  width: 18px !important;
   height: 16px;
 }
 
@@ -215,7 +221,7 @@ header nav {
   height: 50%;
 }
 
-.block-accepted span , .block-new span {
+.block-accepted span, .block-new span {
   font-size: 1.3em;
 }
 
@@ -223,80 +229,20 @@ header nav {
   display: block;
 }
 
-/*  Dashboar Media queries*/
-@media  (max-width: 800px){
-  #app {
-    height: 100vh;
-    display: grid;
-    grid-template-rows: minmax(70px, 100px) minmax(700px, 2fr) minmax(100px, 120px);
-    grid-template-columns: 1fr;
-    grid-gap: 5px;
-  }
+/* Check in*/
+.checkin-container {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: [row1] 1fr;
+  grid-template-columns: [col1] 1fr [col2] 1fr;
+  grid-gap: 10px;
+}
 
-  .dashboard-container {
-    width: 100vw;
-    padding: 0 20px 0 20px;
-    height: 100%;
-    display: grid;
-    grid-template-rows: [row1] 50px [row2] 30px [row3] minmax(100px, 1fr) [row4] 30px [row5] minmax(200px, 2fr) [row6] 30px [row7] minmax(200px, 2fr) [row8];
-    grid-template-columns: [col1] minmax(200px, 1fr);
-    grid-gap: 10px;
-  }
-
-  .dashboard-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row1;
-    grid-row-end: row2;
-  }
-
-  .dashboard-table-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row2;
-    grid-row-end: row3;
-    position: relative;
-  }
-
-  .dashboard-table {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row3;
-    grid-row-end: row4;
-  }
-
-  .dashboard-check-list-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row4;
-    grid-row-end: row5;
-    position: relative;
-  }
-
-  .dashboard-check-list {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row5;
-    grid-row-end: row6;
-    place-self: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  .dashboard-invitations-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row6;
-    grid-row-end: row7;
-    position: relative;
-  }
-
-  .dashboard-invitations {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row7;
-    grid-row-end: row8;
-  }
+.checkin-map {
+  min-height: 500px;
+  max-height: 100%;
 }
 /**/
 
@@ -319,7 +265,7 @@ header nav {
   -ms-user-select: none;
   user-select: none;
 
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -463,7 +409,7 @@ header nav {
   position: relative;
 }
 
-.field-to-share-list-icon, .field-to-share-list-icon-minus{
+.field-to-share-list-icon, .field-to-share-list-icon-minus {
   position: absolute;
   top: 6px;
   right: 50px;
@@ -526,5 +472,215 @@ header nav {
   table-layout: fixed;
 }
 
+/*************************************************************************************/
+/* Public geo checklists */
+.public-check-list-container {
+  width: 100%;
+  padding: 0 20px 0 20px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: [row1] 50px [row2] minmax(50px, 100px) [row3] 120px [row4] minmax(min-content, max-content) [row5];
+  grid-template-columns: [col1] minmax(200px, 1fr) [col2];
+  grid-gap: 10px;
+}
+
+.publick-check-list-filter-panel-body {
+  display: grid;
+  grid-template-rows: [row1] 70px;
+  grid-template-columns: [col1] minmax(200px, 1fr) [col2] minmax(200px, 1fr) [col3] minmax(200px, 1fr);
+  grid-gap: 10px;
+}
+
+.filter-form-group-name, .filter-form-group-user, .filter-form-group-subscribers {
+  grid-row-start: row1;
+  grid-row-end: row1;
+}
+
+.filter-form-group-name {
+  grid-column-start: col1;
+  grid-column-end: col1;
+}
+
+.filter-form-group-user {
+  grid-column-start: col2;
+  grid-column-end: col2;
+}
+
+.filter-form-group-subscribers {
+  grid-column-start: col3;
+  grid-column-end: col3;
+}
+
+.public-check-list-info {
+  text-align: justify;
+}
+
+.public-check-lists {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-rows: [row1] 100% [row2] 40px;
+  grid-template-columns: [col1] 1fr;
+}
+
+.list-item-info {
+  font-size: 0.8em;
+}
+
+.list-item-name {
+  font-size: 1.4em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.list-item-icon-star {
+  margin-left: 5px;
+}
+
+.list-item-icon-globe, .list-item-icon-plus-square {
+  font-size: 1.6em;
+  margin: 0px 10px;
+}
+
+.list-item-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.public-check-list-pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 40px;
+}
+
+/*************************************************************************************/
+
+/*  Media queries*/
+@media (max-width: 800px) {
+  #app {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: minmax(70px, 100px) minmax(min-content, 1fr) minmax(100px, 120px);
+    grid-template-columns: 100%;
+    grid-gap: 5px;
+  }
+
+  .dashboard-container {
+    width: 100%;
+    padding: 0 20px 0 20px;
+    height: 100%;
+    display: grid;
+    grid-template-rows: [row1] 50px [row2] 30px [row3] minmax(200px, 500px) [row4] 30px [row5] minmax(200px, 100%) [row6] 30px [row7] minmax(200px, 100%) [row8];
+    grid-template-columns: [col1] minmax(200px, 1fr);
+    grid-gap: 10px;
+  }
+
+  .dashboard-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row2;
+  }
+
+  .dashboard-table-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row3;
+    position: relative;
+  }
+
+  .dashboard-table {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row4;
+    font-size: 0.8em;
+  }
+
+  .dashboard-check-list-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row4;
+    grid-row-end: row5;
+    position: relative;
+  }
+
+  .dashboard-check-list {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row5;
+    grid-row-end: row6;
+    place-self: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dashboard-invitations-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row6;
+    grid-row-end: row7;
+    position: relative;
+  }
+
+  .dashboard-invitations {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row7;
+    grid-row-end: row8;
+  }
+
+  .public-check-list-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: [row1] 50px [row2] minmax(170px, 200px) [row3] 240px [row4] minmax(200px, 1fr) [row5];
+    grid-template-columns: [col1] minmax(200px, 100%) [col2];
+    grid-gap: 10px;
+  }
+
+  /* Check in*/
+  .checkin-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .checkin-map {
+    height: 400px;
+  }
+  /**/
+
+  /* Public check list filter*/
+  .publick-check-list-filter-panel-body {
+    display: grid;
+    grid-template-rows: [row1] 55px [row2] 55px [row3] 55px;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 10px;
+  }
+
+  .filter-form-group-name, .filter-form-group-user, .filter-form-group-subscribers {
+    grid-column-start: col1;
+    grid-column-end: col1;
+  }
+
+  .filter-form-group-name {
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .filter-form-group-user {
+    grid-row-start: row2;
+    grid-row-end: row2;
+  }
+
+  .filter-form-group-subscribers {
+    grid-row-start: row3;
+    grid-row-end: row3;
+  }
+
+  /**/
+}
 
 /**/

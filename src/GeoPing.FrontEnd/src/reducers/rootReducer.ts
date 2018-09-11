@@ -13,6 +13,7 @@ import headerReducer from './headerReducer';
 import googleMapReducer from './googleMapReducer';
 import tableHistoryReducer from './tableHistoryReducer';
 import modalReducer from './modalReducer';
+import publicCheckListReducer from './publicCheckListReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
@@ -28,6 +29,7 @@ export default function createReducer(injectedReducers: any) {
     tableHistory: tableHistoryReducer,
     googleMap: googleMapReducer,
     modal: modalReducer,
+    publicCheckList: publicCheckListReducer,
     router: routerReducer,
     ...injectedReducers,
   });
