@@ -8,6 +8,7 @@ html, body {
 
 main {
   width: 100%;
+  position: relative;
 }
 
 #app {
@@ -552,6 +553,50 @@ header nav {
   display: flex;
   justify-content: flex-end;
   margin-right: 40px;
+}
+
+/*************************************************************************************/
+
+/* Notification */
+.notification-container {
+  position: absolute;
+  width: 100%;
+
+  z-index: 1000;
+}
+
+.notification-alert {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification span:first-child {
+  width: calc(100% - 190px);
+  text-align: justify;
+}
+
+.notification-dismiss {
+  min-width: 175px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-dismiss a:nth-child(1){
+  margin-right: 10px;
+}
+
+.notification-dismiss a:nth-child(2){
+  margin-left: 10px;
+}
+
+.notification-dismiss-icon {
+  margin-right: 10px;
+}
+
+.notification-link {
+  /*color: black;*/
 }
 
 /*************************************************************************************/

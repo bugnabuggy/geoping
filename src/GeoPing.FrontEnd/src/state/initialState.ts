@@ -11,6 +11,7 @@ import { googleMapState } from './googleMapState';
 import { tableHistoryState } from './tsbleHistoryState';
 import { modalState } from './modalState';
 import { publicCheckListState } from './publickCheckListState';
+import { notificationState } from './notificationsState';
 
 const initialState: IinitialStateType = {
   allUsers: allUsersState,
@@ -25,6 +26,7 @@ const initialState: IinitialStateType = {
   googleMap: googleMapState,
   modal: modalState,
   publicCheckList: publicCheckListState,
+  notifications: notificationState,
   router: {},
 };
 

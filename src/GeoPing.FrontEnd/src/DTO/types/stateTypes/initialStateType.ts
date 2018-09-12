@@ -10,6 +10,7 @@ import ICheckinStateType from './checkinStateType';
 import IAllUsersStateType from './allUsersStateType';
 import IModalStateType from './modalStateType';
 import IPublicCheckListType from './publicCheckListType';
+import INotificationStateType from './notificationStateType';
 
 export default interface IinitialStateType {
   allUsers: IAllUsersStateType;
@@ -24,5 +25,6 @@ export default interface IinitialStateType {
   googleMap: IGoogleMapType;
   modal: IModalStateType;
   publicCheckList: IPublicCheckListType;
+  notifications: INotificationStateType;
   router: any;
 }

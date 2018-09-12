@@ -10,6 +10,7 @@ import CheckinPage from '../pages/checkinPage';
 import HeaderComponentContainer from '../componentContainers/headerComponentContainer';
 import { AboutComponent } from '../pages/aboutPage';
 import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
+import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
 
 export default class Routes extends React.Component<any, any> {
 
@@ -52,6 +53,7 @@ export default class Routes extends React.Component<any, any> {
           <HeaderComponentContainer />
         </header>
         <main>
+          <NotificationComponentContainer />
           {component}
         </main>
         <footer>
