@@ -12,7 +12,6 @@ describe ( ' test component', () => {
     };
     const test = validate(testInput);
 
-    debugger;
     assert.equal ( objVal.login, 'required to be filled out' );
     assert.equal( test.login, undefined);
     assert.equal ( objVal.password, 'required to be filled out' );
@@ -27,7 +26,6 @@ describe ( ' test component', () => {
     };
     const test = validate(testInput);
 
-    debugger;
     assert.equal ( objVal.login, 'required to be filled out' );
     assert.equal( test.login, 'required to be filled out');
     assert.equal ( objVal.password, 'required to be filled out' );
@@ -42,7 +40,6 @@ describe ( ' test component', () => {
     };
     const test = validate(testInput);
 
-    debugger;
     assert.equal ( objVal.login, 'required to be filled out' );
     assert.equal( test.login, undefined);
     assert.equal ( objVal.password, 'required to be filled out' );
@@ -57,7 +54,6 @@ describe ( ' test component', () => {
     };
     const test = validate(testInput);
 
-    debugger;
     assert.equal ( objVal.login, 'required to be filled out' );
     assert.equal( test.login, undefined);
     assert.equal ( objVal.password, 'required to be filled out' );

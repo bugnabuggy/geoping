@@ -4,8 +4,7 @@ import {validate} from '../../../validations/loginFormValidate'
 import { FormControl, FormGroup, ControlLabel,  Button } from 'react-bootstrap';
 import  * as ReactTooltip  from 'react-tooltip';
 
-const renderInput = ( props: any, disable: boolean ) => {
-  disable = (props.meta.touched && (props.meta.error ));
+const renderInput = ( props: any) => {
   return (
     <FormGroup>
       {console.log('1',props)}
@@ -16,7 +15,7 @@ const renderInput = ( props: any, disable: boolean ) => {
         placeholder={props.placeholder}
         data-tip={props.meta.error}
       />
-      <ReactTooltip  disable={!disable} delayHide={500} />
+      <ReactTooltip  disable={!(props.meta.touched && (props.meta.error ))} delayHide={500} />
     </FormGroup>
   );
 };
@@ -31,20 +30,17 @@ function LoginForms( props: any ): any {
         labelName='login'
       />
       <Field
-      component={renderInput}
-      name='password'
-      labelName='password'
+        component={renderInput}
+        name='password'
+        labelName='password'
       />
-
       <Button
         bsStyle="primary"
         type="submit"
         onClick={handleSubmit}
       >
-        {console.log(props)}
-      Submit
+        Submit
       </Button>
-
     </form>
     );
 }
