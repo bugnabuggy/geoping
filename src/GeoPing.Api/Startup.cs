@@ -46,7 +46,9 @@ namespace GeoPing.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            LoggerSettings.SetSettings();
             loggerFactory.AddGPLog();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
