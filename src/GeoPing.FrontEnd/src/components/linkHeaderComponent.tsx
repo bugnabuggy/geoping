@@ -47,7 +47,7 @@ export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentPro
           )
           :
           (
-            <li className="nav-item">
+            <li className="nav-item ">
               <Link
                 to="#"
                 className={`nav-link dropdown-toggle ${this.state.isDropdownAction && 'action'}`}
