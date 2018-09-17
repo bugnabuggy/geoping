@@ -26,7 +26,8 @@ import {
   faStar,
   faGlobeAfrica,
   faPlusSquare,
-  faBars
+  faBars,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add (
@@ -42,7 +43,8 @@ library.add (
   faStar,
   faGlobeAfrica,
   faPlusSquare,
-  faBars
+  faBars,
+  faTimes,
 );
 
 const history = createBrowserHistory ();

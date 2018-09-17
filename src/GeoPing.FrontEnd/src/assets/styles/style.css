@@ -9,6 +9,7 @@ html, body {
 
 main {
   width: 100%;
+  position: relative;
 }
 
 #app {
@@ -58,6 +59,17 @@ header {
 
 .header-link {
   margin: 0 5px 0 5px;
+}
+
+.login-page {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-form {
+  width: 40vh;
 }
 
 header nav {
@@ -564,6 +576,50 @@ header nav {
 
 /*************************************************************************************/
 
+/* Notification */
+.notification-container {
+  position: absolute;
+  width: 100%;
+
+  z-index: 1000;
+}
+
+.notification-alert {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification span:first-child {
+  width: calc(100% - 190px);
+  text-align: justify;
+}
+
+.notification-dismiss {
+  min-width: 175px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-dismiss a:nth-child(1){
+  margin-right: 10px;
+}
+
+.notification-dismiss a:nth-child(2){
+  margin-left: 10px;
+}
+
+.notification-dismiss-icon {
+  margin-right: 10px;
+}
+
+.notification-link {
+  /*color: black;*/
+}
+
+/*************************************************************************************/
+
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
@@ -710,3 +766,4 @@ header nav {
 }
 
 /**/
+
