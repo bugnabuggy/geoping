@@ -6,6 +6,12 @@ import { checkListState } from './checkListState';
 import { profileState } from './profileState';
 import { tableUserState } from './tableUserState';
 import { userState } from './userState';
+import { headerState } from './headerState';
+import { googleMapState } from './googleMapState';
+import { tableHistoryState } from './tsbleHistoryState';
+import { modalState } from './modalState';
+import { publicCheckListState } from './publickCheckListState';
+import { notificationState } from './notificationsState';
 
 const initialState: IinitialStateType = {
   allUsers: allUsersState,
@@ -15,6 +21,13 @@ const initialState: IinitialStateType = {
   profile: profileState,
   tableUser: tableUserState,
   user: userState,
+  header: headerState,
+  tableHistory: tableHistoryState,
+  googleMap: googleMapState,
+  modal: modalState,
+  publicCheckList: publicCheckListState,
+  notifications: notificationState,
+  router: {},
 };
 
 export default initialState;

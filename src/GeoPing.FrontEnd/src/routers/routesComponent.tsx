@@ -9,18 +9,20 @@ import ChecklistPage from '../pages/checklistPage';
 import CheckinPage from '../pages/checkinPage';
 import HeaderComponentContainer from '../componentContainers/headerComponentContainer';
 import { AboutComponent } from '../pages/aboutPage';
+import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
+import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
 
 export default class Routes extends React.Component<any, any> {
 
   render() {
-    const authorized: boolean = false;
-
+    const authorized: boolean = this.props.authorized;
     let component: any = null;
     if ( !authorized ) {
       component = (
         <React.Fragment>
           <Switch>
             <Route exact={true} path="/" component={AboutComponent}/>
+            <Route exact={true} path="/publicchecklist" component={PublicGEOCheckListsPage}/>
             <Route exact={true} path="/login" component={LoginPage}/>
             <Route exact={true} path="/register" component={LoginPage}/>
             <Route exact={true} path="/resetpassword" component={LoginPage}/>
@@ -51,6 +53,7 @@ export default class Routes extends React.Component<any, any> {
           <HeaderComponentContainer />
         </header>
         <main>
+          <NotificationComponentContainer />
           {component}
         </main>
         <footer>
