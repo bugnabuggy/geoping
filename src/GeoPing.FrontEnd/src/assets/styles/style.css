@@ -60,6 +60,17 @@ header {
   margin: 0 5px 0 5px;
 }
 
+.login-page {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-form {
+  width: 40vh;
+}
+
 header nav {
   height: 100%;
 }
@@ -729,3 +740,4 @@ header nav {
 }
 
 /**/
+
