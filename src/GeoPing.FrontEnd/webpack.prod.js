@@ -17,11 +17,10 @@ module.exports = merge(common, {
     publicPath: './',
     filename: 'bundle.js',
   },
-  devServer: {
-    contentBase: path.resolve('./dist'),
-    hot: true,
-    inline: true,
-  },
+  // devServer: {
+  //   contentBase: path.resolve('./dist'),
+  //   inline: true,
+  // },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin(env.stringified),

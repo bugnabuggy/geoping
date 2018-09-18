@@ -8,9 +8,44 @@ import logger from 'redux-logger';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { getRoutes } from './routers/getRoutes';
+import GetRoutes from './routers/getRoutes';
 import createReducer from './reducers/rootReducer';
 import initialState from './state/initialState';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faFilter,
+  faPlusCircle,
+  faTrashAlt,
+  faChartBar,
+  faShareSquare,
+  faCheck,
+  faUserPlus,
+  faMinus,
+  faMinusCircle,
+  faStar,
+  faGlobeAfrica,
+  faPlusSquare,
+  faBars,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add (
+  faFilter,
+  faPlusCircle,
+  faTrashAlt,
+  faChartBar,
+  faShareSquare,
+  faCheck,
+  faUserPlus,
+  faMinus,
+  faMinusCircle,
+  faStar,
+  faGlobeAfrica,
+  faPlusSquare,
+  faBars,
+  faTimes,
+);
 
 const history = createBrowserHistory ();
 
@@ -22,7 +57,7 @@ const store = createStore (
   composeWithDevTools (
     applyMiddleware (
       thunk,
-      logger,
+      // logger,
       middleware
     )
   )
@@ -31,7 +66,7 @@ const store = createStore (
 ReactDOM.render (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      {getRoutes ()}
+      <GetRoutes/>
     </ConnectedRouter>
   </Provider>,
   document.getElementById ( 'app' )
