@@ -7,28 +7,30 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
+using GeoPing.Utilities.Logger;
 using IdentityServer4;
 
 namespace GeoPing.Api
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddSingleton<IConfiguration>(Configuration);
+            services.Configure<LoggerConfig.LoggerSettings>(Configuration.GetSection("LoggerSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -67,8 +69,11 @@ namespace GeoPing.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            LoggerConfig.SetSettings();
+            loggerFactory.AddGPLog();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
