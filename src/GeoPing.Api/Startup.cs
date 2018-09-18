@@ -29,6 +29,7 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
+            services.Configure<LoggerConfig.LoggerSettings>(Configuration.GetSection("LoggerSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -46,7 +47,7 @@ namespace GeoPing.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            LoggerSettings.SetSettings();
+            LoggerConfig.SetSettings();
             loggerFactory.AddGPLog();
 
             if (env.IsDevelopment())

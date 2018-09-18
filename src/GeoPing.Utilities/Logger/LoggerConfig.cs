@@ -11,11 +11,11 @@ using System.Text;
 
 namespace GeoPing.Utilities.Logger
 {
-    public class LoggerSettings
+    public class LoggerConfig
     {
         private static IConfiguration Configuration;
 
-        public LoggerSettings(IConfiguration configuration)
+        public LoggerConfig(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -75,6 +75,32 @@ namespace GeoPing.Utilities.Logger
 
             // Activate configuration object
             LogManager.Configuration = config;
+        }
+
+        public class LoggerSettings
+        {
+            public bool IncludeScopes { get; set; }
+            public string LogLevelDefault { get; set; }
+            public class InternalLog
+            {
+                public bool IsEnabled { get; set; }
+                public string LogDirectory { get; set; }
+                public string LogLevel { get; set; }
+            }
+            public class Settings
+            {
+                public class FileSettings
+                {
+                    public string LogDirectory { get; set; }
+                    public string LogLevel { get; set; }
+                }
+                public class SyslogSettings
+                {
+                    public string Server { get; set; }
+                    public int Port { get; set; }
+                    public string LogLevel { get; set; }
+                }
+            }
         }
     }
 }
