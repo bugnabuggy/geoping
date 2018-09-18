@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.Extensions.Configuration;
+using NLog;
 using NLog.Common;
 using NLog.Config;
 using NLog.Targets;
@@ -10,15 +11,26 @@ using System.Text;
 
 namespace GeoPing.Utilities.Logger
 {
-    public static class LoggerSettings
+    public class LoggerSettings
     {
+        private static IConfiguration Configuration;
+
+        public LoggerSettings(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public static void SetSettings()
         {
-            // Enable internal logging to a file
-            InternalLogger.LogFile = "C:/logs/nlog-internal.log";
+            if (true)
+            {
+                // Enable internal logging to a file
+                InternalLogger.LogFile = "C:/logs/nlog-internal.log";
 
-            // Set internal log level
-            InternalLogger.LogLevel = LogLevel.Trace;
+                // Set internal log level
+                InternalLogger.LogLevel = LogLevel.Trace;
+            }
+            
 
             // Configuration object
             var config = new LoggingConfiguration();
