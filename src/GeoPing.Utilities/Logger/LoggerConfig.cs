@@ -25,7 +25,7 @@ namespace GeoPing.Utilities.Logger
             if (true)
             {
                 // Enable internal logging to a file
-                InternalLogger.LogFile = "C:/logs/nlog-internal.log";
+                InternalLogger.LogFile = "${basedir}/internallog.log";
 
                 // Set internal log level
                 InternalLogger.LogLevel = LogLevel.Trace;
