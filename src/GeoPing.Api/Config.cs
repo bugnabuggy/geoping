@@ -10,14 +10,6 @@ namespace GeoPing.Api
 {
     public class Config
     {
-        private static IConfiguration Configuration;
-
-        public Config(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-
         // Defining the identity
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
@@ -40,10 +32,13 @@ namespace GeoPing.Api
         // Defining the client
         public static IEnumerable<Client> GetClients()
         {
+            string redirectUrl = "http://localhost:5000";
+
             return new List<Client>
             {
                 new Client
                 {
+
                     ClientId = "mvc",
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
@@ -55,8 +50,8 @@ namespace GeoPing.Api
                         new Secret("secret".Sha256())
                     },
 
-                    RedirectUris           = { Configuration.GetValue<string>("IdentityUrl:DefaultUrl") + "/signin-oidc" },
-                    PostLogoutRedirectUris = { Configuration.GetValue<string>("IdentityUrl:DefaultUrl") + "/signout-callback-oidc" },
+                    RedirectUris           = { redirectUrl + "/signin-oidc" },
+                    PostLogoutRedirectUris = { redirectUrl + "/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
