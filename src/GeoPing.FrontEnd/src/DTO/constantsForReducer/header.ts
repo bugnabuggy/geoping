@@ -1,0 +1,1 @@
+export const EDIT_ROUTE_HEADER_LINK: string = 'EDIT_ROUTE_HEADER_LINK';
