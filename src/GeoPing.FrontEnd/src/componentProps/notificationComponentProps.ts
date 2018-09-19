@@ -5,9 +5,10 @@ import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 export default interface INotificationComponentProps {
   notification: INotificationType;
   id: number;
+  countNotifications: number;
 
   addNotification: ( message: string, typeNotification: EnumNotificationType ) =>
     ( dispatch: IDispatchFunction ) => void;
-  deleteNotification: ( idNotification: number ) => ( dispatch: IDispatchFunction ) => void;
+  deleteNotification: ( idNotification: string ) => ( dispatch: IDispatchFunction ) => void;
   deleteAllNotifications: () => ( dispatch: IDispatchFunction ) => void;
 }

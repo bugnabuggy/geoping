@@ -10,11 +10,12 @@ import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 
 export const addNotification = ( message: string, typeNotification: EnumNotificationType ) =>
   ( dispatch: IDispatchFunction ) => {
-    dispatch ( addNotificationAction ( createNotification ( message, typeNotification ) ) );
-  };
+    const notification: any = createNotification ( message, typeNotification );
+    dispatch ( addNotificationAction ( notification ) );
+    return notification.id;
+};
 
-export const deleteNotification = ( idNotification: number ) => ( dispatch: IDispatchFunction ) => {
-
+export const deleteNotification = ( idNotification: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch ( deleteNotificationAction ( idNotification ) );
 };
 
@@ -27,7 +28,7 @@ export function addNotificationAction( notification: INotificationType ): Object
   return { type: ADD_NOTIFICATION, notification };
 }
 
-function deleteNotificationAction( idNotification: number ): Object {
+function deleteNotificationAction( idNotification: string ): Object {
   return { type: DELETE_NOTIFICATION, idNotification };
 }
 

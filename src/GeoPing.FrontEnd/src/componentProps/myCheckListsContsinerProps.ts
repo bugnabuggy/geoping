@@ -4,6 +4,7 @@ export default interface IMyCheckListsContsinerProps {
   checkLists: Array<ICheckLists>;
 
   showModalShare: () => ( dispatch: IDispatchFunction ) => void;
+  openModalForCreateCheckList: () => ( dispatch: IDispatchFunction ) => void;
 }
 
 export interface ICheckLists {

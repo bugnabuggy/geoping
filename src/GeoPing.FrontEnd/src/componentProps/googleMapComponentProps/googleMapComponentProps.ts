@@ -1,7 +1,7 @@
-import IDispatchFunction from '../../DTO/types/dispatchFunction';
 import { EnumStatusMarker, IMarker, IPosition } from '../../DTO/types/googleMapType';
+import IDispatchFunction from '../../DTO/types/dispatchFunction';
 
-export default interface IGoogleMapComponentContainerProps {
+export default interface IGoogleMapComponentProps {
   markers: Array<IMarker>;
   isAddMarker: boolean;
   selectedMarker: IMarker;
@@ -15,7 +15,6 @@ export default interface IGoogleMapComponentContainerProps {
   position: IPosition;
   deleteIdMarker: string;
 
-  addPoints: ( propsPoints: any ) => ( dispatch: IDispatchFunction ) => void;
   selectMarker: ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
   moveStartMarker: ( markerCoords: any ) => ( dispatch: IDispatchFunction ) => void;
   moveDragMarker: ( markerCoords: any ) => ( dispatch: IDispatchFunction ) => void;
