@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
+    <ProjectReference Include="..\GeoPing.Utilities\GeoPing.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

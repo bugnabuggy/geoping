@@ -23,7 +23,7 @@ describe ( ' test component', () => {
       },
     };
     debugger;
-    assert.equal ( instance.state.login, '' );
+    assert.equal ( instance.state.login, 'required to be filled out' );
     cmpnt.find ( `[name="login"]` ).simulate ( 'change', changeLogin );
     assert.equal ( instance.state.login, changeLogin.target.value );
     assert.equal ( instance.state.password, '' );

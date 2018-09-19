@@ -1,3 +1,4 @@
+
 html, body {
   margin: 0;
   padding: 0;
@@ -60,8 +61,26 @@ header {
   margin: 0 5px 0 5px;
 }
 
+.login-page {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-form {
+  width: 40vh;
+}
+
 header nav {
   height: 100%;
+}
+.adaptive-menu {
+  display: none;
+
+}
+@media (max-width: 790px) {
+
 }
 
 /* Dashboard **************************************************************/
@@ -785,7 +804,25 @@ header nav {
     grid-template-columns: 100%;
     grid-gap: 5px;
   }
-
+  .adaptive-menu {
+    display: block;
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+  }
+  .nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background-color: #FAFAFA;
+  }
+  .nav.false {
+    display: none;
+  }
   .dashboard-container {
     width: 100%;
     padding: 0 20px 0 20px;
@@ -934,3 +971,4 @@ header nav {
 }
 
 /**/
+

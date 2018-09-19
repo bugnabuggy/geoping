@@ -26,6 +26,7 @@ import {
   faStar,
   faGlobeAfrica,
   faPlusSquare,
+  faBars,
   faTimes,
   faPencilAlt,
   faCalendarAlt,
@@ -44,6 +45,7 @@ library.add (
   faStar,
   faGlobeAfrica,
   faPlusSquare,
+  faBars,
   faTimes,
   faPencilAlt,
   faCalendarAlt
@@ -59,7 +61,7 @@ const store = createStore (
   composeWithDevTools (
     applyMiddleware (
       thunk,
-      // logger,
+      logger,
       middleware
     )
   )
