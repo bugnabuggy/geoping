@@ -11,7 +11,7 @@ namespace GeoPing.Api
     {
         public static string ServerUrl = "http://localhost:5000";
         public static string ApiName = "api";
-        public static string ClientId = "mvc";
-        public static string ClientSecret = "secret";
+        public static string ClientId = "3BA47D64D7DA5EF4";
+        public static string ClientSecret = "8E3BCE2633F91D7B";
     }
 }
