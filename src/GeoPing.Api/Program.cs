@@ -14,6 +14,7 @@ namespace GeoPing.Api
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);

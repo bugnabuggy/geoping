@@ -5,9 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Logger\**" />
-    <EmbeddedResource Remove="Logger\**" />
-    <None Remove="Logger\**" />
+    <PackageReference Include="NLog" Version="4.5.9" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.2.1" />
+    <PackageReference Include="NLog.Targets.Syslog" Version="5.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.0.2\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.logging.abstractions\2.0.2\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
