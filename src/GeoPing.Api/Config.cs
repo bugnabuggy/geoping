@@ -10,12 +10,13 @@ namespace GeoPing.Api
 {
     public class Config
     {
+
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource("api", "MyAPI")
+                new ApiResource("api", "GeopingAPI")
             };
         }
 

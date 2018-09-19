@@ -10,10 +10,4 @@
     <None Remove="Logger\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.9" />
-    <PackageReference Include="NLog.Config" Version="4.5.9" />
-    <PackageReference Include="NLog.Targets.Syslog" Version="5.0.1" />
-  </ItemGroup>
-
 </Project>
