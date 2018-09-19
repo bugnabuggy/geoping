@@ -4,33 +4,70 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { getRoutes } from './routers/getRoutes';
+import GetRoutes from './routers/getRoutes';
 import createReducer from './reducers/rootReducer';
-import { initialState } from './reducers/initialState';
+import initialState from './state/initialState';
 
-const history = createBrowserHistory();
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faFilter,
+  faPlusCircle,
+  faTrashAlt,
+  faChartBar,
+  faShareSquare,
+  faCheck,
+  faUserPlus,
+  faMinus,
+  faMinusCircle,
+  faStar,
+  faGlobeAfrica,
+  faPlusSquare,
+  faBars,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 
-const middleware = routerMiddleware(history);
+library.add (
+  faFilter,
+  faPlusCircle,
+  faTrashAlt,
+  faChartBar,
+  faShareSquare,
+  faCheck,
+  faUserPlus,
+  faMinus,
+  faMinusCircle,
+  faStar,
+  faGlobeAfrica,
+  faPlusSquare,
+  faBars,
+  faTimes,
+);
 
-const store = createStore(
-  createReducer({}),
+const history = createBrowserHistory ();
+
+const middleware = routerMiddleware ( history );
+
+const store = createStore (
+  createReducer ( {} ),
   initialState,
-  composeWithDevTools(
-    applyMiddleware(
+  composeWithDevTools (
+    applyMiddleware (
       thunk,
+      // logger,
       middleware
     )
   )
 );
 
-ReactDOM.render(
+ReactDOM.render (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      {getRoutes()}
+      <GetRoutes/>
     </ConnectedRouter>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById ( 'app' )
 );
