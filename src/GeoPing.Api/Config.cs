@@ -10,31 +10,25 @@ namespace GeoPing.Api
 {
     public class Config
     {
-
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource("api", "GeopingAPI")
+                new ApiResource(Constants.ApiName, "GeopingAPI")
             };
         }
 
         // Defining the client
         public static IEnumerable<Client> GetClients()
         {
-            string apiName = "api";
-            string clientID = "mvc";
-            string clientName = "MVC Client";
-            string secret = "secret";
-
             return new List<Client>
             {
                 new Client
                 {
 
-                    ClientId = clientID,
-                    ClientName = clientName,
+                    ClientId = Constants.ClientId,
+                    ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AccessTokenType = AccessTokenType.Jwt,
@@ -42,17 +36,17 @@ namespace GeoPing.Api
 
                     RequireConsent = false,
 
-                    RedirectUris = {"http://localhost:5000/signin-oidc" },
-                    PostLogoutRedirectUris = {"http://localhost:5000/signout-callback-oidc"},
+                    RedirectUris = {Constants.ServerUrl + "/signin-oidc" },
+                    PostLogoutRedirectUris = {Constants.ServerUrl + "signout-callback-oidc"},
 
                     ClientSecrets =
                     {
-                        new Secret(secret.Sha256())
+                        new Secret(Constants.ClientSecret.Sha256())
                     },
 
                     AllowedScopes =
                     {
-                        apiName
+                        Constants.ApiName
                     },
 
                     AllowOfflineAccess = true

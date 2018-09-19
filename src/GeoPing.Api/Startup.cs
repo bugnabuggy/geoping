@@ -20,7 +20,7 @@ namespace GeoPing.Api
     public class Startup
     {
         public IHostingEnvironment _environment;
-        public IConfiguration _configuration { get; }
+        public IConfigurationRoot _configuration { get; }
 
         public Startup(IHostingEnvironment environment)
         {
@@ -38,7 +38,6 @@ namespace GeoPing.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -75,9 +74,9 @@ namespace GeoPing.Api
             })
             .AddIdentityServerAuthentication(options =>
             {
-                options.Authority = _configuration["ServerUrl"];
+                options.Authority = Constants.ServerUrl;
                 options.RequireHttpsMetadata = false;
-                options.ApiName = _configuration["ApiName"];
+                options.ApiName = Constants.ApiName;
             });
 
             // Removing cookie authentitication
