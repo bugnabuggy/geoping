@@ -2,7 +2,9 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const path = require('path');
+const getClientEnvironment = require('./config/env');
 
+const env = getClientEnvironment();
 module.exports = merge(common, {
   devtool: 'inline-source-map',
   mode: 'development',
@@ -14,6 +16,7 @@ module.exports = merge(common, {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  watch: true,
   devServer: {
     contentBase: './dist',
     inline: false,
@@ -22,8 +25,6 @@ module.exports = merge(common, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env/BROWSER': true
-    })
+    new webpack.DefinePlugin(env.stringified)
   ]
 });
