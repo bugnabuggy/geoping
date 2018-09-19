@@ -48,7 +48,6 @@ namespace GeoPing.Api
 
                     AccessTokenType = AccessTokenType.Jwt,
                     AccessTokenLifetime = 3600*24,  
-                 
 
                     RequireConsent = false,
 

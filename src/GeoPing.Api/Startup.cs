@@ -13,6 +13,7 @@ using GeoPing.Api.Models;
 using GeoPing.Api.Services;
 using IdentityServer4;
 using IdentityServer4.AccessTokenValidation;
+using System.Reflection;
 
 namespace GeoPing.Api
 {
@@ -35,13 +36,14 @@ namespace GeoPing.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvcCore()
-                .AddCors()
+                .AddFormatterMappings()
+                .AddCacheTagHelper()
                 .AddJsonFormatters()
-                .AddAuthorization(options =>
+                .AddCors()
+                .AddAuthorization(opt =>
                 {
-
                 });
-            
+
             // Setting password requirements 
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.Password.RequiredLength = 8;
@@ -60,9 +62,14 @@ namespace GeoPing.Api
                 {
                     options.ConfigureDbContext = builder =>
                     {
-                        builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                        builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                            sql =>
+                            {
+                                sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                            });
                     };
                     options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
                 });
 
             services.AddAuthentication(options =>
@@ -72,7 +79,7 @@ namespace GeoPing.Api
             })
             .AddIdentityServerAuthentication(options =>
             {
-                options.Authority = "http:\\localhost:5000";
+                options.Authority = "http://localhost:5000/";
                 options.RequireHttpsMetadata = false;
                 options.ApiName = "api";
             });
