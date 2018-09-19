@@ -21,19 +21,20 @@ namespace GeoPing.Api
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IHostingEnvironment _environment;
+        public IConfiguration _configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvcCore()
                 .AddFormatterMappings()
@@ -57,20 +58,7 @@ namespace GeoPing.Api
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                    {
-                        builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                            sql =>
-                            {
-                                sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                            });
-                    };
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
-                });
+                .AddAspNetIdentity<ApplicationUser>();
 
             services.AddAuthentication(options =>
             {
