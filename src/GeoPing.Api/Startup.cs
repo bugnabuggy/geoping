@@ -12,6 +12,7 @@ using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
 using IdentityServer4;
+using IdentityServer4.AccessTokenValidation;
 
 namespace GeoPing.Api
 {
@@ -33,15 +34,13 @@ namespace GeoPing.Api
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Removing cookie authentitication
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Events.OnRedirectToLogin = context =>
+            services.AddMvcCore()
+                .AddCors()
+                .AddJsonFormatters()
+                .AddAuthorization(options =>
                 {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-            });
+
+                });
             
             // Setting password requirements 
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
@@ -51,14 +50,42 @@ namespace GeoPing.Api
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Cofigure IdentityServer with in-memory stores, keys, clients and res
+            // Configure IdentityServer with in-memory stores, keys, clients and res
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryPersistedGrants()
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                    {
+                        builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                    };
+                    options.EnableTokenCleanup = true;
+                });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddIdentityServerAuthentication(options =>
+            {
+                options.Authority = "http:\\localhost:5000";
+                options.RequireHttpsMetadata = false;
+                options.ApiName = "api";
+            });
+
+            // Removing cookie authentitication
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -69,6 +96,7 @@ namespace GeoPing.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -79,6 +107,13 @@ namespace GeoPing.Api
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowAnyOrigin();
+            });
 
             app.UseStaticFiles();
 
