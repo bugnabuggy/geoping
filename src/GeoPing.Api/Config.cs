@@ -10,16 +10,6 @@ namespace GeoPing.Api
 {
     public class Config
     {
-        //// Defining the identity
-        //public static IEnumerable<IdentityResource> GetIdentityResources()
-        //{
-        //    return new List<IdentityResource>
-        //    {
-        //        new IdentityResources.OpenId(),
-        //        new IdentityResources.Profile(),
-        //    };
-        //}
-
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
@@ -47,9 +37,12 @@ namespace GeoPing.Api
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AccessTokenType = AccessTokenType.Jwt,
-                    AccessTokenLifetime = 3600*24,  
+                    AccessTokenLifetime = 3600*24,
 
                     RequireConsent = false,
+
+                    RedirectUris = {"http://localhost:5000/signin-oidc" },
+                    PostLogoutRedirectUris = {"http://localhost:5000/signout-callback-oidc"},
 
                     ClientSecrets =
                     {
@@ -58,7 +51,7 @@ namespace GeoPing.Api
 
                     AllowedScopes =
                     {
-                       apiName
+                        apiName
                     },
 
                     AllowOfflineAccess = true
