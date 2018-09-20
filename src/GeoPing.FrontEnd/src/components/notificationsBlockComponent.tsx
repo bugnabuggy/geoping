@@ -13,6 +13,7 @@ export class NotificationsBlockComponent extends React.Component<INotificationsB
           key={index}
           notification={item}
           id={index}
+          countNotifications={this.props.notifications.length}
 
           addNotification={this.props.addNotification}
           deleteNotification={this.props.deleteNotification}
