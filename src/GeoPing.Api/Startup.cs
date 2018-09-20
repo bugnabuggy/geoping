@@ -42,7 +42,7 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(_configuration);
-            services.Configure<LoggerConfig.LoggerSettings>(Configuration.GetSection("LoggerSettings"));
+            services.Configure<LoggerConfig.LoggerSettings>(_configuration.GetSection("LoggerSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
