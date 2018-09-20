@@ -32,7 +32,7 @@ namespace GeoPing.Api
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AccessTokenType = AccessTokenType.Jwt,
-                    AccessTokenLifetime = 3600*24,
+                    AccessTokenLifetime = 3600,
 
                     RequireConsent = false,
 

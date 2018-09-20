@@ -69,7 +69,24 @@ namespace GeoPing.Api
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>()
+
+                // this adds the operational data from DB (codes, tokens, consents)
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                    {
+                        builder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
+                            sql =>
+                            {
+                                sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+                            });
+                    };
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30; // interval in seconds
+                });
 
             services.AddAuthentication(options =>
             {
@@ -81,6 +98,7 @@ namespace GeoPing.Api
                 options.Authority = Constants.ServerUrl;
                 options.RequireHttpsMetadata = false;
                 options.ApiName = Constants.ApiName;
+                // options.ApiSecret = Constants.ClientSecret;
             });
 
             // Removing cookie authentitication

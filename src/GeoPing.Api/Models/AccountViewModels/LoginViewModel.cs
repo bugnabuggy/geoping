@@ -14,5 +14,7 @@ namespace GeoPing.Api.Models.AccountViewModels
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public bool RememberMe = false;
     }
 }
