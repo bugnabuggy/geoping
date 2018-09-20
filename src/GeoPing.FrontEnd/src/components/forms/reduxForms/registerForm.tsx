@@ -72,6 +72,7 @@ function registerForms(props: any): any {
       <Button
         bsStyle = "primary"
         type = "submit"
+        className='register-btn'
         onClick = {handleSubmit}
       >
         Register
