@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GeoPing.Api.Data;
+using GeoPing.Api.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,7 +26,8 @@ namespace GeoPing.Api
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 try
                 {
-                    SeedData.Initialize(services);
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    SeedData.Initialize(services,userManager);
                 }
                 catch (Exception ex)
                 {

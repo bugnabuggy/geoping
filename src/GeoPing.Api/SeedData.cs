@@ -1,5 +1,7 @@
 ﻿using GeoPing.Api.Data;
 using GeoPing.Api.Models;
+using GeoPing.Api.Models.AccountViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,53 +12,35 @@ namespace GeoPing.Api
 {
     public static class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static void Initialize(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
         {
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.EnsureCreated();
             if (!context.Users.Any())
             {
-                ApplicationUser testUser = new ApplicationUser
+                var testUserModel = new RegisterViewModel
                 {
-                    UserName = "testuser@gmail.com",
-                    NormalizedUserName = "TESTUSER@GMAIL.COM",
                     Email = "testuser@gmail.com",
-                    NormalizedEmail = "TESTUSER@GMAIL.COM",
-                    EmailConfirmed = false,
-                    Id = "5855dad6-6202-4131-a934-c4920f049ee2",
-                    ConcurrencyStamp = "830d3e2e-51b7-47ff-82ca-ad864371a9f3",
-                    PasswordHash = "AQAAAAEAACcQAAAAEOUDxk7ccxvHtLcOX8qObtck6VHkBl/48qpx8HV/wpXf+lPhRZuKP/UzbOkbsaojYQ==",
-                    SecurityStamp = "4fe04c12-4927-44a9-9e58-09c4f6b49647",
-                    AccessFailedCount = 0,
-                    PhoneNumber = null,
-                    PhoneNumberConfirmed = false,
-                    LockoutEnd = null,
-                    LockoutEnabled = true,
-                    TwoFactorEnabled = false
+                    Password = "123QWE@qwe"
                 };
-                ApplicationUser testAdmin = new ApplicationUser
+                var testUser = new ApplicationUser
                 {
-                    UserName = "testadmin@gmail.com",
-                    NormalizedUserName = "TESTADMIN@GMAIL.COM",
-                    Email = "testadmin@gmail.com",
-                    NormalizedEmail = "TESTADMIN@GMAIL.COM",
-                    EmailConfirmed = false,
-                    Id = "137a65db-b1fa-4f9f-994d-31c819ed942f",
-                    ConcurrencyStamp = "22d6c5b6-ecfe-4289-ad9c-8aaf5b09193f",
-                    PasswordHash = "AQAAAAEAACcQAAAAEOkerHrClhUR7398+buvk9VIWmYYStD8hop4EhteIE0SJUXPNQsnAT5OS3Dh4xnOtw==",
-                    SecurityStamp = "5672c590-1f3d-44ff-9098-5d20fc3433e4",
-                    AccessFailedCount = 0,
-                    PhoneNumber = null,
-                    PhoneNumberConfirmed = false,
-                    LockoutEnd = null,
-                    LockoutEnabled = true,
-                    TwoFactorEnabled = false
+                    UserName = testUserModel.Email,
+                    Email = testUserModel.Email,
                 };
+                var resultTestUser = userManager.CreateAsync(testUser, testUserModel.Password);
 
-                context.Users.Add(testUser);
-                context.Users.Add(testAdmin);
-
-                context.SaveChanges();
+                var testAdminModel = new RegisterViewModel
+                {
+                    Email = "testadmin@gmail.com",
+                    Password = "123QWE@qwe"
+                };
+                var testAdmin = new ApplicationUser
+                {
+                    UserName = testAdminModel.Email,
+                    Email = testAdminModel.Email,
+                };
+                var resultTestAdmin = userManager.CreateAsync(testAdmin, testAdminModel.Password);
             }
         }
     }
