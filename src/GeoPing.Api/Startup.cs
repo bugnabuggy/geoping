@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,26 +14,74 @@ using GeoPing.Api.Models;
 using GeoPing.Api.Services;
 using GeoPing.Utilities.Logger;
 using IdentityServer4;
+using IdentityServer4.AccessTokenValidation;
+using System.Reflection;
 
 namespace GeoPing.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        public IHostingEnvironment _environment;
+        public IConfigurationRoot _configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment environment)
         {
-            Configuration = configuration;
+            _environment = environment;
+
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
+
+            builder.AddEnvironmentVariables();
+            _configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IConfiguration>(_configuration);
             services.Configure<LoggerConfig.LoggerSettings>(Configuration.GetSection("LoggerSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvcCore()
+                .AddFormatterMappings()
+                .AddCacheTagHelper()
+                .AddJsonFormatters()
+                .AddCors()
+                .AddAuthorization(opt =>
+                {
+                });
+
+            // Setting password requirements 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Configure IdentityServer with in-memory stores, keys, clients and res
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddAspNetIdentity<ApplicationUser>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddIdentityServerAuthentication(options =>
+            {
+                options.Authority = Constants.ServerUrl;
+                options.RequireHttpsMetadata = false;
+                options.ApiName = Constants.ApiName;
+            });
 
             // Removing cookie authentitication
             services.ConfigureApplicationCookie(options =>
@@ -44,23 +92,6 @@ namespace GeoPing.Api
                     return Task.CompletedTask;
                 };
             });
-            
-            // Setting password requirements 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            // Cofigure IdentityServer with in-memory stores, keys, clients and res
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryPersistedGrants()
-                .AddAspNetIdentity<ApplicationUser>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -73,7 +104,7 @@ namespace GeoPing.Api
         {
             LoggerConfig.SetSettings();
             loggerFactory.AddGPLog();
-
+          
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -84,6 +115,13 @@ namespace GeoPing.Api
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+                builder.AllowAnyOrigin();
+            });
 
             app.UseStaticFiles();
 
