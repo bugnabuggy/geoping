@@ -5,38 +5,82 @@ import { bindActionCreators } from 'redux';
 import GoogleMapComponent from '../components/googleMapComponent';
 import IGoogleMapComponentContainerProps
   from '../componentProps/googleMapComponentProps/googleMapComponentContainerProps';
-import { addPoints, permissionToAddMarker } from '../actions/googleMapAction';
+import {
+  addPoints, cancelAddNewPoint, deleteMarker, findLocationForCenterMap, markerInstalled, moveDragMarker,
+  moveEndMarker,
+  moveStartMarker, permissionToAddMarker, putStatusMarker,
+  selectedMarker
+} from '../actions/googleMapAction';
+import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import { editingPermission } from '../actions/checkListAction';
+import { IMarker } from '../DTO/types/googleMapType';
 
 class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentContainerProps, any> {
-  add = () => {
-    this.props.permissionToAddMarker ( true );
-  }
-
-  render() {
+   render() {
     return (
       <React.Fragment>
         <GoogleMapComponent
-          positions={this.props.markers}
+          markers={this.props.markers}
           isAddMarker={this.props.isAddMarker}
+          selectedMarker={this.props.selectedMarker}
+          isThereIsNewMarker={this.props.isThereIsNewMarker}
+          newMarker={this.props.newMarker}
+          isMarkerCanceled={this.props.isMarkerCanceled}
+          isMarkerSaved={this.props.isMarkerSaved}
+          isMarkerInstalled={this.props.isMarkerInstalled}
+          isCheckGeoPosition={this.props.isCheckGeoPosition}
+          statusMarker={this.props.statusMarker}
+          position={this.props.position}
+          deleteIdMarker={this.props.deleteIdMarker}
+
+          selectMarker={this.props.selectMarker}
+          moveStartMarker={this.props.moveStartMarker}
+          moveDragMarker={this.props.moveDragMarker}
+          moveEndMarker={this.props.moveEndMarker}
           permissionToAddMarker={this.props.permissionToAddMarker}
+          editingPermission={this.props.editingPermission}
+          markerInstalled={this.props.markerInstalled}
+          cancelAddNewPoint={this.props.cancelAddNewPoint}
+          putStatusMarker={this.props.putStatusMarker}
+          findLocationForCenterMap={this.props.findLocationForCenterMap}
+          deleteMarker={this.props.deleteMarker}
         />
-        <button onClick={this.add}>Добавить</button>
       </React.Fragment>
     );
   }
 }
 
-const mapStateToProps = ( state: any ) => {
+const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    markers: state.googleMap.markers,
+    markers: state.googleMap.markersList,
     isAddMarker: state.googleMap.isAddMarker,
+    selectedMarker: state.googleMap.selectedMarker,
+    isThereIsNewMarker: state.googleMap.isThereIsNewMarker,
+    newMarker: state.googleMap.newMarker,
+    isMarkerSaved: state.googleMap.isMarkerSaved,
+    isMarkerCanceled: state.googleMap.isMarkerCanceled,
+    isMarkerInstalled: state.googleMap.isMarkerInstalled,
+    isCheckGeoPosition: state.googleMap.isCheckGeoPosition,
+    statusMarker: state.googleMap.statusMarker,
+    position: state.googleMap.position,
+    deleteIdMarker: state.googleMap.deleteMarker,
   };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators ( {
     addPoints,
-    permissionToAddMarker
+    selectMarker: selectedMarker,
+    moveStartMarker,
+    moveDragMarker,
+    moveEndMarker,
+    permissionToAddMarker,
+    editingPermission,
+    markerInstalled,
+    cancelAddNewPoint,
+    putStatusMarker,
+    findLocationForCenterMap,
+    deleteMarker,
   }, dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( GoogleMapComponentContainer );

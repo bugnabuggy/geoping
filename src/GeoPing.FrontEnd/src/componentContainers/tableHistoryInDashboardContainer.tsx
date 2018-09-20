@@ -6,11 +6,18 @@ import ITableHistoryDashboardContainerProps from '../componentProps/tableHistory
 import { TableHistoryDashboard } from '../components/tableHistoryDashboard';
 
 import { history } from '../mocks/dashboardTableMock';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
   render() {
     return (
       <React.Fragment>
+        <div className="dashboard-table-title">
+          <h4 className="">History </h4>
+          <div className="dashboard-table-icon cursor-pointer">
+            <FontAwesomeIcon icon="filter" />
+          </div>
+        </div>
           <TableHistoryDashboard
             history={history}
           />

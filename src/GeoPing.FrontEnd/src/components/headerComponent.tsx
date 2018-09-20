@@ -2,11 +2,21 @@ import * as React from 'react';
 import { LinkHeaderComponent } from './linkHeaderComponent';
 import IHeaderComponentProps from '../componentProps/headerComponentProps/headerComponentProps';
 import { authorizedLinks, notAuthorizedLinks } from '../mapForComponents/headerComponentFromLinks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class HeaderComponent extends React.Component<IHeaderComponentProps, any> {
   constructor( props: any ) {
     super ( props );
+    this.state = ( {
+      showMenu: false
+    } );
   }
+
+  handleMenu = () => {
+    this.setState ( {
+      showMenu: !this.state.showMenu
+    } );
+  };
 
   handleSelect = ( e: any ) => {
     this.props.editRouteAction ( e.target.id );
@@ -76,7 +86,10 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
           <div>
             <button onClick={this.handleAuthorization}>Authorization</button>
           </div>
-          <div className="col-6 ml-auto nav nav-pills justify-content-end">
+          <button className="adaptive-menu " onClick={this.handleMenu}>
+            <FontAwesomeIcon icon="bars"/>
+          </button>
+          <div className={`col-6 ml-auto nav nav-pills ${this.state.showMenu} justify-content-end`}>
             {this.props.userAuthorization ? this.renderLinkAthorized () : this.renderLinkNotAuthorized ()}
           </div>
         </div>

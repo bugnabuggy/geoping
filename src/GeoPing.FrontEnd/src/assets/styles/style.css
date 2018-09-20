@@ -1,3 +1,4 @@
+
 html, body {
   margin: 0;
   padding: 0;
@@ -8,6 +9,7 @@ html, body {
 
 main {
   width: 100%;
+  position: relative;
 }
 
 #app {
@@ -59,11 +61,23 @@ header {
   margin: 0 5px 0 5px;
 }
 
+.login-page {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  width: 40vh;
+}
+
 header nav {
   height: 100%;
 }
-/*Sign up/
- */
+
+/*Sign up*/
 .sign-container {
   height: 100%;
   font-size: 1.5rem;
@@ -85,13 +99,70 @@ header nav {
 .register-btn {
   margin-top: 20px;
 }
+/**/
+
+.adaptive-menu {
+  display: none;
+}
+/* Login form **************************************************************/
+.login-form-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.login-form-icon-container {
+  margin-left: 30px;
+  font-size: 1.5em;
+  width: 25px;
+  min-width: 25px;
+  position: relative;
+}
+
+.tooltip_form {
+  top: -45px;
+  right: -12px;
+  width: max-content;
+  position: absolute;
+  line-height: 20px;
+  padding: 5px 10px 5px 10px;
+  font-size: 14px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  background: rgb(66, 66, 66);
+  border-radius: 10px;
+  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0px;
+}
+
+.tooltip_form:after {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 8px;
+  border-style: solid;
+  border-color: rgb(66, 66, 66) transparent transparent transparent;
+  top: 30px;
+  right: 20px;
+}
+
+.login-form-icon-check {
+  color: #71a46d;
+}
+
+.login-form-icon-times {
+  color: #a4575b;
+}
+
+/**************************************************************************/
+
 /* Dashboard **************************************************************/
 .dashboard-container {
-  width: 100vw;
+  width: 100%;
   padding: 0 20px 0 20px;
   height: 100%;
   display: grid;
-  grid-template-rows: [row1] 50px [row2] 30px [row3] minmax(200px, 500px) [row4] 30px [row5] minmax(200px, max-content) [row6];
+  grid-template-rows: [row1] 50px [row2] minmax(200px, 500px) [row3] minmax(200px, max-content) [row4];
   grid-template-columns: [col1] minmax(200px, 1fr) [col2] minmax(200px, 1fr) [col3];
   grid-gap: 10px;
 }
@@ -104,26 +175,23 @@ header nav {
 }
 
 .dashboard-table-title {
-  grid-column-start: col1;
-  grid-column-end: col3;
-  grid-row-start: row2;
-  grid-row-end: row3;
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .dashboard-table {
   grid-column-start: col1;
   grid-column-end: col3;
-  grid-row-start: row3;
-  grid-row-end: row4;
+  grid-row-start: row2;
+  grid-row-end: row3;
 }
 
 .table-responsive {
   overflow-x: unset;
 }
 
-.dashboard-table div {
-  height: 100%;
+.dashboard-table div:last-child {
+  height: calc(100% - 40px);
 }
 
 .dashboard-table div table {
@@ -154,14 +222,13 @@ header nav {
 }
 
 .dashboard-table-icon {
-  position: absolute;
-  top: 13px;
-  left: 90px;
+  margin-left: 10px;
 }
 
 .dashboard-table-icon:hover, .dashboard-check-list-icon-filter:hover, .dashboard-check-list-icon-pluse:hover,
 .check-list-panel-item-icons:hover, .field-to-share-list-icon:hover, .field-to-share-list-icon-minus:hover,
-.add-user-to-share-list-icon:hover, .list-item-icon-globe:hover, .list-item-icon-plus-square:hover {
+.add-user-to-share-list-icon:hover, .list-item-icon-globe:hover, .list-item-icon-plus-square:hover,
+.icon-hover-color:hover {
   color: blue;
 }
 
@@ -171,31 +238,23 @@ header nav {
 }
 
 .dashboard-check-list-title {
-  grid-column-start: col1;
-  grid-column-end: col2;
-  grid-row-start: row4;
-  grid-row-end: row5;
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.dashboard-check-list-icon-filter, .dashboard-check-list-icon-pluse {
-  position: absolute;
-  top: 13px;
+.dashboard-check-list-icon-filter-container {
+  margin-left: 10px;
 }
 
-.dashboard-check-list-icon-filter {
-  left: 150px;
-}
-
-.dashboard-check-list-icon-pluse {
-  left: 130px;
+.dashboard-check-list-icon-pluse-container {
+  margin-left: 10px;
 }
 
 .dashboard-check-list {
   grid-column-start: col1;
   grid-column-end: col2;
-  grid-row-start: row5;
-  grid-row-end: row6;
+  grid-row-start: row3;
+  grid-row-end: row4;
   place-self: center;
   width: 100%;
   height: 100%;
@@ -225,18 +284,15 @@ header nav {
 }
 
 .dashboard-invitations-title {
-  grid-column-start: col2;
-  grid-column-end: col3;
-  grid-row-start: row4;
-  grid-row-end: row5;
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .dashboard-invitations {
   grid-column-start: col2;
   grid-column-end: col3;
-  grid-row-start: row5;
-  grid-row-end: row6;
+  grid-row-start: row3;
+  grid-row-end: row4;
 }
 
 .block-accepted, .block-new {
@@ -266,6 +322,7 @@ header nav {
   min-height: 500px;
   max-height: 100%;
 }
+
 /**/
 
 /* Modal share check list **************************************************************************/
@@ -578,6 +635,239 @@ header nav {
 
 /*************************************************************************************/
 
+/* Notification */
+.notification-container {
+  position: absolute;
+  width: 100%;
+
+  z-index: 1000;
+}
+
+.notification-alert {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification span:first-child {
+  width: calc(100% - 190px);
+  text-align: justify;
+}
+
+.notification-dismiss {
+  min-width: 175px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-dismiss a:nth-child(1) {
+  margin-right: 10px;
+}
+
+.notification-dismiss a:nth-child(2) {
+  margin-left: 10px;
+}
+
+.notification-dismiss-icon {
+  margin-right: 10px;
+}
+
+.notification-link {
+  /*color: black;*/
+}
+
+/*************************************************************************************/
+
+/* Check list */
+
+.check-list-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.check-list-modal-buttons button:first-child {
+  margin-right: 20px;
+}
+
+.check-list-container {
+  display: grid;
+  grid-template-rows: [row1] min-content [row2] 1fr [row3];
+  grid-template-columns: [col1] minmax(400px, 1fr) [col2] 3fr;
+  grid-gap: 5px;
+}
+
+.check-list-title {
+  grid-column-start: col1;
+  grid-column-end: col2;
+  grid-row-start: row1;
+  grid-row-end: row1;
+  padding: 0 10px 0 10px;
+}
+
+.check-list {
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
+  padding: 0 10px 0 10px;
+}
+
+.check-list-map {
+  grid-column-start: col2;
+  grid-column-end: col3;
+  grid-row-start: row1;
+  grid-row-end: row3;
+  padding: 0 10px 10px 10px;
+}
+
+.check-list-head {
+  margin-bottom: 5px;
+}
+
+.check-list-point {
+  display: contents;
+}
+
+.check-list-points-list {
+  display: contents;
+}
+
+.check-list-head-name-container, .check-list-head-name, .check-list-head-period {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.check-list-head-name {
+  min-width: 170px;
+  width: 270px;
+  font-size: 1.3em;
+}
+
+.check-list-head-name-icons-container {
+  display: flex;
+  width: 50px;
+  justify-content: space-between;
+}
+
+.check-list-head-period {
+  min-width: 60px;
+  font-size: 1.3em;
+}
+
+.check-list-add-new-point, .check-list-check-geo-position {
+  display: flex;
+  align-items: center;
+  font-size: 1.3em;
+  min-width: 170px;
+}
+
+.check-list-add-new-point span, .check-list-check-geo-position span {
+  margin-left: 20px;
+}
+
+.check-list-cancel-new-point {
+  margin-left: 30px;
+}
+
+.check-list-geo-point-form {
+  width: 100%;
+  height: 100%;
+}
+
+.check-list-geo-point-form-label-lat, .check-list-geo-point-form-label-long {
+  margin-right: 20px;
+}
+
+.check-list-geo-point-form-label-long {
+  margin-left: 15px;
+}
+
+.check-list-geo-point-form-group-lat-long, .check-list-geo-point-form-group-radius {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.check-list-geo-point-form-label-radius {
+  margin-right: 20px;
+}
+
+.check-list-geo-point-form-label-distance {
+  margin-left: 20px;
+  min-width: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.check-list-geo-point-form-text-area {
+}
+
+.check-list-geo-point-form-text-area textarea {
+  text-align: justify;
+  min-height: 120px;
+}
+
+.check-list-geo-point-form-text-area-icon {
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+
+.check-list-geo-point-form-text-area-icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.check-list-points {
+  height: 100%;
+  width: 100%;
+}
+
+.check-list-point-item, .check-list-point-item-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.check-list-point-item-action {
+  background: #b3eba8;
+}
+
+.check-list-point-item span:first-child {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.check-list-point-item-image-container {
+  width: 50px;
+  min-width: 50px;
+}
+
+.disabled-link {
+  pointer-events: none;
+  color: #999999;
+}
+
+.check-list-head-name-form-group {
+  margin-bottom: 0;
+  height: 61px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.check-list-head-name p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*************************************************************************************/
+
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
@@ -588,12 +878,34 @@ header nav {
     grid-gap: 5px;
   }
 
+  .adaptive-menu {
+    display: block;
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background-color: #FAFAFA;
+  }
+
+  .nav.false {
+    display: none;
+  }
+
   .dashboard-container {
     width: 100%;
     padding: 0 20px 0 20px;
     height: 100%;
     display: grid;
-    grid-template-rows: [row1] 50px [row2] 30px [row3] minmax(200px, 500px) [row4] 30px [row5] minmax(200px, 100%) [row6] 30px [row7] minmax(200px, 100%) [row8];
+    grid-template-rows: [row1] 50px [row2] minmax(200px, 500px) [row3] minmax(200px, 100%) [row4] minmax(200px, 100%) [row5];
     grid-template-columns: [col1] minmax(200px, 1fr);
     grid-gap: 10px;
   }
@@ -606,52 +918,46 @@ header nav {
   }
 
   .dashboard-table-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row2;
-    grid-row-end: row3;
-    position: relative;
+    /*grid-column-start: col1;*/
+    /*grid-column-end: col1;*/
+    /*grid-row-start: row2;*/
+    /*grid-row-end: row3;*/
+    /*position: relative;*/
   }
 
   .dashboard-table {
     grid-column-start: col1;
     grid-column-end: col1;
-    grid-row-start: row3;
-    grid-row-end: row4;
+    grid-row-start: row2;
+    grid-row-end: row3;
     font-size: 0.8em;
   }
 
   .dashboard-check-list-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row4;
-    grid-row-end: row5;
-    position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .dashboard-check-list {
     grid-column-start: col1;
     grid-column-end: col1;
-    grid-row-start: row5;
-    grid-row-end: row6;
+    grid-row-start: row3;
+    grid-row-end: row4;
     place-self: center;
     width: 100%;
     height: 100%;
   }
 
   .dashboard-invitations-title {
-    grid-column-start: col1;
-    grid-column-end: col1;
-    grid-row-start: row6;
-    grid-row-end: row7;
-    position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .dashboard-invitations {
     grid-column-start: col1;
     grid-column-end: col1;
-    grid-row-start: row7;
-    grid-row-end: row8;
+    grid-row-start: row4;
+    grid-row-end: row5;
   }
 
   .public-check-list-container {
@@ -672,8 +978,8 @@ header nav {
   .checkin-map {
     height: 400px;
   }
-  /**/
 
+  /**/
   /* Public check list filter*/
   .publick-check-list-filter-panel-body {
     display: grid;
@@ -703,6 +1009,43 @@ header nav {
   }
 
   /**/
+  /**/
+  .check-list-container {
+    display: grid;
+    grid-template-rows: [row1] min-content [row2] minmax(500px, 1fr) [row3] max-content;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
+  }
+
+  .check-list-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .check-list {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row3;
+    padding: 0 10px 0 10px;
+  }
+
+  .check-list-map {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row2;
+    padding-bottom: 10px;
+    margin: 10px 0 10px 0;
+  }
+
+  /*.check-list-map {*/
+  /*!*height: 500px;*!*/
+  /*}*/
+  /**/
 }
 
 /**/
+

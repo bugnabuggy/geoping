@@ -2,10 +2,26 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import scriptLoader from 'react-async-script-loader';
 
+import {
+  setContext,
+  setGoogleLibrary,
+  createMap,
+  dropMarker,
+  toggleBounce,
+  addNewMarker,
+  removeMarker,
+  setMarkerPosition,
+  setMarkerTitle,
+} from '../../../services/googleMapService';
+import {EnumStatusMarker} from "../../../DTO/types/googleMapType";
+
 class GoogleMap extends React.Component {
   map;
   markers;
   isAddMarker;
+  isSelectedMarker;
+  options;
+  geocoder;
 
   constructor(props) {
     super(props);
@@ -15,17 +31,15 @@ class GoogleMap extends React.Component {
     };
     this.markers = [];
     this.isAddMarker = props.isAddMarker || false;
+    this.isSelectedMarker = false;
+    this.options = {
+      center: {lat: props.position.lat, lng: props.position.lng},
+      zoom: 12,
+    };
 
     window.React = React;
     window.ReactDOM = ReactDOM;
-    this.createMarker = this.createMarker.bind(this);
-    this.createMap = this.createMap.bind(this);
-    this.toggleBounce = this.toggleBounce.bind(this);
-    this.dropMarker = this.dropMarker.bind(this);
-    this.clearMarkers = this.clearMarkers.bind(this);
-    this.addMarkerToTheMap = this.addMarkerToTheMap.bind(this);
-    this.createImageMarker = this.createImageMarker.bind(this);
-    this.createAnimationMarker = this.createAnimationMarker.bind(this);
+    setContext(this);
   }
 
   componentDidMount() {
@@ -40,6 +54,8 @@ class GoogleMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    setContext(this);
+    setGoogleLibrary(google);
     if (prevProps.isScriptLoaded !== this.props.isScriptLoaded) {
       const isLoadedButWasntLoadedBefore =
         !this.state.showMap &&
@@ -49,106 +65,56 @@ class GoogleMap extends React.Component {
       this.setState({
         showMap: isLoadedButWasntLoadedBefore && this.props.isScriptLoadSucceed && true,
       });
-      this.map = this.createMap();
-      this.dropMarker();
+      setGoogleLibrary(google);
+
+      this.map = createMap(map, this.options);
+      this.geocoder = new google.maps.Geocoder();
+      dropMarker();
     }
     if (prevProps.isAddMarker !== this.props.isAddMarker) {
       this.isAddMarker = this.props.isAddMarker;
     }
-  }
 
-  componentWillUnmount() {
-    // markers.forEach((item) => {
-    //   item.removeEventListener('click', )
-    // });
-    // this.map.removeEventListener('click', this.addMarkerToTheMap);
-  }
+    if (prevProps.selectedMarker.id !== this.props.selectedMarker.id) {
+      toggleBounce(this.props.selectedMarker);
+    }
+    // console.log(prevProps.markers.length);
+    //   if (prevProps.markers.length < this.props.markers.length) {
+    //     console.log(this.props.markers);
+    //     dropMarker();
+    //   }
 
-  addMarkerToTheMap(event) {
-    if (this.isAddMarker) {
-      this.createMarker(event.latLng, this.markers.length, 200, true);
-      this.props.permissionToAddMarker(false);
+    if (prevProps.statusMarker === EnumStatusMarker.New &&
+      prevProps.isMarkerCanceled !== this.props.isMarkerCanceled &&
+      this.props.isMarkerCanceled) {
+      removeMarker(prevProps.selectedMarker.id);
+      this.props.editingPermission(false);
+    } else if (prevProps.isMarkerCanceled !== this.props.isMarkerCanceled && this.props.isMarkerCanceled) {
+      setMarkerPosition(this.props.markers.find(item => item.id === prevProps.selectedMarker.id));
+    }
+
+    if (/*this.props.isThereIsNewMarker || */(prevProps.isCheckGeoPosition !== this.props.isCheckGeoPosition && this.props.isCheckGeoPosition)) {
+      removeMarker(prevProps.selectedMarker.id);
+      addNewMarker(this.props.selectedMarker);
+    }
+
+    if (prevProps.isMarkerSaved !== this.props.isMarkerSaved && this.props.isMarkerSaved) {
+      setMarkerTitle(prevProps.selectedMarker);
+    }
+
+    if(this.props.deleteIdMarker) {
+      removeMarker(this.props.deleteIdMarker);
+      this.props.deleteMarker('');
     }
   }
 
-  createMap() {
-    let googleMap = new google.maps.Map(map, {
-      center: {lat: 54.9924400, lng: 73.3685900},
-      zoom: 5
-    });
-
-    googleMap.addListener('click', this.addMarkerToTheMap);
-
-    return googleMap;
-  }
-
-  dropMarker() {
-    this.clearMarkers();
-    this.props.positions.forEach((item, index) => {
-      this.createMarker(item, index, index * 400);
-    })
-  }
-
-  clearMarkers() {
-    this.markers.forEach((item) => {
-      item.setMap(null);
-    });
-    this.markers = [];
-  }
-
-  createImageMarker(index) {
-    const pinColor = "26b430";
-    const iconUrl = `http://chart.apis.google.com/chart?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
-    const pinImage = new google.maps.MarkerImage(iconUrl,
-      new google.maps.Size(45, 43),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(13, 42),
-      new google.maps.Size(50, 45));
-    this.markers.forEach((item, id) => {
-      if (index === id) {
-        this.markers[id].setIcon(pinImage);
-        this.markers[id].setDraggable(true);
-      } else {
-        this.markers[id].setIcon(null);
-      }
-    });
-  }
-
-  createAnimationMarker(index) {
-    // this.markers[index].setAnimation(google.maps.Animation.BOUNCE);
-  }
-
-  toggleBounce(e, index) {
-
-    this.markers[index].getIcon() !== null ? this.markers[index].setIcon(null) : this.createImageMarker(index);
-    this.markers[index].getAnimation() !== null ? this.markers[index].setAnimation(null) : this.createAnimationMarker(index);
-  }
-
-  createMarker(position, index, timeout, select) {
-    const that = this;
-    window.setTimeout(function () {
-      const marker = new google.maps.Marker({
-        position: position,
-        title: index.toString(),
-        map: that.map,
-        icon: null,
-        draggable: false,
-        animation: google.maps.Animation.DROP,
-      });
-
-      marker.addListener('click', (e) => {
-        that.toggleBounce(e, index)
-      });
-      that.markers.push(marker);
-      select && that.createImageMarker(index);
-      // select && that.createAnimationMarker(index);
-    }, timeout || 100);
+  componentWillUnmount() {
   }
 
   render() {
     return (
       <React.Fragment>
-        <div id="map"></div>
+        <div id="map"/>
       </React.Fragment>
     );
   }
