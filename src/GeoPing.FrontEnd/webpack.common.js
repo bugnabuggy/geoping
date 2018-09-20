@@ -14,7 +14,10 @@ module.exports = {
     rules: [
       {test: /\.(tsx|ts)?$/, include: path.join(__dirname, 'src'), use: 'awesome-typescript-loader'},
       { test: /\.(jsx|js)?$/, include: path.join(__dirname, 'src'), use: 'babel-loader' },
-      { test: /(\.css)$/, use: 'css-loader'},
+      { test: /(\.css)$/, use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'}
+        ]},
     ],
   },
 };

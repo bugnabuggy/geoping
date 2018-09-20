@@ -28,7 +28,14 @@ import {
   faPlusSquare,
   faBars,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  faCheckCircle,
+  faTimesCircle,
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add (
   faFilter,
@@ -45,6 +52,10 @@ library.add (
   faPlusSquare,
   faBars,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt,
+  faCheckCircle,
+  faTimesCircle
 );
 
 const history = createBrowserHistory ();

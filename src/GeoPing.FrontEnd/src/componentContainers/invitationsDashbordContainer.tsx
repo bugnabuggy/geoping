@@ -3,24 +3,31 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import IInvitationsDashbordContainer from '../componentProps/invitationsDashbordContainerProps';
 import { InvitationsDashbordComponent } from '../components/InvitationsDashbordComponent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordContainer, any> {
   render() {
-    return(
+    return (
       <React.Fragment>
-        <InvitationsDashbordComponent />
+        <div className="dashboard-invitations-title">
+          <h4>
+            Invitations
+          </h4>
+          <div className="dashboard-table-icon cursor-pointer">
+            <FontAwesomeIcon icon="filter" />
+          </div>
+        </div>
+        <InvitationsDashbordComponent/>
       </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = ( state: any ) => {
-  return {
-  };
+  return {};
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-  }, dispath );
+  bindActionCreators ( {}, dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( InvitationsDashbordContainer );

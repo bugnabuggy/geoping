@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ILoginPageProps } from '../componentProps/loginPageProps';
-import  LoginComponent from "../components/forms/login";
+import LoginComponent from '../components/forms/login';
 
 export default class LoginPage extends React.Component<ILoginPageProps, any> {
   render() {
@@ -9,10 +9,10 @@ export default class LoginPage extends React.Component<ILoginPageProps, any> {
       '/register': 'Register',
       '/login': LoginComponent,
     };
-      const Component: any = form[this.props.location.pathname];
+    const Component: any = form[this.props.location.pathname];
     return (
       <React.Fragment>
-          <Component />
+        <Component/>
       </React.Fragment>
     );
   }

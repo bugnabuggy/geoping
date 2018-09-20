@@ -10,30 +10,12 @@ namespace GeoPing.Api
 {
     public class Config
     {
-        private static IConfiguration Configuration;
-
-        public Config(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-
-        // Defining the identity
-        public static IEnumerable<IdentityResource> GetIdentityResources()
-        {
-            return new List<IdentityResource>
-            {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-            };
-        }
-
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "MyAPI")
+                new ApiResource(Constants.ApiName, "GeopingAPI")
             };
         }
 
@@ -44,26 +26,29 @@ namespace GeoPing.Api
             {
                 new Client
                 {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
 
-                    RequireConsent = true,
+                    ClientId = Constants.ClientId,
+                    ClientName = "MVC Client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    AccessTokenType = AccessTokenType.Jwt,
+                    AccessTokenLifetime = 3600*24,
+
+                    RequireConsent = false,
+
+                    RedirectUris = {Constants.ServerUrl + "/signin-oidc" },
+                    PostLogoutRedirectUris = {Constants.ServerUrl + "signout-callback-oidc"},
 
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret(Constants.ClientSecret.Sha256())
                     },
-
-                    RedirectUris           = { Configuration.GetValue<string>("IdentityUrl:DefaultUrl") + "/signin-oidc" },
-                    PostLogoutRedirectUris = { Configuration.GetValue<string>("IdentityUrl:DefaultUrl") + "/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        Constants.ApiName
                     },
+
                     AllowOfflineAccess = true
                 }
             };
