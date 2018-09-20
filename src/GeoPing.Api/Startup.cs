@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
+using GeoPing.Utilities.Logger;
 using IdentityServer4;
 using IdentityServer4.AccessTokenValidation;
 using System.Reflection;
@@ -26,6 +28,7 @@ namespace GeoPing.Api
         {
             _environment = environment;
 
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -39,6 +42,7 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(_configuration);
+            services.Configure<LoggerConfig.LoggerSettings>(Configuration.GetSection("LoggerSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
@@ -96,9 +100,11 @@ namespace GeoPing.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
+            LoggerConfig.SetSettings();
+            loggerFactory.AddGPLog();
+          
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
