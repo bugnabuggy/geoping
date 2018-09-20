@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router';
-import { Redirect } from 'react-router-dom';
+// import { Switch } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import LoginPage from '../pages/loginPage';
 import DashboardPage from '../pages/dashboardPage';
@@ -11,10 +11,14 @@ import HeaderComponentContainer from '../componentContainers/headerComponentCont
 import { AboutComponent } from '../pages/aboutPage';
 import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
 import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
+import AdminDashboardPage from '../pages/adminDashboardPage';
+import AdminAllUsersPage from '../pages/adminAllUsersPage';
+import AdminAllChecklistPage from '../pages/adminAllChecklistPage';
 
 export default class Routes extends React.Component<any, any> {
 
   render() {
+
     const authorized: boolean = this.props.authorized;
     let component: any = null;
     if ( !authorized ) {
@@ -40,6 +44,10 @@ export default class Routes extends React.Component<any, any> {
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
+
+            <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
+            <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
+            <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
 
             <Redirect push={true} from="*" to="/"/>
           </Switch>

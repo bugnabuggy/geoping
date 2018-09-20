@@ -28,4 +28,9 @@ const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators ( {
   }, dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
+// export default connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
+const Routers: any = connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
+
+export function getRoutes(  ) {
+  return <Routers/>;
+}
