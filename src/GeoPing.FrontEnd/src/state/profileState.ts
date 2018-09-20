@@ -1,7 +1,7 @@
 import IProfileStateType from '../DTO/types/stateTypes/profileStateType';
 
 export const profileState: IProfileStateType = {
-  login: '',
+  login: 'a',
   fullName: '',
   email: '',
   phone: '',

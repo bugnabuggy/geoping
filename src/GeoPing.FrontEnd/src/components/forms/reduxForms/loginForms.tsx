@@ -7,7 +7,6 @@ import  * as ReactTooltip  from 'react-tooltip';
 const renderInput = ( props: any) => {
   return (
     <FormGroup>
-      {console.log('1',props)}
       <ControlLabel>{props.labelName}</ControlLabel>{' '}
       <FormControl
         {...props.input}

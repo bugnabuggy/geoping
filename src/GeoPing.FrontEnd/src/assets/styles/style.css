@@ -61,7 +61,7 @@ header {
   margin: 0 5px 0 5px;
 }
 
-.login-page {
+.sign-container {
   height: 100%;
   font-size: 1.5rem;
   display: flex;
@@ -79,10 +79,31 @@ header nav {
   display: none;
 
 }
-@media (max-width: 790px) {
 
+/*ProfilePage*/
+.profile-page {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+.profile-form {
+  padding: 40px 200px;
+  width: 70vh;
+  border: 1px solid;
+}
+.profile-label {
+  position: relative;
+  left: 60px;
+  bottom: 220px;
+  font-size: 1.5em;
+}
+.control-label {
+  position: relative;
+  float: right;
+  right: 33vh;
+  top: 3vh;
+}
 /* Dashboard **************************************************************/
 .dashboard-container {
   width: 100vw;

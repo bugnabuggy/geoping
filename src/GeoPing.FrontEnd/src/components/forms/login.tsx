@@ -15,7 +15,7 @@ class LoginComponent extends React.Component<any, any> {
 
     render() {
         return (
-          <div className="login-page">
+          <div className="sign-container">
             <LoginReduxForm
             onSubmit={this.submit}
           />
