@@ -60,7 +60,7 @@ header {
 .header-link {
   margin: 0 5px 0 5px;
 }
-
+/*login ************************************************/
 .login-page {
   height: 100%;
   font-size: 1.5rem;
@@ -69,7 +69,7 @@ header {
   align-items: center;
 }
 .login-form {
-  width: 40vh;
+  max-width: 500px;
 }
 
 header nav {
@@ -77,10 +77,18 @@ header nav {
 }
 .adaptive-menu {
   display: none;
-
 }
-@media (max-width: 790px) {
-
+.psw-span {
+  position: relative;
+  top: 21px;
+  left: 80px;
+}
+.reg-span {
+  position: relative;
+  top: 10px;
+}
+.login-btn {
+  float: right;
 }
 
 /* Dashboard **************************************************************/

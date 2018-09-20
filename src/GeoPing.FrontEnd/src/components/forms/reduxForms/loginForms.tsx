@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import {validate} from '../../../validations/loginFormValidate'
-import { FormControl, FormGroup, ControlLabel,  Button } from 'react-bootstrap';
+import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import  * as ReactTooltip  from 'react-tooltip';
 
 const renderInput = ( props: any) => {
@@ -11,7 +11,7 @@ const renderInput = ( props: any) => {
       <ControlLabel>{props.labelName}</ControlLabel>{' '}
       <FormControl
         {...props.input}
-        type='text'
+        type = {(props.labelName === 'login' ? 'text' : 'password')}
         placeholder={props.placeholder}
         data-tip={props.meta.error}
       />
@@ -29,13 +29,20 @@ function LoginForms( props: any ): any {
         name='login'
         labelName='login'
       />
+      <span className= 'psw-span'>
+        <a href='/resetpassword'>forgot</a>
+      </span>
       <Field
         component={renderInput}
         name='password'
         labelName='password'
       />
+      <span className='reg-span'>
+        <a href='/register'>register account</a>
+      </span>
       <Button
         bsStyle="primary"
+        className='login-btn'
         type="submit"
         onClick={handleSubmit}
       >
