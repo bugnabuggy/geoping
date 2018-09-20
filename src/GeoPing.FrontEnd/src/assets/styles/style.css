@@ -60,7 +60,7 @@ header {
 .header-link {
   margin: 0 5px 0 5px;
 }
-
+/*login ************************************************/
 .login-page {
   height: 100%;
   font-size: 1.5rem;
@@ -70,13 +70,29 @@ header {
 }
 
 .login-form {
-  width: 40vh;
+  max-width: 500px;
 }
 
 header nav {
   height: 100%;
 }
 
+.adaptive-menu {
+  display: none;
+}
+
+.psw-span {
+  position: relative;
+  top: 21px;
+  left: 80px;
+}
+.reg-span {
+  position: relative;
+  top: 10px;
+}
+.login-btn {
+  float: right;
+  /**/
 /*Sign up*/
 .sign-container {
   height: 100%;
@@ -100,10 +116,6 @@ header nav {
   margin-top: 20px;
 }
 /**/
-
-.adaptive-menu {
-  display: none;
-}
 /* Login form **************************************************************/
 .login-form-input-container {
   display: flex;

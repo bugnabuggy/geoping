@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import {validate} from '../../../validations/loginFormValidate'
 import { IconLookup } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
-
-import { validate } from '../../../validations/loginFormValidate';
 
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
@@ -47,13 +46,20 @@ function LoginForms( props: any ): any {
         name="login"
         labelName="login"
       />
+      <span className= 'psw-span'>
+        <a href='/resetpassword'>forgot</a>
+      </span>
       <Field
         component={renderInput}
         name="password"
         labelName="password"
       />
+      <span className='reg-span'>
+        <a href='/register'>register account</a>
+      </span>
       <Button
         bsStyle="primary"
+        className='login-btn'
         type="submit"
         onClick={handleSubmit}
       >
