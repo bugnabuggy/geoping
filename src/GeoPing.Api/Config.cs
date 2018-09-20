@@ -10,55 +10,45 @@ namespace GeoPing.Api
 {
     public class Config
     {
-        // Defining the identity
-        public static IEnumerable<IdentityResource> GetIdentityResources()
-        {
-            return new List<IdentityResource>
-            {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-            };
-        }
-
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "MyAPI")
+                new ApiResource(Constants.ApiName, "GeopingAPI")
             };
         }
 
         // Defining the client
         public static IEnumerable<Client> GetClients()
         {
-            string redirectUrl = "http://localhost:5000";
-
             return new List<Client>
             {
                 new Client
                 {
 
-                    ClientId = "mvc",
+                    ClientId = Constants.ClientId,
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
-                    RequireConsent = true,
+                    AccessTokenType = AccessTokenType.Jwt,
+                    AccessTokenLifetime = 3600*24,
+
+                    RequireConsent = false,
+
+                    RedirectUris = {Constants.ServerUrl + "/signin-oidc" },
+                    PostLogoutRedirectUris = {Constants.ServerUrl + "signout-callback-oidc"},
 
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret(Constants.ClientSecret.Sha256())
                     },
-
-                    RedirectUris           = { redirectUrl + "/signin-oidc" },
-                    PostLogoutRedirectUris = { redirectUrl + "/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        Constants.ApiName
                     },
+
                     AllowOfflineAccess = true
                 }
             };
