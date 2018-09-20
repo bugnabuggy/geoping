@@ -92,6 +92,7 @@ header nav {
 }
 .login-btn {
   float: right;
+}
   /**/
 /*Sign up*/
 .sign-container {
@@ -897,6 +898,7 @@ header nav {
     font-size: 20px;
     background: transparent;
     border: none;
+    z-index: 22;
   }
 
   .nav {
@@ -906,9 +908,13 @@ header nav {
     right: 0;
     top: 35px;
     background-color: #FAFAFA;
+    z-index: 1;
   }
 
   .nav.false {
+    display: none;
+  }
+  .rounded-circle {
     display: none;
   }
 
