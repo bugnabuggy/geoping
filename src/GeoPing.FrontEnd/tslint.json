@@ -44,7 +44,7 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
-      false,
+      true,
       "log",
       "error",
       "debug",
@@ -55,7 +55,7 @@
     ],
     "no-consecutive-blank-lines": true,
     "no-construct": true,
-    "no-debugger": false,
+    "no-debugger": true,
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,

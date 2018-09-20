@@ -32,6 +32,11 @@ import {
   faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
+import {
+  faCheckCircle,
+  faTimesCircle,
+} from '@fortawesome/free-regular-svg-icons';
+
 library.add (
   faFilter,
   faPlusCircle,
@@ -48,7 +53,9 @@ library.add (
   faBars,
   faTimes,
   faPencilAlt,
-  faCalendarAlt
+  faCalendarAlt,
+  faCheckCircle,
+  faTimesCircle
 );
 
 const history = createBrowserHistory ();
@@ -61,7 +68,7 @@ const store = createStore (
   composeWithDevTools (
     applyMiddleware (
       thunk,
-      logger,
+      // logger,
       middleware
     )
   )

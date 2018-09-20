@@ -68,6 +68,7 @@ header {
   justify-content: center;
   align-items: center;
 }
+
 .login-form {
   width: 40vh;
 }
@@ -75,13 +76,67 @@ header {
 header nav {
   height: 100%;
 }
+
 .adaptive-menu {
   display: none;
 
 }
+
 @media (max-width: 790px) {
 
 }
+
+/* Login form **************************************************************/
+.login-form-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.login-form-icon-container {
+  margin-left: 30px;
+  font-size: 1.5em;
+  width: 25px;
+  min-width: 25px;
+  position: relative;
+}
+
+.tooltip_form {
+  top: -45px;
+  right: -12px;
+  width: max-content;
+  position: absolute;
+  line-height: 20px;
+  padding: 5px 10px 5px 10px;
+  font-size: 14px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  background: rgb(66, 66, 66);
+  border-radius: 10px;
+  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0px;
+}
+
+.tooltip_form:after {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 8px;
+  border-style: solid;
+  border-color: rgb(66, 66, 66) transparent transparent transparent;
+  top: 30px;
+  right: 20px;
+}
+
+.login-form-icon-check {
+  color: #71a46d;
+}
+
+.login-form-icon-times {
+  color: #a4575b;
+}
+
+/**************************************************************************/
 
 /* Dashboard **************************************************************/
 .dashboard-container {
@@ -804,6 +859,7 @@ header nav {
     grid-template-columns: 100%;
     grid-gap: 5px;
   }
+
   .adaptive-menu {
     display: block;
     position: absolute;
@@ -812,6 +868,7 @@ header nav {
     background: transparent;
     border: none;
   }
+
   .nav {
     display: flex;
     flex-direction: column;
@@ -820,9 +877,11 @@ header nav {
     top: 35px;
     background-color: #FAFAFA;
   }
+
   .nav.false {
     display: none;
   }
+
   .dashboard-container {
     width: 100%;
     padding: 0 20px 0 20px;
