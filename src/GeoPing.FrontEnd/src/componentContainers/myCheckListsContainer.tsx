@@ -7,6 +7,8 @@ import { CheckListComponent } from '../components/listComponents/checkListCompon
 import { checkLists } from '../mocks/dashboardCheckListsMock';
 import IMyCheckListsContsinerProps, { ICheckLists } from '../componentProps/myCheckListsContsinerProps';
 import { showModalShare } from '../actions/modalAction';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { openModalForCreateCheckList } from '../actions/checkListAction';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContsinerProps, any> {
 
@@ -28,7 +30,22 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContsinerProps,
   render() {
     return (
       <React.Fragment>
-        <Panel style={{height: '100%'}}>
+        <div className="dashboard-check-list-title">
+          <h4>My Check lists</h4>
+          <div
+            className="dashboard-check-list-icon-pluse dashboard-check-list-icon-pluse-container cursor-pointer"
+            onClick={this.props.openModalForCreateCheckList}
+          >
+            <FontAwesomeIcon icon="plus-circle"/>
+          </div>
+          <div
+            className="dashboard-check-list-icon-filter dashboard-check-list-icon-filter-container cursor-pointer"
+            // onClick={this.handleClick}
+          >
+            <FontAwesomeIcon icon="filter"/>
+          </div>
+        </div>
+        <Panel>
           <div className="dashboard-check-list-panel-body">
             <Panel.Body>
               {this.renderComponentCheckLists ()}
@@ -49,6 +66,7 @@ const mapStateToProps = ( state: any ) => {
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators ( {
     showModalShare,
+    openModalForCreateCheckList,
   }, dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( MyCheckListsContainer );

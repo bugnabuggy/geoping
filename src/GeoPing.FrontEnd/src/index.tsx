@@ -28,6 +28,8 @@ import {
   faPlusSquare,
   faBars,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add (
@@ -45,6 +47,8 @@ library.add (
   faPlusSquare,
   faBars,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt
 );
 
 const history = createBrowserHistory ();
@@ -57,7 +61,7 @@ const store = createStore (
   composeWithDevTools (
     applyMiddleware (
       thunk,
-      // logger,
+      logger,
       middleware
     )
   )

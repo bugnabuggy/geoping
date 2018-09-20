@@ -11,7 +11,7 @@ export default class CheckinPage extends React.Component<ICheckinPageProps, any>
           Checkin
         </div>
         <div className="checkin-map">
-          <GoogleMapComponentContainer />
+          {/*<GoogleMapComponentContainer />*/}
         </div>
       </div>
     );
