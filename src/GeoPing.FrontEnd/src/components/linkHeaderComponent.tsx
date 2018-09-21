@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import ILinkHeaderComponentProps from '../componentProps/headerComponentProps/linkHeaderComponentProps';
+import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
 
 export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentProps, any> {
   constructor( props: any ) {
@@ -12,15 +13,30 @@ export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentPro
 
   renderLinks = ( props: any ) => {
     const action: boolean = this.props.index === props.id;
-    const elements: any = (
-      <Link
-        id={props.id}
-        to={props.path}
-        className={`nav-link ${ action && ' active '} ${this.props.classLink}`}
-      >
-        {props.text}
-      </Link>
-    );
+    let elements: any;
+    if ( props.isAdmin ) {
+      elements = this.props.roleUser === ERoleUser.Admin ?
+        (
+          <Link
+            id={props.id}
+            to={props.path}
+            className={`nav-link ${ action && ' active '} ${this.props.classLink}`}
+          >
+            {props.text}
+          </Link>
+        ) :
+        null;
+    } else {
+      elements = (
+        <Link
+          id={props.id}
+          to={props.path}
+          className={`nav-link ${ action && ' active '} ${this.props.classLink}`}
+        >
+          {props.text}
+        </Link>
+      );
+    }
 
     return elements;
   };

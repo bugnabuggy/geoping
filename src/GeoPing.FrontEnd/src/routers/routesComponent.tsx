@@ -1,6 +1,6 @@
 import * as React from 'react';
-// import { Switch } from 'react-router';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 import LoginPage from '../pages/loginPage';
 import DashboardPage from '../pages/dashboardPage';
@@ -11,11 +11,13 @@ import HeaderComponentContainer from '../componentContainers/headerComponentCont
 import { AboutComponent } from '../pages/aboutPage';
 import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
 import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
-import AdminDashboardPage from '../pages/adminDashboardPage';
-import AdminAllUsersPage from '../pages/adminAllUsersPage';
-import AdminAllChecklistPage from '../pages/adminAllChecklistPage';
+import IRoutesComponentProps from '../componentProps/routerProps/routesComponentProps';
+import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
+import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
+import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
+import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
 
-export default class Routes extends React.Component<any, any> {
+export default class Routes extends React.Component<IRoutesComponentProps, any> {
 
   render() {
 
@@ -44,10 +46,17 @@ export default class Routes extends React.Component<any, any> {
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
-
-            <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
-            <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
-            <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
+            {
+              this.props.roleUser === ERoleUser.Admin ? (
+                  <React.Fragment>
+                    <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
+                    <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
+                    <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
+                  </React.Fragment>
+                )
+                :
+                null
+            }
 
             <Redirect push={true} from="*" to="/"/>
           </Switch>
@@ -58,10 +67,10 @@ export default class Routes extends React.Component<any, any> {
     return (
       <React.Fragment>
         <header>
-          <HeaderComponentContainer />
+          <HeaderComponentContainer/>
         </header>
         <main>
-          <NotificationComponentContainer />
+          <NotificationComponentContainer/>
           {component}
         </main>
         <footer>
