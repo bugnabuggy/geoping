@@ -28,8 +28,8 @@ namespace GeoPing.Api
                 try
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    /*var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();*/
-                    SeedData.Initialize(services, userManager/*, roleManager*/);
+                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                    SeedData.InitializeAsync(dbContext, userManager);
                 }
                 catch (Exception ex)
                 {

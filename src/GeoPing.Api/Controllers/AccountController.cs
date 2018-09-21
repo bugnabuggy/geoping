@@ -28,20 +28,20 @@ namespace GeoPing.Api.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly ApplicationDbContext _dbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            IServiceProvider serviceProvider)
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            _serviceProvider = serviceProvider;
+            _dbContext = dbContext;
         }
 
         [TempData]
@@ -222,13 +222,14 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterUserDTO registerUser, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser, string returnUrl = null)
         {
             /*
              * Checks if user with submitted email is exists
              */
-            var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
-            if(context.Users.Any(u => u.Email == registerUser.Email))
+            //var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
+           
+            if(_dbContext.Users.Any(u => u.Email == registerUser.Email))
             {
                 return BadRequest(new OperationResult
                 {
@@ -246,13 +247,6 @@ namespace GeoPing.Api.Controllers
                 var result = await _userManager.CreateAsync(user, registerUser.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
 
                     return Ok(new OperationResult
