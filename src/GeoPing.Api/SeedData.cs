@@ -12,11 +12,8 @@ namespace GeoPing.Api
 {
     public static class SeedData
     {
-        public static void InitializeAsync(ApplicationDbContext dbContext, 
-            UserManager<ApplicationUser> userManager)
+        public static void InitializeAsync(RoleManager<IdentityRole> roleManager,UserManager<ApplicationUser> userManager)
         {
-            dbContext.Database.EnsureCreated();
-
             if (!dbContext.Users.Any())
             {
                 var testUserModel = new RegisterUserDTO
