@@ -223,7 +223,7 @@ namespace GeoPing.Api.Controllers
             
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = registerUser.Username, Email = registerUser.Email };
+                var user = new ApplicationUser { UserName = registerUser.UserName, Email = registerUser.Email };
                 
                 var result = await _userManager.CreateAsync(user, registerUser.Password);
                 if (result.Succeeded)
