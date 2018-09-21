@@ -1,7 +1,6 @@
 ﻿using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using GeoPing.Api.Models.AccountDTO;
-using GeoPing.Api.Models.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
