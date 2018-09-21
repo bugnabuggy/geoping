@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using GeoPing.Api.Models;
 using GeoPing.Api.Models.AccountViewModels;
 using GeoPing.Api.Services;
+using GeoPing.Api.Models.AccountDTO;
+using IdentityServer4.Extensions;
 
 namespace GeoPing.Api.Controllers
 {
@@ -215,20 +217,22 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterUserDTO registerUser, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var user = new ApplicationUser { UserName = registerUser.Username, Email = registerUser.Email };
+                
+                var result = await _userManager.CreateAsync(user, registerUser.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
@@ -238,7 +242,7 @@ namespace GeoPing.Api.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(registerUser);
         }
 
         [HttpPost]
