@@ -11,10 +11,16 @@ import HeaderComponentContainer from '../componentContainers/headerComponentCont
 import { AboutComponent } from '../pages/aboutPage';
 import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
 import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
+import IRoutesComponentProps from '../componentProps/routerProps/routesComponentProps';
+import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
+import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
+import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
+import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
 
-export default class Routes extends React.Component<any, any> {
+export default class Routes extends React.Component<IRoutesComponentProps, any> {
 
   render() {
+
     const authorized: boolean = this.props.authorized;
     let component: any = null;
     if ( !authorized ) {
@@ -40,6 +46,17 @@ export default class Routes extends React.Component<any, any> {
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
+            {
+              this.props.roleUser === ERoleUser.Admin ? (
+                  <React.Fragment>
+                    <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
+                    <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
+                    <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
+                  </React.Fragment>
+                )
+                :
+                null
+            }
 
             <Redirect push={true} from="*" to="/"/>
           </Switch>
@@ -50,10 +67,10 @@ export default class Routes extends React.Component<any, any> {
     return (
       <React.Fragment>
         <header>
-          <HeaderComponentContainer />
+          <HeaderComponentContainer/>
         </header>
         <main>
-          <NotificationComponentContainer />
+          <NotificationComponentContainer/>
           {component}
         </main>
         <footer>

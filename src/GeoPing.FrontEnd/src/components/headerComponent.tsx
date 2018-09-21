@@ -38,6 +38,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
           text={item.label}
           dropdown={item.dropdown}
           links={item.links}
+          roleUser={this.props.roleUser}
         />
       );
     } );
