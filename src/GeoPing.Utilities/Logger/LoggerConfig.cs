@@ -1,25 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
-using NLog;
+﻿using NLog;
 using NLog.Common;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Syslog;
 using NLog.Targets.Syslog.Settings;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GeoPing.Utilities.Logger
 {
     public class LoggerConfig
     {
-        private static IConfiguration Configuration;
-
-        public LoggerConfig(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public static void SetSettings()
         {
             if (true)
@@ -30,7 +19,6 @@ namespace GeoPing.Utilities.Logger
                 // Set internal log level
                 InternalLogger.LogLevel = LogLevel.Trace;
             }
-            
 
             // Configuration object
             var config = new LoggingConfiguration();
@@ -57,6 +45,7 @@ namespace GeoPing.Utilities.Logger
                 }
 
             };
+
             config.AddTarget(syslogTarget);
             config.AddRule(LogLevel.Debug, LogLevel.Fatal, syslogTarget);
 
@@ -75,32 +64,6 @@ namespace GeoPing.Utilities.Logger
 
             // Activate configuration object
             LogManager.Configuration = config;
-        }
-
-        public class LoggerSettings
-        {
-            public bool IncludeScopes { get; set; }
-            public string LogLevelDefault { get; set; }
-            public class InternalLog
-            {
-                public bool IsEnabled { get; set; }
-                public string LogDirectory { get; set; }
-                public string LogLevel { get; set; }
-            }
-            public class Settings
-            {
-                public class FileSettings
-                {
-                    public string LogDirectory { get; set; }
-                    public string LogLevel { get; set; }
-                }
-                public class SyslogSettings
-                {
-                    public string Server { get; set; }
-                    public int Port { get; set; }
-                    public string LogLevel { get; set; }
-                }
-            }
         }
     }
 }
