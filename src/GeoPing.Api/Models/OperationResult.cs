@@ -15,7 +15,7 @@ namespace GeoPing.Api.Models
     public class OperationResult<T>
     {
         public bool Success { get; set; }
-        public IEnumerable<string> Messages { get; set; }
+        public List<string> Messages { get; set; }
         public virtual T Data { get; set; }
     }
 }

@@ -217,7 +217,7 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterUserDTO registerUser, string returnUrl = null)
+        public async Task<OperationResult<IActionResult>> Register(RegisterUserDTO registerUser, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             
@@ -236,13 +236,23 @@ namespace GeoPing.Api.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return new OperationResult<IActionResult>
+                    {
+                        Success = true,
+                        Messages = { "User was successfully registered" },
+                        Data = Ok()
+                    };
                 }
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(registerUser);
+            // If we got this far, something failed
+            return new OperationResult<IActionResult>
+            {
+                Success = false,
+                Messages = { "Something was failed while user registration" },
+                Data = BadRequest()
+            };
         }
 
         [HttpPost]
