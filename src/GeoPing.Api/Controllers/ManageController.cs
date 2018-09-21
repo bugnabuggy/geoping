@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using GeoPing.Api.Models;
-using GeoPing.Api.Models.ManageViewModels;
 using GeoPing.Api.Services;
 
 namespace GeoPing.Api.Controllers
@@ -20,6 +19,7 @@ namespace GeoPing.Api.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
+        /*
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -541,5 +541,6 @@ namespace GeoPing.Api.Controllers
         }
 
         #endregion
+        */
     }
 }
