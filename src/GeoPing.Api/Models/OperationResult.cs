@@ -9,13 +9,13 @@ namespace GeoPing.Api.Models
     {
         public bool Success { get; set; }
         public List<string> Messages { get; set; }
-        public virtual IEnumerable<object> Data { get; set; }
+        public virtual List<object> Data { get; set; }
     }
 
     public class OperationResult<T>
     {
         public bool Success { get; set; }
         public List<string> Messages { get; set; }
-        public virtual T Data { get; set; }
+        public virtual List<T> Data { get; set; }
     }
 }

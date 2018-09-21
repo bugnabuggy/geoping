@@ -240,7 +240,7 @@ namespace GeoPing.Api.Controllers
                     {
                         Success = true,
                         Messages = { "User was successfully registered" },
-                        Data = Ok()
+                        Data = { Ok() }
                     };
                 }
                 AddErrors(result);
@@ -251,7 +251,7 @@ namespace GeoPing.Api.Controllers
             {
                 Success = false,
                 Messages = { "Something was failed while user registration" },
-                Data = BadRequest()
+                Data = { BadRequest() }
             };
         }
 
