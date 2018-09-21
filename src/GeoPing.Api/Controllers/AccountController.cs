@@ -15,6 +15,8 @@ using GeoPing.Api.Models.AccountViewModels;
 using GeoPing.Api.Services;
 using GeoPing.Api.Models.AccountDTO;
 using IdentityServer4.Extensions;
+using GeoPing.Api.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GeoPing.Api.Controllers
 {
@@ -26,17 +28,20 @@ namespace GeoPing.Api.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IServiceProvider serviceProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
         [TempData]
@@ -219,6 +224,19 @@ namespace GeoPing.Api.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserDTO registerUser, string returnUrl = null)
         {
+            /*
+             * Checks if user with submitted email is exists
+             */
+            var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
+            if(context.Users.Any(u => u.Email == registerUser.Email))
+            {
+                return BadRequest(new OperationResult
+                {
+                    Success = false,
+                    Messages = { "Invalid username or email" }
+                });
+            }
+
             ViewData["ReturnUrl"] = returnUrl;
             
             if (ModelState.IsValid)
@@ -245,8 +263,9 @@ namespace GeoPing.Api.Controllers
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed
+            /*
+            * If we got this far, something failed
+            */
             return BadRequest(new OperationResult
             {
                 Success = false,
