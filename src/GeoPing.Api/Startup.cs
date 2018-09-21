@@ -79,7 +79,7 @@ namespace GeoPing.Api
                         builder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
                             sql =>
                             {
-                                sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+                                sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                             });
                     };
 
