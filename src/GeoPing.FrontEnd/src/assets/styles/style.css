@@ -60,6 +60,7 @@ header {
 .header-link {
   margin: 0 5px 0 5px;
 }
+
 /*login ************************************************/
 .login-page {
   height: 100%;
@@ -86,13 +87,17 @@ header nav {
   top: 21px;
   left: 80px;
 }
+
 .reg-span {
   position: relative;
   top: 10px;
 }
+
 .login-btn {
   float: right;
+}
   /**/
+
 /*Sign up*/
 .sign-container {
   height: 100%;
@@ -101,10 +106,12 @@ header nav {
   justify-content: center;
   align-items: center;
 }
+
 .register-form {
   width: 40vh;
-  padding: 0 20px 0 20px ;
+  padding: 0 20px 0 20px;
 }
+
 .isValid-check {
   display: inline-block;
   position: relative;
@@ -112,9 +119,11 @@ header nav {
   bottom: 27px;
   float: right;
 }
+
 .register-btn {
   margin-top: 20px;
 }
+
 /**/
 /* Login form **************************************************************/
 .login-form-input-container {
@@ -880,6 +889,44 @@ header nav {
 
 /*************************************************************************************/
 
+/* Admin dashboard */
+
+.admin-dashboard-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard-link {
+  font-size: 2em;
+  margin: 20px;
+}
+
+/*************************************************************************************/
+
+/* Admin all users */
+.admin-all-users-container {
+  display: grid;
+  padding: 10px;
+  height: 100%;
+  grid-template-rows: 50px minmax(200px, max-content) minmax(max-content, 1fr);
+  grid-template-columns: 100%;
+  grid-gap: 5px;
+}
+
+.admin-all-users-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: black 1px solid;
+}
+
+.admin-all-users-table-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*************************************************************************************/
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
@@ -897,6 +944,7 @@ header nav {
     font-size: 20px;
     background: transparent;
     border: none;
+    z-index: 2;
   }
 
   .nav {
@@ -906,9 +954,13 @@ header nav {
     right: 0;
     top: 35px;
     background-color: #FAFAFA;
+    z-index: 1;
   }
 
   .nav.false {
+    display: none;
+  }
+  .rounded-circle {
     display: none;
   }
 
