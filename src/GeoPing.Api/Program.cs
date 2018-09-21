@@ -28,7 +28,8 @@ namespace GeoPing.Api
                 try
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    SeedData.Initialize(services,userManager);
+                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                    SeedData.InitializeAsync(dbContext, userManager);
                 }
                 catch (Exception ex)
                 {
