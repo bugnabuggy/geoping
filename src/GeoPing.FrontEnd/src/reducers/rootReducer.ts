@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 
-import allUsersReducer from './allUsersReducer';
 import checkListReducer from './checkListReducer';
 import userReducer from './userReducer';
 import profileReducer from './profileReducer';
@@ -15,11 +14,14 @@ import tableHistoryReducer from './tableHistoryReducer';
 import modalReducer from './modalReducer';
 import publicCheckListReducer from './publicCheckListReducer';
 import notificationsReducer from './notificationsReducer';
+import allUsersFilterReducer from './allUsersFilterReducer';
+import allUsersTableReducer from './allUsersTableReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
     form: formReducer,
-    allUsers: allUsersReducer,
+    allUsersFilter: allUsersFilterReducer,
+    allUsersTable: allUsersTableReducer,
     checkList: checkListReducer,
     user: userReducer,
     profile: profileReducer,

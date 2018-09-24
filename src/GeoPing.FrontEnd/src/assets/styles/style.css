@@ -7,6 +7,10 @@ html, body {
   width: 100%;
 }
 
+html {
+  font-size: 0.9em;
+}
+
 main {
   width: 100%;
   position: relative;
@@ -96,7 +100,8 @@ header nav {
 .login-btn {
   float: right;
 }
-  /**/
+
+/**/
 
 /*Sign up*/
 .sign-container {
@@ -922,8 +927,64 @@ header nav {
 
 .admin-all-users-table-container {
   display: flex;
-  align-items: center;
+  /*align-items: center;*/
   justify-content: center;
+}
+
+.test {
+  text-align: right;
+}
+
+/*************************************************************************************/
+
+/* All Users */
+.filter-users-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-users-field-name, .filter-users-field-data, .filter-users-field-list-count, .filter-users-field-status,
+.filter-users-field-official, .filter-users-field-admin, .filter-users-field-buttons{
+  display: flex;
+  align-items: center;
+  margin: 5px 5px;
+}
+
+.filter-users-field-list-count {
+  /*width: 480px;*/
+}
+
+.filter-users-field-name label, .filter-users-field-data label, .filter-users-field-list-count label,
+.filter-users-field-status label, .filter-users-field-official label, .filter-users-field-admin label {
+  margin-right: 10px;
+  margin-left: 10px;
+  min-width: min-content;
+  max-width: 200px;
+}
+
+.filter-users-field-data input {
+  width: 100px;
+}
+
+.filter-users-text-list-count {
+  flex-basis: 30%;
+}
+
+.filter-users-field-list-count-input {
+  width: 100px;
+  flex-shrink: 3;
+
+}
+
+.filter-users-field-buttons button{
+  margin: 0 5px;
+}
+
+.react-bs-table-container {
+  /*width: 100%;*/
 }
 
 /*************************************************************************************/
@@ -960,6 +1021,7 @@ header nav {
   .nav.false {
     display: none;
   }
+
   .rounded-circle {
     display: none;
   }

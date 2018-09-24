@@ -47,15 +47,13 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
             {
-              this.props.roleUser === ERoleUser.Admin ? (
+              this.props.roleUser === ERoleUser.Admin && (
                   <React.Fragment>
                     <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
                     <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
                     <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
                   </React.Fragment>
                 )
-                :
-                null
             }
 
             <Redirect push={true} from="*" to="/"/>

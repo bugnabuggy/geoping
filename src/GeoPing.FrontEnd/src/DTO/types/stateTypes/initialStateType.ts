@@ -7,13 +7,15 @@ import IProfileStateType from './profileStateType';
 import ICheckListStateType from './checkListStateType';
 import ICheckinStatisticsStateType from './checkinStatisticsStateType';
 import ICheckinStateType from './checkinStateType';
-import IAllUsersStateType from './allUsersStateType';
+import IAllUsersStateType from './allUsersFilterStateType';
 import IModalStateType from './modalStateType';
 import IPublicCheckListType from './publicCheckListType';
 import INotificationStateType from './notificationStateType';
+import IAllUsersTableStateType from './allUsersTableStateType';
 
 export default interface IinitialStateType {
-  allUsers: IAllUsersStateType;
+  allUsersFilter: IAllUsersStateType;
+  allUsersTable: IAllUsersTableStateType;
   checkin: ICheckinStateType;
   checkinStatistics: ICheckinStatisticsStateType;
   checkList: ICheckListStateType;
