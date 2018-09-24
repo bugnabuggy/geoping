@@ -4,6 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
+    "precommit": "npm test && npm run lint",
     "start": "npm-run-all --parallel test:watch start:src",
     "start:src": "ts-node tools/startServer.ts --require ts-node/register --watch-extensions ts,tsx --require babel-register --watch-extensions js",
     "test:watch": "npm run test -- --watch",
