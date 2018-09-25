@@ -12,18 +12,18 @@ const renderInput = ( props: any ) => {
   return (
     <FormGroup>
       <ControlLabel>{props.labelName}</ControlLabel>{' '}
-      <div className="login-form-input-container">
+      <div className="form-input-container">
         <FormControl
           {...props.input}
-          type="text"
+          type={(props.labelName === 'Password') ? 'password' : 'text'}
           placeholder={props.placeholder}
         />
-        <div className="login-form-icon-container">
+        <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
-              <FontAwesomeIcon icon={timesCircleIcon} className="login-form-icon-times"/>
+              <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
               :
-              <FontAwesomeIcon icon={checkCircleIcon} className="login-form-icon-check"/>
+              <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
             :
             null
           }
@@ -44,7 +44,7 @@ function LoginForms( props: any ): any {
       <Field
         component={renderInput}
         name="login"
-        labelName="login"
+        labelName="Login"
       />
       <span className="psw-span">
         <a href="/resetpassword">forgot</a>
@@ -52,7 +52,7 @@ function LoginForms( props: any ): any {
       <Field
         component={renderInput}
         name="password"
-        labelName="password"
+        labelName="Password"
       />
       <span className="reg-span">
         <a href="/register">register account</a>
