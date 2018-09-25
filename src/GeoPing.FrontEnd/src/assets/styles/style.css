@@ -94,44 +94,16 @@ header nav {
 }
 
 .login-btn {
-  float: right;
-}
-  /**/
-
-/*Sign up*/
-.sign-container {
-  height: 100%;
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.register-form {
-  width: 40vh;
-  padding: 0 20px 0 20px;
-}
-
-.isValid-check {
-  display: inline-block;
   position: relative;
-  left: 30px;
-  bottom: 27px;
-  float: right;
+  left: 20px;
 }
 
-.register-btn {
-  margin-top: 20px;
-}
-
-/**/
-/* Login form **************************************************************/
-.login-form-input-container {
+.form-input-container {
   display: flex;
   align-items: center;
 }
 
-.login-form-icon-container {
+.form-icon-container {
   margin-left: 30px;
   font-size: 1.5em;
   width: 25px;
@@ -167,15 +139,43 @@ header nav {
   right: 20px;
 }
 
-.login-form-icon-check {
+.form-icon-check {
   color: #71a46d;
 }
 
-.login-form-icon-times {
+.form-icon-times {
   color: #a4575b;
 }
 
-/**************************************************************************/
+  /**/
+
+/*Sign up*/
+.sign-container {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+  max-width: 500px;
+  padding: 0 20px 0 20px;
+}
+
+.isValid-check {
+  display: inline-block;
+  position: relative;
+  left: 30px;
+  bottom: 27px;
+  float: right;
+}
+
+.register-btn {
+  margin-top: 20px;
+}
+
+/**/
 
 /* Dashboard **************************************************************/
 .dashboard-container {
