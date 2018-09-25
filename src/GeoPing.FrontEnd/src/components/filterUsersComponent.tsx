@@ -19,10 +19,10 @@ export class FilterUsersComponent extends React.Component<IFilterUsersComponentP
     this.props.changeFilters ( e.target.name, e.target.value );
   };
   handleClickFilter = () => {
-    console.log ( 'filter' );
+    return '';
   };
   handleClickClearFilter = () => {
-    console.log ( 'clear' );
+    return '';
   };
 
   constructor( props: IFilterUsersComponentProps ) {
@@ -40,50 +40,58 @@ export class FilterUsersComponent extends React.Component<IFilterUsersComponentP
           />
         </div>
         <div className="filter-users-field-data">
-          <ControlLabel>Reg Date From </ControlLabel>
-          <DatePicker
-            // dateFormat="DD/MM/YYYY"
-            locale="en"
-            className="form-control"
-            placeholderText="From"
-            selectsStart={true}
-            shouldCloseOnSelect={false}
-            selected={this.props.fields.startDate}
-            startDate={this.props.fields.startDate}
-            endDate={this.props.fields.endDate}
-            onChange={this.handleChangeDateStart}
-          />
-          <ControlLabel>To </ControlLabel>
-          <DatePicker
-            // dateFormat="DD/MM/YYYY"
-            locale="en"
-            className="form-control"
-            placeholderText="To"
-            selectsEnd={true}
-            shouldCloseOnSelect={false}
-            selected={this.props.fields.endDate}
-            startDate={this.props.fields.startDate}
-            endDate={this.props.fields.endDate}
-            onChange={this.handleChangeDateEnd}
-          />
+          <div className="filter-users-field-data-from">
+            <ControlLabel>Reg Date From </ControlLabel>
+            <DatePicker
+              // dateFormat="DD/MM/YYYY"
+              locale="en"
+              className="form-control"
+              placeholderText="From"
+              selectsStart={true}
+              shouldCloseOnSelect={false}
+              selected={this.props.fields.startDate}
+              startDate={this.props.fields.startDate}
+              endDate={this.props.fields.endDate}
+              onChange={this.handleChangeDateStart}
+            />
+          </div>
+          <div className="filter-users-field-data-to">
+            <ControlLabel>To </ControlLabel>
+            <DatePicker
+              // dateFormat="DD/MM/YYYY"
+              locale="en"
+              className="form-control"
+              placeholderText="To"
+              selectsEnd={true}
+              shouldCloseOnSelect={false}
+              selected={this.props.fields.endDate}
+              startDate={this.props.fields.startDate}
+              endDate={this.props.fields.endDate}
+              onChange={this.handleChangeDateEnd}
+            />
+          </div>
         </div>
         <div className="filter-users-field-list-count">
-          <ControlLabel
-            className="filter-users-text-list-count"
-          >
-            List Count From
-          </ControlLabel>
-          <FormControl
-            name="listCountFrom"
-            className="filter-users-field-list-count-input"
-            onChange={this.handleChangeInput}
-          />
-          <ControlLabel>To </ControlLabel>
-          <FormControl
-            name="listCountTo"
-            className="filter-users-field-list-count-input"
-            onChange={this.handleChangeInput}
-          />
+          <div className="filter-users-field-list-count-from">
+            <ControlLabel
+              className="filter-users-text-list-count"
+            >
+              List Count From
+            </ControlLabel>
+            <FormControl
+              name="listCountFrom"
+              className="filter-users-field-list-count-input"
+              onChange={this.handleChangeInput}
+            />
+          </div>
+          <div className="filter-users-field-list-count-to">
+            <ControlLabel>To </ControlLabel>
+            <FormControl
+              name="listCountTo"
+              className="filter-users-field-list-count-input"
+              onChange={this.handleChangeInput}
+            />
+          </div>
         </div>
         <div className="filter-users-field-status">
           <ControlLabel>Status </ControlLabel>

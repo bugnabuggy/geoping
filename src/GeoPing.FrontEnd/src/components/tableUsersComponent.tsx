@@ -102,7 +102,6 @@ export class TableUsersComponent extends React.Component<ITableUsersComponentPro
           <TableHeaderColumn
             dataField="employee"
             dataSort={true}
-            className="test"
             headerAlign="left"
             dataAlign="center"
             dataFormat={this.renderCheckBox}

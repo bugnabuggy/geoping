@@ -156,7 +156,7 @@ header nav {
   color: rgb(255, 255, 255);
   background: rgb(66, 66, 66);
   border-radius: 10px;
-  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0px;
+  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0;
 }
 
 .tooltip_form:after {
@@ -288,8 +288,9 @@ header nav {
 
 .dashboard-check-list-panel-body {
   height: 100%;
-  overflow: overlay;
+  overflow: auto;
   padding: 0 10px;
+  max-height: 500px;
 }
 
 .check-list-panel-item {
@@ -913,9 +914,20 @@ header nav {
   display: grid;
   padding: 10px;
   height: 100%;
-  grid-template-rows: 50px minmax(200px, max-content) minmax(max-content, 1fr);
-  grid-template-columns: 100%;
+  grid-template-rows: [row1] 50px [row2] minmax(200px, 1fr);
+  grid-template-columns: [col1] minmax(500px, 1fr) [col2] minmax(250px, 350px);
   grid-gap: 5px;
+}
+
+.react-bs-table-container {
+  width: 100%;
+}
+
+.admin-all-users-container h3 {
+  grid-column-start: col1;
+  grid-column-end: col2;
+  grid-row-start: row1;
+  grid-row-end: row1;
 }
 
 .admin-all-users-filter-container {
@@ -923,68 +935,56 @@ header nav {
   align-items: center;
   justify-content: center;
   border: black 1px solid;
+  /*height: max-content;*/
+  max-height: 600px;
+  grid-column-start: col2;
+  grid-column-end: col2;
+  grid-row-start: row2;
+  grid-row-end: row2;
 }
 
 .admin-all-users-table-container {
   display: flex;
-  /*align-items: center;*/
   justify-content: center;
+
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
 }
 
 .test {
   text-align: right;
 }
 
-/*************************************************************************************/
-
-/* All Users */
 .filter-users-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 100%;
-  justify-content: space-between;
   align-items: center;
 }
 
 .filter-users-field-name, .filter-users-field-data, .filter-users-field-list-count, .filter-users-field-status,
-.filter-users-field-official, .filter-users-field-admin, .filter-users-field-buttons{
+.filter-users-field-official, .filter-users-field-admin, .filter-users-field-buttons {
+  width: 100%;
+  padding: 10px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
+.filter-users-field-buttons {
   display: flex;
-  align-items: center;
-  margin: 5px 5px;
+  justify-content: space-between;
 }
 
-.filter-users-field-list-count {
-  /*width: 480px;*/
-}
-
-.filter-users-field-name label, .filter-users-field-data label, .filter-users-field-list-count label,
-.filter-users-field-status label, .filter-users-field-official label, .filter-users-field-admin label {
-  margin-right: 10px;
-  margin-left: 10px;
-  min-width: min-content;
-  max-width: 200px;
-}
-
-.filter-users-field-data input {
-  width: 100px;
-}
-
-.filter-users-text-list-count {
-  flex-basis: 30%;
-}
-
-.filter-users-field-list-count-input {
-  width: 100px;
-  flex-shrink: 3;
-
-}
-
-.filter-users-field-buttons button{
+.filter-users-field-buttons button {
   margin: 0 5px;
 }
 
-.react-bs-table-container {
-  /*width: 100%;*/
+.filter-users-field-official label:first-child, .filter-users-field-admin label:first-child {
+  margin-right: 10px;
 }
 
 /*************************************************************************************/
@@ -1167,10 +1167,103 @@ header nav {
     margin: 10px 0 10px 0;
   }
 
-  /*.check-list-map {*/
-  /*!*height: 500px;*!*/
-  /*}*/
-  /**/
+  /* Admin all users */
+  .admin-all-users-container {
+    display: grid;
+    padding: 10px;
+    height: 100%;
+    grid-template-rows: [row1] 50px [row2] minmax(200px, max-content) [row3] minmax(max-content, 1fr);
+    grid-template-columns: [col1] 100%;
+    grid-gap: 5px;
+  }
+
+  .admin-all-users-container h3 {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .admin-all-users-filter-container {
+    border: black 1px solid;
+
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row2;
+  }
+
+  .admin-all-users-table-container {
+    display: flex;
+    /*align-items: center;*/
+    justify-content: center;
+
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row3;
+  }
+
+  .filter-users-container, .filter-users-field-data, .filter-users-field-list-count {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .filter-users-container {
+    width: 100%;
+    align-items: center;
+  }
+
+  .filter-users-field-name {
+    order: 1;
+    width: 50%;
+  }
+
+  .filter-users-field-data {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-users-field-data-from, .filter-users-field-data-to, .filter-users-field-list-count-from, .filter-users-field-list-count-to {
+    width: 50%;
+  }
+
+  .filter-users-field-data-from, .filter-users-field-list-count-from {
+    padding-right: 10px;
+  }
+
+  .filter-users-field-data-to, .filter-users-field-list-count-to {
+    padding-left: 10px;
+  }
+
+  .filter-users-field-list-count {
+    order: 4;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-users-field-status {
+    order: 2;
+    width: 50%;
+  }
+
+  .filter-users-field-official {
+    order: 5;
+    width: 50%;
+  }
+
+  .filter-users-field-admin {
+    order: 6;
+    width: 50%;
+  }
+
+  .filter-users-field-buttons {
+    order: 7;
+  }
+
+  /****************************************************************************************/
 }
 
 /**/
