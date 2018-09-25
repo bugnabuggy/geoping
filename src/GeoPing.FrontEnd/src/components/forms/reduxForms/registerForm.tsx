@@ -97,7 +97,6 @@ function registerForms(props: any): any {
 
 const registerReduxForm: any = reduxForm ( {
   form: 'register',
-  validate
-
+  validate,
 } ) ( ( registerForms ) );
 export default registerReduxForm;
