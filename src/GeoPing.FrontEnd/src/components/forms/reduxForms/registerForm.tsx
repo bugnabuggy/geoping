@@ -9,7 +9,7 @@ import { IconLookup } from '@fortawesome/fontawesome-svg-core';
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 
-const renderInput = ( props: any) => {
+const renderInput = ( props: any ) => {
   return (
     <FormGroup>
       <ControlLabel>{props.labelName}</ControlLabel>{' '}
@@ -94,9 +94,9 @@ function registerForms(props: any): any {
     </form>
   );
 }
-const registerReduxForm: any = reduxForm({
-  form: 'register',
-  validate
 
-})((registerForms));
+const registerReduxForm: any = reduxForm ( {
+  form: 'register',
+  validate,
+} ) ( ( registerForms ) );
 export default registerReduxForm;
