@@ -9,6 +9,7 @@ using GeoPing.Api.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,15 +25,20 @@ namespace GeoPing.Api
 
             using (var scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;   
+                var services = scope.ServiceProvider;
                 try
                 {
+                    var db = services.GetRequiredService<ApplicationDbContext>();
+                    var isdb = services.GetRequiredService<AppUsersDbContext>();
+                    db.Database.Migrate();
+                    isdb.Database.Migrate();    
+
                     SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
+                    logger.LogError(ex, "An error occurred while migration and initializing the DB.");
                 }
             }
 

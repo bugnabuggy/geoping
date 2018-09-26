@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace GeoPing.Api.Data.Migrations
+namespace GeoPing.Api.Data.Migrations.Identity
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180919055608_UserDatabase")]
-    partial class UserDatabase
+    [DbContext(typeof(AppUsersDbContext))]
+    [Migration("20180926053336_InitialIdentityMigration")]
+    partial class InitialIdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

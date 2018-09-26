@@ -10,8 +10,9 @@ namespace GeoPing.Api.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<TableOfGeopoints> TableOfGeopoints { get; set; }
-        public DbSet<Geopoint> Geopoints { get; set; }
+        public DbSet<GeoPoint> GeoPoints { get; set; }
+        public DbSet<GeoCatalog> GeoCatalogs { get; set; }
+        public DbSet<PointCatalog> PointCatalogs { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -25,6 +26,19 @@ namespace GeoPing.Api.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            builder.Entity<PointCatalog>()
+                .HasKey(pc => new { pc.GeoPointId, pc.GeoCatalogId });
+
+            builder.Entity<PointCatalog>()
+                .HasOne(pc => pc.Point)
+                .WithMany(p => p.PointCatalogs)
+                .HasForeignKey(pc => pc.GeoPointId);
+
+            builder.Entity<PointCatalog>()
+                .HasOne(pc => pc.Catalog)
+                .WithMany(c => c.PointCatalogs)
+                .HasForeignKey(pc => pc.GeoCatalogId);
         }
     }
 }

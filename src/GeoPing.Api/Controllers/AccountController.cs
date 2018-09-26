@@ -28,14 +28,14 @@ namespace GeoPing.Api.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly AppUsersDbContext _dbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            ApplicationDbContext dbContext)
+            AppUsersDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
