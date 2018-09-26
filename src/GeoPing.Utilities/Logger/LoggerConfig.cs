@@ -11,10 +11,10 @@ namespace GeoPing.Utilities.Logger
     {
         public static void SetSettings()
         {
-            if (true)
+            if (false)
             {
                 // Enable internal logging to a file
-                InternalLogger.LogFile = "${basedir}/internallog.log";
+                InternalLogger.LogFile = "internallog.log";
 
                 // Set internal log level
                 InternalLogger.LogLevel = LogLevel.Trace;

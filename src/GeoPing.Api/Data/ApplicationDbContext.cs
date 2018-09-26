@@ -5,14 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using GeoPing.Api.Models;
+using GeoPing.Api.Models.Entities;
 
 namespace GeoPing.Api.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        //public DbSet<TableOfGeopoints> TableOfGeopoints { get; set; }
+
+        //public DbSet<Geopoint> Geopoints { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            try
+            {
+                Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

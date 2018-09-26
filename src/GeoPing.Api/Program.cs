@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoPing.Api.Configuration;
 using GeoPing.Api.Data;
 using GeoPing.Api.Models;
 using Microsoft.AspNetCore;
@@ -24,13 +25,9 @@ namespace GeoPing.Api
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;   
-                var context = services.GetRequiredService<ApplicationDbContext>();
                 try
                 {
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    SeedData.InitializeAsync(roleManager, userManager);
+                    SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {

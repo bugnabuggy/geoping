@@ -16,6 +16,8 @@ using GeoPing.Utilities.Logger;
 using IdentityServer4;
 using IdentityServer4.AccessTokenValidation;
 using System.Reflection;
+using GeoPing.Api.Configuration;
+using GeoPing.Api.Interfaces;
 
 namespace GeoPing.Api
 {
@@ -42,7 +44,6 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(_configuration);
-            services.Configure<LoggerConfig.LoggerSettings>(_configuration.GetSection("LoggerSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
@@ -72,6 +73,7 @@ namespace GeoPing.Api
                 .AddAspNetIdentity<ApplicationUser>()
 
                 // this adds the operational data from DB (codes, tokens, consents)
+                
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
@@ -98,7 +100,7 @@ namespace GeoPing.Api
                 options.Authority = Constants.ServerUrl;
                 options.RequireHttpsMetadata = false;
                 options.ApiName = Constants.ApiName;
-                // options.ApiSecret = Constants.ClientSecret;
+                options.ApiSecret = Constants.ClientSecret;
             });
 
             // Removing cookie authentitication

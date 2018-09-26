@@ -12,10 +12,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
-using GeoPing.Api.Models.AccountDTO;
+using GeoPing.Api.Models.DTO;
 using IdentityServer4.Extensions;
 using GeoPing.Api.Data;
 using Microsoft.Extensions.DependencyInjection;
+using GeoPing.Api.Interfaces;
 
 namespace GeoPing.Api.Controllers
 {
