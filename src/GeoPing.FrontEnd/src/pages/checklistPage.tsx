@@ -17,7 +17,7 @@ export default class ChecklistPage extends React.Component<IChecklistPageProps, 
             <CheckListComponentContainer/>
           </div>
           <div className="check-list-map">
-            <GoogleMapComponentContainer />
+            {/*<GoogleMapComponentContainer />*/}
           </div>
         </div>
       </React.Fragment>
