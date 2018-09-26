@@ -42,6 +42,10 @@ header {
   width: 100%;
 }
 
+.table-sort-icon {
+  margin-left: 10px;
+}
+
 /* Header ******************************************************************/
 /*.header-container {*/
 /*height: 100%;*/
@@ -147,7 +151,7 @@ header nav {
   color: #a4575b;
 }
 
-  /**/
+/**/
 
 /*Sign up*/
 .sign-container {
@@ -283,7 +287,7 @@ header nav {
 
 .dashboard-check-list-panel-body {
   height: 100%;
-  overflow: overlay;
+  overflow: auto;
   padding: 0 10px;
 }
 
@@ -927,6 +931,82 @@ header nav {
 }
 
 /*************************************************************************************/
+
+/* Admin all checklist */
+.admin-checklist-container {
+  display: grid;
+  padding: 10px;
+  height: 100%;
+  grid-template-rows: [row1] 50px [row2] minmax(500px, 1fr);
+  grid-template-columns: [col1] 1fr [col2] minmax(250px, 350px);
+  grid-gap: 5px;
+}
+
+.admin-checklist-filter-container {
+  grid-column-start: col2;
+  grid-column-end: col2;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-checklist-table {
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-checklist-filter {
+  border: black 1px solid;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-checklist-filter-field-name, .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
+.admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
+  width: 100%;
+}
+
+.admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points {
+  flex-direction: row;
+  display: flex;
+}
+
+.admin-checklist-filter-field-created-from, .admin-checklist-filter-field-geo-points-from {
+  width: 50%;
+}
+
+.admin-checklist-filter-field-created-to, .admin-checklist-filter-field-geo-points-to {
+  width: 50%;
+}
+
+.admin-checklist-filter-field-public label:first-child, .admin-checklist-filter-field-created-from,
+.admin-checklist-filter-field-geo-points-from {
+  margin-right: 10px;
+}
+
+.admin-checklist-filter-field-public label:nth-child(2), .admin-checklist-filter-field-created-to,
+.admin-checklist-filter-field-geo-points-to {
+  margin-left: 10px;
+}
+
+.admin-checklist-filter-field-button {
+  display: flex;
+  justify-content: space-around;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
+/**/
+select.form-control:not([size]):not([multiple]) {
+  height: 34px;
+}
+/**/
+
+/*************************************************************************************/
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
@@ -960,6 +1040,7 @@ header nav {
   .nav.false {
     display: none;
   }
+
   .rounded-circle {
     display: none;
   }
@@ -1105,6 +1186,64 @@ header nav {
     margin: 10px 0 10px 0;
   }
 
+  /* Admin all checklist */
+  .admin-checklist-container {
+    display: grid;
+    padding: 10px;
+    height: 100%;
+    grid-template-rows: [row1] 50px [row2] minmax(250px, max-content) [row3] minmax(500px, 1fr);
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
+  }
+
+  .admin-checklist-filter-container {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row2;
+  }
+
+  .admin-checklist-table {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row3;
+  }
+
+  .admin-checklist-filter-field-name .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
+  .admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
+    /*display: flex;*/
+  }
+
+  .admin-checklist-filter-field-name {
+    order: 1;
+    width: 50%;
+    padding-right: 10px;
+  }
+
+  .admin-checklist-filter-field-users {
+    order: 2;
+    width: 50%;
+    padding-left: 10px;
+  }
+
+  .admin-checklist-filter-field-created {
+    order: 3;
+  }
+
+  .admin-checklist-filter-field-geo-points {
+    order: 4;
+  }
+
+  .admin-checklist-filter-field-public {
+    order: 5;
+  }
+
+  .admin-checklist-filter-field-button {
+    order: 6;
+  }
+
+  /****************************************************************************************************************/
   /*.check-list-map {*/
   /*!*height: 500px;*!*/
   /*}*/

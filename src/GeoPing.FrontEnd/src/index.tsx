@@ -30,6 +30,9 @@ import {
   faTimes,
   faPencilAlt,
   faCalendarAlt,
+  faSort,
+  faSortUp,
+  faSortDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -55,7 +58,10 @@ library.add (
   faPencilAlt,
   faCalendarAlt,
   faCheckCircle,
-  faTimesCircle
+  faTimesCircle,
+  faSort,
+  faSortUp,
+  faSortDown,
 );
 
 const history = createBrowserHistory ();
@@ -73,7 +79,7 @@ const store = createStore (
     )
   )
 );
-console.log ( 'NODE_ENV: ', process.env.NODE_ENV );
+// console.log ( 'NODE_ENV: ', process.env.NODE_ENV );
 ReactDOM.render (
   <Provider store={store}>
     <ConnectedRouter history={history}>
