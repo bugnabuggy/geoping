@@ -47,6 +47,9 @@ namespace GeoPing.Api
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppUsersDbContext>(options =>
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
 
             services.AddMvcCore()
                 .AddFormatterMappings()
