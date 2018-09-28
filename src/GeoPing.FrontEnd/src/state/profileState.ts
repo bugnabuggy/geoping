@@ -3,8 +3,9 @@ import IProfileStateType from '../DTO/types/stateTypes/profileStateType';
 export const profileState: IProfileStateType = {
   login: 'testLogin',
   fullName: 'alex',
-  email: 'ale@.ty',
+  email: 'ale@ad.aty',
   phone: '912-213-1232',
   accountType: 'basic',
   lastPaid: 'data',
 };
+// random-test-words, delete after 

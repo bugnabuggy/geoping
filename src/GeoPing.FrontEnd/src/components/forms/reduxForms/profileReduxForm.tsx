@@ -1,10 +1,12 @@
 import * as React from 'react';
-// import { connect } from 'react-redux';
 import { Field, reduxForm} from 'redux-form';
-// import { loadProfileData } from '../../../actions/profileAction';
 import { validate } from '../../../validations/userProfileValidate';
 import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { IconLookup } from '@fortawesome/fontawesome-svg-core';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
+const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 
 const output = (props: any) => {
   switch (props.labelName) {
@@ -57,7 +59,23 @@ const renderInput = (props: any) => {
   return (
     <FormGroup>
       <ControlLabel className="control-profile-label" >{props.labelName}</ControlLabel>{' '}
+      <div className="form-input-container">
       {output(props)}
+        <div className="form-icon-container">
+          {props.meta.touched ?
+            props.meta.error ?
+              <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+              :
+              <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
+            :
+            null
+          }
+          {props.meta.touched &&
+          !props.meta.active &&
+          props.meta.error &&
+          <div className="tooltip_form">{props.meta.error}</div>}
+        </div>
+      </div>
     </FormGroup>
     );
 };
@@ -100,6 +118,7 @@ function profileForm(props: any): any {
       <Button
         bsStyle="primary"
         type="submit"
+        className="profile-flex-btn"
         onClick={handleSubmit}
       >
         Submit changes

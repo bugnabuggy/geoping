@@ -202,6 +202,11 @@ header nav {
 .last-paid-flex {
   padding: 20px 0;
 }
+.profile-flex-btn {
+  display: flex;
+  padding: 6px 19px;
+  margin-top: 15px;
+}
 /**/
 
 /* Dashboard **************************************************************/
