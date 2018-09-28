@@ -1,138 +1,115 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import profileReducer, {load} from '../../../reducers/profileReducer';
-import {loadProfileData} from '../../../actions/profileAction';
-import {load as loadAc} from '../../../reducers/profileReducer';
-import {validate} from '../../../validations/userProfileValidate';
+// import { connect } from 'react-redux';
+import { Field, reduxForm} from 'redux-form';
+// import { loadProfileData } from '../../../actions/profileAction';
+import { validate } from '../../../validations/userProfileValidate';
 import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import  * as ReactTooltip  from 'react-tooltip';
 
-const data = {smt: 'as'};
-
-const renderInput = ( props: any) => {
-  return (
-    <FormGroup>
-      <ControlLabel>{props.labelName}</ControlLabel>{' '}
-      <FormControl
-        {...props.input}
-        type = 'text'
-        placeholder = {props.placeholder}
-        data-tip = {props.meta.error}
-      />
-      <ReactTooltip  disable={!(props.meta.touched && (props.meta.error ))} delayHide={500} />
-      {!props.meta.error &&
-      <div className="isValid-check" >
-          <FontAwesomeIcon icon="check" />
-      </div>}
-    </FormGroup>
-  );
+const output = (props: any) => {
+  switch (props.labelName) {
+    case 'Login':
+      return (
+        <FormControl
+          {...props.input}
+          type="input"
+          disabled={true}
+        />
+      );
+    case 'Email':
+      return (
+        <FormControl
+          {...props.input}
+          type="email"
+          placeholder={props.placeholder}
+        />
+      );
+    case 'Mobile Phone':
+      return (
+        <FormControl
+          {...props.input}
+          placeholder={'xxx-xxx-xxxx'}
+          type="tel"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+        />
+      );
+    case 'Full Name':
+      return (
+        <FormControl
+          {...props.input}
+          type="text"
+          placeholder={props.placeholder}
+        />
+      );
+    case 'Account Type':
+      return (
+        <div className="form-control">{props.input.value}</div>
+      );
+    default:
+      return (
+        <FormControl
+          {...props.input}
+        />
+    );
+  }
 };
-let readOnlyLogin = (props :any) => {
+const renderInput = (props: any) => {
   return (
     <FormGroup>
-      <ControlLabel >{props.labelName}</ControlLabel>{' '}
-      <FormControl
-
-        type = 'text'
-        disabled
-        value={''}
-      />
+      <ControlLabel className="control-profile-label" >{props.labelName}</ControlLabel>{' '}
+      {output(props)}
     </FormGroup>
-    )
-};
-const emailField =  (props :any) => {
-  return (
-    <FormGroup>
-      <ControlLabel>{props.labelName}</ControlLabel>{' '}
-      <FormControl
-        {...props.input}
-        type = 'email'
-        placeholder = {props.placeholder}
-      />
-    </FormGroup>
-  )
-};
-const phoneField =  (props :any) => {
-  return (
-    <FormGroup>
-      <ControlLabel>{props.labelName}</ControlLabel>{' '}
-      <FormControl
-        {...props.input}
-        placeholder = {'xxx-xxx-xxxx'}
-        type = 'tel'
-        pattern = '[0-9]{3}-[0-9]{3}-[0-9]{4}'
-      />
-      <ReactTooltip  disable={!(props.meta.touched && (props.meta.error ))} delayHide={500} />
-    </FormGroup>
-  )
-};
-const nameField =  (props :any) => {
-  return (
-    <FormGroup>
-      <ControlLabel>{props.labelName}</ControlLabel>{' '}
-      <FormControl
-        {...props.input}
-        type = 'text'
-        placeholder = {props.placeholder}
-      />
-    </FormGroup>
-  )
+    );
 };
 
 function profileForm(props: any): any {
-  const {handleSubmit}  = props;
+  const {handleSubmit} = props;
   return(
-
-    <form className = 'profile-form'>
+    <form className="profile-form">
       <Field
-        component = {readOnlyLogin}
-        name = 'login'
-        labelName = 'Login'
+        component={renderInput}
+        name="login"
+        labelName="Login"
       />
       <Field
-        component = {nameField}
-        name = 'FullName'
-        labelName = 'Full Name'
+        component={renderInput}
+        name="fullName"
+        labelName="Full Name"
       />
       <Field
-        component = {emailField}
-        name = 'email'
-        labelName = 'Email'
+        component={renderInput}
+        name="email"
+        labelName="Email"
       />
       <Field
-        component = {phoneField}
-        name = 'phone'
-        labelName = 'Mobile Phone'
+        component={renderInput}
+        name="phone"
+        labelName="Mobile Phone"
+      />
+      <Field
+        component={renderInput}
+        name="accountType"
+        labelName="Account Type"
       />
       <Button
-      onClick={() => load(data)}>
-        load
-      </Button>
-      <Button
-        bsStyle = "primary"
-        type = "submit"
-        onClick = {handleSubmit}
+        bsStyle="primary"
+        type="button"
       >
         Change Password
-        {console.log(props)}
+      </Button>
+      <Button
+        bsStyle="primary"
+        type="submit"
+        onClick={handleSubmit}
+      >
+        Submit changes
       </Button>
     </form>
   );
 }
-const profileReduxForm: any = connect(profileReducer, {load: loadAc})(
-reduxForm({
+const profileReduxForm: any = reduxForm({
   form: 'profile',
   validate
-})((profileForm))
-);
-
-// const some = connect()readOnlyLogin = connect(
-//   state => ({
-//     initialValues: state.account.data // pull initial values from account reducer
-//   }),
-//   { load: loadAccount }               // bind account loading action creator
-// )(readOnlyLogin);
+})((profileForm));
 
 export default profileReduxForm;

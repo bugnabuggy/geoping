@@ -86,24 +86,30 @@ header nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+.flex-box-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .profile-form {
-  padding: 40px 200px;
-  width: 70vh;
+  padding: 40px 160px;
+  max-width: 1000px;
   border: 1px solid;
+  margin-bottom: 40px;
 }
 .profile-label {
-  position: relative;
-  left: 60px;
-  bottom: 220px;
   font-size: 1.5em;
+  float: left;
 }
-.control-label {
-  position: relative;
-  float: right;
-  right: 33vh;
-  top: 3vh;
+.payment-info {
+  max-width: 500px;
 }
+.last-paid-flex {
+  padding: 20px 0;
+}
+
 /* Dashboard **************************************************************/
 .dashboard-container {
   width: 100vw;

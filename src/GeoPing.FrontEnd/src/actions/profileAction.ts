@@ -1,14 +1,18 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-const LOAD = '../state/profileState';
+
+const LOAD_INFO: string = 'LOAD_INFO';
 
 export const loadProfileData = () => ( dispatch: IDispatchFunction ) => {
-  return {type: LOAD};
+ dispatch(loadProfileDataAction);
 };
 
 export const changePassword = ( newPassword: string ) => ( dispatch: IDispatchFunction ) => {
-  return '';
+  console.log('a');
 };
 
 export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {
-  return '';
+  console.log('a');
 };
+function loadProfileDataAction(): Object {
+  return {type: LOAD_INFO};
+}
