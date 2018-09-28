@@ -6,6 +6,6 @@ export const profileState: IProfileStateType = {
   email: 'ale@ad.aty',
   phone: '912-213-1232',
   accountType: 'basic',
-  lastPaid: 'data',
+  lastPaid: 'random-string',
 };
-// random-test-words, delete after 
+// random-test-words, delete after
