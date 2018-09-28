@@ -22,6 +22,12 @@ export const authorizedLinks: Array<any> = [
         id: '/profile'
       },
       {
+        path: '/admin/dashboard',
+        text: 'Admin Dashboard',
+        id: '/admin/dashboard',
+        isAdmin: true,
+      },
+      {
         path: '/',
         text: 'Sign out',
         id: '/#'

@@ -1,3 +1,5 @@
+import { ERoleUser } from '../../DTO/types/stateTypes/userStateType';
+
 export default interface ILinkMenuType {
   text: string;
   path: string;
@@ -11,4 +13,5 @@ export default interface ILinkHeaderComponentProps {
   index: string;
   dropdown?: boolean;
   links?: Array<ILinkMenuType>;
+  roleUser: ERoleUser;
 }

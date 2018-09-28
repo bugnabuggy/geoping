@@ -14,8 +14,7 @@ export class NotificationComponent extends React.Component<INotificationComponen
 
   componentDidMount() {
     if ( this.props.notification.type === EnumNotificationType.Info ||
-      this.props.notification.type === EnumNotificationType.Success ||
-      this.props.notification.type === EnumNotificationType.Primary ) {
+      this.props.notification.type === EnumNotificationType.Success ) {
       this.timer = setTimeout ( this.deleteNotification, 5000, this.props.notification.id );
     }
   }
@@ -49,7 +48,7 @@ export class NotificationComponent extends React.Component<INotificationComponen
               <FontAwesomeIcon icon="times" className="notification-dismiss-icon"/>
               dismiss
             </Link>
-            {this.props.id === 0 && (
+            {this.props.id === 0 && this.props.countNotifications > 1 && (
               <Link
                 id="dismissAll"
                 to="#"

@@ -8,7 +8,7 @@ import logger from 'redux-logger';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import GetRoutes from './routers/getRoutes';
+import { getRoutes } from './routers/getRoutes';
 import createReducer from './reducers/rootReducer';
 import initialState from './state/initialState';
 
@@ -28,7 +28,14 @@ import {
   faPlusSquare,
   faBars,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  faCheckCircle,
+  faTimesCircle,
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add (
   faFilter,
@@ -45,6 +52,10 @@ library.add (
   faPlusSquare,
   faBars,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt,
+  faCheckCircle,
+  faTimesCircle
 );
 
 const history = createBrowserHistory ();
@@ -62,11 +73,11 @@ const store = createStore (
     )
   )
 );
-
+console.log ( 'NODE_ENV: ', process.env.NODE_ENV );
 ReactDOM.render (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <GetRoutes/>
+      {getRoutes()}
     </ConnectedRouter>
   </Provider>,
   document.getElementById ( 'app' )
