@@ -240,7 +240,7 @@ function deleteMarker( state: IGoogleMapType, action: any ) {
         }
       } )
     ],
-    deleteMarker: action.idMarker,
+    deleteIdMarker: action.idMarker,
     selectedMarker: { ...defaultMarker },
     isMarkerSaved: false,
     isMarkerInstalled: false,

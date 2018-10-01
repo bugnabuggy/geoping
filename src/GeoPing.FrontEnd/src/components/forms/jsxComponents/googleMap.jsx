@@ -86,9 +86,9 @@ class GoogleMap extends React.Component {
         prevProps.googleMap.isMarkerCanceled !== this.props.googleMap.isMarkerCanceled &&
         this.props.googleMap.isMarkerCanceled) {
         removeMarker(prevProps.googleMap.selectedMarker.id);
-        this.props.googleMap.editingPermission(false);
+        this.props.editingPermission(false);
       } else if (prevProps.googleMap.isMarkerCanceled !== this.props.googleMap.isMarkerCanceled && this.props.googleMap.isMarkerCanceled) {
-        setMarkerPosition(this.props.googleMap.markers.find(item => item.id === prevProps.googleMap.selectedMarker.id));
+        setMarkerPosition(this.props.googleMap.markersList.find(item => item.id === prevProps.googleMap.selectedMarker.id));
       }
 
       if (prevProps.googleMap.isCheckGeoPosition !== this.props.googleMap.isCheckGeoPosition && this.props.googleMap.isCheckGeoPosition) {
@@ -100,10 +100,10 @@ class GoogleMap extends React.Component {
         setMarkerTitle(prevProps.googleMap.selectedMarker);
       }
 
-      // if (this.props.googleMap.deleteIdMarker) {
-      //   removeMarker(this.props.googleMap.deleteIdMarker);
-      //   this.props.deleteMarker('');
-      // }
+      if (this.props.googleMap.deleteIdMarker) {
+        removeMarker(this.props.googleMap.deleteIdMarker);
+        this.props.deleteMarker('');
+      }
 
       if (!this.props.googleMap.isUserMarkerCreated && this.props.googleMap.position.isSuccess && this.props.isCheckIn) {
         createUserMarker(this.props.googleMap.position);

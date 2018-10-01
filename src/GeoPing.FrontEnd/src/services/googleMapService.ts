@@ -169,13 +169,13 @@ export function createMarker( position: IMarker, isUser: boolean, timeout: numbe
       marker.addListener( 'click', ( e: any ) => {
         if ( !isUser ) {
           if ( _that.props.googleMap.selectedMarker.id !== position.id ) {
-            _that.props.selectMarker(
-              _that.props.googleMap.markersList.find( ( item: IMarker ) => item.id === position.id )
-            );
             if ( !_that.props.isCheckIn ) {
               _that.props.editingPermission( true );
               _that.props.putStatusMarker( EnumStatusMarker.Edit );
             }
+            _that.props.selectMarker(
+              _that.props.googleMap.markersList.find( ( item: IMarker ) => item.id === position.id )
+            );
           } else {
             if ( _that.props.googleMap.isMarkerInstalled ) {
               removeMarker( _that.props.googleMap.selectedMarker.id );
@@ -278,6 +278,6 @@ export function getDistance() {
     _that.props.googleMap.position.lat,
     _that.props.googleMap.position.lng,
   );
-  const distance: number = _google.maps.geometry.spherical.computeDistanceBetween(destination, origin);
-  _that.props.addDistance(distance);
+  const distance: number = _google.maps.geometry.spherical.computeDistanceBetween( destination, origin );
+  _that.props.addDistance( distance );
 }

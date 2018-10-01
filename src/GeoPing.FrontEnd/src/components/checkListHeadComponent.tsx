@@ -28,7 +28,7 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
   };
 
   handleShare = () => {
-    console.log('share');
+    // console.log('share');
   }
 
   render() {

@@ -14,7 +14,7 @@ export default interface IGoogleMapType {
   statusMarker: EnumStatusMarker;
   isCheckGeoPosition: boolean;
   position: IPosition;
-  deleteMarker: string;
+  deleteIdMarker: string;
   isUserMarkerCreated: boolean;
   isMarkerRendered: boolean;
 }

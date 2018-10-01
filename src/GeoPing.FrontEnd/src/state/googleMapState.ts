@@ -61,7 +61,7 @@ export const googleMapState: IGoogleMapType = {
   isMarkerCanceled: false,
   statusMarker: EnumStatusMarker.None,
   isCheckGeoPosition: false,
-  deleteMarker: '',
+  deleteIdMarker: '',
   isUserMarkerCreated: false,
   isMarkerRendered: false,
 };

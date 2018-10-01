@@ -29,8 +29,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
+  bindActionCreators (
+    {
     changeNameCheckList,
-  }, dispath );
+  },
+    dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( CheckListTitleComponentContainer );
