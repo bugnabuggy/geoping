@@ -65,7 +65,7 @@ namespace GeoPing.Api
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<AppUsersDbContext>()
                 .AddDefaultTokenProviders();
 
             // Configure IdentityServer with in-memory stores, keys, clients and res

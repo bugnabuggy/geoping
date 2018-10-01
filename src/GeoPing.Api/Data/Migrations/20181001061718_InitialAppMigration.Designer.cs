@@ -11,8 +11,8 @@ using System;
 namespace GeoPing.Api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180926053217_InitialApplicationMigration")]
-    partial class InitialApplicationMigration
+    [Migration("20181001061718_InitialAppMigration")]
+    partial class InitialAppMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GeoPing.Api.Data.Migrations
 {
-    public partial class InitialApplicationMigration : Migration
+    public partial class InitialAppMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

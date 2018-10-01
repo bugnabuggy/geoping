@@ -58,7 +58,7 @@ namespace GeoPing.Api.Configuration
                     }
                     if (user.UserName == "testadmin")
                     {
-                        task = userManager.AddToRolesAsync(user, new List<string> { "user", "admin"});
+                        task = userManager.AddToRolesAsync(user, new List<string> { "user", "admin" });
                     }
                     else
                     {

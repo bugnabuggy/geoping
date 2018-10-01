@@ -11,7 +11,7 @@ using System;
 namespace GeoPing.Api.Data.Migrations.Identity
 {
     [DbContext(typeof(AppUsersDbContext))]
-    [Migration("20180926053336_InitialIdentityMigration")]
+    [Migration("20181001061857_InitialIdentityMigration")]
     partial class InitialIdentityMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
