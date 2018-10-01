@@ -15,10 +15,13 @@ export default interface IGoogleMapType {
   isCheckGeoPosition: boolean;
   position: IPosition;
   deleteMarker: string;
+  isUserMarkerCreated: boolean;
+  isMarkerRendered: boolean;
 }
 
 export interface IMarker {
   id: string;
+  idList: string;
   name: string;
   lat: number;
   lng: number;

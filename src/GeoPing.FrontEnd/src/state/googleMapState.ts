@@ -22,11 +22,12 @@ export const googleMapState: IGoogleMapType = {
   markersForMap: [],
   selectedMarker: {
     id: '',
+    idList: '',
     name: '',
     lat: 0,
     lng: 0,
     radius: 0,
-    description: ''
+    description: '',
   },
   selectedMarkerForMap: {},
   isAddMarker: false,
@@ -42,6 +43,7 @@ export const googleMapState: IGoogleMapType = {
   },
   newMarker: {
     id: '',
+    idList: '',
     name: '',
     lat: 0,
     lng: 0,
@@ -60,4 +62,6 @@ export const googleMapState: IGoogleMapType = {
   statusMarker: EnumStatusMarker.None,
   isCheckGeoPosition: false,
   deleteMarker: '',
+  isUserMarkerCreated: false,
+  isMarkerRendered: false,
 };

@@ -35,7 +35,7 @@ function closeModalForCreateCheckList( state: ICheckListStateType, action: any )
 }
 
 function editingPermissionPoint( state: ICheckListStateType, action: any ) {
-  const newState: ICheckListStateType = Object.assign ( {}, state, { isEditind: action.isEditind } );
+  const newState: ICheckListStateType = Object.assign ( {}, state, { isEditing: action.isEditing } );
   return newState;
 }
 
