@@ -12,7 +12,8 @@ export default class GoogleMapComponent extends React.Component<IGoogleMapCompon
     return (
       <React.Fragment>
         {this.props.position.isSuccess ?
-          ( <GoogleMap
+          (
+            <GoogleMap
               markers={this.props.markers}
               isAddMarker={this.props.isAddMarker}
               selectedMarker={this.props.selectedMarker}

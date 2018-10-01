@@ -11,9 +11,12 @@ import {
   addNewPoint,
   cancelAddNewPoint,
   cancelEditingGEOPoint,
-  changeDataGEOPoint, deleteMarker,
-  editGEOPoint, markerInstalled,
-  permissionToAddMarker, putStatusMarker,
+  changeDataGEOPoint,
+  deleteMarker,
+  editGEOPoint,
+  markerInstalled,
+  permissionToAddMarker,
+  putStatusMarker,
   selectedMarker
 } from '../actions/googleMapAction';
 import { CheckListLinkComponent } from '../components/checkListLinkComponent';
@@ -92,21 +95,23 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    editingPermission,
-    selectMarker: selectedMarker,
-    editGEOPoint,
-    changeDataGEOPoint,
-    cancelEditingGEOPoint,
-    addNewPoint,
-    permissionToAddMarker,
-    cancelAddNewPoint,
-    addNotification,
-    deleteNotification,
-    checkGEOPosition,
-    markerInstalled,
-    putStatusMarker,
-    deleteMarker,
-  }, dispath );
+  bindActionCreators(
+    {
+      editingPermission,
+      selectMarker: selectedMarker,
+      editGEOPoint,
+      changeDataGEOPoint,
+      cancelEditingGEOPoint,
+      addNewPoint,
+      permissionToAddMarker,
+      cancelAddNewPoint,
+      addNotification,
+      deleteNotification,
+      checkGEOPosition,
+      markerInstalled,
+      putStatusMarker,
+      deleteMarker,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( CheckListComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( CheckListComponentContainer );

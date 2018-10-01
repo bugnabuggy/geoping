@@ -39,8 +39,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
+  bindActionCreators (
+    {
     changePagination,
-  }, dispath );
+  },
+    dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( PublicCheckListsComponentContainer );

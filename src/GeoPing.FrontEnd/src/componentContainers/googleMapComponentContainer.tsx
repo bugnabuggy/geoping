@@ -6,17 +6,23 @@ import GoogleMapComponent from '../components/googleMapComponent';
 import IGoogleMapComponentContainerProps
   from '../componentProps/googleMapComponentProps/googleMapComponentContainerProps';
 import {
-  addPoints, cancelAddNewPoint, deleteMarker, findLocationForCenterMap, markerInstalled, moveDragMarker,
+  addPoints,
+  cancelAddNewPoint,
+  deleteMarker,
+  findLocationForCenterMap,
+  markerInstalled,
+  moveDragMarker,
   moveEndMarker,
-  moveStartMarker, permissionToAddMarker, putStatusMarker,
+  moveStartMarker,
+  permissionToAddMarker,
+  putStatusMarker,
   selectedMarker
 } from '../actions/googleMapAction';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import { editingPermission } from '../actions/checkListAction';
-import { IMarker } from '../DTO/types/googleMapType';
 
 class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentContainerProps, any> {
-   render() {
+  render() {
     return (
       <React.Fragment>
         <GoogleMapComponent
@@ -68,7 +74,8 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
+  bindActionCreators(
+    {
     addPoints,
     selectMarker: selectedMarker,
     moveStartMarker,
@@ -81,6 +88,7 @@ const mapDispatchToProps = ( dispath: any ) =>
     putStatusMarker,
     findLocationForCenterMap,
     deleteMarker,
-  }, dispath );
+  },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( GoogleMapComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( GoogleMapComponentContainer );

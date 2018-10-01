@@ -15,7 +15,7 @@
   "license": "ISC",
   "husky" : {
     "hooks": {
-      "pre-commit": "npm run test src/GeoPing.FrontEnd/tslint.sh"
+      "pre-commit": "tslint --project .\\ && npm test"
     }
   },
   "devDependencies": {

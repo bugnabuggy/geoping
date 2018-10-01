@@ -4,31 +4,28 @@ import ICheckListHeadComponentProps from '../componentProps/checkListHeadCompone
 import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 export class CheckListHeadComponent extends React.Component<ICheckListHeadComponentProps, any> {
-  constructor( props: ICheckListHeadComponentProps ) {
-    super ( props );
-    this.state = {
-      isEdit: false,
-    };
-  }
-
   handleEdit = () => {
-    this.setState ( {
+    this.setState( {
       isEdit: true,
     } );
   };
-
   blurEdit = () => {
-    this.setState ( {
+    this.setState( {
       isEdit: false,
     } );
   };
-
   handleChangeName = ( e: any ) => {
-    this.props.changeNameCheckList ( e.target.value );
+    this.props.changeNameCheckList( e.target.value );
+  };
+  handleShare = () => {
+    // console.log( 'share' );
   };
 
-  handleShare = () => {
-    console.log('share');
+  constructor( props: ICheckListHeadComponentProps ) {
+    super( props );
+    this.state = {
+      isEdit: false,
+    };
   }
 
   render() {
@@ -40,7 +37,9 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
               <FormGroup
                 className="check-list-head-name-form-group"
               >
-                {!this.state.isEdit && <ControlLabel><h3><p>{this.props.nameChecklist}</p></h3></ControlLabel>}
+                {!this.state.isEdit && <ControlLabel>
+                  <h3><p>{this.props.nameChecklist}</p></h3>
+                </ControlLabel>}
                 {this.state.isEdit && <FormControl
                   name="name"
                   value={this.props.nameChecklist}

@@ -16,8 +16,9 @@ import { addPointAction } from './googleMapAction';
 import { IMarker } from '../DTO/types/googleMapType';
 
 export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
-  console.log ( process.env.REACT_APP_GOOGLE_API_KEY );
-  window.navigator.geolocation.getCurrentPosition ( ( location: any ) => {
+  // console.log ( process.env.REACT_APP_GOOGLE_API_KEY );
+  window.navigator.geolocation.getCurrentPosition (
+    ( location: any ) => {
       getLocationAddress ( location.coords.latitude, location.coords.longitude )
         .then ( ( response: any ) => {
           const marker: IMarker = {
@@ -32,11 +33,11 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
           dispatch ( addPointAction ( marker ) );
         } )
         .catch ( ( error: any ) => {
-          console.log ( 'error', error );
+          // console.log ( 'error', error );
         } );
     },
     ( error: any ) => {
-      console.log ( error );
+      // console.log ( error );
     } );
 };
 
@@ -59,7 +60,7 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch ( addNotificationAction ( createNotification ( 'Check List creating', EnumNotificationType.Success ) ) );
     } )
     .catch ( ( error: any ) => {
-      console.log ( error );
+      // console.log ( error );
     } );
 };
 

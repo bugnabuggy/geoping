@@ -30,10 +30,12 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    addNotification,
-    deleteNotification,
-    deleteAllNotifications,
-  }, dispath );
+  bindActionCreators(
+    {
+      addNotification,
+      deleteNotification,
+      deleteAllNotifications,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( NotificationComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( NotificationComponentContainer );

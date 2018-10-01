@@ -8,7 +8,7 @@ import { changeNameCheckList } from '../actions/checkListAction';
 
 class CheckListTitleComponentContainer extends React.Component<ICheckListTitleComponentContainerProps, any> {
   render() {
-    return(
+    return (
       <React.Fragment>
         <div className="check-list-head">
           <CheckListHeadComponent
@@ -29,8 +29,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    changeNameCheckList,
-  }, dispath );
+  bindActionCreators(
+    {
+      changeNameCheckList,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( CheckListTitleComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( CheckListTitleComponentContainer );
