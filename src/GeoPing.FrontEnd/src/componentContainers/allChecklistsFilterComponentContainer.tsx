@@ -24,9 +24,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispatch: any ) =>
-  bindActionCreators( {
+  bindActionCreators(
+    {
       changeFields,
     },
-                      dispatch );
+    dispatch );
 
 export default connect( mapStateToProps, mapDispatchToProps )( AllChecklistsFilterComponentContainer );

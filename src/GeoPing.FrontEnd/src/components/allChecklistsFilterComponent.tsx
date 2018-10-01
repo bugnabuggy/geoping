@@ -8,9 +8,14 @@ import 'react-datepicker/dist/react-datepicker.css';
 import IAllChecklistsFilterComponentProps from '../componentProps/allChecklistsFilterComponentProps';
 
 export class AllChecklistsFilterComponent extends React.Component<IAllChecklistsFilterComponentProps, any> {
-  handleChange = ( date: any ) => {
+  handleChangeStart = ( date: any ) => {
     this.setState( {
-      startDate: date
+      startDate: date,
+    } );
+  };
+  handleChangeEnd = ( date: any ) => {
+    this.setState( {
+      endDate: date,
     } );
   };
 
@@ -21,8 +26,10 @@ export class AllChecklistsFilterComponent extends React.Component<IAllChecklists
 
   constructor( props: IAllChecklistsFilterComponentProps ) {
     super( props );
+    const date: any = moment();
     this.state = {
-      startDate: moment()
+      startDate: date,
+      endDate: date.date( date.date() + 1 ),
     };
   }
 
@@ -41,15 +48,21 @@ export class AllChecklistsFilterComponent extends React.Component<IAllChecklists
             <ControlLabel>Created from</ControlLabel>
             <DatePicker
               selected={this.state.startDate}
-              onChange={this.handleChange}
+              selectsStart={true}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={this.handleChangeStart}
               className="form-control"
             />
           </div>
           <div className="admin-checklist-filter-field-created-to">
             <ControlLabel>To</ControlLabel>
             <DatePicker
-              selected={this.state.startDate}
-              onChange={this.handleChange}
+              selected={this.state.endDate}
+              selectsStart={true}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={this.handleChangeEnd}
               className="form-control"
             />
           </div>
