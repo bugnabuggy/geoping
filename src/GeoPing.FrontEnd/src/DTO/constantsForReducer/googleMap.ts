@@ -1,4 +1,4 @@
-export const ADD_MARKER: string = 'ADD_MARKER';
+export const ADD_MARKERS: string = 'ADD_MARKERS';
 export const PERMISSION_TO_ADD_MARKER: string = 'PERMISSION_TO_ADD_MARKER';
 export const SELECT_MARKER: string = 'SELECT_MARKER';
 export const SELECT_MARKER_FOR_MAP: string = 'SELECT_MARKER_FOR_MAP';
@@ -8,6 +8,10 @@ export const MOVE_END_MARKER: string = 'MOVE_END_MARKER';
 export const CHANGE_DATA_GEO_POINT: string = 'CHANGE_DATA_GEO_POINT';
 export const EDIT_GEO_POINT: string = 'EDIT_GEO_POINT';
 export const CANCEL_EDITING_GEO_POINT: string = 'CANCEL_EDITING_GEO_POINT';
+export const USER_MARKER_CREATED: string = 'USER_MARKER_CREATED';
+export const MARKERS_RENDERED: string = 'MARKERS_RENDERED';
+export const CLEAR_MARKER_LIST: string = 'CLEAR_MARKER_LIST';
+export const ADD_DISTANCE_BETWEEN_POINTS: string = 'ADD_DISTANCE_BETWEEN_POINTS';
 
 export const ADD_POINT: string = 'ADD_POINT';
 export const MARKER_INSTALED: string = 'MARKER_INSTALED';

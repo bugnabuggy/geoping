@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { ICheckinPageProps } from '../componentProps/checkinPageProps';
+import CheckinComponentContainer from '../componentContainers/checkinComponentContainer';
 import GoogleMapComponentContainer from '../componentContainers/googleMapComponentContainer';
 
 export default class CheckinPage extends React.Component<ICheckinPageProps, any> {
@@ -8,10 +10,10 @@ export default class CheckinPage extends React.Component<ICheckinPageProps, any>
     return (
       <div className="checkin-container">
         <div className="checkin-form">
-          Checkin
+          <CheckinComponentContainer/>
         </div>
         <div className="checkin-map">
-          {/*<GoogleMapComponentContainer />*/}
+          <GoogleMapComponentContainer />
         </div>
       </div>
     );

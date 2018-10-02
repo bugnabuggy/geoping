@@ -14,11 +14,14 @@ export default interface IGoogleMapType {
   statusMarker: EnumStatusMarker;
   isCheckGeoPosition: boolean;
   position: IPosition;
-  deleteMarker: string;
+  deleteIdMarker: string;
+  isUserMarkerCreated: boolean;
+  isMarkerRendered: boolean;
 }
 
 export interface IMarker {
   id: string;
+  idList: string;
   name: string;
   lat: number;
   lng: number;

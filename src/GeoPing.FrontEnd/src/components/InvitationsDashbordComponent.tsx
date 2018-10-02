@@ -7,11 +7,11 @@ export class InvitationsDashbordComponent extends React.Component<IInvitationsDa
       <React.Fragment>
         <div className="block-new">
           <span>New</span>
-          <div></div>
+          <div/>
         </div>
         <div className="block-accepted">
           <span>Accepted</span>
-          <div ></div>
+          <div/>
         </div>
       </React.Fragment>
     );

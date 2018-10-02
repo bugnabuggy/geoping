@@ -45,6 +45,13 @@ header {
 .table-sort-icon {
   margin-left: 10px;
 }
+select.form-control:not([size]):not([multiple]) {
+  height: 34px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
 
 /* Header ******************************************************************/
 /*.header-container {*/
@@ -339,7 +346,7 @@ header nav {
   padding: 10px;
   display: grid;
   grid-template-rows: [row1] 1fr;
-  grid-template-columns: [col1] 1fr [col2] 1fr;
+  grid-template-columns: [col1] minmax(300px, 400px) [col2] 1fr;
   grid-gap: 10px;
 }
 
@@ -348,6 +355,73 @@ header nav {
   max-height: 100%;
 }
 
+.check-in-select-list-container {
+  display: flex;
+  align-items: center;
+}
+
+.check-in-select-list-label {
+  width: 200px;
+}
+
+.check-in-current-coordinates {
+  display: block;
+}
+
+.check-in-select-point-container {
+  height: 200px;
+  overflow: auto;
+}
+
+.check-in-select-point-action {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.check-in-select-point-icon {
+  color: #28a745;
+}
+
+.check-in-select-point-paragraph {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 350px;
+}
+
+.check-in-modal-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rate-icon-empty, .rate-icon-full {
+  font-size: 4rem;
+  color: gold;
+}
+
+.rate-container {
+  position: relative;
+  width: 250px;
+}
+
+.rate-tooltip {
+  position: absolute;
+  right: 1px;
+  border: #6992929e 1px solid;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  background: #6992929e;
+  color: white;
+  background: rgb(142,226,215); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(142,226,215,1) 14%, rgba(105,146,146,1) 84%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
 /**/
 
 /* Modal share check list **************************************************************************/
@@ -891,6 +965,30 @@ header nav {
   text-overflow: ellipsis;
 }
 
+.check-list-modal-period-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.check-list-modal-period-item-radio {
+  width: 150px;
+}
+
+.check-list-modal-period-item-input {
+  width: 300px;
+}
+
+.check-list-modal-period-buttons {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.5rem;
+}
+
+.check-list-modal-period-buttons div:first-child {
+  margin-right: 20px;
+}
+
 /*************************************************************************************/
 
 /* Admin dashboard */
@@ -1116,8 +1214,14 @@ select.form-control:not([size]):not([multiple]) {
 
   /* Check in*/
   .checkin-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: [row1] minmax(100px, max-content) [row2] 1fr;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 10px;
+  }
+
+  .checkin-form {
+    height: max-content;
   }
 
   .checkin-map {

@@ -8,12 +8,12 @@ interface IAddNewUserFormProps {
 }
 
 class AddNewUserForm extends React.Component<IAddNewUserFormProps, any> {
-  constructor( props: any ) {
-    super ( props );
-  }
-
   handleSubmit = ( values: any ) => {
-    console.log ( values );
+    // console.log ( values );
+  };
+
+  constructor( props: any ) {
+    super( props );
   }
 
   render() {

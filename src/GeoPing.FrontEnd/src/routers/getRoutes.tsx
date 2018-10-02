@@ -29,11 +29,11 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {}, dispath );
+  bindActionCreators( {}, dispath );
 
 // export default connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
-const Routers: any = connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
+const Routers: any = connect( mapStateToProps, mapDispatchToProps )( GetRoutes );
 
-export function getRoutes(  ) {
+export function getRoutes() {
   return <Routers/>;
 }
