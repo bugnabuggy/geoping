@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeoPing.Api.Models;
 using GeoPing.Api.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeoPing.Api.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<GeoPoint> GeoPoints { get; set; }
-        public DbSet<GeoCatalog> GeoCatalogs { get; set; }
-        public DbSet<PointCatalog> PointCatalogs { get; set; }
+        public DbSet<GeoList> GeoLists { get; set; }
+        public DbSet<UserLists> UserLists { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -27,18 +28,27 @@ namespace GeoPing.Api.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
-            builder.Entity<PointCatalog>()
-                .HasKey(pc => new { pc.GeoPointId, pc.GeoCatalogId });
+            // Many-to-one relations between points and list
+            builder.Entity<GeoList>()
+                 .HasMany<GeoPoint>(l => l.GeoPoints)
+                 .WithOne(p => p.GeoList)
+                 .HasForeignKey(p => p.GeoListId)
+                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<PointCatalog>()
-                .HasOne(pc => pc.Point)
-                .WithMany(p => p.PointCatalogs)
-                .HasForeignKey(pc => pc.GeoPointId);
+            // Many-to-many relations between users and lists
+            // UserLists is the connection class
+            builder.Entity<UserLists>()
+                .HasKey(ul => new { ul.UserId, ul.ListId });
 
-            builder.Entity<PointCatalog>()
-                .HasOne(pc => pc.Catalog)
-                .WithMany(c => c.PointCatalogs)
-                .HasForeignKey(pc => pc.GeoCatalogId);
+            builder.Entity<UserLists>()
+                .HasOne<ApplicationUser>(ul => ul.User)
+                .WithMany(u => u.Userlists)
+                .HasForeignKey(ul => ul.UserId);
+
+            builder.Entity<UserLists>()
+                .HasOne<GeoList>(ul => ul.GeoList)
+                .WithMany(l => l.UsersLists)
+                .HasForeignKey(ul => ul.ListId);
         }
     }
 }

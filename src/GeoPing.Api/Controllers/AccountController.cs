@@ -28,14 +28,14 @@ namespace GeoPing.Api.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private readonly AppUsersDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            AppUsersDbContext dbContext)
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -433,7 +433,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest(new OperationResult
                 {
                     Success = false,
-                    Messages = { "Invalid username or email" }
+                    Messages = new[] { "Invalid username or email" }
                 });
             }
 
@@ -451,7 +451,7 @@ namespace GeoPing.Api.Controllers
                     return Ok(new OperationResult
                     {
                         Success = true,
-                        Messages = { "User was successfully registered" }
+                        Messages = new[] { "User was successfully registered" }
                     });
                 }
                 AddErrors(result);
@@ -462,7 +462,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(new OperationResult
             {
                 Success = false,
-                Messages = { "Something was failed while user registration" }
+                Messages = new[] { "Something was failed while user registration" }
             });
         }
         

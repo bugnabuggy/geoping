@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace GeoPing.Api.Data.Migrations.Identity
+namespace GeoPing.Api.Data.Migrations
 {
-    [DbContext(typeof(AppUsersDbContext))]
-    partial class AppUsersDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20181002050717_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,6 +70,67 @@ namespace GeoPing.Api.Data.Migrations.Identity
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoList", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(240);
+
+                    b.Property<bool>("IsPublic");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GeoLists");
+                });
+
+            modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoPoint", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(240);
+
+                    b.Property<long>("GeoListId");
+
+                    b.Property<double>("Latitude");
+
+                    b.Property<double>("Longitude");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<double>("Radius");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GeoListId");
+
+                    b.ToTable("GeoPoints");
+                });
+
+            modelBuilder.Entity("GeoPing.Api.Models.Entities.UserLists", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<long>("ListId");
+
+                    b.Property<bool>("IsTrusted");
+
+                    b.HasKey("UserId", "ListId");
+
+                    b.HasIndex("ListId");
+
+                    b.ToTable("UserLists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -177,6 +239,27 @@ namespace GeoPing.Api.Data.Migrations.Identity
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoPoint", b =>
+                {
+                    b.HasOne("GeoPing.Api.Models.Entities.GeoList", "GeoList")
+                        .WithMany("GeoPoints")
+                        .HasForeignKey("GeoListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GeoPing.Api.Models.Entities.UserLists", b =>
+                {
+                    b.HasOne("GeoPing.Api.Models.Entities.GeoList", "GeoList")
+                        .WithMany("UsersLists")
+                        .HasForeignKey("ListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GeoPing.Api.Models.ApplicationUser", "User")
+                        .WithMany("Userlists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

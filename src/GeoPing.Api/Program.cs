@@ -29,9 +29,7 @@ namespace GeoPing.Api
                 try
                 {
                     var db = services.GetRequiredService<ApplicationDbContext>();
-                    var isdb = services.GetRequiredService<AppUsersDbContext>();
                     db.Database.Migrate();
-                    isdb.Database.Migrate();    
 
                     SeedData.Initialize(services);
                 }

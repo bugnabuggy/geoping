@@ -12,11 +12,14 @@ namespace GeoPing.Api.Models.Entities
         public long Id { get; set; }
 
         [Required]
-        [MaxLength(140)]
+        [MaxLength(100)]
         public string Name { get; set; }
 
-        public bool isPublic { get; set; }
+        [MaxLength(240)]
+        public string Description { get; set; }
 
-        public IEnumerable<PointCatalog> PointCatalogs { get; set; }
+        public bool IsPublic { get; set; }
+
+        public IQueryable<PointCatalog> PointCatalogs { get; set; }
     }
 }

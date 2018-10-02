@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace GeoPing.Api.Data.Migrations.Identity
+namespace GeoPing.Api.Data.Migrations
 {
-    public partial class InitialIdentityMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,21 @@ namespace GeoPing.Api.Data.Migrations.Identity
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GeoLists",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(maxLength: 240, nullable: true),
+                    IsPublic = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoLists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +169,55 @@ namespace GeoPing.Api.Data.Migrations.Identity
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "GeoPoints",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(maxLength: 240, nullable: true),
+                    GeoListId = table.Column<long>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Radius = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoPoints", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GeoPoints_GeoLists_GeoListId",
+                        column: x => x.GeoListId,
+                        principalTable: "GeoLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLists",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    ListId = table.Column<long>(nullable: false),
+                    IsTrusted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLists", x => new { x.UserId, x.ListId });
+                    table.ForeignKey(
+                        name: "FK_UserLists_GeoLists_ListId",
+                        column: x => x.ListId,
+                        principalTable: "GeoLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserLists_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +256,16 @@ namespace GeoPing.Api.Data.Migrations.Identity
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeoPoints_GeoListId",
+                table: "GeoPoints",
+                column: "GeoListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLists_ListId",
+                table: "UserLists",
+                column: "ListId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,7 +286,16 @@ namespace GeoPing.Api.Data.Migrations.Identity
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "GeoPoints");
+
+            migrationBuilder.DropTable(
+                name: "UserLists");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "GeoLists");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

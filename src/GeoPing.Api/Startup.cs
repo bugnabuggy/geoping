@@ -47,9 +47,6 @@ namespace GeoPing.Api
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<AppUsersDbContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
-
 
             services.AddMvcCore()
                 .AddFormatterMappings()
@@ -65,7 +62,7 @@ namespace GeoPing.Api
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
             })
-                .AddEntityFrameworkStores<AppUsersDbContext>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             // Configure IdentityServer with in-memory stores, keys, clients and res
@@ -74,7 +71,7 @@ namespace GeoPing.Api
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>()
-
+                /*
                 // this adds the operational data from DB (codes, tokens, consents)
                 
                 .AddOperationalStore(options =>
@@ -91,7 +88,7 @@ namespace GeoPing.Api
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30; // interval in seconds
-                });
+                })*/;
 
             services.AddAuthentication(options =>
             {
@@ -117,7 +114,7 @@ namespace GeoPing.Api
             });
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            AppConfigurator.ConfigureServices(services);
 
             services.AddMvc();
         }
