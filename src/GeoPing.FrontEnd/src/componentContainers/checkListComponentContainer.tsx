@@ -82,7 +82,7 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    isEditingPoint: state.checkList.isEditind,
+    isEditingPoint: state.checkList.isEditing,
     markers: state.googleMap.markersList,
     selectedMarker: state.googleMap.selectedMarker,
     isAddMarker: state.googleMap.isAddMarker,
@@ -95,23 +95,23 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators(
+  bindActionCreators (
     {
-      editingPermission,
-      selectMarker: selectedMarker,
-      editGEOPoint,
-      changeDataGEOPoint,
-      cancelEditingGEOPoint,
-      addNewPoint,
-      permissionToAddMarker,
-      cancelAddNewPoint,
-      addNotification,
-      deleteNotification,
-      checkGEOPosition,
-      markerInstalled,
-      putStatusMarker,
-      deleteMarker,
-    },
+    editingPermission,
+    selectMarker: selectedMarker,
+    editGEOPoint,
+    changeDataGEOPoint,
+    cancelEditingGEOPoint,
+    addNewPoint,
+    permissionToAddMarker,
+    cancelAddNewPoint,
+    addNotification,
+    deleteNotification,
+    checkGEOPosition,
+    markerInstalled,
+    putStatusMarker,
+    deleteMarker,
+  },
     dispath );
 
 export default connect( mapStateToProps, mapDispatchToProps )( CheckListComponentContainer );

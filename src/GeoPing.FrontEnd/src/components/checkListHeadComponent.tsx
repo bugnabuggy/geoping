@@ -18,7 +18,12 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
     this.props.changeNameCheckList( e.target.value );
   };
   handleShare = () => {
-    // console.log( 'share' );
+    this.state = {
+      isEdit: false,
+    };
+  };
+  handlePeriod = () => {
+    this.props.modalPeriodOpenClose( true );
   };
 
   constructor( props: ICheckListHeadComponentProps ) {
@@ -55,14 +60,17 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
                 >
                   <FontAwesomeIcon icon="pencil-alt"/>
                 </div>
-                <div className="icon-hover-color cursor-pointer">
+                <div
+                  className="icon-hover-color cursor-pointer"
+                  onClick={this.handleShare}
+                >
                   <FontAwesomeIcon icon="share-square"/>
                 </div>
               </div>
             </div>
             <div
               className="check-list-head-period cursor-pointer"
-              onClick={this.handleShare}
+              onClick={this.handlePeriod}
             >
               <h6>period</h6>
               <div className="icon-hover-color">

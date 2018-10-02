@@ -5,40 +5,33 @@ import IGoogleMapComponentProps from '../componentProps/googleMapComponentProps/
 
 export default class GoogleMapComponent extends React.Component<IGoogleMapComponentProps, any> {
   componentDidMount() {
-    this.props.findLocationForCenterMap ();
+    this.props.findLocationForCenterMap();
   }
 
   render() {
     return (
       <React.Fragment>
-        {this.props.position.isSuccess ?
-          (
-            <GoogleMap
-              markers={this.props.markers}
-              isAddMarker={this.props.isAddMarker}
-              selectedMarker={this.props.selectedMarker}
-              isThereIsNewMarker={this.props.isThereIsNewMarker}
-              newMarker={this.props.newMarker}
-              isMarkerCanceled={this.props.isMarkerCanceled}
-              isMarkerSaved={this.props.isMarkerSaved}
-              isMarkerInstalled={this.props.isMarkerInstalled}
-              isCheckGeoPosition={this.props.isCheckGeoPosition}
-              statusMarker={this.props.statusMarker}
-              position={this.props.position}
-              deleteIdMarker={this.props.deleteIdMarker}
+        {this.props.googleMap.position.isSuccess ?
+          ( <GoogleMap
+            isCheckIn={this.props.isCheckIn}
+            isEditing={this.props.isEditing}
+            selectedListId={this.props.selectedListId}
+            googleMap={this.props.googleMap}
 
-              selectMarker={this.props.selectMarker}
-              moveStartMarker={this.props.moveStartMarker}
-              moveDragMarker={this.props.moveDragMarker}
-              moveEndMarker={this.props.moveEndMarker}
-              permissionToAddMarker={this.props.permissionToAddMarker}
-              editingPermission={this.props.editingPermission}
-              markerInstalled={this.props.markerInstalled}
-              cancelAddNewPoint={this.props.cancelAddNewPoint}
-              putStatusMarker={this.props.putStatusMarker}
-              deleteMarker={this.props.deleteMarker}
-            />
-          )
+            selectMarker={this.props.selectMarker}
+            moveStartMarker={this.props.moveStartMarker}
+            moveDragMarker={this.props.moveDragMarker}
+            moveEndMarker={this.props.moveEndMarker}
+            permissionToAddMarker={this.props.permissionToAddMarker}
+            editingPermission={this.props.editingPermission}
+            markerInstalled={this.props.markerInstalled}
+            cancelAddNewPoint={this.props.cancelAddNewPoint}
+            putStatusMarker={this.props.putStatusMarker}
+            deleteMarker={this.props.deleteMarker}
+            userMarkerCreate={this.props.userMarkerCreate}
+            markerRender={this.props.markerRender}
+            addDistance={this.props.addDistance}
+          /> )
           :
           ( <div>fsdfsdf</div> )}
       </React.Fragment>

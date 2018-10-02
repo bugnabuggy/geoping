@@ -10,6 +10,10 @@ const iconUrl: string = 'http://chart.apis.google.com/chart' +
   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
 let pinImage: any = null;
 
+const iconUser: string = 'assets/images/card-pin.png';
+let pinUserImage: any = null;
+let userMarker: null;
+
 function createMarkerForMoved( event: any, position: any, description?: string ) {
   return {
     id: position.id,
@@ -27,6 +31,12 @@ export function setGoogleLibrary( google: any ) {
   _google = google;
   pinImage = new _google.maps.MarkerImage(
     iconUrl,
+    new _google.maps.Size( 45, 43 ),
+    new _google.maps.Point( 0, 0 ),
+    new _google.maps.Point( 13, 42 ),
+    new _google.maps.Size( 50, 45 ) );
+  pinUserImage = new _google.maps.MarkerImage(
+    iconUser,
     new _google.maps.Size( 45, 43 ),
     new _google.maps.Point( 0, 0 ),
     new _google.maps.Point( 13, 42 ),
@@ -88,7 +98,7 @@ export function clearMarkersIconAll( markers: Array<any> ) {
 export function setMarkerIcon( marker: any ) {
   if ( marker !== null ) {
     marker.setIcon( pinImage );
-    marker.setDraggable( true );
+    marker.setDraggable( _that.props.isEditing );
   }
 }
 
@@ -116,9 +126,13 @@ export function toggleBounce( position: any ) {
   }
 }
 
+export function createUserMarker( position: any ) {
+  createMarker( position, true, 100, false );
+}
+
 export function addNewMarker( marker: any ) {
   removeMarker( marker.id );
-  createMarker( marker, _that.markers.length, 1 * 400, true );
+  createMarker( marker, false, 1 * 400, true );
 }
 
 /********************************/
@@ -132,19 +146,19 @@ export function clearMarkersMap() {
 
 export function dropMarker() {
   clearMarkersMap();
-  _that.props.markers.forEach( ( item: any, index: number ) => {
-    createMarker( item, index, index * 400, false );
+  _that.props.googleMap.markersList.forEach( ( item: any, index: number ) => {
+    createMarker( item, false, index * 400, false );
   } );
 }
 
 /****************************************/
 
-export function createMarker( position: IMarker, index: number, timeout: number, select: any ) {
+export function createMarker( position: IMarker, isUser: boolean, timeout: number, select: any ) {
   window.setTimeout(
     function() {
       const marker = new _google.maps.Marker( {
         position: position,
-        title: position.name,
+        title: isUser ? 'Me' : position.name,
         map: _that.map,
         icon: null,
         draggable: false,
@@ -153,38 +167,55 @@ export function createMarker( position: IMarker, index: number, timeout: number,
       } );
 
       marker.addListener( 'click', ( e: any ) => {
-        if ( _that.props.selectedMarker.id !== position.id ) {
-          _that.props.selectMarker( _that.props.markers.find( ( item: IMarker ) => item.id === position.id ) );
-          _that.props.editingPermission( true );
-          _that.props.putStatusMarker( EnumStatusMarker.Edit );
-        } else {
-          if ( _that.props.isMarkerInstalled ) {
-            removeMarker( _that.props.selectedMarker.id );
-            _that.props.cancelAddNewPoint();
+        if ( !isUser ) {
+          if ( _that.props.googleMap.selectedMarker.id !== position.id ) {
+            if ( !_that.props.isCheckIn ) {
+              _that.props.editingPermission( true );
+              _that.props.putStatusMarker( EnumStatusMarker.Edit );
+            }
+            _that.props.selectMarker(
+              _that.props.googleMap.markersList.find( ( item: IMarker ) => item.id === position.id )
+            );
+          } else {
+            if ( _that.props.googleMap.isMarkerInstalled ) {
+              removeMarker( _that.props.googleMap.selectedMarker.id );
+              _that.props.cancelAddNewPoint();
+              _that.props.markerInstalled( false );
+            }
+            _that.props.putStatusMarker( EnumStatusMarker.None );
+            _that.props.selectMarker( defaultMarker );
             _that.props.markerInstalled( false );
+            _that.props.editingPermission( false );
           }
-          _that.props.putStatusMarker( EnumStatusMarker.None );
-          _that.props.selectMarker( defaultMarker );
-          _that.props.markerInstalled( false );
-          _that.props.editingPermission( false );
         }
       } );
 
       marker.addListener( 'dragstart', ( event: any ) => {
-        geocoderAddress( event.latLng, event, position, _that.props.moveStartMarker );
+        if ( _that.props.isEditing ) {
+          geocoderAddress( event.latLng, event, position, _that.props.moveStartMarker );
+        }
       } );
 
       marker.addListener( 'drag', ( event: any ) => {
-        _that.props.moveDragMarker( createMarkerForMoved( event, position ) );
+        if ( _that.props.isEditing ) {
+          _that.props.moveDragMarker( createMarkerForMoved( event, position ) );
+        }
       } );
 
       marker.addListener( 'dragend', ( event: any ) => {
-        geocoderAddress( event.latLng, event, position, _that.props.moveEndMarker );
+        if ( _that.props.isEditing ) {
+          geocoderAddress( event.latLng, event, position, _that.props.moveEndMarker );
+        }
       } );
 
-      _that.markers.push( marker );
-      if ( select ) {
-        createIconMarker( position.id );
+      if ( !isUser ) {
+        _that.markers.push( marker );
+        if ( select ) {
+          createIconMarker( position.id );
+        }
+      } else {
+        marker.setIcon( pinUserImage );
+        userMarker = marker;
       }
     },
     timeout || 100 );
@@ -210,16 +241,16 @@ export function addMarkerToTheMap( event: any ) {
             newMarker.description = results[ 0 ].formatted_address;
           }
         }
-        createMarker( newMarker, _that.markers.length, 200, true );
+        createMarker( newMarker, false, 200, true );
         _that.props.selectMarker( newMarker );
         _that.props.permissionToAddMarker( false );
         _that.props.editingPermission( true );
         _that.props.markerInstalled( true );
       } );
   } else {
-    if ( _that.props.selectedMarker.id !== defaultMarker.id ) {
-      if ( _that.props.isMarkerInstalled ) {
-        removeMarker( _that.props.selectedMarker.id );
+    if ( _that.props.googleMap.selectedMarker.id !== defaultMarker.id ) {
+      if ( _that.props.googleMap.isMarkerInstalled ) {
+        removeMarker( _that.props.googleMap.selectedMarker.id );
         _that.props.cancelAddNewPoint();
         _that.props.markerInstalled( false );
       }
@@ -236,4 +267,17 @@ export function createMap( map: any, options: any ) {
   googleMap.addListener( 'click', addMarkerToTheMap );
 
   return googleMap;
+}
+
+export function getDistance() {
+  const origin: any = new _google.maps.LatLng(
+    _that.props.googleMap.selectedMarker.lat,
+    _that.props.googleMap.selectedMarker.lng,
+  );
+  const destination: any = new _google.maps.LatLng(
+    _that.props.googleMap.position.lat,
+    _that.props.googleMap.position.lng,
+  );
+  const distance: number = _google.maps.geometry.spherical.computeDistanceBetween( destination, origin );
+  _that.props.addDistance( distance );
 }

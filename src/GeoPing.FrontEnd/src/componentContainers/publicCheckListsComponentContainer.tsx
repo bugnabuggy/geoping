@@ -17,8 +17,8 @@ class PublicCheckListsComponentContainer extends React.Component<IPublicCheckLis
         />
         <div className="public-check-list-pagination-container">
           <PaginationComponent
-            countPage={Number(this.props.countPages)}
-            activePage={Number(this.props.actionPage)}
+            countPage={Number( this.props.countPages )}
+            activePage={Number( this.props.actionPage )}
             disablePage={0}
             numberAdditionalPages={3}
 
@@ -39,10 +39,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators (
+  bindActionCreators(
     {
-    changePagination,
-  },
+      changePagination,
+    },
     dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( PublicCheckListsComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( PublicCheckListsComponentContainer );

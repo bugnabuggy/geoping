@@ -6,17 +6,20 @@ import GoogleMapComponent from '../components/googleMapComponent';
 import IGoogleMapComponentContainerProps
   from '../componentProps/googleMapComponentProps/googleMapComponentContainerProps';
 import {
+  addDistance,
   addPoints,
   cancelAddNewPoint,
   deleteMarker,
   findLocationForCenterMap,
   markerInstalled,
+  markerRender,
   moveDragMarker,
   moveEndMarker,
   moveStartMarker,
   permissionToAddMarker,
   putStatusMarker,
-  selectedMarker
+  selectedMarker,
+  userMarkerCreate
 } from '../actions/googleMapAction';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import { editingPermission } from '../actions/checkListAction';
@@ -26,18 +29,10 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
     return (
       <React.Fragment>
         <GoogleMapComponent
-          markers={this.props.markers}
-          isAddMarker={this.props.isAddMarker}
-          selectedMarker={this.props.selectedMarker}
-          isThereIsNewMarker={this.props.isThereIsNewMarker}
-          newMarker={this.props.newMarker}
-          isMarkerCanceled={this.props.isMarkerCanceled}
-          isMarkerSaved={this.props.isMarkerSaved}
-          isMarkerInstalled={this.props.isMarkerInstalled}
-          isCheckGeoPosition={this.props.isCheckGeoPosition}
-          statusMarker={this.props.statusMarker}
-          position={this.props.position}
-          deleteIdMarker={this.props.deleteIdMarker}
+          googleMap={this.props.googleMap}
+          isEditing={this.props.isEditing}
+          selectedListId={this.props.selectedListId}
+          isCheckIn={this.props.isCheckIn}
 
           selectMarker={this.props.selectMarker}
           moveStartMarker={this.props.moveStartMarker}
@@ -50,6 +45,9 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
           putStatusMarker={this.props.putStatusMarker}
           findLocationForCenterMap={this.props.findLocationForCenterMap}
           deleteMarker={this.props.deleteMarker}
+          userMarkerCreate={this.props.userMarkerCreate}
+          markerRender={this.props.markerRender}
+          addDistance={this.props.addDistance}
         />
       </React.Fragment>
     );
@@ -58,37 +56,32 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    markers: state.googleMap.markersList,
-    isAddMarker: state.googleMap.isAddMarker,
-    selectedMarker: state.googleMap.selectedMarker,
-    isThereIsNewMarker: state.googleMap.isThereIsNewMarker,
-    newMarker: state.googleMap.newMarker,
-    isMarkerSaved: state.googleMap.isMarkerSaved,
-    isMarkerCanceled: state.googleMap.isMarkerCanceled,
-    isMarkerInstalled: state.googleMap.isMarkerInstalled,
-    isCheckGeoPosition: state.googleMap.isCheckGeoPosition,
-    statusMarker: state.googleMap.statusMarker,
-    position: state.googleMap.position,
-    deleteIdMarker: state.googleMap.deleteMarker,
+    isCheckIn: state.checkin.isCheckIn,
+    isEditing: state.checkList.isEditing,
+    selectedListId: state.checkin.selectedListId,
+    googleMap: state.googleMap,
   };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
-    addPoints,
-    selectMarker: selectedMarker,
-    moveStartMarker,
-    moveDragMarker,
-    moveEndMarker,
-    permissionToAddMarker,
-    editingPermission,
-    markerInstalled,
-    cancelAddNewPoint,
-    putStatusMarker,
-    findLocationForCenterMap,
-    deleteMarker,
-  },
+      addPoints,
+      selectMarker: selectedMarker,
+      moveStartMarker,
+      moveDragMarker,
+      moveEndMarker,
+      permissionToAddMarker,
+      editingPermission,
+      markerInstalled,
+      cancelAddNewPoint,
+      putStatusMarker,
+      findLocationForCenterMap,
+      deleteMarker,
+      userMarkerCreate,
+      markerRender,
+      addDistance,
+    },
     dispath );
 
 export default connect( mapStateToProps, mapDispatchToProps )( GoogleMapComponentContainer );

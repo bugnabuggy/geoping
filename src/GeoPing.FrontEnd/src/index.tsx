@@ -31,7 +31,7 @@ import {
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faCheckCircle, faTimesCircle, } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, far, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faFilter,
@@ -51,7 +51,8 @@ library.add(
   faPencilAlt,
   faCalendarAlt,
   faCheckCircle,
-  faTimesCircle
+  faTimesCircle,
+  far
 );
 
 const history = createBrowserHistory();
@@ -69,7 +70,7 @@ const store = createStore(
     )
   )
 );
-// console.log ( 'NODE_ENV: ', process.env.NODE_ENV );
+
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
