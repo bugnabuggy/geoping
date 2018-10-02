@@ -46,6 +46,10 @@ select.form-control:not([size]):not([multiple]) {
   height: 34px;
 }
 
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
 /* Header ******************************************************************/
 /*.header-container {*/
 /*height: 100%;*/
@@ -151,7 +155,7 @@ header nav {
   color: #a4575b;
 }
 
-  /**/
+/**/
 
 /*Sign up*/
 .sign-container {
@@ -958,6 +962,30 @@ header nav {
   text-overflow: ellipsis;
 }
 
+.check-list-modal-period-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.check-list-modal-period-item-radio {
+  width: 150px;
+}
+
+.check-list-modal-period-item-input {
+  width: 300px;
+}
+
+.check-list-modal-period-buttons {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.5rem;
+}
+
+.check-list-modal-period-buttons div:first-child {
+  margin-right: 20px;
+}
+
 /*************************************************************************************/
 
 /* Admin dashboard */
@@ -1031,6 +1059,7 @@ header nav {
   .nav.false {
     display: none;
   }
+
   .rounded-circle {
     display: none;
   }

@@ -6,6 +6,7 @@ import {
   CLOSE_MODAL_FOR_CREATE_CHECK_LIST,
   CREATE_CHECK_LIST,
   EDITING_PERMISSION_POINT,
+  MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../DTO/constantsForReducer/checkList';
 import { createCheckListMockService } from '../services/mockServices/createCheckListMockService';
@@ -81,6 +82,10 @@ export const changeNameCheckList = ( nameChecklist: string ) => ( dispatch: IDis
   dispatch( changeNameCheckListAction( nameChecklist ) );
 };
 
+export const modalPeriodOpenClose = ( isState: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( modalPeriodOpenCloseAction( isState ) );
+};
+
 /* Actions */
 
 function createCheckListAction( checklist: any ): Object {
@@ -101,4 +106,8 @@ function editingPermissionAction( isEditing: boolean ): Object {
 
 function changeNameCheckListAction( nameChecklist: string ): Object {
   return { type: CHANGE_NAME_CHECK_LIST, nameChecklist };
+}
+
+function modalPeriodOpenCloseAction( isState: boolean ): Object {
+  return { type: MODAL_PERIOD_OPEN_CLOSE, isState };
 }

@@ -4,31 +4,33 @@ import ICheckListHeadComponentProps from '../componentProps/checkListHeadCompone
 import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 export class CheckListHeadComponent extends React.Component<ICheckListHeadComponentProps, any> {
-  constructor( props: ICheckListHeadComponentProps ) {
-    super ( props );
-    this.state = {
-      isEdit: false,
-    };
-  }
-
   handleEdit = () => {
-    this.setState ( {
+    this.setState( {
       isEdit: true,
     } );
   };
-
   blurEdit = () => {
-    this.setState ( {
+    this.setState( {
       isEdit: false,
     } );
   };
-
   handleChangeName = ( e: any ) => {
-    this.props.changeNameCheckList ( e.target.value );
+    this.props.changeNameCheckList( e.target.value );
+  };
+  handleShare = () => {
+    this.state = {
+      isEdit: false,
+    };
+  };
+  handlePeriod = () => {
+    this.props.modalPeriodOpenClose( true );
   };
 
-  handleShare = () => {
-    // console.log('share');
+  constructor( props: ICheckListHeadComponentProps ) {
+    super( props );
+    this.state = {
+      isEdit: false,
+    };
   }
 
   render() {
@@ -40,7 +42,9 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
               <FormGroup
                 className="check-list-head-name-form-group"
               >
-                {!this.state.isEdit && <ControlLabel><h3><p>{this.props.nameChecklist}</p></h3></ControlLabel>}
+                {!this.state.isEdit && <ControlLabel>
+                  <h3><p>{this.props.nameChecklist}</p></h3>
+                </ControlLabel>}
                 {this.state.isEdit && <FormControl
                   name="name"
                   value={this.props.nameChecklist}
@@ -56,14 +60,17 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
                 >
                   <FontAwesomeIcon icon="pencil-alt"/>
                 </div>
-                <div className="icon-hover-color cursor-pointer">
+                <div
+                  className="icon-hover-color cursor-pointer"
+                  onClick={this.handleShare}
+                >
                   <FontAwesomeIcon icon="share-square"/>
                 </div>
               </div>
             </div>
             <div
               className="check-list-head-period cursor-pointer"
-              onClick={this.handleShare}
+              onClick={this.handlePeriod}
             >
               <h6>period</h6>
               <div className="icon-hover-color">
