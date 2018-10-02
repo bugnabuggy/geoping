@@ -37,6 +37,23 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
           </Switch>
         </React.Fragment>
       );
+    } else if ( this.props.roleUser === ERoleUser.Admin ) {
+      component = (
+        <React.Fragment>
+          <Switch>
+            <Route exact={true} path="/" component={AboutComponent}/>
+            <Route exact={true} path="/dashboard" component={DashboardPage}/>
+            <Route exact={true} path="/profile" component={ProfilePage}/>
+            <Route exact={true} path="/checklist" component={ChecklistPage}/>
+            <Route exact={true} path="/checkin" component={CheckinPage}/>
+            <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
+            <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
+            <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
+
+            <Redirect push={true} from="*" to="/"/>
+          </Switch>
+        </React.Fragment>
+      );
     } else {
       component = (
         <React.Fragment>
@@ -46,17 +63,6 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
-            {
-              this.props.roleUser === ERoleUser.Admin ? (
-                  <React.Fragment>
-                    <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
-                    <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
-                    <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
-                  </React.Fragment>
-                )
-                :
-                null
-            }
 
             <Redirect push={true} from="*" to="/"/>
           </Switch>

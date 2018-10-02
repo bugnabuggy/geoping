@@ -15,6 +15,7 @@ import tableHistoryReducer from './tableHistoryReducer';
 import modalReducer from './modalReducer';
 import publicCheckListReducer from './publicCheckListReducer';
 import notificationsReducer from './notificationsReducer';
+import allChecklistFilterReducer from './allChecklistFilterReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
@@ -32,6 +33,7 @@ export default function createReducer(injectedReducers: any) {
     modal: modalReducer,
     publicCheckList: publicCheckListReducer,
     notifications: notificationsReducer,
+    allChecklistFilter: allChecklistFilterReducer,
     router: routerReducer,
     ...injectedReducers,
   });

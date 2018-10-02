@@ -27,6 +27,11 @@ import {
   faShareSquare,
   faStar,
   faTimes,
+  faPencilAlt,
+  faCalendarAlt,
+  faSort,
+  faSortUp,
+  faSortDown,
   faTrashAlt,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
@@ -52,6 +57,9 @@ library.add(
   faCalendarAlt,
   faCheckCircle,
   faTimesCircle,
+  faSort,
+  faSortUp,
+  faSortDown,
   far
 );
 
