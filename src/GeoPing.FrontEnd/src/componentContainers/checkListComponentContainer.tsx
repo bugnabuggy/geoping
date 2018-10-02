@@ -11,9 +11,12 @@ import {
   addNewPoint,
   cancelAddNewPoint,
   cancelEditingGEOPoint,
-  changeDataGEOPoint, deleteMarker,
-  editGEOPoint, markerInstalled,
-  permissionToAddMarker, putStatusMarker,
+  changeDataGEOPoint,
+  deleteMarker,
+  editGEOPoint,
+  markerInstalled,
+  permissionToAddMarker,
+  putStatusMarker,
   selectedMarker
 } from '../actions/googleMapAction';
 import { CheckListLinkComponent } from '../components/checkListLinkComponent';
@@ -111,4 +114,4 @@ const mapDispatchToProps = ( dispath: any ) =>
   },
     dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( CheckListComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( CheckListComponentContainer );

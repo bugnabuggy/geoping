@@ -19,7 +19,7 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
           <td>
             <div
               onClick={() => {
-                console.log ( 'Delete' );
+                // console.log ( 'Delete' );
               }}
             >
               <FontAwesomeIcon icon="minus-circle" className="cursor-pointer"/>

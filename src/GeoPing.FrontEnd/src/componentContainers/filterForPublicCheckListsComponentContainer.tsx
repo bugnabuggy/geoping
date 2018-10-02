@@ -8,7 +8,8 @@ import { FilterForPublicCheckListsComponent } from '../components/filterForPubli
 import { changeFilter } from '../actions/publicChecListAction';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 
-class FilterForPublicCheckListsComponentContainer extends React.Component<IFilterForPublicCheckListsComponentContainerProps, any> {
+class FilterForPublicCheckListsComponentContainer extends
+  React.Component<IFilterForPublicCheckListsComponentContainerProps, any> {
   render() {
     return (
       <React.Fragment>
@@ -25,8 +26,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    changeFilter,
-  }, dispath );
+  bindActionCreators(
+    {
+      changeFilter,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( FilterForPublicCheckListsComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( FilterForPublicCheckListsComponentContainer );

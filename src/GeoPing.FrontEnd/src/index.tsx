@@ -70,7 +70,7 @@ const store = createStore(
     )
   )
 );
-// console.log( 'NODE_ENV: ', process.env.NODE_ENV );
+
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>

@@ -6,8 +6,8 @@ import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 let _that: any = null;
 let _google: any = null;
 const pinColor: string = '26b430';
-const iconUrl: string = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|' +
-  pinColor + '|0000FF';
+const iconUrl: string = 'http://chart.apis.google.com/chart' +
+  `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
 let pinImage: any = null;
 
 const iconUser: string = 'assets/images/card-pin.png';
