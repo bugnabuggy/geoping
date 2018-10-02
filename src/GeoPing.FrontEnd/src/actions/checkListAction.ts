@@ -24,6 +24,7 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
         .then( ( response: any ) => {
           const marker: IMarker = {
             id: uuidV4(),
+            idList: '',
             name: '',
             radius: 0,
             description: response.data.results[ 0 ].formatted_address,
@@ -34,11 +35,11 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
           dispatch( addPointAction( marker ) );
         } )
         .catch( ( error: any ) => {
-          dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Warning ) ) );
+          dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
         } );
     },
     ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Warning ) ) );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -61,7 +62,7 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch( addNotificationAction( createNotification( 'Check List creating', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Warning ) ) );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -73,8 +74,8 @@ export const closeModalForCreateCheckList = () => ( dispatch: IDispatchFunction 
   dispatch( closeModalForCreateCheckListAction( false ) );
 };
 
-export const editingPermission = ( isEditind: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( editingPermissionAction( isEditind ) );
+export const editingPermission = ( isEditing: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( editingPermissionAction( isEditing ) );
 };
 
 export const changeNameCheckList = ( nameChecklist: string ) => ( dispatch: IDispatchFunction ) => {
@@ -99,8 +100,8 @@ function closeModalForCreateCheckListAction( isClose: boolean ): Object {
   return { type: CLOSE_MODAL_FOR_CREATE_CHECK_LIST, isClose };
 }
 
-function editingPermissionAction( isEditind: boolean ): Object {
-  return { type: EDITING_PERMISSION_POINT, isEditind };
+function editingPermissionAction( isEditing: boolean ): Object {
+  return { type: EDITING_PERMISSION_POINT, isEditing };
 }
 
 function changeNameCheckListAction( nameChecklist: string ): Object {
