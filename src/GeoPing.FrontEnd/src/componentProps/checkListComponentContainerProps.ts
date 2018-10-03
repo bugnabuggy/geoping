@@ -14,7 +14,7 @@ export default interface ICheckListComponentContainerProps {
   statusMarker: EnumStatusMarker;
   isCheckGeoPosition: boolean;
 
-  editingPermission: ( isEditind: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  editingPermission: ( isEditing: boolean ) => ( dispatch: IDispatchFunction ) => void;
   selectMarker: ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
   editGEOPoint: ( idMarker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
   changeDataGEOPoint: ( idMarker: string, field: string, value: string | number ) =>

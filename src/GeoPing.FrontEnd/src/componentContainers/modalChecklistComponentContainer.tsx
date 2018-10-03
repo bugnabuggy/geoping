@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { ModalChecklistComponent } from '../components/modalComponents/checklist/modalChecklistComponent';
-import { closeModalForCreateCheckList, createCheckList, openModalForCreateCheckList } from '../actions/checkListAction';
+import { closeModalForCreateCheckList, createCheckList } from '../actions/checkListAction';
 import IModalChecklistComponentContainerProps from '../componentProps/modalChecklistComponentContainerProps';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 
@@ -34,10 +34,12 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    // openModalForCreateCheckList,
-    createCheckList,
-    closeModalForCreateCheckList,
-  }, dispath );
+  bindActionCreators(
+    {
+      // openModalForCreateCheckList,
+      createCheckList,
+      closeModalForCreateCheckList,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( ModalChecklistComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( ModalChecklistComponentContainer );

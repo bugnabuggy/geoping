@@ -1,23 +1,24 @@
 import * as React from 'react';
-
-import Routes from './routesComponent';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
+import Routes from './routesComponent';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   render() {
     return (
-      <React.Fragment>
+      <Router>
         <Routes
           authorized={this.props.authorized}
           roleUser={this.props.roleUser}
         />
-      </React.Fragment>
+      </Router>
     );
   }
-};
+}
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
@@ -28,11 +29,11 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {}, dispath );
+  bindActionCreators( {}, dispath );
 
 // export default connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
-const Routers: any = connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
+const Routers: any = connect( mapStateToProps, mapDispatchToProps )( GetRoutes );
 
-export function getRoutes(  ) {
+export function getRoutes() {
   return <Routers/>;
 }

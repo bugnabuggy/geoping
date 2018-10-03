@@ -7,23 +7,45 @@ export class PaginationComponent extends React.Component<IPaginationComponentPro
 
   handleChange = ( e: any ) => {
     let page: string = '0';
-    if ( isNaN ( Number ( e.target.text ) ) ) {
-      const element: any = {
-        '«': 1,
-        '‹': this.props.activePage > 1 ? this.props.activePage - 1 : this.props.activePage,
-        '›': this.props.activePage < this.props.countPage ? this.props.activePage + 1 : this.props.activePage,
-        '»': this.props.countPage,
-      };
-      page = element[e.target.text];
+    if ( e.target.text ) {
+      if ( isNaN( Number( e.target.text ) ) ) {
+        const element: any = {
+          '«': 1,
+          '‹': this.props.activePage > 1 ? this.props.activePage - 1 : this.props.activePage,
+          '›': this.props.activePage < this.props.countPage ? this.props.activePage + 1 : this.props.activePage,
+          '»': this.props.countPage,
+        };
+        page = element[ e.target.text ];
+      } else {
+        page = e.target.text;
+      }
     } else {
-      page = e.target.text;
+      page = this.props.activePage.toString();
     }
 
-    this.props.changePagination ( page );
+    this.props.changePagination( page );
   };
 
-  renderEllipsis = () => {
-    return <Pagination.Ellipsis key={uuidV4 ()}/>;
+  handleClickElipsis = ( id: string ) => {
+    let page: string = '0';
+    if ( id === '1' ) {
+      page = ( this.props.activePage - 4 ).toString();
+    } else if ( id === '2' ) {
+      page = ( this.props.activePage + 4 ).toString();
+    }
+    this.props.changePagination( page );
+  };
+
+  renderEllipsis = ( idElipsis: string ) => {
+    return (
+      <Pagination.Ellipsis
+        key={uuidV4()}
+        id={idElipsis}
+        onClick={() => {
+          this.handleClickElipsis( idElipsis );
+        }}
+      />
+    );
   };
 
   renderPaginationItem = ( index: number, countPage: number, disablePage: number ) => {
@@ -32,17 +54,18 @@ export class PaginationComponent extends React.Component<IPaginationComponentPro
     let item: Array<any> = [];
 
     if ( index - ( this.props.numberAdditionalPages + 1 ) > prevItem ) {
-      item.push ( this.renderEllipsis () );
+      item.push( this.renderEllipsis( '1' ) );
     }
 
     for ( let id = this.props.numberAdditionalPages * -1; id < this.props.numberAdditionalPages + 1; id += 1 ) {
       if ( ( index + id > prevItem ) && ( index + id < nextItem ) ) {
         const key: string = `${id}_pagination`;
-        item.push (
+        item.push(
           <Pagination.Item
             key={key}
             active={index + id === index}
             disabled={!!disablePage}
+            onClick={this.handleChange}
           >
             {index + id}
           </Pagination.Item>
@@ -51,7 +74,7 @@ export class PaginationComponent extends React.Component<IPaginationComponentPro
     }
 
     if ( index + ( this.props.numberAdditionalPages + 1 ) < nextItem ) {
-      item.push ( this.renderEllipsis () );
+      item.push( this.renderEllipsis( '2' ) );
     }
 
     return item;
@@ -59,25 +82,27 @@ export class PaginationComponent extends React.Component<IPaginationComponentPro
 
   renderPagination = () => {
     let paginationItem: Array<any> = [];
-    paginationItem.push (
+    paginationItem.push(
       <Pagination.Item
         key={`1_pagination`}
         active={1 === this.props.activePage}
         disabled={1 === this.props.disablePage}
+        onClick={this.handleChange}
       >
         {1}
       </Pagination.Item> );
 
-    paginationItem.push ( this.renderPaginationItem (
+    paginationItem.push( this.renderPaginationItem(
       this.props.activePage,
       this.props.countPage,
       this.props.disablePage
     ) );
-    paginationItem.push (
+    paginationItem.push(
       <Pagination.Item
         key={`${this.props.countPage}_pagination`}
         active={this.props.countPage === this.props.activePage}
         disabled={this.props.countPage === this.props.disablePage}
+        onClick={this.handleChange}
       >
         {this.props.countPage}
       </Pagination.Item>
@@ -90,17 +115,22 @@ export class PaginationComponent extends React.Component<IPaginationComponentPro
     return (
       <Pagination
         style={{ margin: 0 }}
-        onClick={this.handleChange}
         bsSize="small"
       >
         <Pagination.First
           id={'1'}
           onClick={this.handleChange}
         />
-        <Pagination.Prev/>
-        {this.renderPagination ()}
-        <Pagination.Next/>
-        <Pagination.Last/>
+        <Pagination.Prev
+          onClick={this.handleChange}
+        />
+        {this.renderPagination()}
+        <Pagination.Next
+          onClick={this.handleChange}
+        />
+        <Pagination.Last
+          onClick={this.handleChange}
+        />
       </Pagination>
     );
   }

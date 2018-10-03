@@ -20,5 +20,5 @@ export default interface ICheckListLinkComponentProps {
   checkGEOPosition: () => ( dispatch: IDispatchFunction ) => void;
   putStatusMarker: ( statusMarker: EnumStatusMarker ) => ( dispatch: IDispatchFunction ) => void;
   markerInstalled: ( isMarkerInstaled: boolean ) => ( dispatch: IDispatchFunction ) => void;
-  editingPermission: ( isEditind: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  editingPermission: ( isEditing: boolean ) => ( dispatch: IDispatchFunction ) => void;
 }

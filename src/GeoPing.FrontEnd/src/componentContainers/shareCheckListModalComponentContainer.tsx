@@ -25,8 +25,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    closeModalShare,
-  }, dispath );
+  bindActionCreators(
+    {
+      closeModalShare,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( ShareCheckListModalComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( ShareCheckListModalComponentContainer );

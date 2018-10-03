@@ -28,8 +28,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
+  bindActionCreators ( 
+    {
     changeEmployee,
-  }, dispath );
+  }, 
+    dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( TableUsersComponentContainer );

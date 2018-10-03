@@ -23,10 +23,10 @@ app.get ( '*', function ( req: any, res: any ) {
 
 app.listen ( port, function ( err: any ) {
   if ( err ) {
-    console.log ( 'start' );
-    console.log ( err );
+    // console.log ( 'start' );
+    // console.log ( err );
   } else {
-    console.log ( yellow(`http://localhost:${port}`) );
+    // console.log ( yellow(`http://localhost:${port}`) );
     // open(`http://localhost:${port}`);
   }
 } );

@@ -1,15 +1,17 @@
 import * as React from 'react';
 import RegisterReduxForm from './reduxForms/registerForm';
 
-class registerComponent extends React.Component<any, any> {
-  constructor(props: any){
-    super(props);
+class RegisterComponent extends React.Component<any, any> {
+  constructor( props: any ) {
+    super( props );
   }
-  submit (e: any) {
+
+  submit( e: any ) {
     // print the form values to the console
-    console.log('e', e);
+    // console.log('e', e);
 
   }
+
   render() {
     return (
       <div className="sign-container">
@@ -20,4 +22,5 @@ class registerComponent extends React.Component<any, any> {
     );
   }
 }
-export default registerComponent;
+
+export default RegisterComponent;
