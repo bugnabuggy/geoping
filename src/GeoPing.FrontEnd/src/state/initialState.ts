@@ -1,5 +1,5 @@
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import { allUsersState } from './allUsersState';
+import { allUsersFilterState } from './allUsersFilterState';
 import { checkinState } from './checkinState';
 import { checkinStatisticsState } from './checkinStatisticsState';
 import { checkListState } from './checkListState';
@@ -12,9 +12,11 @@ import { tableHistoryState } from './tsbleHistoryState';
 import { modalState } from './modalState';
 import { publicCheckListState } from './publickCheckListState';
 import { notificationState } from './notificationsState';
+import { allUsersTableState } from './allUsersTableState';
 
 const initialState: IinitialStateType = {
-  allUsers: allUsersState,
+  allUsersFilter: allUsersFilterState,
+  allUsersTable: allUsersTableState,
   checkin: checkinState,
   checkinStatistics: checkinStatisticsState,
   checkList: checkListState,

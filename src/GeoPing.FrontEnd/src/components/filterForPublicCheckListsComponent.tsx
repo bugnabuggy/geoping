@@ -6,30 +6,28 @@ import IFilterForPublicCheckListsComponentProps from '../componentProps/filterFo
 
 export class FilterForPublicCheckListsComponent extends React.Component<IFilterForPublicCheckListsComponentProps, any> {
 
-  private user: any;
-  private name: any;
-  private subscribers: any;
-
-  constructor( props: any ) {
-    super ( props );
-    this.user = debounce ( 2000, this.filter );
-    this.name = debounce ( 2000, this.filter );
-    this.subscribers = debounce ( 2000, this.filter );
-  }
-
+  user: any;
+  name: any;
+  subscribers: any;
   handleChange = ( e: any ) => {
     const filterBy: any = {
       Name: this.name,
       User: this.user,
       Subscribers: this.subscribers,
     };
-    filterBy[e.target.name] ( { name: e.target.name, value: e.target.value } );
+    filterBy[ e.target.name ]( { name: e.target.name, value: e.target.value } );
+  };
+  filter = ( filter: any ) => {
+    // console.log ( filter );
+    this.props.changeFilter( filter.name, filter.value );
   };
 
-  filter = ( filter: any ) => {
-    console.log ( filter );
-    this.props.changeFilter ( filter.name, filter.value );
-  };
+  constructor( props: any ) {
+    super( props );
+    this.user = debounce( 2000, this.filter );
+    this.name = debounce( 2000, this.filter );
+    this.subscribers = debounce( 2000, this.filter );
+  }
 
   render() {
     return (

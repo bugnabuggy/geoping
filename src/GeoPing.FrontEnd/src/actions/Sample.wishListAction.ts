@@ -8,7 +8,7 @@ export const getRecords = () => (dispatch: IDispatchFunction) => {
       dispatch(setVisibilityFilter(response.data));
     })
     .catch((error: any) => {
-      console.log(error);
+      // console.log(error);
     });
 };
 
@@ -18,7 +18,7 @@ export const getSpecialty = () => (dispatch: IDispatchFunction) => {
       dispatch(getSpecialtyAction(response.data));
     })
     .catch((error: any) => {
-      console.log(error);
+      // console.log(error);
     });
 };
 
@@ -28,7 +28,7 @@ export const sendNewUser = (data: any) => (dispatch: IDispatchFunction) => {
       dispatch(sendNewUserAction(response.data));
     })
     .catch((error: any) => {
-      console.log(error);
+      // console.log(error);
     });
 };
 

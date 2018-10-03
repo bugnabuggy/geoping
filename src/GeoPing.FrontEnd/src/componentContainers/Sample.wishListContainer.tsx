@@ -40,10 +40,12 @@ const mapStateToProps = ( state: any ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    getRecords,
-    getSpecialty,
-    sendNewUser,
-  },                   dispath );
+  bindActionCreators(
+    {
+      getRecords,
+      getSpecialty,
+      sendNewUser,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( SampleWishListContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( SampleWishListContainer );

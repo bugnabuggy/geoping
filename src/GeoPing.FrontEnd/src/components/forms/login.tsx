@@ -10,7 +10,7 @@ class LoginComponent extends React.Component<any, any> {
 
   submit( e: any ) {
     // print the form values to the console
-    console.log ( 'e', e );
+    // console.log ( 'e', e );
   }
 
     render() {

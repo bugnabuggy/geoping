@@ -1,3 +1,7 @@
+:root {
+  --success-color: #5cb85c;
+  --danger-color: #d9534f;
+}
 
 html, body {
   margin: 0;
@@ -5,6 +9,10 @@ html, body {
   height: 100%;
   min-width: 470px;
   width: 100%;
+}
+
+html {
+  font-size: 0.9em;
 }
 
 main {
@@ -39,6 +47,17 @@ li {
 }
 
 header {
+  width: 100%;
+}
+
+.table-sort-icon {
+  margin-left: 10px;
+}
+select.form-control:not([size]):not([multiple]) {
+  height: 34px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
   width: 100%;
 }
 
@@ -94,6 +113,27 @@ header nav {
 }
 
 .login-btn {
+  float: right;
+}
+
+/**/
+
+/*Sign up*/
+.sign-container {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+  width: 40vh;
+  padding: 0 20px 0 20px;
+}
+
+.isValid-check {
+  display: inline-block;
   position: relative;
   left: 20px;
 }
@@ -123,7 +163,7 @@ header nav {
   color: rgb(255, 255, 255);
   background: rgb(66, 66, 66);
   border-radius: 10px;
-  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0px;
+  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0;
 }
 
 .tooltip_form:after {
@@ -147,7 +187,7 @@ header nav {
   color: #a4575b;
 }
 
-  /**/
+/**/
 
 /*Sign up*/
 .sign-container {
@@ -288,6 +328,7 @@ header nav {
 .check-list-panel-item-icons {
   width: 18px !important;
   height: 16px;
+  color: black;
 }
 
 .dashboard-check-list-title {
@@ -315,8 +356,9 @@ header nav {
 
 .dashboard-check-list-panel-body {
   height: 100%;
-  overflow: overlay;
+  overflow: auto;
   padding: 0 10px;
+  max-height: 500px;
 }
 
 .check-list-panel-item {
@@ -367,7 +409,7 @@ header nav {
   padding: 10px;
   display: grid;
   grid-template-rows: [row1] 1fr;
-  grid-template-columns: [col1] 1fr [col2] 1fr;
+  grid-template-columns: [col1] minmax(300px, 400px) [col2] 1fr;
   grid-gap: 10px;
 }
 
@@ -376,6 +418,73 @@ header nav {
   max-height: 100%;
 }
 
+.check-in-select-list-container {
+  display: flex;
+  align-items: center;
+}
+
+.check-in-select-list-label {
+  width: 200px;
+}
+
+.check-in-current-coordinates {
+  display: block;
+}
+
+.check-in-select-point-container {
+  height: 200px;
+  overflow: auto;
+}
+
+.check-in-select-point-action {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.check-in-select-point-icon {
+  color: #28a745;
+}
+
+.check-in-select-point-paragraph {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 350px;
+}
+
+.check-in-modal-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rate-icon-empty, .rate-icon-full {
+  font-size: 4rem;
+  color: gold;
+}
+
+.rate-container {
+  position: relative;
+  width: 250px;
+}
+
+.rate-tooltip {
+  position: absolute;
+  right: 1px;
+  border: #6992929e 1px solid;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  background: #6992929e;
+  color: white;
+  background: rgb(142,226,215); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(142,226,215,1) 14%, rgba(105,146,146,1) 84%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
 /**/
 
 /* Modal share check list **************************************************************************/
@@ -919,6 +1028,30 @@ header nav {
   text-overflow: ellipsis;
 }
 
+.check-list-modal-period-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.check-list-modal-period-item-radio {
+  width: 150px;
+}
+
+.check-list-modal-period-item-input {
+  width: 300px;
+}
+
+.check-list-modal-period-buttons {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.5rem;
+}
+
+.check-list-modal-period-buttons div:first-child {
+  margin-right: 20px;
+}
+
 /*************************************************************************************/
 
 /* Admin dashboard */
@@ -940,9 +1073,20 @@ header nav {
   display: grid;
   padding: 10px;
   height: 100%;
-  grid-template-rows: 50px minmax(200px, max-content) minmax(max-content, 1fr);
-  grid-template-columns: 100%;
+  grid-template-rows: [row1] 50px [row2] minmax(200px, 1fr);
+  grid-template-columns: [col1] minmax(500px, 1fr) [col2] minmax(250px, 350px);
   grid-gap: 5px;
+}
+
+.react-bs-table-container {
+  width: 100%;
+}
+
+.admin-all-users-container h3 {
+  grid-column-start: col1;
+  grid-column-end: col2;
+  grid-row-start: row1;
+  grid-row-end: row1;
 }
 
 .admin-all-users-filter-container {
@@ -950,13 +1094,193 @@ header nav {
   align-items: center;
   justify-content: center;
   border: black 1px solid;
+  /*height: max-content;*/
+  max-height: 600px;
+  grid-column-start: col2;
+  grid-column-end: col2;
+  grid-row-start: row2;
+  grid-row-end: row2;
 }
 
 .admin-all-users-table-container {
   display: flex;
-  align-items: center;
   justify-content: center;
+
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
 }
+
+.test {
+  text-align: right;
+}
+
+.filter-users-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.filter-users-field-name, .filter-users-field-data, .filter-users-field-list-count, .filter-users-field-status,
+.filter-users-field-official, .filter-users-field-admin, .filter-users-field-buttons {
+  width: 100%;
+  padding: 10px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
+.filter-users-field-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-users-field-buttons button {
+  margin: 0 5px;
+}
+
+.filter-users-field-official label:first-child, .filter-users-field-admin label:first-child {
+  margin-right: 10px;
+}
+
+/*************************************************************************************/
+
+
+/* Check in Statistics*/
+.check-in-statistics {
+  height: 100%;
+  display: grid;
+  grid-template-rows: [row1] minmax(max-content, 1fr);
+  grid-template-columns: [col1] minmax(300px, 500px) [col2] minmax(max-content, 1fr);
+  grid-gap: 5px;
+}
+
+.check-in-statistics-container {
+  padding: 10px;
+}
+
+.check-in-statistics-form-container {
+
+}
+
+.check-in-statistics-form-select, .check-in-statistics-form-period {
+  display: flex;
+  align-items: center;
+}
+
+.check-in-statistics-form-label {
+  width: 150px;
+}
+
+.check-in-statistics-form-input {
+  width: 300px;
+}
+
+.check-in-statistics-form-period {
+  width: 300px;
+}
+
+.check-in-statistics-form-period-date {
+  margin: 0 10px 5px 10px;
+}
+
+.custom-input-date {
+  margin: 0 10px 0 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.custom-input-date-icon {
+  margin: 0 0 0 10px;
+  width: 100%;
+}
+
+.statistics-table-check {
+  background: var(--success-color, #128D15);
+  color: white;
+}
+
+.statistics-table-not-check {
+  background: var(--danger-color, #a4575b);
+  color: white;
+}
+
+/* Admin all checklist */
+.admin-checklist-container {
+  display: grid;
+  padding: 10px;
+  height: 100%;
+  grid-template-rows: [row1] 50px [row2] minmax(500px, 1fr);
+  grid-template-columns: [col1] 1fr [col2] minmax(250px, 350px);
+  grid-gap: 5px;
+}
+
+.admin-checklist-filter-container {
+  grid-column-start: col2;
+  grid-column-end: col2;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-checklist-table {
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-checklist-filter {
+  border: black 1px solid;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-checklist-filter-field-name, .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
+.admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
+  width: 100%;
+}
+
+.admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points {
+  flex-direction: row;
+  display: flex;
+}
+
+.admin-checklist-filter-field-created-from, .admin-checklist-filter-field-geo-points-from {
+  width: 50%;
+}
+
+.admin-checklist-filter-field-created-to, .admin-checklist-filter-field-geo-points-to {
+  width: 50%;
+}
+
+.admin-checklist-filter-field-public label:first-child, .admin-checklist-filter-field-created-from,
+.admin-checklist-filter-field-geo-points-from {
+  margin-right: 10px;
+}
+
+.admin-checklist-filter-field-public label:nth-child(2), .admin-checklist-filter-field-created-to,
+.admin-checklist-filter-field-geo-points-to {
+  margin-left: 10px;
+}
+
+.admin-checklist-filter-field-button {
+  display: flex;
+  justify-content: space-around;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
+/**/
+select.form-control:not([size]):not([multiple]) {
+  height: 34px;
+}
+/**/
 
 /*************************************************************************************/
 /*  Media queries*/
@@ -992,6 +1316,7 @@ header nav {
   .nav.false {
     display: none;
   }
+
   .rounded-circle {
     display: none;
   }
@@ -1067,8 +1392,14 @@ header nav {
 
   /* Check in*/
   .checkin-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: [row1] minmax(100px, max-content) [row2] 1fr;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 10px;
+  }
+
+  .checkin-form {
+    height: max-content;
   }
 
   .checkin-map {
@@ -1137,6 +1468,148 @@ header nav {
     margin: 10px 0 10px 0;
   }
 
+  /* Admin all users */
+  .admin-all-users-container {
+    display: grid;
+    padding: 10px;
+    height: 100%;
+    grid-template-rows: [row1] 50px [row2] minmax(200px, max-content) [row3] minmax(max-content, 1fr);
+    grid-template-columns: [col1] 100%;
+    grid-gap: 5px;
+  }
+
+  .admin-all-users-container h3 {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .admin-all-users-filter-container {
+    border: black 1px solid;
+
+  /* Admin all checklist */
+  .admin-checklist-container {
+    display: grid;
+    padding: 10px;
+    height: 100%;
+    grid-template-rows: [row1] 50px [row2] minmax(250px, max-content) [row3] minmax(500px, 1fr);
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
+  }
+
+  .admin-checklist-filter-container {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row2;
+  }
+
+  .admin-all-users-table-container {
+    display: flex;
+    justify-content: center;
+
+  .admin-checklist-table {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row3;
+  }
+
+  .filter-users-container, .filter-users-field-data, .filter-users-field-list-count {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .filter-users-container {
+    width: 100%;
+    align-items: center;
+  }
+
+  .filter-users-field-name {
+    order: 1;
+    width: 50%;
+  }
+
+  .filter-users-field-data {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-users-field-data-from, .filter-users-field-data-to, .filter-users-field-list-count-from, .filter-users-field-list-count-to {
+    width: 50%;
+  }
+
+  .filter-users-field-data-from, .filter-users-field-list-count-from {
+    padding-right: 10px;
+  }
+
+  .filter-users-field-data-to, .filter-users-field-list-count-to {
+    padding-left: 10px;
+  }
+
+  .filter-users-field-list-count {
+    order: 4;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-users-field-status {
+    order: 2;
+    width: 50%;
+  }
+
+  .filter-users-field-official {
+    order: 5;
+    width: 50%;
+  }
+
+  .filter-users-field-admin {
+    order: 6;
+    width: 50%;
+  }
+
+  .filter-users-field-buttons {
+    order: 7;
+  }
+
+  /****************************************************************************************/
+  .admin-checklist-filter-field-name .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
+  .admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
+    /*display: flex;*/
+  }
+
+  .admin-checklist-filter-field-name {
+    order: 1;
+    width: 50%;
+    padding-right: 10px;
+  }
+
+  .admin-checklist-filter-field-users {
+    order: 2;
+    width: 50%;
+    padding-left: 10px;
+  }
+
+  .admin-checklist-filter-field-created {
+    order: 3;
+  }
+
+  .admin-checklist-filter-field-geo-points {
+    order: 4;
+  }
+
+  .admin-checklist-filter-field-public {
+    order: 5;
+  }
+
+  .admin-checklist-filter-field-button {
+    order: 6;
+  }
+
+  /****************************************************************************************************************/
   /*.check-list-map {*/
   /*!*height: 500px;*!*/
   /*}*/
