@@ -5,7 +5,7 @@ export default interface IListPointItemComponentProps {
   marker: IMarker;
   selectedMarkerId: string;
 
-  editingPermission: ( isEditind: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  editingPermission: ( isEditing: boolean ) => ( dispatch: IDispatchFunction ) => void;
   selectMarker: ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
   putStatusMarker: ( statusMarker: EnumStatusMarker ) => ( dispatch: IDispatchFunction ) => void;
   deleteMarker: ( idMarker: string ) => ( dispatch: IDispatchFunction ) => void;

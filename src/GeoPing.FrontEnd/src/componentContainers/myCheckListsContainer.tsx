@@ -64,9 +64,11 @@ const mapStateToProps = ( state: any ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
+  bindActionCreators (
+    {
     showModalShare,
     openModalForCreateCheckList,
-  }, dispath );
+  },
+    dispath );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( MyCheckListsContainer );

@@ -1,109 +1,122 @@
 import {
-  ADD_MARKER, ADD_MARKER_FOR_MAP, ADD_NEW_POINT,
+  ADD_DISTANCE_BETWEEN_POINTS,
+  ADD_MARKERS,
+  ADD_NEW_POINT,
   ADD_POINT,
   CANCEL_ADD_NEW_POINT,
-  CANCEL_EDITING_GEO_POINT, DELETE_MARKER,
-  EDIT_GEO_POINT, FIND_LOCATION_FOR_CENTER_MAP,
+  CANCEL_EDITING_GEO_POINT,
+  CHANGE_DATA_GEO_POINT,
+  CLEAR_MARKER_LIST,
+  DELETE_MARKER,
+  EDIT_GEO_POINT,
+  FIND_LOCATION_FOR_CENTER_MAP,
   MARKER_INSTALED,
+  MARKERS_RENDERED,
   MOVE_DRAG_MARKER,
   MOVE_END_MARKER,
   MOVE_START_MARKER,
-  PERMISSION_TO_ADD_MARKER, PUT_STATUS_MARKER,
-  SELECT_MARKER, SELECT_MARKER_FOR_MAP
+  PERMISSION_TO_ADD_MARKER,
+  PUT_STATUS_MARKER,
+  SELECT_MARKER,
+  USER_MARKER_CREATED
 } from '../DTO/constantsForReducer/googleMap';
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 import { EnumStatusMarker, IMarker, IPosition } from '../DTO/types/googleMapType';
-import { CHANGE_DATA_GEO_POINT } from '../DTO/constantsForReducer/googleMap';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 
 export const addPoints = ( markers: Array<any> ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( addPointsAction ( markers ) );
+  dispatch( addPointsAction( markers ) );
 };
 
 export const permissionToAddMarker = ( isAddMarker: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( permissionToAddMarkerAction ( isAddMarker ) );
+  dispatch( permissionToAddMarkerAction( isAddMarker ) );
 };
 
 export const selectedMarker = ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( selectedMarkerAction ( marker ) );
+  dispatch( selectedMarkerAction( marker ) );
 };
 
-// export const selectedMarkerForMap = ( marker: any ) => ( dispatch: IDispatchFunction ) => {
-//   dispatch ( selectedMarkerForMapAction ( marker ) );
-// };
-
 export const moveStartMarker = ( markerCoords: any ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( moveStartMarkerAction ( markerCoords ) );
+  dispatch( moveStartMarkerAction( markerCoords ) );
 };
 
 export const moveDragMarker = ( markerCoords: any ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( moveDragMarkerAction ( markerCoords ) );
+  dispatch( moveDragMarkerAction( markerCoords ) );
 };
 
 export const moveEndMarker = ( markerCoords: any ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( moveEndMarkerAction ( markerCoords ) );
+  dispatch( moveEndMarkerAction( markerCoords ) );
 };
 
 export const changeDataGEOPoint = ( idMarker: string, field: string, value: string | number ) =>
   ( dispatch: IDispatchFunction ) => {
-    dispatch ( changeDataGEOPointAction ( idMarker, field, value ) );
+    dispatch( changeDataGEOPointAction( idMarker, field, value ) );
   };
 
 export const editGEOPoint = ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( editGEOPointAction ( marker ) );
+  dispatch( editGEOPointAction( marker ) );
 };
 
 export const cancelEditingGEOPoint = () => ( dispatch: IDispatchFunction ) => {
-  dispatch ( cancelEditingGEOPointAction () );
+  dispatch( cancelEditingGEOPointAction() );
 };
 
 export const addNewPoint = ( idMarker: string ) => ( dispatch: IDispatchFunction ) => {
-  // dispatch ( addNotificationAction ( createNotification (
-  //   'Click on the place on the map where you want to set the point or click cancel',
-  //   EnumNotificationType.Primary
-  // ) ) );
-  dispatch ( addNewPointAction ( idMarker ) );
+  dispatch( addNewPointAction( idMarker ) );
 };
 
-// export const addPoint = ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => {
-//   dispatch ( addPointAction ( marker ) );
-// };
-
 export const cancelAddNewPoint = () => ( dispatch: IDispatchFunction ) => {
-  dispatch ( cancelAddNewPointAction () );
+  dispatch( cancelAddNewPointAction() );
 };
 
 export const markerInstalled = ( isMarkerInstaled: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( markerInstalledAction ( isMarkerInstaled ) );
+  dispatch( markerInstalledAction( isMarkerInstaled ) );
 };
 
 export const putStatusMarker = ( statusMarker: EnumStatusMarker ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( putStatusMarkerAction ( statusMarker ) );
+  dispatch( putStatusMarkerAction( statusMarker ) );
 };
 
 export const findLocationForCenterMap = () => ( dispatch: IDispatchFunction ) => {
-  window.navigator.geolocation.getCurrentPosition ( ( location: any ) => {
+  window.navigator.geolocation.getCurrentPosition(
+    ( location: any ) => {
       const position: IPosition = {
         lng: location.coords.longitude,
         lat: location.coords.latitude,
         isSuccess: true,
       };
-      dispatch ( findLocationForCenterMapAction ( position ) );
+      dispatch( findLocationForCenterMapAction( position ) );
     },
     ( error: any ) => {
-      console.log ( error );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const deleteMarker = ( idMarker: string ) => ( dispatch: IDispatchFunction ) => {
-  dispatch ( deleteMarkerAction ( idMarker ) );
+  dispatch( deleteMarkerAction( idMarker ) );
+};
+
+export const userMarkerCreate = ( isCreate: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( userMarkerCreateAction( isCreate ) );
+};
+
+export const markerRender = ( isMarkerRendered: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( markerRenderAction( isMarkerRendered ) );
+};
+
+export const addDistance = ( distance: number ) => ( dispatch: IDispatchFunction ) => {
+  dispatch(addDistanceAction(Math.round( distance )));
+};
+
+export const clearMarkerList = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearMarkerListAction() );
 };
 
 /* Actions **********************************************************************************************/
-function addPointsAction( markers: any ): Object {
-  return { type: ADD_MARKER, markers };
+export function addPointsAction( markers: any ): Object {
+  return { type: ADD_MARKERS, markers };
 }
 
 function permissionToAddMarkerAction( isAddMarker: boolean ): Object {
@@ -113,10 +126,6 @@ function permissionToAddMarkerAction( isAddMarker: boolean ): Object {
 function selectedMarkerAction( marker: IMarker ): Object {
   return { type: SELECT_MARKER, marker };
 }
-
-// function selectedMarkerForMapAction( marker: any ): Object {
-//   return { type: SELECT_MARKER_FOR_MAP, marker };
-// }
 
 function moveStartMarkerAction( markerCoords: any ): Object {
   return { type: MOVE_START_MARKER, markerCoords };
@@ -168,4 +177,20 @@ function findLocationForCenterMapAction( position: IPosition ): Object {
 
 function deleteMarkerAction( idMarker: string ): Object {
   return { type: DELETE_MARKER, idMarker };
+}
+
+function userMarkerCreateAction( isCreate: boolean ): Object {
+  return { type: USER_MARKER_CREATED, isCreate };
+}
+
+function markerRenderAction( isMarkerRendered: boolean ): Object {
+  return { type: MARKERS_RENDERED, isMarkerRendered };
+}
+
+function clearMarkerListAction(): Object {
+  return { type: CLEAR_MARKER_LIST };
+}
+
+function addDistanceAction( distance: number ): Object {
+  return { type: ADD_DISTANCE_BETWEEN_POINTS, distance };
 }

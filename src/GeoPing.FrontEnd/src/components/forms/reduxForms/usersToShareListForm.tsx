@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { FieldArray, Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Button, FormControl } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /**/
 function validateFieldEmailListUserShare( value: any ) {
 
-  const regEmail: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regEmail: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   let error: any = {};
   if ( !value.users || !value.users.length ) {
-    console.log('value.users', value.users);
+    // console.log('value.users', value.users);
   } else {
     const usersError: any = [];
     for ( const index in value.users ) {
-      if ( !regEmail.test ( value.users[index].email ) ) {
-        usersError[index] = { email: 'no user int hte system, will send invitation' };
+      if ( !regEmail.test( value.users[ index ].email ) ) {
+        usersError[ index ] = { email: 'no user int hte system, will send invitation' };
       }
     }
     if ( usersError.length ) {
@@ -68,12 +68,12 @@ function fieldComponent( props: any ) {
 function fieldUser( props: any ) {
   const { fields, meta: { touched, error, submitFailed } }: any = props;
   if ( fields.length === 0 ) {
-    fields.push ( {} );
+    fields.push( {} );
   }
   return (
     <React.Fragment>
       <ul>
-        {fields.map ( ( user: any, index: number ) => (
+        {fields.map( ( user: any, index: number ) => (
           <li
             key={index}
             className="field-to-share-list-li"
@@ -81,7 +81,7 @@ function fieldUser( props: any ) {
             {fields.length > 1 && index !== 0 &&
             <div
               className="field-to-share-list-icon-minus cursor-pointer"
-              onClick={() => fields.remove ( index )}
+              onClick={() => fields.remove( index )}
             >
               <FontAwesomeIcon icon="minus"/>
             </div>
@@ -94,7 +94,7 @@ function fieldUser( props: any ) {
         ) )}
       </ul>
       <div
-        onClick={() => fields.push ( {} )}
+        onClick={() => fields.push( {} )}
         className="add-user-to-share-list"
       >
         <FontAwesomeIcon
@@ -130,9 +130,9 @@ function addUserToShareListForm( props: any ): any {
   );
 }
 
-const ShareUserReduxForm: any = reduxForm ( {
+const ShareUserReduxForm: any = reduxForm( {
   form: 'ShareList',
   validate: validateFieldEmailListUserShare,
-} ) ( addUserToShareListForm as any );
+} )( addUserToShareListForm as any );
 
 export default ShareUserReduxForm;

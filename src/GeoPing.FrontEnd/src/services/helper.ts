@@ -10,3 +10,23 @@ export function createNotification( message: string, notificationType: EnumNotif
   };
   return newNotification;
 }
+
+export function sortAsc( itemOne: any, itemTwo: any ) {
+  if ( itemOne < itemTwo ) {
+    return -1;
+  } else if ( itemOne === itemTwo ) {
+    return 0;
+  }
+
+  return 1;
+}
+
+export function sortDesc( itemOne: any, itemTwo: any ) {
+  if ( itemOne > itemTwo ) {
+    return -1;
+  } else if ( itemOne === itemTwo ) {
+    return 0;
+  }
+
+  return 1;
+}

@@ -53,11 +53,11 @@ export class CheckListLinkComponent extends React.Component<ICheckListLinkCompon
     return (
       <React.Fragment>
         <div
-          className={` check-list-add-new-point ${ disableAddPoint && ' disabled-link '}`}
+          className={` check-list-add-new-point`}
         >
           <div
             id="new"
-            className="icon-hover-color cursor-pointer"
+            className={`icon-hover-color cursor-pointer ${ disableAddPoint && ' disabled-link '}`}
             onClick={this.handleNewPoint}
           >
             <FontAwesomeIcon icon="plus-circle"/>

@@ -5,5 +5,5 @@ export default interface ICheckListStateType {
   isShowModal: boolean;
   idChecklist: number;
   nameChecklist: string;
-  isEditind: boolean;
+  isEditing: boolean;
 }

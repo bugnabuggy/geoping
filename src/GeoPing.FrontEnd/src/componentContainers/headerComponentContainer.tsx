@@ -11,7 +11,7 @@ class HeaderComponentContainer extends React.Component<IHeaderComponentContainer
 
   componentDidUpdate( prevProps: IHeaderComponentContainerProps ) {
     if ( this.props.routeKey !== this.props.location.pathname ) {
-      this.props.editRoute ( this.props.location.pathname );
+      this.props.editRoute( this.props.location.pathname );
     }
   }
 
@@ -43,10 +43,12 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    editRoute,
-    authorizationUser,
-    signOutUser,
-  }, dispath );
+  bindActionCreators(
+    {
+      editRoute,
+      authorizationUser,
+      signOutUser,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( HeaderComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( HeaderComponentContainer );
