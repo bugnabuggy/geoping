@@ -1,3 +1,7 @@
+:root {
+  --success-color: #5cb85c;
+  --danger-color: #d9534f;
+}
 
 html, body {
   margin: 0;
@@ -256,6 +260,7 @@ header nav {
 .check-list-panel-item-icons {
   width: 18px !important;
   height: 16px;
+  color: black;
 }
 
 .dashboard-check-list-title {
@@ -283,7 +288,7 @@ header nav {
 
 .dashboard-check-list-panel-body {
   height: 100%;
-  overflow: overlay;
+  overflow: auto;
   padding: 0 10px;
 }
 
@@ -924,6 +929,67 @@ header nav {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/*************************************************************************************/
+
+/* Check in Statistics*/
+.check-in-statistics {
+  height: 100%;
+  display: grid;
+  grid-template-rows: [row1] minmax(max-content, 1fr);
+  grid-template-columns: [col1] minmax(300px, 500px) [col2] minmax(max-content, 1fr);
+  grid-gap: 5px;
+}
+
+.check-in-statistics-container {
+  padding: 10px;
+}
+
+.check-in-statistics-form-container {
+
+}
+
+.check-in-statistics-form-select, .check-in-statistics-form-period {
+  display: flex;
+  align-items: center;
+}
+
+.check-in-statistics-form-label {
+  width: 150px;
+}
+
+.check-in-statistics-form-input {
+  width: 300px;
+}
+
+.check-in-statistics-form-period {
+  width: 300px;
+}
+
+.check-in-statistics-form-period-date {
+  margin: 0 10px 5px 10px;
+}
+
+.custom-input-date {
+  margin: 0 10px 0 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.custom-input-date-icon {
+  margin: 0 0 0 10px;
+  width: 100%;
+}
+
+.statistics-table-check {
+  background: var(--success-color, #128D15);
+  color: white;
+}
+
+.statistics-table-not-check {
+  background: var(--danger-color, #a4575b);
+  color: white;
 }
 
 /*************************************************************************************/

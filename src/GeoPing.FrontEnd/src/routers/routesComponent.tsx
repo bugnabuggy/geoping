@@ -16,6 +16,7 @@ import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
+import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
 
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
 
@@ -46,6 +47,7 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
+            <Route exact={true} path="/check_in_statistics" component={CheckinStatisticsPage}/>
             {
               this.props.roleUser === ERoleUser.Admin ? (
                   <React.Fragment>

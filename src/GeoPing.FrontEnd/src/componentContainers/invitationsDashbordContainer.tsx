@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import IInvitationsDashbordContainer from '../componentProps/invitationsDashbordContainerProps';
 import { InvitationsDashbordComponent } from '../components/InvitationsDashbordComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 
 class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordContainer, any> {
   render() {
@@ -23,7 +24,7 @@ class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordC
   }
 }
 
-const mapStateToProps = ( state: any ) => {
+const mapStateToProps = ( state: IinitialStateType ) => {
   return {};
 };
 
