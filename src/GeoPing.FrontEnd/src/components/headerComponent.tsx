@@ -81,7 +81,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
     return (
       <nav className="navbar navbar-light bg-light">
         <div className="row align-items-center header-container-row">
-          <div className="col-4 ml-5 logo-header">
+          <div className="col-4 logo-header">
             Geo Ping
           </div>
           <div>
@@ -90,7 +90,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
           <button className="adaptive-menu " onClick={this.handleMenu}>
               <FontAwesomeIcon icon="bars"/>
           </button>
-          <div className={`col-6 ml-auto nav nav-pills ${this.state.showMenu} justify-content-end`}>
+          <div className={`col-8 col-lg-6 ml-auto nav nav-pills ${this.state.showMenu} justify-content-end`}>
             {this.props.userAuthorization ? this.renderLinkAthorized () : this.renderLinkNotAuthorized ()}
           </div>
         </div>
