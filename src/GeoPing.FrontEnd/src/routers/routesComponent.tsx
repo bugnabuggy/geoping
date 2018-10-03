@@ -16,6 +16,7 @@ import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
+import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
 
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
 

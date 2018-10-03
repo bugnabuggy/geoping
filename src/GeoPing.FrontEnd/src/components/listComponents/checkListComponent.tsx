@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import ICheckListComponentProps from '../../componentProps/checkListComponentProps';
 
 export class CheckListComponent extends React.Component<ICheckListComponentProps, any> {
@@ -14,9 +16,12 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
                 {this.props.name}
               </div>
               <div>
-                <div onClick={this.props.showModalShare} className="check-list-panel-item-icons cursor-pointer">
+                <Link
+                  className="check-list-panel-item-icons cursor-pointer"
+                  to={'/check_in_statistics'}
+                >
                   <FontAwesomeIcon icon="chart-bar" className=""/>
-                </div>
+                </Link>
                 <div onClick={this.props.showModalShare} className="check-list-panel-item-icons cursor-pointer">
                   <FontAwesomeIcon icon="share-square"/>
                 </div>
