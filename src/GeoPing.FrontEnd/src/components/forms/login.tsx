@@ -13,15 +13,15 @@ class LoginComponent extends React.Component<any, any> {
     // console.log ( 'e', e );
   }
 
-  render() {
-    return (
-      <div className="login-page">
-        <LoginReduxForm
-          onSubmit={this.submit}
-        />
-      </div>
-    );
-  }
+    render() {
+        return (
+          <div className="login-page">
+            <LoginReduxForm
+              onSubmit={this.submit}
+            />
+          </div>
+        );
+    }
 }
 
 export default LoginComponent;
