@@ -191,11 +191,43 @@ header nav {
   bottom: 27px;
   float: right;
 }
-
 .register-btn {
   margin-top: 20px;
 }
-
+/*ProfilePage*/
+.profile-page {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.flex-box-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.profile-form {
+  padding: 40px 160px;
+  max-width: 1000px;
+  border: 1px solid;
+  margin-bottom: 40px;
+}
+.profile-label {
+  font-size: 1.5em;
+  float: left;
+}
+.payment-info {
+  max-width: 500px;
+}
+.last-paid-flex {
+  padding: 20px 0;
+}
+.profile-flex-btn {
+  display: flex;
+  padding: 6px 19px;
+  margin-top: 15px;
+}
 /**/
 
 /* Dashboard **************************************************************/

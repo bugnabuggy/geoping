@@ -13,16 +13,15 @@ class LoginComponent extends React.Component<ILoginComponentProps, any> {
    // this.props.authorizationUser ( e.login, e.password );
   }
 
-  render() {
-    console.log(this.props);
-    return (
-      <div className="login-page">
-        <LoginReduxForm
-          onSubmit={this.submit}
-        />
-      </div>
-    );
-  }
+    render() {
+        return (
+          <div className="login-page">
+            <LoginReduxForm
+              onSubmit={this.submit}
+            />
+          </div>
+        );
+    }
 }
 
 export default LoginComponent;
