@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AllChecklistTableComponentProps from '../componentProps/allChecklistTableComponentProps';
+import AllChecklistTableComponentProps from '../componentProps/tablesProps/allChecklistTableComponentProps';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';

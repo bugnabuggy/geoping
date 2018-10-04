@@ -3,7 +3,7 @@ import {
   PUBLIC_LIST_CHANGE_FILTER,
   PUBLIC_LIST_CHANGE_PAGINATION,
   PUBLIC_LIST_LOAD_LISTS
-} from '../DTO/constantsForReducer/publicCheckList';
+} from '../constantsForReducer/publicCheckList';
 
 export const changeFilter = ( nameFilter: string, value: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch ( changeFilterAction ( { nameFilter, value } ) );

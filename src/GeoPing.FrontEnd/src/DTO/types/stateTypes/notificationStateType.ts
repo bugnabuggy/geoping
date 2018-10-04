@@ -1,4 +1,4 @@
-import { EnumNotificationType } from '../../enums/notificationTypeEnum';
+import { EnumNotificationType } from '../../../enums/notificationTypeEnum';
 
 export default interface INotificationStateType {
   notificationList: Array<INotificationType>;

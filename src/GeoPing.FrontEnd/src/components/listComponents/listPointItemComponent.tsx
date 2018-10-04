@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IListPointItemComponentProps from '../../componentProps/listPointItemComponentProps';
-import { defaultMarker } from '../../DTO/constants/defaultMarker';
+import { defaultMarker } from '../../constants/defaultMarker';
 import { EnumStatusMarker } from '../../DTO/types/googleMapType';
 
 export class ListPointItemComponent extends React.Component<IListPointItemComponentProps, any> {

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import IPublicCheckListsComponentContainerProps from '../componentProps/publicCheckListsComponentContainerProps';
+import IPublicCheckListsComponentContainerProps
+  from '../componentContainersProps/publicCheckListsComponentContainerProps';
 import { PublicListsComponent } from '../components/publicListsComponent';
 import { publicListItem } from '../mocks/publicListItemMock';
 import { PaginationComponent } from '../components/paginationComponent';

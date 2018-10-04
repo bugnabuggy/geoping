@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ICheckinPageProps } from '../componentProps/checkinPageProps';
+import { ICheckinPageProps } from '../componentPagesProps/checkinPageProps';
 import CheckinComponentContainer from '../componentContainers/checkinComponentContainer';
 import GoogleMapComponentContainer from '../componentContainers/googleMapComponentContainer';
 

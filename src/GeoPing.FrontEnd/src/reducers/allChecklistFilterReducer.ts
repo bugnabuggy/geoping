@@ -1,6 +1,6 @@
 import IAllChecklistFilterStateType from '../DTO/types/stateTypes/allChecklistFilterStateType';
 import { allChecklistFilterState } from '../state/allChecklistFilterState';
-import { ALL_CHECKLIST_FILTER_CHANGE } from '../DTO/constantsForReducer/allChecklist';
+import { ALL_CHECKLIST_FILTER_CHANGE } from '../constantsForReducer/allChecklist';
 
 export default function allChecklistFilterReducer(
   state: IAllChecklistFilterStateType = allChecklistFilterState,
@@ -14,8 +14,8 @@ export default function allChecklistFilterReducer(
 }
 
 function allChecklistFilterChange( state: IAllChecklistFilterStateType, action: any) {
-  const newState: IAllChecklistFilterStateType = Object.assign({}, state, {
+  return {
+    ...state,
     [action.field]: action.value,
-  });
-  return newState;
+  };
 }

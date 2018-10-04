@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import IInvitationsDashbordContainer from '../componentProps/invitationsDashbordContainerProps';
+import IInvitationsDashbordContainer from '../componentContainersProps/invitationsDashbordContainerProps';
 import { InvitationsDashbordComponent } from '../components/InvitationsDashbordComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';

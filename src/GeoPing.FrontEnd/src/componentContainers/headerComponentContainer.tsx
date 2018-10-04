@@ -33,7 +33,7 @@ class HeaderComponentContainer extends React.Component<IHeaderComponentContainer
   }
 }
 
-const mapStateToProps = ( state: IinitialStateType ) => {
+const mapStateToProps = ( state: IinitialStateType) => {
   return {
     location: state.router.location,
     routeKey: state.header.routeKey,

@@ -1,4 +1,4 @@
-import { CHANGE_EMPLOYEE } from '../DTO/constantsForReducer/allUsers';
+import { CHANGE_EMPLOYEE } from '../constantsForReducer/allUsers';
 import { allUsersTableState } from '../state/allUsersTableState';
 import IAllUsersTableStateType from '../DTO/types/stateTypes/allUsersTableStateType';
 

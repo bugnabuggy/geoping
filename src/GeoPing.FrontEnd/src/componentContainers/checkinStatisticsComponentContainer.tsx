@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import ICheckinStatisticsComponentContainerProps from '../componentProps/checkinStatisticsComponentContainerProps';
+import ICheckinStatisticsComponentContainerProps
+  from '../componentContainersProps/checkinStatisticsComponentContainerProps';
 import { CheckinStatisticsComponent } from '../components/checkinStatisticsComponent';
 import TableMarkerStatisticsComponentContainer from '../componentContainers/tableMarkerStatisticsComponentContainer';
 import { loadLists, loadPoints, loadUsers } from '../actions/checkinStatisticsActions';

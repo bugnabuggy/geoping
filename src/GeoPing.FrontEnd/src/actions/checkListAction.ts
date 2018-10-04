@@ -8,10 +8,10 @@ import {
   EDITING_PERMISSION_POINT,
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
-} from '../DTO/constantsForReducer/checkList';
+} from '../constantsForReducer/checkList';
 import { createCheckListMockService } from '../services/mockServices/createCheckListMockService';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
 import { getLocationAddress } from '../services/mapService';
 import { addPointAction } from './googleMapAction';

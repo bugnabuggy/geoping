@@ -4,11 +4,11 @@ import {
   CHECK_IN_FLAG_CHANGE,
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST
-} from '../DTO/constantsForReducer/checkin';
+} from '../constantsForReducer/checkin';
 import { addPointsAction } from './googleMapAction';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectedListAction( idList ) );

@@ -61,6 +61,10 @@ select.form-control:not([size]):not([multiple]) {
   width: 100%;
 }
 
+.react-select-width {
+  width: 100%;
+}
+
 /* Header ******************************************************************/
 /*.header-container {*/
 /*height: 100%;*/
@@ -433,7 +437,7 @@ header nav {
 
 .rate-container {
   position: relative;
-  width: 250px;
+  width: 350px;
 }
 
 .rate-tooltip {
@@ -1130,7 +1134,7 @@ header nav {
   padding: 10px;
 }
 
-.check-in-statistics-form-container {
+.check-in-statistics-form-select-container {
 
 }
 
@@ -1455,6 +1459,7 @@ select.form-control:not([size]):not([multiple]) {
 
   .admin-all-users-filter-container {
     border: black 1px solid;
+  }
 
   /* Admin all checklist */
   .admin-checklist-container {
@@ -1476,6 +1481,7 @@ select.form-control:not([size]):not([multiple]) {
   .admin-all-users-table-container {
     display: flex;
     justify-content: center;
+  }
 
   .admin-checklist-table {
     grid-column-start: col1;

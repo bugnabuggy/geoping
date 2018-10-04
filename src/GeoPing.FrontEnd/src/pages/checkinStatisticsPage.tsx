@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import ICheckinStatisticsPageProps from '../componentProps/checkinStatisticsPageProps';
+import ICheckinStatisticsPageProps from '../componentPagesProps/checkinStatisticsPageProps';
 import CheckinStatisticsComponentContainer from '../componentContainers/checkinStatisticsComponentContainer';
 
 export default class CheckinStatisticsPage extends React.Component<ICheckinStatisticsPageProps, any> {

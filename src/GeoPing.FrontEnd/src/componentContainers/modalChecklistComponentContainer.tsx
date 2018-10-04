@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import { ModalChecklistComponent } from '../components/modalComponents/checklist/modalChecklistComponent';
 import { closeModalForCreateCheckList, createCheckList } from '../actions/checkListAction';
-import IModalChecklistComponentContainerProps from '../componentProps/modalChecklistComponentContainerProps';
+import IModalChecklistComponentContainerProps from '../componentContainersProps/modalChecklistComponentContainerProps';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 
 class ModalChecklistComponentContainer extends React.Component<IModalChecklistComponentContainerProps, any> {

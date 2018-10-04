@@ -2,7 +2,7 @@ import * as React from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
 import { Table } from 'react-bootstrap';
-import ITableHistoryDashboardProps from '../componentProps/tableHistoryDashboardProps';
+import ITableHistoryDashboardProps from '../componentProps/tablesProps/tableHistoryDashboardProps';
 import { ITableHistoryType } from '../DTO/types/stateTypes/tableHistoryStateType';
 
 export class TableHistoryDashboard extends React.Component<ITableHistoryDashboardProps, any> {

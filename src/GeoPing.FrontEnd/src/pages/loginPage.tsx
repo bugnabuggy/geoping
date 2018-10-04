@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ILoginPageProps } from '../componentProps/loginPageProps';
+import { ILoginPageProps } from '../componentPagesProps/loginPageProps';
 import RegisterComponent from '../components/forms/register';
 import LoginComponent from '../components/forms/login';
 

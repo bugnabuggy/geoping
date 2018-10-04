@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-import ITableUsersComponentProps from '../componentProps/tableUsersComponentProps';
+import ITableUsersComponentProps from '../componentProps/tablesProps/tableUsersComponentProps';
 
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 

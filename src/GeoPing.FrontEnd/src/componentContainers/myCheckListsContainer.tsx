@@ -5,7 +5,7 @@ import { Panel } from 'react-bootstrap';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
 import { checkLists } from '../mocks/dashboardCheckListsMock';
-import IMyCheckListsContsinerProps, { ICheckLists } from '../componentProps/myCheckListsContsinerProps';
+import IMyCheckListsContsinerProps, { ICheckLists } from '../componentContainersProps/myCheckListsContsinerProps';
 import { showModalShare } from '../actions/modalAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';

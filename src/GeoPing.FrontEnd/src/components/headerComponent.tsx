@@ -81,7 +81,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
     return (
       <nav className="navbar navbar-light bg-light">
         <div className="row align-items-center header-container-row">
-          <div className="col-4 logo-header">
+          <div className="col-md-3 col-sm-5 logo-header">
             Geo Ping
           </div>
           <div>

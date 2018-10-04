@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import INotificationsBlockComponentProps from '../componentProps/notificationsBlockComponentProps';
+import INotificationsBlockComponentProps from '../componentProps/notificationProps/notificationsBlockComponentProps';
 import { NotificationComponent } from './notificationComponent';
 import { INotificationType } from '../DTO/types/stateTypes/notificationStateType';
 

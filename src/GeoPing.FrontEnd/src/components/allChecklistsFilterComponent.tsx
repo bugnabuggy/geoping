@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import IAllChecklistsFilterComponentProps from '../componentProps/allChecklistsFilterComponentProps';
+import IAllChecklistsFilterComponentProps from '../componentProps/filtersProps/allChecklistsFilterComponentProps';
 
 export class AllChecklistsFilterComponent extends React.Component<IAllChecklistsFilterComponentProps, any> {
   handleChangeStart = ( date: any ) => {

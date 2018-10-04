@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ITableHistoryDashboardContainerProps from '../componentProps/tableHistoryDashboardContainerProps';
+import ITableHistoryDashboardContainerProps from '../componentContainersProps/tableHistoryDashboardContainerProps';
 import { TableHistoryDashboard } from '../components/tableHistoryDashboard';
 
 import { history } from '../mocks/dashboardTableMock';

@@ -1,4 +1,4 @@
-import IPublicCheckListItemProps from './publicCheckListItemProps';
+import IPublicCheckListItemProps from '../componentProps/publicCheckListItemProps';
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 
 export default interface IPublicCheckListsComponentContainerProps {

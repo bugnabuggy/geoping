@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import IFilterForPublicCheckListsComponentContainerProps
-  from '../componentProps/filterForPublicCheckListsComponentContainerProps';
+  from '../componentContainersProps/filterForPublicCheckListsComponentContainerProps';
 import { FilterForPublicCheckListsComponent } from '../components/filterForPublicCheckListsComponent';
 import { changeFilter } from '../actions/publicChecListAction';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';

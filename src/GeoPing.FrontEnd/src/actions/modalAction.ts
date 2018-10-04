@@ -1,4 +1,4 @@
-import { SHOW_MODAL_SHARE, CLOSE_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
+import { SHOW_MODAL_SHARE, CLOSE_MODAL_SHARE } from '../constantsForReducer/modal';
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 
 export const showModalShare = () => (dispatch: IDispatchFunction) => {

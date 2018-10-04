@@ -2,14 +2,15 @@ import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { v4 as uuidV4 } from 'uuid';
-import IModalShareCheckListTableComponentProps from '../../../componentProps/modalShareCheckListTableComponentProps';
+import IModalShareCheckListTableComponentProps
+  from '../../../componentProps/modalWindowProps/modalShareCheckListTableComponentProps';
 
 export class ModalShareCheckListTableComponent extends React.Component<IModalShareCheckListTableComponentProps, any> {
 
   renderUserWhoHasAccess = () => {
-    const elements: Array<any> = this.props.users.map ( ( item: any ) => {
+    const elements: Array<any> = this.props.users.map( ( item: any ) => {
       return (
-        <tr key={uuidV4 ()}>
+        <tr key={uuidV4()}>
           <td>
             {item.name}
           </td>
@@ -43,7 +44,7 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
         >
           <thead/>
           <tbody>
-          {this.renderUserWhoHasAccess ()}
+          {this.renderUserWhoHasAccess()}
           </tbody>
         </Table>
       </div>

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import AllChecklistsFilterComponentContainer from '../componentContainers/allChecklistsFilterComponentContainer';
 import { TableComponent } from '../components/tableComponent';
-import { ITableStructure } from '../componentProps/tableComponentProps';
+import { ITableStructure } from '../componentProps/tablesProps/tableComponentProps';
 import AllChecklistTableComponentContainer from '../componentContainers/allChecklistTableComponentContainer';
 
 const table: Array<ITableStructure> = [

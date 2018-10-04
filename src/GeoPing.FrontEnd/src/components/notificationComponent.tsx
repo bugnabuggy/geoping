@@ -1,8 +1,8 @@
 import * as React from 'react';
-import INotificationComponentProps from '../componentProps/notificationComponentProps';
+import INotificationComponentProps from '../componentProps/notificationProps/notificationComponentProps';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export class NotificationComponent extends React.Component<INotificationComponentProps, any> {
   private idDismissAll: string = 'dismissAll';

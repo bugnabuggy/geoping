@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 
-import { defaultMarker } from '../DTO/constants/defaultMarker';
+import { defaultMarker } from '../constants/defaultMarker';
 import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 
 let _that: any = null;
@@ -132,7 +132,7 @@ export function createUserMarker( position: any ) {
 
 export function addNewMarker( marker: any ) {
   removeMarker( marker.id );
-  createMarker( marker, false, 1 * 400, true );
+  createMarker( marker, false, 400, true );
 }
 
 /********************************/
@@ -166,7 +166,7 @@ export function createMarker( position: IMarker, isUser: boolean, timeout: numbe
         animation: _google.maps.Animation.DROP,
       } );
 
-      marker.addListener( 'click', ( e: any ) => {
+      marker.addListener( 'click', () => {
         if ( !isUser ) {
           if ( _that.props.googleMap.selectedMarker.id !== position.id ) {
             if ( !_that.props.isCheckIn ) {

@@ -1,4 +1,4 @@
-import { IMarker } from '../types/googleMapType';
+import { IMarker } from '../DTO/types/googleMapType';
 
 export const defaultMarker: IMarker = {
   id: '',

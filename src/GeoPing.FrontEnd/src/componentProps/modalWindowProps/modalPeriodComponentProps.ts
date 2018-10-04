@@ -1,4 +1,4 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../../DTO/types/dispatchFunction';
 
 export default interface IModalPeriodComponentProps {
   isShowModal: boolean;

@@ -19,12 +19,12 @@ import {
   PUT_STATUS_MARKER,
   SELECT_MARKER,
   USER_MARKER_CREATED
-} from '../DTO/constantsForReducer/googleMap';
+} from '../constantsForReducer/googleMap';
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 import { EnumStatusMarker, IMarker, IPosition } from '../DTO/types/googleMapType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const addPoints = ( markers: Array<any> ) => ( dispatch: IDispatchFunction ) => {
   dispatch( addPointsAction( markers ) );

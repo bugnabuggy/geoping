@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import ITableUsersComponentContainerProps from '../componentProps/tableUsersComponentContainerProps';
+import ITableUsersComponentContainerProps from '../componentContainersProps/tableUsersComponentContainerProps';
 import { TableUsersComponent } from '../components/tableUsersComponent';
 import { changeEmployee } from '../actions/allUsersTableAction';
 

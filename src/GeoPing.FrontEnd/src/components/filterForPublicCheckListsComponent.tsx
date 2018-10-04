@@ -2,7 +2,8 @@ import * as React from 'react';
 import { ControlLabel, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import { debounce } from 'throttle-debounce';
 
-import IFilterForPublicCheckListsComponentProps from '../componentProps/filterForPublicCheckListsComponentProps';
+import IFilterForPublicCheckListsComponentProps
+  from '../componentProps/filtersProps/filterForPublicCheckListsComponentProps';
 
 export class FilterForPublicCheckListsComponent extends React.Component<IFilterForPublicCheckListsComponentProps, any> {
 

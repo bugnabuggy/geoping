@@ -1,5 +1,5 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { ALL_CHECKLIST_FILTER_CHANGE } from '../DTO/constantsForReducer/allChecklist';
+import { ALL_CHECKLIST_FILTER_CHANGE } from '../constantsForReducer/allChecklist';
 
 export const changeFields = ( field: string, value: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( changeFieldsAction( field, value ) );

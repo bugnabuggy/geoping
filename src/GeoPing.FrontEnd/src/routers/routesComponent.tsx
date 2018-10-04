@@ -21,7 +21,6 @@ import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
 
   render() {
-
     const authorized: boolean = this.props.authorized;
     let component: any = null;
     if ( !authorized ) {
@@ -47,6 +46,7 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
+            <Route exact={true} path="/check_in_statistics" component={CheckinStatisticsPage}/>
             <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
             <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
             <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
@@ -64,13 +64,13 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
             <Route exact={true} path="/profile" component={ProfilePage}/>
             <Route exact={true} path="/checklist" component={ChecklistPage}/>
             <Route exact={true} path="/checkin" component={CheckinPage}/>
+            <Route exact={true} path="/check_in_statistics" component={CheckinStatisticsPage}/>
 
             <Redirect push={true} from="*" to="/"/>
           </Switch>
         </React.Fragment>
       );
     }
-
     return (
       <React.Fragment>
         <header>
@@ -78,7 +78,7 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
         </header>
         <main>
           <NotificationComponentContainer/>
-          {component}
+            {component}
         </main>
         <footer>
           footer

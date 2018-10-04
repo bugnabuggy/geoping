@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import IFilterUsersComponentProps from '../componentProps/filterUsersComponentProps';
+import IFilterUsersComponentProps from '../componentProps/filtersProps/filterUsersComponentProps';
 
 import 'react-datepicker/dist/react-datepicker.css';
 

@@ -3,12 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import IAllChecklistTableComponentContainerProps from '../componentProps/allChecklistTableComponentContainerProps';
+import IAllChecklistTableComponentContainerProps
+  from '../componentContainersProps/allChecklistTableComponentContainerProps';
 import { AllChecklistTableComponent } from '../components/allChecklistTableComponent';
 
 class AllChecklistTableComponentContainer extends React.Component<IAllChecklistTableComponentContainerProps, any> {
   render() {
-    return(
+    return (
       <React.Fragment>
         <AllChecklistTableComponent/>
       </React.Fragment>
@@ -21,6 +22,6 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispatch: any ) =>
-  bindActionCreators ( {}, dispatch );
+  bindActionCreators( {}, dispatch );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( AllChecklistTableComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( AllChecklistTableComponentContainer );

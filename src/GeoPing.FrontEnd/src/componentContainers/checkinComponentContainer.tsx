@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import ICheckinComponentContainerProps from '../componentProps/checkinComponentContainerProps';
+import ICheckinComponentContainerProps from '../componentContainersProps/checkinComponentContainerProps';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import { CheckinComponent } from '../components/checkinComponent';
 import { checkinFlag, loadLists, loadPoints, selectList } from '../actions/checkinAction';

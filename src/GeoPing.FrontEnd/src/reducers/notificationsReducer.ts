@@ -4,7 +4,7 @@ import {
   ADD_NOTIFICATION,
   DELETE_ALL_NOTIFICATIONS,
   DELETE_NOTIFICATION
-} from '../DTO/constantsForReducer/notification';
+} from '../constantsForReducer/notification';
 
 export default function notificationsReducer( state: INotificationStateType = notificationState, action: any ) {
   const reduceObject: any = {

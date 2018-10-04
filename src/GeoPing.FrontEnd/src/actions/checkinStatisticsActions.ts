@@ -4,7 +4,7 @@ import {
   STATISTICS_LOAD_LISTS,
   STATISTICS_LOAD_POINTS,
   STATISTICS_LOAD_USERS
-} from '../DTO/constantsForReducer/checkinStatistics';
+} from '../constantsForReducer/checkinStatistics';
 import {
   loadListsService,
   loadPointsService,
@@ -12,7 +12,7 @@ import {
 } from '../services/mockServices/checkinStatisticsMockService';
 import { createNotification } from '../services/helper';
 import { addNotificationAction } from './notificationsAction';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const selectList = () => ( dispatch: IDispatchFunction ) => {
   return '';

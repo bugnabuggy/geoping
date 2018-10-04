@@ -7,7 +7,7 @@ import {
   EDITING_PERMISSION_POINT,
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
-} from '../DTO/constantsForReducer/checkList';
+} from '../constantsForReducer/checkList';
 
 export default function checkListReducer( state: ICheckListStateType = checkListState, action: any ) {
   const reduceObject: any = {

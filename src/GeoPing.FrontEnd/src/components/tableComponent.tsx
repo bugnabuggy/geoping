@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
 
-import ITableComponentProps, { ITableStructure } from '../componentProps/tableComponentProps';
+import ITableComponentProps, { ITableStructure } from '../componentProps/tablesProps/tableComponentProps';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sortAsc, sortDesc } from '../services/helper';
 

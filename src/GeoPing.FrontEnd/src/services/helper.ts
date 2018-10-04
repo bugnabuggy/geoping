@@ -1,14 +1,12 @@
 import { v4 as uuidV4 } from 'uuid';
-import { INotificationType } from '../DTO/types/stateTypes/notificationStateType';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
-  const newNotification: INotificationType = {
+  return {
     message,
     type: notificationType,
-    id: uuidV4 (),
+    id: uuidV4(),
   };
-  return newNotification;
 }
 
 export function sortAsc( itemOne: any, itemTwo: any ) {

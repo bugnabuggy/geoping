@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import IFilterUsersComponentContainerProps from '../componentProps/filterUsersComponentContainerProps';
+import IFilterUsersComponentContainerProps from '../componentContainersProps/filterUsersComponentContainerProps';
 import { FilterUsersComponent } from '../components/filterUsersComponent';
-import { IFilterUsersProps } from '../componentProps/filterUsersComponentProps';
+import { IFilterUsersProps } from '../componentProps/filtersProps/filterUsersComponentProps';
 import { changeFilters } from '../actions/allUsersFilterAction';
 
 class FilterUsersComponentContainer extends React.Component<IFilterUsersComponentContainerProps, any> {
@@ -48,8 +48,10 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    changeFilters,
-  }, dispath );
+  bindActionCreators(
+    {
+      changeFilters,
+    },
+    dispath );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( FilterUsersComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( FilterUsersComponentContainer );

@@ -1,6 +1,6 @@
 import IModalStateType from '../DTO/types/stateTypes/modalStateType';
 import { modalState } from '../state/modalState';
-import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
+import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
 
 export default function modalReducer( state: IModalStateType = modalState, action: any ) {
   const reduceObject: any = {

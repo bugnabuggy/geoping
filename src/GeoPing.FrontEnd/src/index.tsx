@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { getRoutes } from './routers/getRoutes';
+import GetRoutes from './routers/getRoutes';
 import createReducer from './reducers/rootReducer';
 import initialState from './state/initialState';
 
@@ -27,8 +27,6 @@ import {
   faShareSquare,
   faStar,
   faTimes,
-  faPencilAlt,
-  faCalendarAlt,
   faSort,
   faSortUp,
   faSortDown,
@@ -82,7 +80,7 @@ const store = createStore(
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      {getRoutes()}
+      <GetRoutes/>
     </ConnectedRouter>
   </Provider>,
   document.getElementById( 'app' )

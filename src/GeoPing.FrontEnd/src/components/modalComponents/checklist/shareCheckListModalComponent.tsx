@@ -4,22 +4,23 @@ import Toggle from 'react-toggle';
 import { ModalComponent } from './modalComponent';
 import { ShareUserToList } from '../../forms/shareUserToList';
 import { ModalShareCheckListTableComponent } from './modalShareCheckListTableComponent';
-import IShareCheckListModalComponentProps from '../../../componentProps/shareCheckListModalComponentProps';
+import IShareCheckListModalComponentProps
+  from '../../../componentProps/modalWindowProps/shareCheckListModalComponentProps';
 import { usersAccess } from '../../../mocks/dashboarModalUsersAccessTableMock';
 
 export class ShareCheckListModalComponent extends React.Component<IShareCheckListModalComponentProps, any> {
+  handleChange = ( e: any ) => {
+    this.setState( {
+      tofuIsReady: e.target.checked
+    } );
+  };
+
   constructor( props: any ) {
-    super ( props );
+    super( props );
     this.state = {
       tofuIsReady: false,
     };
   }
-
-  handleChange = ( e: any ) => {
-    this.setState ( {
-      tofuIsReady: e.target.checked
-    } );
-  };
 
   render() {
     return (

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ITableMarkerStatisticsComponentContainerProps
-  from '../componentProps/tableMarkerStatisticsComponentContainerProps';
+  from '../componentContainersProps/tableMarkerStatisticsComponentContainerProps';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

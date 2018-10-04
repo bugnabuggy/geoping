@@ -3,7 +3,7 @@ import { Button, ControlLabel, FormControl, FormGroup, Panel, Table } from 'reac
 import { v4 as uuidV4 } from 'uuid';
 
 import ICheckinComponentProps from '../componentProps/checkinComponentProps';
-import { defaultMarker } from '../DTO/constants/defaultMarker';
+import { defaultMarker } from '../constants/defaultMarker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CongratulationsModalComponent } from './modalComponents/congratulationsModalComponent';
 

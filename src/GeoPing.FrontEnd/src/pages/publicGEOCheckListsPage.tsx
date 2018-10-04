@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import IPublicGEOCheckListsPageProps from '../componentProps/publicGEOCheckListsPageProps';
+import IPublicGEOCheckListsPageProps from '../componentPagesProps/publicGEOCheckListsPageProps';
 import FilterForPublicCheckListsComponentContainer
   from '../componentContainers/filterForPublicCheckListsComponentContainer';
 import PublicCheckListsComponent from '../componentContainers/publicCheckListsComponentContainer';

@@ -1,5 +1,5 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { CHANGE_FILTERS_ALL_USERS } from '../DTO/constantsForReducer/allUsers';
+import { CHANGE_FILTERS_ALL_USERS } from '../constantsForReducer/allUsers';
 
 export const changeFilters = ( fieldName: string, value: any ) => ( dispatch: IDispatchFunction ) => {
   dispatch(changeFiltersAction(fieldName, value));

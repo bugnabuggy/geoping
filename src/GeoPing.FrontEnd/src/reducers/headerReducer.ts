@@ -1,6 +1,6 @@
 import { headerState } from '../state/headerState';
 import IHeaderStateType from '../DTO/types/stateTypes/headerStateType';
-import { EDIT_ROUTE_HEADER_LINK } from '../DTO/constantsForReducer/header';
+import { EDIT_ROUTE_HEADER_LINK } from '../constantsForReducer/header';
 
 export default function headerReducer( state: IHeaderStateType = headerState, action: any ) {
   const reduceObject: any = {

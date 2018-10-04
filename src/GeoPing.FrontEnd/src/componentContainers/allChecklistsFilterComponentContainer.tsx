@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import IAllChecklistsFilterComponentContainerProps from '../componentProps/allChecklistsFilterComponentContainerProps';
+import IAllChecklistsFilterComponentContainerProps
+  from '../componentContainersProps/allChecklistsFilterComponentContainerProps';
 import { AllChecklistsFilterComponent } from '../components/allChecklistsFilterComponent';
 import { changeFields } from '../actions/allChecklistFilterAction';
 

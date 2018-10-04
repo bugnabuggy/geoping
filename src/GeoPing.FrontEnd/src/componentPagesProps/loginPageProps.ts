@@ -1,4 +1,4 @@
-import ILocationProps from './locationProps';
+import ILocationProps from '../componentProps/locationProps';
 
 export interface ILoginPageProps {
   location: ILocationProps;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import { CheckListHeadComponent } from '../components/checkListHeadComponent';
-import ICheckListTitleComponentContainerProps from '../componentProps/checkListTitleComponentContainerProps';
+import ICheckListTitleComponentContainerProps from '../componentContainersProps/checkListTitleComponentContainerProps';
 import { changeNameCheckList, modalPeriodOpenClose } from '../actions/checkListAction';
 import { ModalPeriodComponent } from '../components/modalComponents/checklist/modalPeriodComponent';
 

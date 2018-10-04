@@ -1,7 +1,7 @@
 import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 import { addNewPoint } from '../actions/googleMapAction';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export default interface ICheckListComponentContainerProps {
   isEditingPoint: boolean;
