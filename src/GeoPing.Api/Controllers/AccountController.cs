@@ -12,10 +12,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using GeoPing.Api.Models;
 using GeoPing.Api.Services;
-using GeoPing.Api.Models.AccountDTO;
+using GeoPing.Api.Models.DTO;
 using IdentityServer4.Extensions;
 using GeoPing.Api.Data;
 using Microsoft.Extensions.DependencyInjection;
+using GeoPing.Api.Interfaces;
 
 namespace GeoPing.Api.Controllers
 {
@@ -432,7 +433,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest(new OperationResult
                 {
                     Success = false,
-                    Messages = { "Invalid username or email" }
+                    Messages = new[] { "Invalid username or email" }
                 });
             }
 
@@ -450,7 +451,7 @@ namespace GeoPing.Api.Controllers
                     return Ok(new OperationResult
                     {
                         Success = true,
-                        Messages = { "User was successfully registered" }
+                        Messages = new[] { "User was successfully registered" }
                     });
                 }
                 AddErrors(result);
@@ -461,7 +462,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(new OperationResult
             {
                 Success = false,
-                Messages = { "Something was failed while user registration" }
+                Messages = new[] { "Something was failed while user registration" }
             });
         }
         

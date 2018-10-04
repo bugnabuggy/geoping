@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeoPing.Api
+namespace GeoPing.Api.Configuration
 {
     public class Config
     {
@@ -35,9 +35,6 @@ namespace GeoPing.Api
                     AccessTokenLifetime = 3600,
 
                     RequireConsent = false,
-
-                    RedirectUris = {Constants.ServerUrl + "/signin-oidc" },
-                    PostLogoutRedirectUris = {Constants.ServerUrl + "signout-callback-oidc"},
 
                     ClientSecrets =
                     {

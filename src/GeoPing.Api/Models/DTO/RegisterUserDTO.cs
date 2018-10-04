@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeoPing.Api.Models.AccountDTO
+namespace GeoPing.Api.Models.DTO
 {
     public class RegisterUserDTO
     {
