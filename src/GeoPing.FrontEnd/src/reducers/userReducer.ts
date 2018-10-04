@@ -1,6 +1,7 @@
 import { userState } from '../state/userState';
 import IUserStateType from '../DTO/types/stateTypes/userStateType';
 import { USER_AUTHORIZATION, USER_SIGN_OUT } from '../DTO/constantsForReducer/user';
+import { post, get } from  '../services/httpService';
 
 export default function userReducer( state: IUserStateType = userState, action: any ) {
 
@@ -13,6 +14,7 @@ export default function userReducer( state: IUserStateType = userState, action: 
 }
 
 function userAuthorization( state: IUserStateType, action: any ) {
+  console.log('a');
   const newState: IUserStateType = Object.assign ( {}, state, { authorized: action.authorization } );
   return newState;
 }

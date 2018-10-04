@@ -27,8 +27,6 @@ import {
   faShareSquare,
   faStar,
   faTimes,
-  faPencilAlt,
-  faCalendarAlt,
   faSort,
   faSortUp,
   faSortDown,

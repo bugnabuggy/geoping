@@ -6,4 +6,10 @@ export const get = ( url: string ) => {
 
 export const post = ( url: string, data: any ) => {
   return axios.post ( url, data );
+    // .then((response) => {
+    //   console.log(response)
+    // })
+    // .catch((error) => {
+    //   console.log(error)
+    // });
 };
