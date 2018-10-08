@@ -1,5 +1,6 @@
 export interface ITableHistoryStateType {
   history: Array<ITableHistoryType>;
+  showHistoryFilter: boolean;
 }
 
 export interface ITableHistoryType {

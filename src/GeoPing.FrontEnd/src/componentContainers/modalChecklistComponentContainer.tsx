@@ -33,13 +33,13 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   };
 };
 
-const mapDispatchToProps = ( dispath: any ) =>
+const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators(
     {
       // openModalForCreateCheckList,
       createCheckList,
       closeModalForCreateCheckList,
     },
-    dispath );
+    dispatch );
 
 export default connect( mapStateToProps, mapDispatchToProps )( ModalChecklistComponentContainer );

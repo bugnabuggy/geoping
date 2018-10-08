@@ -2,4 +2,5 @@ import { ITableHistoryStateType } from '../DTO/types/stateTypes/tableHistoryStat
 
 export const tableHistoryState: ITableHistoryStateType = {
   history: [],
+  showHistoryFilter: false,
 };

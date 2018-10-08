@@ -5,12 +5,12 @@ import { Panel } from 'react-bootstrap';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
 import { checkLists } from '../mocks/dashboardCheckListsMock';
-import IMyCheckListsContsinerProps, { ICheckLists } from '../componentProps/myCheckListsContsinerProps';
+import IMyCheckListsContainerProps, { ICheckLists } from '../componentProps/myCheckListsContainerProps';
 import { showModalShare } from '../actions/modalAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';
 
-class MyCheckListsContainer extends React.Component<IMyCheckListsContsinerProps, any> {
+class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {
 
   renderComponentCheckLists = () => {
     const components: Array<any> = this.props.checkLists.map ( ( item: ICheckLists, index: number ) => {

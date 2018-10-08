@@ -1,6 +1,6 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 
-export default interface IMyCheckListsContsinerProps {
+export default interface IMyCheckListsContainerProps {
   checkLists: Array<ICheckLists>;
 
   showModalShare: () => ( dispatch: IDispatchFunction ) => void;
