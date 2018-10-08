@@ -20,7 +20,9 @@ namespace GeoPing.Api.Services
 
         public string GetUserIdByClaims(IEnumerable<Claim> claims)
         {
-            return claims.FirstOrDefault(c => c.Type.Equals("sub")).Value;
+            return claims != null 
+                   ? claims.FirstOrDefault(c => c.Type.Equals("sub")).Value
+                   : null;
         }
 
         public ApplicationUser GetUserByClaims(IEnumerable<Claim> claims)
