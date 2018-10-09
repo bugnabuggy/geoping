@@ -7,11 +7,11 @@ export const loadProfileData = () => ( dispatch: IDispatchFunction ) => {
 };
 
 export const changePassword = ( newPassword: string ) => ( dispatch: IDispatchFunction ) => {
-  console.log('a');
+  const co: any = 'a';
 };
 
 export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {
-  console.log('a');
+  const co: any = 'a';
 };
 function loadProfileDataAction(): Object {
   return {type: LOAD_INFO};

@@ -8,27 +8,31 @@ import {
 
 export default function publicCheckListReducer( state: IPublicCheckListType = publicCheckListState, action: any ) {
   const reduceObject: any = {
-    [PUBLIC_LIST_CHANGE_FILTER]: changeFilter,
-    [PUBLIC_LIST_CHANGE_PAGINATION]: changePagination,
-    [PUBLIC_LIST_LOAD_LISTS]: loadLists,
+    [ PUBLIC_LIST_CHANGE_FILTER ]: changeFilter,
+    [ PUBLIC_LIST_CHANGE_PAGINATION ]: changePagination,
+    [ PUBLIC_LIST_LOAD_LISTS ]: loadLists,
   };
 
-  return reduceObject.hasOwnProperty ( action.type ) ? reduceObject[action.type] ( state, action ) : state;
+  return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
 function changeFilter( state: IPublicCheckListType, action: any ) {
-  const newState: IPublicCheckListType = Object.assign ( {}, state, {
-    ['filter' + action.filter.nameFilter]: action.filter.value,
-  } );
-  return newState;
+  return {
+    ...state,
+    [ 'filter' + action.filter.nameFilter ]: action.filter.value,
+  };
 }
 
 function changePagination( state: IPublicCheckListType, action: any ) {
-  const newState: IPublicCheckListType = Object.assign ( {}, state, { pageNumber: action.numberPage } );
-  return newState;
+  return {
+    ...state,
+    pageNumber: action.numberPage,
+  };
 }
 
-function loadLists(state: IPublicCheckListType, action: any) {
-  const newState: IPublicCheckListType = Object.assign({}, state, { checkLists: action.list});
-  return newState;
+function loadLists( state: IPublicCheckListType, action: any ) {
+  return {
+    ...state,
+    checkLists: action.list,
+  };
 }

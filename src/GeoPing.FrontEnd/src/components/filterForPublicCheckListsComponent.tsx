@@ -15,18 +15,31 @@ export class FilterForPublicCheckListsComponent extends React.Component<IFilterF
       User: this.user,
       Subscribers: this.subscribers,
     };
-    filterBy[ e.target.name ]( { name: e.target.name, value: e.target.value } );
+    filterBy[ e.target.name ](
+      {
+        name: e.target.name,
+        value: e.target.name === 'Subscribers' ? Number( e.target.value ) : e.target.value
+      }
+    );
+
+    const value: string | number = e.target.name === 'Subscribers' ? Number( e.target.value ) : e.target.value;
+    this.props.changeFilter( e.target.name, value );
   };
   filter = ( filter: any ) => {
-    // console.log ( filter );
-    this.props.changeFilter( filter.name, filter.value );
+    const filters: any = {
+      name: this.props.filterName,
+      user: this.props.filterUser,
+      subscribers: this.props.filterSubscribers,
+    };
+    this.props.filterPublicCheckLists( filters );
   };
 
   constructor( props: any ) {
     super( props );
-    this.user = debounce( 2000, this.filter );
-    this.name = debounce( 2000, this.filter );
-    this.subscribers = debounce( 2000, this.filter );
+    const debounceTime: number = 2000;
+    this.user = debounce( debounceTime, this.filter );
+    this.name = debounce( debounceTime, this.filter );
+    this.subscribers = debounce( debounceTime, this.filter );
   }
 
   render() {
@@ -58,6 +71,7 @@ export class FilterForPublicCheckListsComponent extends React.Component<IFilterF
               </ControlLabel>
               <FormControl
                 name="Subscribers"
+                type="number"
                 onChange={this.handleChange}
               />
             </FormGroup>

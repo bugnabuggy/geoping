@@ -359,6 +359,7 @@ header nav {
   overflow: auto;
   padding: 0 10px;
   max-height: 500px;
+  min-height: 200px;
 }
 
 .check-list-panel-item {
@@ -1487,6 +1488,7 @@ select.form-control:not([size]):not([multiple]) {
 
   .admin-all-users-filter-container {
     border: black 1px solid;
+  }
 
   /* Admin all checklist */
   .admin-checklist-container {
@@ -1508,6 +1510,7 @@ select.form-control:not([size]):not([multiple]) {
   .admin-all-users-table-container {
     display: flex;
     justify-content: center;
+  }
 
   .admin-checklist-table {
     grid-column-start: col1;

@@ -1,14 +1,10 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { loadListsMockService, loadPointsMockService } from '../services/mockServices/checkinMockService';
-import {
-  CHECK_IN_FLAG_CHANGE,
-  CHECK_IN_LOAD_LISTS,
-  CHECK_IN_SELECT_LIST
-} from '../DTO/constantsForReducer/checkin';
+import { CHECK_IN_FLAG_CHANGE, CHECK_IN_LOAD_LISTS, CHECK_IN_SELECT_LIST } from '../DTO/constantsForReducer/checkin';
 import { addPointsAction } from './googleMapAction';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import serviceLocator from '../services/serviceLocator';
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectedListAction( idList ) );
@@ -20,23 +16,22 @@ export const checkin = () => ( dispatch: IDispatchFunction ) => {
 
 /* load */
 export const loadLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
-  loadListsMockService()
+  serviceLocator.post( 'load_lists', idUser )
     .then( ( response: any ) => {
-      // console.log(response);
       dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch ( addNotificationAction ( createNotification ( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
-  loadPointsMockService( idList )
+  serviceLocator.post( 'load_points', idList )
     .then( ( response: any ) => {
       dispatch( addPointsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch ( addNotificationAction ( createNotification ( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 

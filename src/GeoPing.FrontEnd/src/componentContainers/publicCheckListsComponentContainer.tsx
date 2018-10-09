@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import IPublicCheckListsComponentContainerProps from '../componentProps/publicCheckListsComponentContainerProps';
 import { PublicListsComponent } from '../components/publicListsComponent';
-import { publicListItem } from '../mocks/publicListItemMock';
 import { PaginationComponent } from '../components/paginationComponent';
-import { changePagination } from '../actions/publicChecListAction';
+import { changePagination, loadPublicLists } from '../actions/publicChecListAction';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 
 class PublicCheckListsComponentContainer extends React.Component<IPublicCheckListsComponentContainerProps, any> {
+  componentDidMount() {
+    this.props.loadPublicLists();
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -32,7 +36,7 @@ class PublicCheckListsComponentContainer extends React.Component<IPublicCheckLis
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    publicListItem: publicListItem,
+    publicListItem: state.publicCheckList.checkLists,
     countPages: state.publicCheckList.contPages,
     actionPage: state.publicCheckList.pageNumber,
   };
@@ -41,6 +45,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
+      loadPublicLists,
       changePagination,
     },
     dispath );

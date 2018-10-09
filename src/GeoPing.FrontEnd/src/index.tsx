@@ -25,16 +25,18 @@ import {
   faPlusCircle,
   faPlusSquare,
   faShareSquare,
+  faSort,
+  faSortDown,
+  faSortUp,
   faStar,
   faTimes,
-  faSort,
-  faSortUp,
-  faSortDown,
   faTrashAlt,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCheckCircle, far, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { EBuildEnvironment } from './DTO/environment';
+import { getBuildEnvironment } from './services/serviceLocator';
 
 library.add(
   faFilter,
@@ -60,6 +62,8 @@ library.add(
   faSortDown,
   far
 );
+
+getBuildEnvironment(EBuildEnvironment.Test);
 
 const history = createBrowserHistory();
 

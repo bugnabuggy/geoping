@@ -9,13 +9,13 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../DTO/constantsForReducer/checkList';
-import { createCheckListMockService } from '../services/mockServices/createCheckListMockService';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
 import { getLocationAddress } from '../services/mapService';
 import { addPointAction } from './googleMapAction';
 import { IMarker } from '../DTO/types/googleMapType';
+import serviceLocator from '../services/serviceLocator';
 
 export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
   window.navigator.geolocation.getCurrentPosition(
@@ -51,13 +51,10 @@ export const deleteGEOPoint = ( idGEOPoint: number ) => ( dispatch: IDispatchFun
   return '';
 };
 
-export const loadCheckList = ( idCheckList: number ) => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
 export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatchFunction ) => {
-  createCheckListMockService( nameChecklist )
+  serviceLocator.post( 'create_check_list', nameChecklist )
     .then( ( checkList: any ) => {
+      // console.log(checkList);
       dispatch( createCheckListAction( checkList ) );
       dispatch( addNotificationAction( createNotification( 'Check List creating', EnumNotificationType.Success ) ) );
     } )
