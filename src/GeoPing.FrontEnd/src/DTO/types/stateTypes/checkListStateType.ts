@@ -6,4 +6,5 @@ export default interface ICheckListStateType {
   idChecklist: number;
   nameChecklist: string;
   isEditing: boolean;
+  showFilterCheckList: boolean;
 }

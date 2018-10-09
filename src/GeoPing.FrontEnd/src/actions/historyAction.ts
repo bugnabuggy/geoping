@@ -1,6 +1,6 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../DTO/constantsForReducer/filters';
-import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltesMockService';
+import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 
 export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
   return '';

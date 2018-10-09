@@ -8,6 +8,7 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../DTO/constantsForReducer/checkList';
+import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../DTO/constantsForReducer/filters';
 
 export default function checkListReducer( state: ICheckListStateType = checkListState, action: any ) {
   const reduceObject: any = {
@@ -17,6 +18,8 @@ export default function checkListReducer( state: ICheckListStateType = checkList
     [ EDITING_PERMISSION_POINT ]: editingPermissionPoint,
     [ CHANGE_NAME_CHECK_LIST ]: changeNameChecklist,
     [ MODAL_PERIOD_OPEN_CLOSE ]: modalPeriodOpenClose,
+    [ FILTER_CHECKLIST_LIST ]: filterCheckLists,
+    [ CLOSE_FILTER_CHECKLIST ]: closeFilterCheckLists
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -49,4 +52,12 @@ function changeNameChecklist( state: ICheckListStateType, action: any ) {
 
 function modalPeriodOpenClose( state: ICheckListStateType, action: any ) {
   return Object.assign( {}, state, { isShowModal: action.isState } );
+}
+function filterCheckLists( state: ICheckListStateType, action: any ) {
+  const newState: ICheckListStateType = Object.assign( {}, state, { showFilterCheckList: action.isShow } );
+  return newState;
+}
+function closeFilterCheckLists( state: ICheckListStateType, action: any ) {
+  const newState: ICheckListStateType = Object.assign( {}, state, { showFilterCheckList: action.isShow } );
+  return newState;
 }

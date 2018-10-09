@@ -3,8 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
+import { ModalCheckListFilterComponent } from '../components/modalComponents/checklist/modalCheckListFilterComponent';
 import { ModalChecklistComponent } from '../components/modalComponents/checklist/modalChecklistComponent';
-import { closeModalForCreateCheckList, createCheckList } from '../actions/checkListAction';
+import { closeModalForCreateCheckList, createCheckList, closeFilterCheckLists } from '../actions/checkListAction';
 import IModalChecklistComponentContainerProps from '../componentProps/modalChecklistComponentContainerProps';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 
@@ -13,6 +14,11 @@ class ModalChecklistComponentContainer extends React.Component<IModalChecklistCo
   render() {
     return (
       <React.Fragment>
+        <ModalCheckListFilterComponent
+          show={this.props.show}
+
+          closeFilterCheckLists={this.props.closeFilterCheckLists}
+        />
         <ModalChecklistComponent
           showModal={this.props.showModal}
 
@@ -29,6 +35,7 @@ class ModalChecklistComponentContainer extends React.Component<IModalChecklistCo
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     showModal: state.checkList.isShowModal,
+    show: state.checkList.showFilterCheckList,
     idChecklist: state.checkList.idChecklist,
   };
 };
@@ -36,9 +43,9 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators(
     {
-      // openModalForCreateCheckList,
       createCheckList,
       closeModalForCreateCheckList,
+      closeFilterCheckLists
     },
     dispatch );
 

@@ -7,6 +7,7 @@ import { CheckListComponent } from '../components/listComponents/checkListCompon
 import { checkLists } from '../mocks/dashboardCheckListsMock';
 import IMyCheckListsContainerProps, { ICheckLists } from '../componentProps/myCheckListsContainerProps';
 import { showModalShare } from '../actions/modalAction';
+import { filterCheckLists } from '../actions/checkListAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';
 
@@ -40,7 +41,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
           </div>
           <div
             className="dashboard-check-list-icon-filter dashboard-check-list-icon-filter-container cursor-pointer"
-            // onClick={this.handleClick}
+            onClick={this.props.filterCheckLists}
           >
             <FontAwesomeIcon icon="filter"/>
           </div>
@@ -63,12 +64,13 @@ const mapStateToProps = ( state: any ) => {
   };
 };
 
-const mapDispatchToProps = ( dispath: any ) =>
+const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators (
     {
     showModalShare,
     openModalForCreateCheckList,
+    filterCheckLists
   },
-    dispath );
+    dispatch );
 
 export default connect ( mapStateToProps, mapDispatchToProps ) ( MyCheckListsContainer );

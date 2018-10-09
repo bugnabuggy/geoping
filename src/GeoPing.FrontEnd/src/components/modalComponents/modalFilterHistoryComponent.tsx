@@ -16,7 +16,7 @@ export class ModalFilterHistoryComponent extends React.Component<IModalFilterHis
     } );
   };
 
-  createCheckList = () => {
+  filterHistory = () => {
     this.props.closeFilterHistory();
   };
 
@@ -35,7 +35,7 @@ export class ModalFilterHistoryComponent extends React.Component<IModalFilterHis
         </FormGroup>
         <div className="check-list-modal-buttons">
           <Button
-            onClick={this.createCheckList}
+            onClick={this.filterHistory}
           >
             Filter
           </Button>

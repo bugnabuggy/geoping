@@ -3,5 +3,8 @@ export function dashboardFiltersMockService( filterName: string ): Promise<any> 
     if ( filterName === 'filterHistory') {
       resolve ( { isFiltered: true } );
     }
+    if ( filterName === 'filterCheckLists') {
+      resolve ( { isFiltered: true } );
+    }
   } );
 }

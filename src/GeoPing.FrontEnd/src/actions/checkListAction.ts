@@ -9,7 +9,9 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../DTO/constantsForReducer/checkList';
+import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../DTO/constantsForReducer/filters';
 import { createCheckListMockService } from '../services/mockServices/createCheckListMockService';
+import  { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
@@ -65,7 +67,18 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
+export const filterCheckLists = () => (dispatch: IDispatchFunction) => {
+  dashboardFiltersMockService('filterCheckLists')
+    .then(() => {
+      dispatch( filterCheckListsAction(true ));
+    })
+    .catch(( error: any) => {
 
+    });
+};
+export const closeFilterCheckLists = () => (dispatch: IDispatchFunction) => {
+  dispatch(closeFilterCheckListsAction( false ) );
+}
 export const openModalForCreateCheckList = () => ( dispatch: IDispatchFunction ) => {
   dispatch( openModalForCreateCheckListAction( true ) );
 };
@@ -110,4 +123,10 @@ function changeNameCheckListAction( nameChecklist: string ): Object {
 
 function modalPeriodOpenCloseAction( isState: boolean ): Object {
   return { type: MODAL_PERIOD_OPEN_CLOSE, isState };
+}
+function filterCheckListsAction(isShow: boolean): Object {
+  return { type: FILTER_CHECKLIST_LIST, isShow };
+}
+function closeFilterCheckListsAction(isShow: boolean): Object {
+  return { type: CLOSE_FILTER_CHECKLIST, isShow };
 }
