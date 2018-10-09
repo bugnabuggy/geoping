@@ -35,11 +35,11 @@ namespace GeoPing.Api.Controllers
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
-            var result = _geopointSrv.Get();
+            var result = _geopointSrv.Get(x => x.GeoListId == ListId);
             return Ok(result);
         }
 
-        // GET api/Geopoint/{Id}
+        // GET api/geolist/{ListId}/geopoint/{Id}
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetPoint(long ListId, long Id)
@@ -49,7 +49,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            var result = _geopointSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var result = _geopointSrv.Get(x => x.Id == Id && x.GeoListId == ListId).FirstOrDefault();
 
             if (result == null)
             {
@@ -58,7 +58,7 @@ namespace GeoPing.Api.Controllers
             return Ok(result);
         }
 
-        // POST api/Geopoint/
+        // POST api/geolist/{ListId}/geopoint/
         [HttpPost]
         public IActionResult AddPoint(long ListId, [FromBody]GeoPoint item)
         {
@@ -77,7 +77,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // PUT api/Geopoint/{Id}
+        // PUT api/geolist/{ListId}/geopoint/{Id}
         [HttpPut]
         [Route("{Id}")]
         public IActionResult EditPoint(long ListId, long Id, [FromBody]GeoPoint item)
@@ -116,11 +116,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // DELETE api/Geopoint/
-        //
-        // Ids string looks like array of integers, divided with commas and/or spaces
-        // Example: "1, 10, 11, 100"
-        //
+        // DELETE api/geolist/{ListId}/geopoint/
         [HttpDelete]
         public IActionResult RemovePoints(long ListId, string Ids)
         {
@@ -151,12 +147,17 @@ namespace GeoPing.Api.Controllers
                         return StatusCode(500);
                     }
                 }
-                return NoContent();
+                return Ok(new OperationResult
+                {
+                    Success = true,
+                    Messages = new[] { $"Geopoints with Id-s = [{Ids}] of list with Id = [{ListId}] were removed" },
+                    Data = Ids
+                });
             }
             return BadRequest($"Something is wrong in IDs string: [{Ids}]");
         }
 
-        // DELETE api/Geopoint/{Id}
+        // DELETE api/geolist/{ListId}/geopoint/{Id}
         [HttpDelete]
         [Route("{Id}")]
         public IActionResult RemovePoint(long ListId, long Id)
@@ -182,7 +183,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // PUT api/Geopoint/
+        // PUT api/geolist/{ListId}/geopoint/{Id}/check
         [HttpPut]
         [Route("{Id}/check")]
         public IActionResult CheckIn(long ListId, long Id, [FromBody]GeoPoint item)
@@ -202,15 +203,5 @@ namespace GeoPing.Api.Controllers
             }
             return BadRequest(result);
         }
-
-        //public bool IsCheckedInByUser(long PointId, long UserId)
-        //{
-        //    if()
-
-
-        //    var result = false;
-
-        //    return result;
-        //}
     }
 }

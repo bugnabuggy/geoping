@@ -98,12 +98,8 @@ namespace GeoPing.Api.Controllers
         }
 
         // DELETE api/Geolist/
-        //
-        // Ids string looks like array of integers, divided with commas and/or spaces
-        // Example: "1, 10, 11, 100"
-        //
         [HttpDelete]
-        public IActionResult RemoveLists([FromBody]string Ids)
+        public IActionResult RemoveLists(string Ids)
         {
             var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                             .Select(int.Parse)
@@ -127,7 +123,12 @@ namespace GeoPing.Api.Controllers
                         return StatusCode(500);
                     }
                 }
-                return NoContent();
+                return Ok(new OperationResult
+                {
+                    Success = true,
+                    Messages = new[] { $"Geolists with Id-s = [{Ids}] were removed" },
+                    Data = Ids
+                });
             }
             return BadRequest($"Something is wrong in IDs string: [{Ids}]");
         }
