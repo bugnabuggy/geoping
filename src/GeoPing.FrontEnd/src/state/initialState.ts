@@ -13,6 +13,7 @@ import { modalState } from './modalState';
 import { publicCheckListState } from './publickCheckListState';
 import { notificationState } from './notificationsState';
 import { allUsersTableState } from './allUsersTableState';
+import { invitationsState} from './invitationsState';
 
 const initialState: IinitialStateType = {
   allUsersFilter: allUsersFilterState,
@@ -29,6 +30,7 @@ const initialState: IinitialStateType = {
   modal: modalState,
   publicCheckList: publicCheckListState,
   notifications: notificationState,
+  invitations: invitationsState,
   router: {},
 };
 

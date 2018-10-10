@@ -78,7 +78,7 @@ export const filterCheckLists = () => (dispatch: IDispatchFunction) => {
 };
 export const closeFilterCheckLists = () => (dispatch: IDispatchFunction) => {
   dispatch(closeFilterCheckListsAction( false ) );
-}
+};
 export const openModalForCreateCheckList = () => ( dispatch: IDispatchFunction ) => {
   dispatch( openModalForCreateCheckListAction( true ) );
 };

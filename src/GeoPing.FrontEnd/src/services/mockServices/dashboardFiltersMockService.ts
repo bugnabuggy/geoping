@@ -6,5 +6,8 @@ export function dashboardFiltersMockService( filterName: string ): Promise<any> 
     if ( filterName === 'filterCheckLists') {
       resolve ( { isFiltered: true } );
     }
+    if ( filterName === 'filterInvitations') {
+      resolve ( { isFiltered: true } );
+    }
   } );
 }
