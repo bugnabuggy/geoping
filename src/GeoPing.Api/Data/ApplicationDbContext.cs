@@ -26,9 +26,6 @@ namespace GeoPing.Api.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
 
             // Many-to-one relations between points and list
             builder.Entity<GeoList>()
@@ -58,7 +55,7 @@ namespace GeoPing.Api.Data
 
 
             // Many-to-many relations between users and lists
-            // UserLists is the connection class
+            // UserList is the connection class
             builder.Entity<UserList>()
                 .HasKey(ul => new { ul.UserId, ul.ListId });
 
@@ -73,7 +70,7 @@ namespace GeoPing.Api.Data
                 .HasForeignKey(ul => ul.ListId);
 
             // Many-to-many relations between users and points
-            // UserLists is the connection class
+            // UserPoint is the connection class
             builder.Entity<UserPoint>()
                 .HasKey(ul => new { ul.UserId, ul.PointId });
 
