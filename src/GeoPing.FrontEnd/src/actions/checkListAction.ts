@@ -73,7 +73,7 @@ export const filterCheckLists = () => (dispatch: IDispatchFunction) => {
       dispatch( filterCheckListsAction(true ));
     })
     .catch(( error: any) => {
-
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     });
 };
 export const closeFilterCheckLists = () => (dispatch: IDispatchFunction) => {

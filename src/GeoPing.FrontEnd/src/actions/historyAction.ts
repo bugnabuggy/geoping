@@ -2,6 +2,10 @@ import IDispatchFunction from '../DTO/types/dispatchFunction';
 import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../DTO/constantsForReducer/filters';
 import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 
+import { addNotificationAction } from './notificationsAction';
+import { createNotification } from '../services/helper';
+import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+
 export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
   return '';
 };
@@ -10,8 +14,8 @@ export const filterHistory = () => (dispatch: IDispatchFunction ) => {
     .then(() => {
       dispatch( filterHistoryAction( true ) );
     })
-    .catch(() => {
-
+    .catch((error: any) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     });
 
 };
