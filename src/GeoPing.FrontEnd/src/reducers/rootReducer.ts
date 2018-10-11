@@ -17,6 +17,7 @@ import notificationsReducer from './notificationsReducer';
 import allUsersFilterReducer from './allUsersFilterReducer';
 import allUsersTableReducer from './allUsersTableReducer';
 import allChecklistFilterReducer from './allChecklistFilterReducer';
+import invitationsReducer from './invitationsReducer';
 import myCheckListReducer from './myCheckListReducer';
 
 export default function createReducer(injectedReducers: any) {
@@ -37,6 +38,7 @@ export default function createReducer(injectedReducers: any) {
     // modal: modalReducer,
     publicCheckList: publicCheckListReducer,
     notifications: notificationsReducer,
+    invitations: invitationsReducer,
     allChecklistFilter: allChecklistFilterReducer,
     router: routerReducer,
     ...injectedReducers,

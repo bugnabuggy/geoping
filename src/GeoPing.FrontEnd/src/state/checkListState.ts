@@ -6,4 +6,5 @@ export const checkListState: ICheckListStateType = {
   isShowModal: false,
   nameChecklist: 'Checklist',
   isEditing: false,
+  showFilterCheckList: false
 };

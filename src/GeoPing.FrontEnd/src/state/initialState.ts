@@ -8,12 +8,13 @@ import { tableUserState } from './tableUserState';
 import { userState } from './userState';
 import { headerState } from './headerState';
 import { googleMapState } from './googleMapState';
-import { tableHistoryState } from './tsbleHistoryState';
+import { tableHistoryState } from './tableHistoryState';
 // import { modalState } from './modalState';
 import { publicCheckListState } from './publickCheckListState';
 import { notificationState } from './notificationsState';
 import { allUsersTableState } from './allUsersTableState';
 import { myCheckList } from './myCheckListState';
+import { invitationsState} from './invitationsState';
 
 const initialState: IinitialStateType = {
   allUsersFilter: allUsersFilterState,
@@ -31,6 +32,7 @@ const initialState: IinitialStateType = {
   // modal: modalState,
   publicCheckList: publicCheckListState,
   notifications: notificationState,
+  invitations: invitationsState,
   router: {},
 };
 

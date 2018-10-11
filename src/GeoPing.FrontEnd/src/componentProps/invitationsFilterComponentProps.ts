@@ -1,8 +1,7 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 
-export default interface IInvitationsDashbordContainer {
+export default  interface IinvitationsFilterComponentProps {
   show: boolean;
 
-  filterInvitations: () => (dispatch: IDispatchFunction ) => void;
   closeFilterInvitations: () => (dispatch: IDispatchFunction ) => void;
 }
