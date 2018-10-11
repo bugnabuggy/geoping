@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { Panel } from 'react-bootstrap';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
-import { checkLists } from '../mocks/dashboardCheckListsMock';
-import IMyCheckListsContainerProps, { ICheckLists } from '../componentContainerProps/myCheckListsContsinerProps';
+import IMyCheckListsContainerProps  from '../componentContainerProps/myCheckListsContsinerProps';
+import { filterCheckLists } from '../actions/checkListAction';
 import { deleteCheckList, showModalShare } from '../actions/myCheckListsAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';
@@ -47,6 +47,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
           </div>
           <div
             className="dashboard-check-list-icon-filter dashboard-check-list-icon-filter-container cursor-pointer"
+            onClick={this.props.filterCheckLists}
           >
             <FontAwesomeIcon icon="filter"/>
           </div>
@@ -68,15 +69,15 @@ const mapStateToProps = ( state: IinitialStateType ) => {
     checkLists: state.myCheckList.checkLists,
   };
 };
-
-const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators(
+const mapDispatchToProps = ( dispatch: any ) =>
+  bindActionCreators (
     {
       showModalShare,
       openModalForCreateCheckList,
+      filterCheckLists,
       loadCheckLists,
       deleteCheckList,
-    },
-    dispath );
+  },
+    dispatch );
 
 export default connect( mapStateToProps, mapDispatchToProps )( MyCheckListsContainer );

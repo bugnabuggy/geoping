@@ -9,6 +9,8 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../constantsForReducer/checkList';
+import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../DTO/constantsForReducer/filters';
+import  { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
@@ -55,7 +57,18 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
-
+export const filterCheckLists = () => (dispatch: IDispatchFunction) => {
+  dashboardFiltersMockService('filterCheckLists')
+    .then(() => {
+      dispatch( filterCheckListsAction(true ));
+    })
+    .catch(( error: any) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+    });
+};
+export const closeFilterCheckLists = () => (dispatch: IDispatchFunction) => {
+  dispatch(closeFilterCheckListsAction( false ) );
+};
 export const updateNameCheckList = ( newNameCheckList: string ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.updateNameMyCheckList( newNameCheckList )
@@ -112,4 +125,10 @@ function changeNameCheckListAction( nameChecklist: string ): Object {
 
 function modalPeriodOpenCloseAction( isState: boolean ): Object {
   return { type: MODAL_PERIOD_OPEN_CLOSE, isState };
+}
+function filterCheckListsAction(isShow: boolean): Object {
+  return { type: FILTER_CHECKLIST_LIST, isShow };
+}
+function closeFilterCheckListsAction(isShow: boolean): Object {
+  return { type: CLOSE_FILTER_CHECKLIST, isShow };
 }

@@ -26,8 +26,8 @@ export const signOutUser = () => ( dispatch: IDispatchFunction ) => {
 
 /* Actions */
 
-function authorizationUserAction( authorization: boolean ): Object {
-  return { type: USER_AUTHORIZATION, authorization };
+function authorizationUserAction( authorization: boolean  ): Object {
+  return { type: USER_AUTHORIZATION, authorization};
 }
 
 function signOutUserAction(): Object {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IDashboardPageProps } from '../pageProps/dashboardPageProps';
 import TableHistoryDashboardContainer from '../componentContainers/tableHistoryInDashboardContainer';

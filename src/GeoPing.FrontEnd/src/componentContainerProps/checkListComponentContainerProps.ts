@@ -1,6 +1,5 @@
 import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { addNewPoint } from '../actions/googleMapAction';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 

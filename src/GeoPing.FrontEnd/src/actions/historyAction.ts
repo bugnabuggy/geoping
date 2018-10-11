@@ -1,19 +1,41 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
+import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../DTO/constantsForReducer/filters';
+import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import StaticStorage from '../services/staticStorage';
 import ITableHistoryService from '../types/serviceTypes/tableHistoryServiceType';
+import { addNotificationAction } from './notificationsAction';
+import { createNotification } from '../services/helper';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
 
   const tableHistoryService: ITableHistoryService = StaticStorage.serviceLocator.get( 'ITableHistoryService' );
   tableHistoryService.getHistory()
     .then( ( response: any ) => {
-      dispatch( loadHistoryAction(  response ) );
+      dispatch( loadHistoryAction( response ) );
     } );
 };
+export const filterHistory = () => (dispatch: IDispatchFunction ) => {
+  dashboardFiltersMockService( 'filterHistory')
+    .then(() => {
+      dispatch( filterHistoryAction( true ) );
+    })
+    .catch((error: any) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+    });
 
-/* Actions */
+};
+export const closeFilterHistory = () => (dispatch: IDispatchFunction ) => {
+  dispatch( closeFilterHistoryAction( false ) );
+};
 
+function filterHistoryAction(isShow: boolean): Object {
+  return {type: FILTER_HISTORY_TABLE, isShow };
+}
+function closeFilterHistoryAction(isShow: boolean): Object {
+  return {type: CLOSE_FILTER_HISTORY, isShow };
+}
 function loadHistoryAction( history: ITableHistoryStateType ): Object {
   return { type: 'HISTORY', history };
 }

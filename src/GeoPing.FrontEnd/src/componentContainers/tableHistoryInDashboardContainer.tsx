@@ -7,6 +7,8 @@ import ITableHistoryDashboardContainerProps from '../componentContainerProps/tab
 import { TableHistoryDashboard } from '../components/tableComponents/tableHistoryDashboard';
 import { loadHistory } from '../actions/historyAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
+import { filterHistory, closeFilterHistory } from '../actions/historyAction';
+import ModalFilterHistoryComponent from '../components/modalComponents/modalFilterHistoryComponent';
 
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
   componentDidMount() {
@@ -17,11 +19,18 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
     return (
       <React.Fragment>
         <div className="dashboard-table-title">
-          <h4 className="">History </h4>
-          <div className="dashboard-table-icon cursor-pointer">
-            <FontAwesomeIcon icon="filter"/>
+          <h4 className="">History</h4>
+          <div
+            className="dashboard-table-icon cursor-pointer"
+            onClick={this.props.filterHistory}
+          >
+            <FontAwesomeIcon icon="filter" />
           </div>
         </div>
+        <ModalFilterHistoryComponent
+          show={this.props.show}
+          closeFilterHistory={this.props.closeFilterHistory}
+        />
         <TableHistoryDashboard
           history={this.props.history}
         />
@@ -32,15 +41,19 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
+    tableHistory: state.tableHistory,
+    show: state.tableHistory.showHistoryFilter,
     history: state.tableHistory.history,
   };
 };
 
-const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators(
+const mapDispatchToProps = ( dispatch: any ) =>
+  bindActionCreators (
     {
+      filterHistory,
       loadHistory,
-    },
-    dispath );
+      closeFilterHistory
+  },
+    dispatch );
 
 export default connect( mapStateToProps, mapDispatchToProps )( TableHistoryDashboardContainer );
