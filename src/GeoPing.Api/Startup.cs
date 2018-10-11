@@ -25,6 +25,7 @@ namespace GeoPing.Api
     {
         public IHostingEnvironment _environment;
         public IConfigurationRoot _configuration { get; }
+        private AppConfigurator _appConfigurator = new AppConfigurator();
 
         public Startup(IHostingEnvironment environment)
         {
@@ -114,7 +115,7 @@ namespace GeoPing.Api
             });
 
             // Add application services.
-            AppConfigurator.ConfigureServices(services);
+            _appConfigurator.ConfigureServices(services);
 
             services.AddMvc();
         }

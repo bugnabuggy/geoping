@@ -22,6 +22,7 @@ namespace GeoPing.Api
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);
+            var appConfigurator = new AppConfigurator();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -31,7 +32,7 @@ namespace GeoPing.Api
                     var db = services.GetRequiredService<ApplicationDbContext>();
                     db.Database.Migrate();
 
-                    SeedData.Initialize(services);
+                    appConfigurator.Initialize(services);
                 }
                 catch (Exception ex)
                 {
