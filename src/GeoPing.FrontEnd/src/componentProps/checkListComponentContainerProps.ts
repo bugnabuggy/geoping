@@ -2,9 +2,10 @@ import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 import { addNewPoint } from '../actions/googleMapAction';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import ICheckListStateType from '../DTO/types/stateTypes/checkListStateType';
 
 export default interface ICheckListComponentContainerProps {
-  isEditingPoint: boolean;
+  checkList: ICheckListStateType;
   markers: Array<IMarker>;
   selectedMarker: IMarker;
   isAddMarker: boolean;
@@ -20,7 +21,7 @@ export default interface ICheckListComponentContainerProps {
   changeDataGEOPoint: ( idMarker: string, field: string, value: string | number ) =>
     ( dispatch: IDispatchFunction ) => void;
   cancelEditingGEOPoint: () => ( dispatch: IDispatchFunction ) => void;
-  addNewPoint: ( idMarker: string ) => ( dispatch: IDispatchFunction ) => void;
+  addNewPoint: ( idMarker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
   permissionToAddMarker: ( isAddMarker: boolean ) => ( dispatch: IDispatchFunction ) => void;
   cancelAddNewPoint: () => ( dispatch: IDispatchFunction ) => void;
   addNotification: ( message: string, typeNotification: EnumNotificationType ) =>

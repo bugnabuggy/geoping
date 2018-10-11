@@ -1,10 +1,12 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
 
-export default interface IMyCheckListsContsinerProps {
-  checkLists: Array<ICheckLists>;
+export default interface IMyCheckListsContainerProps {
+  checkLists: Array<any>;
 
-  showModalShare: () => ( dispatch: IDispatchFunction ) => void;
+  showModalShare: ( checkListId: string ) => ( dispatch: IDispatchFunction ) => void;
   openModalForCreateCheckList: () => ( dispatch: IDispatchFunction ) => void;
+  loadCheckLists: ( idUser: string ) => ( dispatch: IDispatchFunction ) => void;
+  deleteCheckList: ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => void;
 }
 
 export interface ICheckLists {

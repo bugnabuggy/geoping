@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
 import { CheckListHeadComponent } from '../components/checkListHeadComponent';
 import ICheckListTitleComponentContainerProps from '../componentProps/checkListTitleComponentContainerProps';
-import { changeNameCheckList, modalPeriodOpenClose } from '../actions/checkListAction';
+import { modalPeriodOpenClose, updateNameCheckList } from '../actions/checkListAction';
 import { ModalPeriodComponent } from '../components/modalComponents/checklist/modalPeriodComponent';
 
 class CheckListTitleComponentContainer extends React.Component<ICheckListTitleComponentContainerProps, any> {
@@ -16,8 +16,8 @@ class CheckListTitleComponentContainer extends React.Component<ICheckListTitleCo
           <CheckListHeadComponent
             nameChecklist={this.props.nameChecklist}
 
-            changeNameCheckList={this.props.changeNameCheckList}
             modalPeriodOpenClose={this.props.modalPeriodOpenClose}
+            updateNameCheckList={this.props.updateNameCheckList}
           />
           <ModalPeriodComponent
             isShowModal={this.props.isShowModal}
@@ -40,8 +40,8 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
-      changeNameCheckList,
       modalPeriodOpenClose,
+      updateNameCheckList,
     },
     dispath );
 

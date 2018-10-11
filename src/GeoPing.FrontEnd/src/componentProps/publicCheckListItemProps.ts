@@ -1,6 +1,6 @@
 export default interface IPublicCheckListItemProps {
   nameList: string;
   author: string;
-  subscribers: string;
+  subscribers: number;
   raiting: number;
 }

@@ -6,6 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ICheckListComponentProps from '../../componentProps/checkListComponentProps';
 
 export class CheckListComponent extends React.Component<ICheckListComponentProps, any> {
+
+  handleShowModal = ( e: any ) => {
+    this.props.showModalShare(this.props.checkList.id);
+  };
+
+  handleDeleteCheckList = ( e: any ) => {
+    this.props.deleteCheckList(this.props.checkList.id);
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -13,7 +22,7 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
           <Panel.Body>
             <div className="check-list-panel-item">
               <div>
-                {this.props.name}
+                {this.props.checkList.name}
               </div>
               <div>
                 <Link
@@ -22,10 +31,16 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
                 >
                   <FontAwesomeIcon icon="chart-bar" className=""/>
                 </Link>
-                <div onClick={this.props.showModalShare} className="check-list-panel-item-icons cursor-pointer">
+                <div
+                  className="check-list-panel-item-icons cursor-pointer"
+                  onClick={this.handleShowModal}
+                >
                   <FontAwesomeIcon icon="share-square"/>
                 </div>
-                <div onClick={this.props.showModalShare} className="check-list-panel-item-icons cursor-pointer">
+                <div
+                  className="check-list-panel-item-icons cursor-pointer"
+                  onClick={this.handleDeleteCheckList}
+                >
                   <FontAwesomeIcon icon="trash-alt" className=""/>
                 </div>
               </div>

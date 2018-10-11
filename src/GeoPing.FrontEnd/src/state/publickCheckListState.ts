@@ -2,10 +2,10 @@ import IPublicCheckListType from '../DTO/types/stateTypes/publicCheckListType';
 
 export const publicCheckListState: IPublicCheckListType = {
   checkLists: [],
-  contPages: 20,
+  contPages: 1,
   countLists: 10,
   filterName: '',
-  filterSubscribers: '',
+  filterSubscribers: null,
   filterUser: '',
-  pageNumber: 7,
+  pageNumber: 1,
 };

@@ -19,7 +19,6 @@ import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
 import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
 
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
-
   render() {
 
     const authorized: boolean = this.props.authorized;

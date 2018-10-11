@@ -7,5 +7,5 @@ export default interface IPublicCheckListType {
   contPages: number;
   filterName: string;
   filterUser: string;
-  filterSubscribers: string;
+  filterSubscribers: number;
 }
