@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GeoPing.TestData.Helpers
 {
-    class TestConfig
+    public class TestConfig
     {
         public const string ConnectionString = "Server=(localdb)\\mssqllocaldb;" +
                                                "Database=aspnet-GeoPing.Api-local-Development;" +

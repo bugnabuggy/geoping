@@ -30,35 +30,21 @@ namespace GeoPing.Api.Configuration
             // TODO: Make logging done here
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var appUserRoles = new UserRoles();
+            var appUsers = new Users();
             //var logger = services.GetRequiredService<ILogger>();
 
-            var roles = new List<IdentityRole>()
-            {
-                new IdentityRole(UsersRoles.Admin),
-                new IdentityRole(UsersRoles.User)
-            };
+            var roles = appUserRoles.ToList();
 
             foreach (var role in roles)
             {
-                if (!roleManager.RoleExistsAsync(role.Name).Result)
+                if (!roleManager.RoleExistsAsync(role).Result)
                 {
-                    roleManager.CreateAsync(role).Wait(10000);
+                    roleManager.CreateAsync(new IdentityRole(role)).Wait(10000);
                 }
             }
 
-            var users = new List<ApplicationUser>()
-            {
-                new ApplicationUser()
-                {
-                    UserName = "testadmin",
-                    Email = "testadmin@geoping.com"
-                },
-                new ApplicationUser()
-                {
-                    UserName = "testuser",
-                    Email = "testuser@geoping.com"
-                }
-            };
+            var users = appUsers.ToList();
 
             foreach (var user in users)
             {
@@ -72,12 +58,12 @@ namespace GeoPing.Api.Configuration
                     }
                     if (user.UserName == "testadmin")
                     {
-                        task = userManager.AddToRolesAsync(user, new List<string> { UsersRoles.User, UsersRoles.Admin });
+                        task = userManager.AddToRolesAsync(user, roles);
                         //logger.LogInformation("Roles [user] and [admin] were added for user [testadmin].");
                     }
                     else
                     {
-                        task = userManager.AddToRoleAsync(user, UsersRoles.User);
+                        task = userManager.AddToRoleAsync(user, appUserRoles.User);
                         //logger.LogInformation("Role [user] and was added for user [testuser].") ;
                     }
                     task.Wait(10000);

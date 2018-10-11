@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace GeoPing.TestData.Helpers
 {
-    class DataBaseDiBootstrapperSQLserver : IServiceProviderBootstrapper
+    public class DataBaseDiBootstrapperSQLserver : IServiceProviderBootstrapper
     {
         private static object _contextLock = new object();
         private static bool _contextInitialized = false;

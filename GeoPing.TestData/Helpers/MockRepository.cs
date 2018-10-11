@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeoPing.TestData.Helpers
 {
-    class MockRepository<T> : IRepository<T> where T : class
+    public class MockRepository<T> : IRepository<T> where T : class
     {
         public IQueryable<T> Data { get; }
 

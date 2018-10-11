@@ -15,7 +15,7 @@ using Moq;
 
 namespace GeoPing.TestData.Helpers
 {
-    class DataBaseDiBootstrapperInMemory : IServiceProviderBootstrapper
+    public class DataBaseDiBootstrapperInMemory : IServiceProviderBootstrapper
     {
         public ApplicationDbContext GetApplicationDbContext()
         {
