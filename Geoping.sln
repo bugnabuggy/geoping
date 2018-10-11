@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoPing.Core", "src\GeoPing.Core\GeoPing.Core.csproj", "{57284F56-1434-4006-B0EA-CDA341AF322D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Core", "src\GeoPing.Core\GeoPing.Core.csproj", "{57284F56-1434-4006-B0EA-CDA341AF322D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoPing.Api", "src\GeoPing.Api\GeoPing.Api.csproj", "{4DDCF5F6-8399-4FD8-9D3F-117C2ED91F84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Api", "src\GeoPing.Api\GeoPing.Api.csproj", "{4DDCF5F6-8399-4FD8-9D3F-117C2ED91F84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoPing.Utilities", "src\GeoPing.Utilities\GeoPing.Utilities.csproj", "{CF30C8B4-0CD2-4603-A046-4EFF4D9E1883}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Utilities", "src\GeoPing.Utilities\GeoPing.Utilities.csproj", "{CF30C8B4-0CD2-4603-A046-4EFF4D9E1883}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0C11FDF2-6FC2-409B-8566-010823D5854E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoPing.TestData", "GeoPing.TestData\GeoPing.TestData.csproj", "{17589ACB-2B38-4DCA-98DF-AA4BC42EE21E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,16 @@ Global
 		{CF30C8B4-0CD2-4603-A046-4EFF4D9E1883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF30C8B4-0CD2-4603-A046-4EFF4D9E1883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF30C8B4-0CD2-4603-A046-4EFF4D9E1883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17589ACB-2B38-4DCA-98DF-AA4BC42EE21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17589ACB-2B38-4DCA-98DF-AA4BC42EE21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17589ACB-2B38-4DCA-98DF-AA4BC42EE21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17589ACB-2B38-4DCA-98DF-AA4BC42EE21E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{17589ACB-2B38-4DCA-98DF-AA4BC42EE21E} = {0C11FDF2-6FC2-409B-8566-010823D5854E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C667CE7F-682B-4DDB-9CD5-D6C5CF5BAA8B}
