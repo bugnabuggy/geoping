@@ -5,11 +5,11 @@ import { Panel } from 'react-bootstrap';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
 import { checkLists } from '../mocks/dashboardCheckListsMock';
-import IMyCheckListsContainerProps, { ICheckLists } from '../componentProps/myCheckListsContsinerProps';
+import IMyCheckListsContainerProps, { ICheckLists } from '../componentContainerProps/myCheckListsContsinerProps';
 import { deleteCheckList, showModalShare } from '../actions/myCheckListsAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { loadCheckLists } from '../actions/myCheckListsAction';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {

@@ -1,5 +1,5 @@
 import { profileState } from '../state/profileState';
-import IProfileStateType from '../DTO/types/stateTypes/profileStateType';
+import IProfileStateType from '../types/stateTypes/profileStateType';
 
 export default function profileReducer(state: IProfileStateType = profileState, action: any) {
   const reduceObject: any = {

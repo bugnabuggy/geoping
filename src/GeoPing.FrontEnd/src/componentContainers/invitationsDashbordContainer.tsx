@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import IInvitationsDashbordContainer from '../componentProps/invitationsDashbordContainerProps';
+import IInvitationsDashbordContainer from '../componentContainerProps/invitationsDashbordContainerProps';
 import { InvitationsDashbordComponent } from '../components/InvitationsDashbordComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordContainer, any> {
   render() {

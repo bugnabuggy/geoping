@@ -1,4 +1,4 @@
-import IModalStateType from '../DTO/types/stateTypes/modalStateType';
+import IModalStateType from '../types/stateTypes/modalStateType';
 
 export const modalState: IModalStateType = {
   isShowModalShare: false,

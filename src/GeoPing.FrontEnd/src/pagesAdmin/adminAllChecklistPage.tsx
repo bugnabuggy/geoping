@@ -1,9 +1,10 @@
 import * as React from 'react';
 
 import AllChecklistsFilterComponentContainer from '../componentContainers/allChecklistsFilterComponentContainer';
-import { TableComponent } from '../components/tableComponent';
-import { ITableStructure } from '../componentProps/tableComponentProps';
+import { TableComponent } from '../components/tableComponents/tableComponent';
+import { ITableStructure } from '../componentProps/tableComponentProps/tableComponentProps';
 import AllChecklistTableComponentContainer from '../componentContainers/allChecklistTableComponentContainer';
+import IAdminAllCheckListPageProps from '../pageAdminProps/adminAllCheckListPageProps';
 
 const table: Array<ITableStructure> = [
   {
@@ -24,7 +25,7 @@ const table: Array<ITableStructure> = [
   }
 ];
 
-export default class AdminAllChecklistPage extends React.Component<any, any> {
+export default class AdminAllChecklistPage extends React.Component<IAdminAllCheckListPageProps, any> {
   render() {
     return (
       <div className="admin-checklist-container">

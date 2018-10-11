@@ -1,14 +1,25 @@
+import {
+  adminDashboardUrl,
+  baseUrl,
+  checkInUrl,
+  dashboardUrl,
+  loginUrl,
+  profileUrl,
+  publicCheckListUrl,
+  registerUrl
+} from '../constants/routes';
+
 export const authorizedLinks: Array<any> = [
   {
-    path: '/dashboard',
+    path: dashboardUrl,
     label: 'Dashboard',
   },
   {
-    path: '/checkin',
+    path: checkInUrl,
     label: 'Check in',
   },
   {
-    path: '/',
+    path: baseUrl,
     label: 'About',
   },
   {
@@ -17,14 +28,14 @@ export const authorizedLinks: Array<any> = [
     dropdown: true,
     links: [
       {
-        path: '/profile',
+        path: profileUrl,
         text: 'Profile',
-        id: '/profile'
+        id: profileUrl
       },
       {
-        path: '/admin/dashboard',
+        path: adminDashboardUrl,
         text: 'Admin Dashboard',
-        id: '/admin/dashboard',
+        id: adminDashboardUrl,
         isAdmin: true,
       },
       {
@@ -38,19 +49,19 @@ export const authorizedLinks: Array<any> = [
 
 export const notAuthorizedLinks: Array<any> = [
   {
-    path: '/publicchecklist',
+    path: publicCheckListUrl,
     label: 'Public checklists',
   },
   {
-    path: '/',
+    path: baseUrl,
     label: 'About',
   },
   {
-    path: '/login',
+    path: loginUrl,
     label: 'Sign in',
   },
   {
-    path: '/register',
+    path: registerUrl,
     label: 'Sign up',
   }
 ];

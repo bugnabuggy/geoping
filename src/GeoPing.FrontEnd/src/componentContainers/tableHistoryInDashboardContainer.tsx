@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import ITableHistoryDashboardContainerProps from '../componentProps/tableHistoryDashboardContainerProps';
-import { TableHistoryDashboard } from '../components/tableHistoryDashboard';
+import ITableHistoryDashboardContainerProps from '../componentContainerProps/tableHistoryDashboardContainerProps';
+import { TableHistoryDashboard } from '../components/tableComponents/tableHistoryDashboard';
 import { loadHistory } from '../actions/historyAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
   componentDidMount() {

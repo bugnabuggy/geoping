@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Modal } from 'react-bootstrap';
-import IModalComponentProps from '../../../componentProps/ModalComponentProps';
+import IModalComponentProps from '../../../componentProps/modalComponentProps/modalComponentProps';
 
 export class ModalComponent extends React.Component<IModalComponentProps, any> {
   render() {

@@ -2,9 +2,10 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import IAllChecklistsFilterComponentContainerProps from '../componentProps/allChecklistsFilterComponentContainerProps';
-import { AllChecklistsFilterComponent } from '../components/allChecklistsFilterComponent';
+import IinitialStateType from '../types/stateTypes/initialStateType';
+import IAllChecklistsFilterComponentContainerProps
+  from '../componentContainerProps/allChecklistsFilterComponentContainerProps';
+import { AllChecklistsFilterComponent } from '../components/filterComponents/allChecklistsFilterComponent';
 import { changeFields } from '../actions/allChecklistFilterAction';
 
 class AllChecklistsFilterComponentContainer extends React.Component<IAllChecklistsFilterComponentContainerProps, any> {

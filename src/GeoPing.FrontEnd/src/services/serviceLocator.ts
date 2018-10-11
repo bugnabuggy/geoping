@@ -1,4 +1,4 @@
-import IServiceLocator from '../DTO/serviceLocatorType';
+import IServiceLocator from '../types/serviceTypes/serviceLocatorType';
 
 class ServiceLocator implements IServiceLocator {
   private container: Map<any, any> = new Map<any, any>();

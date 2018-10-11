@@ -1,4 +1,4 @@
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { allUsersFilterState } from './allUsersFilterState';
 import { checkinState } from './checkinState';
 import { checkinStatisticsState } from './checkinStatisticsState';

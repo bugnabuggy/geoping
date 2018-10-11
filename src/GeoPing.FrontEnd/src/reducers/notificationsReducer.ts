@@ -1,10 +1,10 @@
-import INotificationStateType from '../DTO/types/stateTypes/notificationStateType';
+import INotificationStateType from '../types/stateTypes/notificationStateType';
 import { notificationState } from '../state/notificationsState';
 import {
   ADD_NOTIFICATION,
   DELETE_ALL_NOTIFICATIONS,
   DELETE_NOTIFICATION
-} from '../DTO/constantsForReducer/notification';
+} from '../constantsForReducer/notification';
 
 export default function notificationsReducer( state: INotificationStateType = notificationState, action: any ) {
   const reduceObject: any = {

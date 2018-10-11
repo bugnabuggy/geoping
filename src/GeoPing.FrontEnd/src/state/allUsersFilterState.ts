@@ -1,4 +1,4 @@
-import IAllUsersFilterStateType from '../DTO/types/stateTypes/allUsersFilterStateType';
+import IAllUsersFilterStateType from '../types/stateTypes/allUsersFilterStateType';
 
 export const allUsersFilterState: IAllUsersFilterStateType = {
   name: '',

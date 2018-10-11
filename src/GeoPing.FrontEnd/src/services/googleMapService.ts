@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 
-import { defaultMarker } from '../DTO/constants/defaultMarker';
+import { defaultMarker } from '../constants/defaultMarker';
 import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 
 let _that: any = null;

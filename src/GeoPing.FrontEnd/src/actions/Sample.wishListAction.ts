@@ -1,6 +1,6 @@
 import { get, post } from '../services/httpService';
 import { WISH_LIST } from '../DTO/Sample.constantsForReducer';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 
 export const getRecords = () => (dispatch: IDispatchFunction) => {
   get('http://localhost:3001')

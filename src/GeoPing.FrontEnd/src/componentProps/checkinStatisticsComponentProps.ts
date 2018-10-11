@@ -1,5 +1,5 @@
-import ICheckinStatisticsStateType from '../DTO/types/stateTypes/checkinStatisticsStateType';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import ICheckinStatisticsStateType from '../types/stateTypes/checkinStatisticsStateType';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 
 export default interface ICheckinStatisticsComponentProps {
   checkinStatistics: ICheckinStatisticsStateType;

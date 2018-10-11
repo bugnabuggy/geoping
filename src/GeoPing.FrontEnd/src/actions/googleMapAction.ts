@@ -19,14 +19,14 @@ import {
   PUT_STATUS_MARKER,
   SELECT_MARKER,
   USER_MARKER_CREATED
-} from '../DTO/constantsForReducer/googleMap';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+} from '../constantsForReducer/googleMap';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { EnumStatusMarker, IMarker, IPosition } from '../DTO/types/googleMapType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import StaticStorage from '../services/staticStorage';
-import IMarkerServiceType from '../DTO/markerServiceType';
+import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 
 export const addPoints = ( markers: Array<any> ) => ( dispatch: IDispatchFunction ) => {
   dispatch( addPointsAction( markers ) );
@@ -103,9 +103,9 @@ export const findLocationForCenterMap = () => ( dispatch: IDispatchFunction ) =>
     } );
 };
 
-export const deleteMarker = ( idMarker: string ) => ( dispatch: IDispatchFunction ) => {
+export const deleteMarker = ( idCheckList: string, idMarker: string ) => ( dispatch: IDispatchFunction ) => {
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  markerService.deleteMarker( idMarker )
+  markerService.deleteMarker( idCheckList, idMarker )
     .then( ( response: any ) => {
       dispatch( deleteMarkerAction( idMarker ) );
     } )

@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Routes from './routesComponent';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   render() {
     return (
-      <Router>
+      <React.Fragment>
         <Routes
           authorized={this.props.authorized}
           roleUser={this.props.roleUser}
         />
-      </Router>
+      </React.Fragment>
     );
   }
 }
@@ -31,8 +31,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators( {}, dispath );
 
-// export default connect ( mapStateToProps, mapDispatchToProps ) ( GetRoutes );
-const Routers: any = connect( mapStateToProps, mapDispatchToProps )( GetRoutes );
+const Routers: any = withRouter( connect<any, any, any>( mapStateToProps, mapDispatchToProps )( GetRoutes ) );
 
 export function getRoutes() {
   return <Routers/>;

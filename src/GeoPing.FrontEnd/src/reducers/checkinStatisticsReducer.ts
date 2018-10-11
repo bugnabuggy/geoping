@@ -1,6 +1,6 @@
-import ICheckinStatisticsStateType from '../DTO/types/stateTypes/checkinStatisticsStateType';
+import ICheckinStatisticsStateType from '../types/stateTypes/checkinStatisticsStateType';
 import { checkinStatisticsState } from '../state/checkinStatisticsState';
-import { STATISTICS_LOAD_LISTS, STATISTICS_LOAD_USERS } from '../DTO/constantsForReducer/checkinStatistics';
+import { STATISTICS_LOAD_LISTS, STATISTICS_LOAD_USERS } from '../constantsForReducer/checkinStatistics';
 
 export default function checkinStatisticsReducer(
   state: ICheckinStatisticsStateType = checkinStatisticsState,

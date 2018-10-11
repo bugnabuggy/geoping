@@ -2,9 +2,9 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import INotificationComponentContainerProps from '../componentProps/notificationComponentContainerProps';
+import INotificationComponentContainerProps from '../componentContainerProps/notificationComponentContainerProps';
 import { NotificationsBlockComponent } from '../components/notificationsBlockComponent';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { addNotification, deleteAllNotifications, deleteNotification } from '../actions/notificationsAction';
 
 class NotificationComponentContainer extends React.Component<INotificationComponentContainerProps, any> {

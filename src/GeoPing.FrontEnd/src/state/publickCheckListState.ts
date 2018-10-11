@@ -1,4 +1,4 @@
-import IPublicCheckListType from '../DTO/types/stateTypes/publicCheckListType';
+import IPublicCheckListType from '../types/stateTypes/publicCheckListType';
 
 export const publicCheckListState: IPublicCheckListType = {
   checkLists: [],

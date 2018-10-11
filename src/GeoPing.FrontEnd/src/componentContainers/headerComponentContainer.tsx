@@ -5,7 +5,7 @@ import IHeaderComponentContainerProps from '../componentProps/headerComponentPro
 import { bindActionCreators } from 'redux';
 import { editRoute } from '../actions/headerAction';
 import { authorizationUser, signOutUser } from '../actions/userAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class HeaderComponentContainer extends React.Component<IHeaderComponentContainerProps, any> {
 

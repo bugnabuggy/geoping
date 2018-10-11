@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import ILinkHeaderComponentProps from '../componentProps/headerComponentProps/linkHeaderComponentProps';
-import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
+import { ERoleUser } from '../types/stateTypes/userStateType';
 
 export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentProps, any> {
   constructor( props: any ) {

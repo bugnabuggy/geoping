@@ -1,4 +1,4 @@
-import IAuthorization from '../../DTO/authorizationServiceType';
+import IAuthorization from '../../types/serviceTypes/authorizationServiceType';
 import * as testUser from '../../mocks/testUser.json';
 import * as uuidV5 from 'uuid/v5';
 

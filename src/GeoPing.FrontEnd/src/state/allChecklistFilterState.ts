@@ -1,4 +1,4 @@
-import IAllChecklistFilterStateType from '../DTO/types/stateTypes/allChecklistFilterStateType';
+import IAllChecklistFilterStateType from '../types/stateTypes/allChecklistFilterStateType';
 
 export const allChecklistFilterState: IAllChecklistFilterStateType = {
   name: '',

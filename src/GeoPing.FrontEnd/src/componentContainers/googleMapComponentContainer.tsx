@@ -21,7 +21,7 @@ import {
   selectedMarker,
   userMarkerCreate
 } from '../actions/googleMapAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { editingPermission } from '../actions/checkListAction';
 
 class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentContainerProps, any> {

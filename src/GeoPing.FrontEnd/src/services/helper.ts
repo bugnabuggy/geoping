@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
-import { INotificationType } from '../DTO/types/stateTypes/notificationStateType';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { INotificationType } from '../types/stateTypes/notificationStateType';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {

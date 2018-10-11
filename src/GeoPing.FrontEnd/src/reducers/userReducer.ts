@@ -1,6 +1,6 @@
 import { userState } from '../state/userState';
-import IUserStateType from '../DTO/types/stateTypes/userStateType';
-import { USER_AUTHORIZATION, USER_AUTHORIZATION_TEST_PERIOD, USER_SIGN_OUT } from '../DTO/constantsForReducer/user';
+import IUserStateType from '../types/stateTypes/userStateType';
+import { USER_AUTHORIZATION, USER_AUTHORIZATION_TEST_PERIOD, USER_SIGN_OUT } from '../constantsForReducer/user';
 
 export default function userReducer( state: IUserStateType = userState, action: any ) {
 

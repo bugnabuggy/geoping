@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   CHANGE_NAME_CHECK_LIST,
   CLOSE_MODAL_FOR_CREATE_CHECK_LIST,
@@ -8,15 +8,15 @@ import {
   EDITING_PERMISSION_POINT,
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
-} from '../DTO/constantsForReducer/checkList';
+} from '../constantsForReducer/checkList';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
 import { getLocationAddress } from '../services/httpMapService';
 import { addPointAction } from './googleMapAction';
 import { IMarker } from '../DTO/types/googleMapType';
 import StaticStorage from '../services/staticStorage';
-import ICheckListServiceType from '../DTO/checkListServiceType';
+import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 
 export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
   window.navigator.geolocation.getCurrentPosition(

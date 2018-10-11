@@ -1,4 +1,4 @@
-import ICheckinStateType from '../DTO/types/stateTypes/checkinStateType';
+import ICheckinStateType from '../types/stateTypes/checkinStateType';
 
 export const checkinState: ICheckinStateType = {
   selectList: [],

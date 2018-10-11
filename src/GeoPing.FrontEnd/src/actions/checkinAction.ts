@@ -1,12 +1,12 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { CHECK_IN_FLAG_CHANGE, CHECK_IN_LOAD_LISTS, CHECK_IN_SELECT_LIST } from '../DTO/constantsForReducer/checkin';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { CHECK_IN_FLAG_CHANGE, CHECK_IN_LOAD_LISTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import StaticStorage from '../services/staticStorage';
-import ICheckListServiceType from '../DTO/checkListServiceType';
+import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import { addPointsAction } from './googleMapAction';
-import IMarkerServiceType from '../DTO/markerServiceType';
+import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectedListAction( idList ) );

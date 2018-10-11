@@ -1,6 +1,6 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { IMarker, IPosition } from '../DTO/types/googleMapType';
-import ICheckinStateType from '../DTO/types/stateTypes/checkinStateType';
+import ICheckinStateType from '../types/stateTypes/checkinStateType';
 
 export default interface ICheckinComponentProps {
   markersList: Array<IMarker>;

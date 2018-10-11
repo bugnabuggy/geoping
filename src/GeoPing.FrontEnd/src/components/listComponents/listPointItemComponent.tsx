@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IListPointItemComponentProps from '../../componentProps/listPointItemComponentProps';
-import { defaultMarker } from '../../DTO/constants/defaultMarker';
+import { defaultMarker } from '../../constants/defaultMarker';
 import { EnumStatusMarker } from '../../DTO/types/googleMapType';
 
 export class ListPointItemComponent extends React.Component<IListPointItemComponentProps, any> {
@@ -21,7 +21,7 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
 
   handleDeletePoint = ( e: any ) => {
     e.stopPropagation();
-    this.props.deleteMarker ( this.props.marker.id );
+    this.props.deleteMarker ( this.props.marker.idList, this.props.marker.id );
   };
   // handleEditPoint = ( e: any ) => {
   //   e.stopPropagation();

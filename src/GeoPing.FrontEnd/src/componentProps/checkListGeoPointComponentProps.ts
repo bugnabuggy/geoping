@@ -1,6 +1,6 @@
 import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import ICheckListStateType from '../DTO/types/stateTypes/checkListStateType';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import ICheckListStateType from '../types/stateTypes/checkListStateType';
 
 export default interface ICheckListGeoPointComponentProps {
   selectedMarker: IMarker;

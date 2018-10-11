@@ -1,3 +1,5 @@
+import { validationEmail } from '../constants/regExpConstants';
+
 export const validate = ( values: any ) => {
   const errors: any = {};
   if ( !values.login ) {
@@ -7,7 +9,7 @@ export const validate = ( values: any ) => {
     errors.email = 'required to be filled out';
   }
 
-  if ( values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test( values.email ) ) {
+  if ( values.email && !validationEmail.test( values.email ) ) {
     errors.email = 'Invalid email Address';
   }
   if ( values.password ) {

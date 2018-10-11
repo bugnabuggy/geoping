@@ -1,4 +1,4 @@
-import IProfileStateType from '../DTO/types/stateTypes/profileStateType';
+import IProfileStateType from '../types/stateTypes/profileStateType';
 
 export const profileState: IProfileStateType = {
   login: 'testLogin',

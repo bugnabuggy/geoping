@@ -1,5 +1,5 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { CHANGE_EMPLOYEE } from '../DTO/constantsForReducer/allUsers';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { CHANGE_EMPLOYEE } from '../constantsForReducer/allUsers';
 
 export const changeEmployee = ( idRow: number, value: boolean ) => ( dispatch: IDispatchFunction ) => {
   dispatch ( changeEmployeeAction ( idRow, value ) );

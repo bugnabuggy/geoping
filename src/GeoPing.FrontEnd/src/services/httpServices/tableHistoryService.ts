@@ -1,5 +1,5 @@
-import ITableHistoryService from '../../DTO/tableHistoryServiceType';
-import IHttpCommunicator from '../../DTO/httpCommunicatorType';
+import ITableHistoryService from '../../types/serviceTypes/tableHistoryServiceType';
+import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 
 export default class TableHistoryService implements ITableHistoryService {
@@ -9,6 +9,7 @@ export default class TableHistoryService implements ITableHistoryService {
   }
 
   getHistory() {
-    return this.communicator.get('ffffd');
+    // return this.communicator.get('#');
+    return new Promise( resolve => '' );
   }
 }

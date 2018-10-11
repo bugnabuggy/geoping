@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../constants/routes';
 
 export class ReadMeComponent extends React.Component<any, any> {
   render() {
@@ -62,7 +63,7 @@ export class ReadMeComponent extends React.Component<any, any> {
         <div className="col-12 footer">
           <div className="footer-content2">
             <div>
-              <Link to="/">Back</Link>
+              <Link to={baseUrl}>Back</Link>
             </div>
           </div>
         </div>

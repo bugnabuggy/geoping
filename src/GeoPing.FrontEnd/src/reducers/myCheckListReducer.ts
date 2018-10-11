@@ -1,5 +1,5 @@
-import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
-import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../DTO/constantsForReducer/checkList';
+import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
+import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../constantsForReducer/checkList';
 import { myCheckList } from '../state/myCheckListState';
 
 export default function myCheckListReducer( state: any = myCheckList, action: any ) {

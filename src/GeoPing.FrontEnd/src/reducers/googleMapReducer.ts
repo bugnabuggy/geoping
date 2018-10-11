@@ -1,6 +1,6 @@
 import { googleMapState } from '../state/googleMapState';
 import IGoogleMapType, { EnumStatusMarker } from '../DTO/types/googleMapType';
-import { defaultMarker } from '../DTO/constants/defaultMarker';
+import { defaultMarker } from '../constants/defaultMarker';
 import {
   ADD_MARKERS,
   ADD_NEW_POINT,
@@ -20,7 +20,7 @@ import {
   PUT_STATUS_MARKER,
   SELECT_MARKER,
   USER_MARKER_CREATED
-} from '../DTO/constantsForReducer/googleMap';
+} from '../constantsForReducer/googleMap';
 
 export default function googleMapReducer( state: IGoogleMapType = googleMapState, action: any ) {
   const reduceObject: any = {

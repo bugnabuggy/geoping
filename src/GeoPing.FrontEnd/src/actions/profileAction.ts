@@ -1,4 +1,4 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 
 const LOAD_INFO: string = 'LOAD_INFO';
 

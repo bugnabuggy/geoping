@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import IHttpCommunicator from '../DTO/httpCommunicatorType';
+import IHttpCommunicator from '../types/serviceTypes/httpCommunicatorType';
 
 export const get = ( url: string ) => {
   return axios.get( url );
@@ -28,7 +28,10 @@ export default class HttpCommunicator implements IHttpCommunicator {
   }
 
   post( url: string, data: any ) {
-    return axios.post( url, data, this.config );
+    // return axios.post( url, data, this.config );
+    return new Promise( (resolve: any, reject: any) => {
+      resolve();
+    });
   }
 
   put( url: string, data: any ) {

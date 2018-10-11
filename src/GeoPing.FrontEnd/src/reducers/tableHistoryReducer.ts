@@ -1,4 +1,4 @@
-import { ITableHistoryStateType } from '../DTO/types/stateTypes/tableHistoryStateType';
+import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
 import { tableHistoryState } from '../state/tsbleHistoryState';
 
 export default function tableHistoryReducer( state: ITableHistoryStateType = tableHistoryState, action: any ) {

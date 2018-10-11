@@ -1,4 +1,4 @@
-import { ERoleUser } from '../../DTO/types/stateTypes/userStateType';
+import { ERoleUser } from '../../types/stateTypes/userStateType';
 
 export default interface ILinkMenuType {
   text: string;

@@ -1,6 +1,6 @@
 import { allUsersFilterState } from '../state/allUsersFilterState';
-import IAllUsersFilterStateType from '../DTO/types/stateTypes/allUsersFilterStateType';
-import { CHANGE_FILTERS_ALL_USERS } from '../DTO/constantsForReducer/allUsers';
+import IAllUsersFilterStateType from '../types/stateTypes/allUsersFilterStateType';
+import { CHANGE_FILTERS_ALL_USERS } from '../constantsForReducer/allUsers';
 
 export default function allUsersFilterReducer( state: IAllUsersFilterStateType = allUsersFilterState, action: any ) {
   const reduceObject: any = {

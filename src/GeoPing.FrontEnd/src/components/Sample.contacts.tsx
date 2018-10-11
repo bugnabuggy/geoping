@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../constants/routes';
 
 export class ContentComponent extends React.Component<any, any> {
 
@@ -37,7 +38,7 @@ export class ContentComponent extends React.Component<any, any> {
         <div className="wrapper-footer footer2">
           <div className="footer-content2">
             <div>
-              <Link to="/">Back</Link>
+              <Link to={baseUrl}>Back</Link>
             </div>
             <div>
               bugnabuggy react template + {this.props.location.state ? this.props.location.state.from : null}
