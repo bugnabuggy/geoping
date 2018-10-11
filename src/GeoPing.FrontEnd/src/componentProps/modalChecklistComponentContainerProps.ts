@@ -2,8 +2,8 @@ import IDispatchFunction from '../DTO/types/dispatchFunction';
 
 export default interface IModalChecklistComponentContainerProps {
   showModal: boolean;
-  idChecklist: number;
   show: boolean;
+  idChecklist: string;
 
   closeFilterCheckLists: () => ( dispatch: IDispatchFunction ) => void;
   createCheckList: ( nameChecklist: string ) => ( dispatch: IDispatchFunction ) => void;

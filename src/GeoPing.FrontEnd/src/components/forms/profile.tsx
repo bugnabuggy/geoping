@@ -10,11 +10,10 @@ class ProfileComponent extends React.Component<any, any> {
 
   submit (e: any) {
     // print the form values to the console
-    console.log('e', e);
+    const a: any = 'a';
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="profile-page">
         <div className="flex-box-col">

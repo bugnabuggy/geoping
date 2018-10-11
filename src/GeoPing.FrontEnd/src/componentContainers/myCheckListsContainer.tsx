@@ -5,28 +5,35 @@ import { Panel } from 'react-bootstrap';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
 import { checkLists } from '../mocks/dashboardCheckListsMock';
-import IMyCheckListsContainerProps, { ICheckLists } from '../componentProps/myCheckListsContainerProps';
-import { showModalShare } from '../actions/modalAction';
 import { filterCheckLists } from '../actions/checkListAction';
+import IMyCheckListsContainerProps, { ICheckLists } from '../componentProps/myCheckListsContainerProps';
+import { deleteCheckList, showModalShare } from '../actions/myCheckListsAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';
+import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import { loadCheckLists } from '../actions/myCheckListsAction';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {
 
   renderComponentCheckLists = () => {
-    const components: Array<any> = this.props.checkLists.map ( ( item: ICheckLists, index: number ) => {
+    const components: Array<any> = this.props.checkLists.map( ( item: any, index: number ) => {
       const key: string = `${index}_checkLists`;
       return (
         <CheckListComponent
           key={key}
-          name={item.name}
+          checkList={item}
           showModalShare={this.props.showModalShare}
+          deleteCheckList={this.props.deleteCheckList}
         />
       );
     } );
 
     return components;
   };
+
+  componentDidMount() {
+    this.props.loadCheckLists('ffdf');
+  }
 
   render() {
     return (
@@ -49,7 +56,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
         <Panel>
           <div className="dashboard-check-list-panel-body">
             <Panel.Body>
-              {this.renderComponentCheckLists ()}
+              {this.renderComponentCheckLists()}
             </Panel.Body>
           </div>
         </Panel>
@@ -58,19 +65,20 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
   }
 }
 
-const mapStateToProps = ( state: any ) => {
+const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    checkLists: checkLists,
+    checkLists: state.myCheckList.checkLists,
   };
 };
-
 const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators (
     {
-    showModalShare,
-    openModalForCreateCheckList,
-    filterCheckLists
+      showModalShare,
+      openModalForCreateCheckList,
+      filterCheckLists,
+      loadCheckLists,
+      deleteCheckList,
   },
     dispatch );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( MyCheckListsContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( MyCheckListsContainer );

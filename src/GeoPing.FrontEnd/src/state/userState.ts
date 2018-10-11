@@ -4,5 +4,5 @@ export const userState: IUserState = {
   name: '',
   avatar: '',
   authorized: false,
-  roleUser: ERoleUser.Admin,
+  roleUser: ERoleUser.User,
 };

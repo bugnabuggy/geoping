@@ -5,7 +5,7 @@ import Slider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
 import ICheckListGeoPointComponentProps from '../componentProps/checkListGeoPointComponentProps';
-import { EnumStatusMarker } from '../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
 
 export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPointComponentProps, any> {
 
@@ -19,7 +19,16 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
 
   handleClickOk = ( e: any ) => {
     e.stopPropagation ();
-    this.props.addNewPoint ( this.props.selectedMarker.id );
+    const newMarker: IMarker = {
+      id: this.props.selectedMarker.id,
+      radius: this.props.selectedMarker.radius,
+      lng: this.props.selectedMarker.lng,
+      lat: this.props.selectedMarker.lat,
+      idList: this.props.checkList.idChecklist,
+      name: this.props.selectedMarker.name,
+      description: this.props.selectedMarker.description,
+    };
+    this.props.addNewPoint ( newMarker );
     this.props.editingPermission ( false );
     this.props.putStatusMarker ( EnumStatusMarker.None );
   };
@@ -57,7 +66,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   name="name"
                   value={this.props.selectedMarker.name}
                   onChange={this.handleChangeInput}
-                  disabled={!this.props.isEditingPoint}
+                  disabled={!this.props.checkList.isEditing}
                 />
               </FormGroup>
               <FormGroup
@@ -72,7 +81,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   name="lat"
                   value={this.props.selectedMarker.lat}
                   onChange={this.handleChangeInput}
-                  disabled={!this.props.isEditingPoint}
+                  disabled={!this.props.checkList.isEditing}
                 />
                 <ControlLabel
                   className="check-list-geo-point-form-label-long"
@@ -83,7 +92,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   name="lng"
                   value={this.props.selectedMarker.lng}
                   onChange={this.handleChangeInput}
-                  disabled={!this.props.isEditingPoint}
+                  disabled={!this.props.checkList.isEditing}
                 />
               </FormGroup>
               <FormGroup
@@ -99,7 +108,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   min={0}
                   max={300}
                   onChange={this.handleChangeSlider}
-                  disabled={!this.props.isEditingPoint}
+                  disabled={!this.props.checkList.isEditing}
                 />
                 <div
                   className="check-list-geo-point-form-label-distance"
@@ -118,9 +127,9 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   value={this.props.selectedMarker.description}
                   onChange={this.handleChangeInput}
                   placeholder="Approximate address"
-                  disabled={!this.props.isEditingPoint}
+                  disabled={!this.props.checkList.isEditing}
                 />
-                {this.props.isEditingPoint && (
+                {this.props.checkList.isEditing && (
                   <div className="check-list-geo-point-form-text-area-icon-container">
                     <div
                       className="check-list-geo-point-form-text-area-icon icon-hover-color cursor-pointer"

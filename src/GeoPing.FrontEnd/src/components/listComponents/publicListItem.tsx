@@ -19,7 +19,7 @@ export class PublicListItem extends React.Component<IPublicCheckListItemProps, a
                   Author: {this.props.author}
                 </div>
                 <div className="col-4">
-                  Subscribers: {this.props.subscribers}
+                  Subscribers: {this.props.subscribers.toLocaleString('ru')}
                 </div>
                 <div className="">
                   Raiting: {this.props.raiting}

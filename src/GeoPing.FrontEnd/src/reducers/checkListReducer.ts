@@ -20,38 +20,53 @@ export default function checkListReducer( state: ICheckListStateType = checkList
     [ MODAL_PERIOD_OPEN_CLOSE ]: modalPeriodOpenClose,
     [ FILTER_CHECKLIST_LIST ]: filterCheckLists,
     [ CLOSE_FILTER_CHECKLIST ]: closeFilterCheckLists
+
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
 function createCheckList( state: ICheckListStateType, action: any ) {
-  const newState: ICheckListStateType = Object.assign( {}, state, { idChecklist: action.checklist.idCheckList } );
-  return newState;
+  return {
+    ...state,
+    idChecklist: action.checklist.id,
+    nameChecklist: action.checklist.name
+  };
 }
 
 function openModalForCreateCheckList( state: ICheckListStateType, action: any ) {
-  const newState: ICheckListStateType = Object.assign( {}, state, { isShowModal: action.isShow } );
-  return newState;
+  return {
+    ...state,
+    isShowModal: action.isShow,
+  };
 }
 
 function closeModalForCreateCheckList( state: ICheckListStateType, action: any ) {
-  const newState: ICheckListStateType = Object.assign( {}, state, { isShowModal: action.isClose } );
-  return newState;
+  return {
+    ...state,
+    isShowModal: action.isClose,
+  };
 }
 
 function editingPermissionPoint( state: ICheckListStateType, action: any ) {
-  const newState: ICheckListStateType = Object.assign ( {}, state, { isEditing: action.isEditing } );
-  return newState;
+  return {
+    ...state,
+    isEditing: action.isEditing,
+  };
 }
 
 function changeNameChecklist( state: ICheckListStateType, action: any ) {
-  const newState: ICheckListStateType = Object.assign( {}, state, { nameChecklist: action.nameChecklist } );
-  return newState;
+  return {
+    ...state,
+    nameChecklist: action.nameChecklist,
+  };
 }
 
 function modalPeriodOpenClose( state: ICheckListStateType, action: any ) {
-  return Object.assign( {}, state, { isShowModal: action.isState } );
+  return {
+    ...state,
+    isShowModal: action.isState,
+  };
 }
 function filterCheckLists( state: ICheckListStateType, action: any ) {
   const newState: ICheckListStateType = Object.assign( {}, state, { showFilterCheckList: action.isShow } );

@@ -97,17 +97,18 @@ export class PaginationComponent extends React.Component<IPaginationComponentPro
       this.props.countPage,
       this.props.disablePage
     ) );
-    paginationItem.push(
-      <Pagination.Item
-        key={`${this.props.countPage}_pagination`}
-        active={this.props.countPage === this.props.activePage}
-        disabled={this.props.countPage === this.props.disablePage}
-        onClick={this.handleChange}
-      >
-        {this.props.countPage}
-      </Pagination.Item>
-    );
-
+    if ( this.props.countPage > 1 ) {
+      paginationItem.push(
+        <Pagination.Item
+          key={`${this.props.countPage}_pagination`}
+          active={this.props.countPage === this.props.activePage}
+          disabled={this.props.countPage === this.props.disablePage}
+          onClick={this.handleChange}
+        >
+          {this.props.countPage}
+        </Pagination.Item>
+      );
+    }
     return paginationItem;
   };
 

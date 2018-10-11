@@ -11,13 +11,14 @@ import checkinReducer from './checkinReducer';
 import headerReducer from './headerReducer';
 import googleMapReducer from './googleMapReducer';
 import tableHistoryReducer from './tableHistoryReducer';
-import modalReducer from './modalReducer';
+// import modalReducer from './modalReducer';
 import publicCheckListReducer from './publicCheckListReducer';
 import notificationsReducer from './notificationsReducer';
 import allUsersFilterReducer from './allUsersFilterReducer';
 import allUsersTableReducer from './allUsersTableReducer';
 import allChecklistFilterReducer from './allChecklistFilterReducer';
 import invitationsReducer from './invitationsReducer';
+import myCheckListReducer from './myCheckListReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
@@ -28,12 +29,13 @@ export default function createReducer(injectedReducers: any) {
     user: userReducer,
     profile: profileReducer,
     tableUser: tableUserReducer,
+    myCheckList: myCheckListReducer,
     checkinStatistics: checkinStatisticsReducer,
     checkin: checkinReducer,
     header: headerReducer,
     tableHistory: tableHistoryReducer,
     googleMap: googleMapReducer,
-    modal: modalReducer,
+    // modal: modalReducer,
     publicCheckList: publicCheckListReducer,
     notifications: notificationsReducer,
     invitations: invitationsReducer,

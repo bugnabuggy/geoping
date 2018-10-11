@@ -9,16 +9,18 @@ import { userState } from './userState';
 import { headerState } from './headerState';
 import { googleMapState } from './googleMapState';
 import { tableHistoryState } from './tableHistoryState';
-import { modalState } from './modalState';
+// import { modalState } from './modalState';
 import { publicCheckListState } from './publickCheckListState';
 import { notificationState } from './notificationsState';
 import { allUsersTableState } from './allUsersTableState';
+import { myCheckList } from './myCheckListState';
 import { invitationsState} from './invitationsState';
 
 const initialState: IinitialStateType = {
   allUsersFilter: allUsersFilterState,
   allUsersTable: allUsersTableState,
   checkin: checkinState,
+  myCheckList: myCheckList,
   checkinStatistics: checkinStatisticsState,
   checkList: checkListState,
   profile: profileState,
@@ -27,7 +29,7 @@ const initialState: IinitialStateType = {
   header: headerState,
   tableHistory: tableHistoryState,
   googleMap: googleMapState,
-  modal: modalState,
+  // modal: modalState,
   publicCheckList: publicCheckListState,
   notifications: notificationState,
   invitations: invitationsState,

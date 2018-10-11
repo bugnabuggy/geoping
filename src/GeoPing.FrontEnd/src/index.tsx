@@ -25,16 +25,17 @@ import {
   faPlusCircle,
   faPlusSquare,
   faShareSquare,
+  faSort,
+  faSortDown,
+  faSortUp,
   faStar,
   faTimes,
-  faSort,
-  faSortUp,
-  faSortDown,
   faTrashAlt,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCheckCircle, far, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { configurationDependencyInjerction } from './services/configurationDependencyInjerction';
 
 library.add(
   faFilter,
@@ -60,6 +61,8 @@ library.add(
   faSortDown,
   far
 );
+
+configurationDependencyInjerction();
 
 const history = createBrowserHistory();
 

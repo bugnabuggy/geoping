@@ -18,6 +18,7 @@ export default interface IinitialStateType {
   allUsersFilter: IAllUsersStateType;
   allUsersTable: IAllUsersTableStateType;
   checkin: ICheckinStateType;
+  myCheckList: any;
   checkinStatistics: ICheckinStatisticsStateType;
   checkList: ICheckListStateType;
   profile: IProfileStateType;
@@ -26,7 +27,7 @@ export default interface IinitialStateType {
   header: IHeaderStateType;
   tableHistory: ITableHistoryStateType;
   googleMap: IGoogleMapType;
-  modal: IModalStateType;
+  // modal: IModalStateType;
   publicCheckList: IPublicCheckListType;
   notifications: INotificationStateType;
   invitations: IinvitationsStateType;

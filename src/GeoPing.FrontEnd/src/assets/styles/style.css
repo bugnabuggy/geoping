@@ -83,7 +83,7 @@ select.form-control:not([size]):not([multiple]) {
 /*login ************************************************/
 .login-page {
   height: 100%;
-  font-size: 1.5rem;
+  font-size: 1.5em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,40 +103,24 @@ header nav {
 
 .psw-span {
   position: relative;
-  top: 21px;
-  left: 80px;
+  top: 29px;
+  left: 105px;
+  font-size: 16px !important
 }
 
 .reg-span {
   position: relative;
-  top: 10px;
+  top: 8px;
+  font-size: 16px !important
 }
 
 .login-btn {
-  float: right;
+  margin-left: 16px;
 }
 
 /**/
 
 /*Sign up*/
-.sign-container {
-  height: 100%;
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.register-form {
-  width: 40vh;
-  padding: 0 20px 0 20px;
-}
-
-.isValid-check {
-  display: inline-block;
-  position: relative;
-  left: 20px;
-}
 
 .form-input-container {
   display: flex;
@@ -187,9 +171,6 @@ header nav {
   color: #a4575b;
 }
 
-/**/
-
-/*Sign up*/
 .sign-container {
   height: 100%;
   font-size: 1.5rem;
@@ -359,6 +340,7 @@ header nav {
   overflow: auto;
   padding: 0 10px;
   max-height: 500px;
+  min-height: 200px;
 }
 
 .check-list-panel-item {
@@ -1487,6 +1469,7 @@ select.form-control:not([size]):not([multiple]) {
 
   .admin-all-users-filter-container {
     border: black 1px solid;
+  }
 
   /* Admin all checklist */
   .admin-checklist-container {
@@ -1508,6 +1491,7 @@ select.form-control:not([size]):not([multiple]) {
   .admin-all-users-table-container {
     display: flex;
     justify-content: center;
+  }
 
   .admin-checklist-table {
     grid-column-start: col1;
