@@ -10,6 +10,14 @@ namespace GeoPing.Api.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public IEnumerable<UserLists> Userlists { get; set; }
+        public string FullName { get; set; }
+        
+        public short AccountType { get; set; }
+
+        public virtual IEnumerable<GeoList> OwnedLists { get; set; }
+        public virtual IEnumerable<ListReview> UserReviews { get; set; }
+
+        public virtual IEnumerable<UserPoint> GeoPoints { get; set; }
+        public virtual IEnumerable<UserList> GeoLists { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,8 +21,17 @@ namespace GeoPing.Api.Models.Entities
 
         public bool IsPublic { get; set; }
 
-        public IEnumerable<GeoPoint> GeoPoints { get; set; }
+        public float Rating { get; set; }
 
-        public IEnumerable<UserLists> UsersLists { get; set; }
+        public DateTime PeriodFrom { get; set; }
+        public DateTime PeriodTo { get; set; }
+
+
+        public string OwnerId { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
+
+        public virtual IEnumerable<ListReview> Reviews { get; set; }
+        public virtual IEnumerable<GeoPoint> GeoPoints { get; set; }
+        public virtual IEnumerable<UserList> UsersLists { get; set; }
     }
 }

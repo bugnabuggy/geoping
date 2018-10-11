@@ -26,6 +26,8 @@ namespace GeoPing.Api.Models.Entities
         public double Radius { get; set; }
 
         public long GeoListId { get; set; }
-        public GeoList GeoList { get; set; }
+        public virtual GeoList GeoList { get; set; }
+
+        public virtual IEnumerable<UserPoint> UserPoints { get; set; }
     }
 }

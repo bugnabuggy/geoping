@@ -1,6 +1,7 @@
 ﻿using GeoPing.Api.Interfaces;
 using GeoPing.Api.Models;
 using GeoPing.Api.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

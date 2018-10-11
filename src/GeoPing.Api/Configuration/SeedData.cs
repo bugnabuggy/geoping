@@ -4,6 +4,7 @@ using GeoPing.Api.Models.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,10 @@ namespace GeoPing.Api.Configuration
     {
         public static void Initialize(IServiceProvider services)
         {
+            // TODO: Make logging done here
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            //var logger = services.GetRequiredService<ILogger>();
 
             var roles = new List<IdentityRole>()
             {
@@ -54,20 +57,22 @@ namespace GeoPing.Api.Configuration
                     task.Wait(10000);
                     if (!task.Result.Succeeded)
                     {
-                        // TODO: Put logger here
+                        //logger.LogInformation($"User with UserName [{user.UserName}] and Email [{user.Email}] was created.");
                     }
                     if (user.UserName == "testadmin")
                     {
                         task = userManager.AddToRolesAsync(user, new List<string> { "user", "admin" });
+                        //logger.LogInformation("Roles [user] and [admin] were added for user [testadmin].");
                     }
                     else
                     {
                         task = userManager.AddToRoleAsync(user, "user");
+                        //logger.LogInformation("Role [user] and was added for user [testuser].") ;
                     }
                     task.Wait(10000);
                     if (!task.Result.Succeeded)
                     {
-                        // TODO: Put logger about roles here
+                        //logger.LogError("Something went wrong while addition roles for test users");
                     }
                 }
             }

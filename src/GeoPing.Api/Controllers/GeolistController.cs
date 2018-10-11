@@ -5,27 +5,33 @@ using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
 using GeoPing.Api.Models;
 using GeoPing.Api.Models.Entities;
+using GeoPing.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Geolist")]
+    [Route("api/geolist")]
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
+        private IHelper _helper;
 
-        public GeolistController(IGeolistService geolistSrv)
+        public GeolistController(IGeolistService geolistSrv,
+                                 IHelper helper)
         {
-            this._geolistSrv = geolistSrv;
+            _geolistSrv = geolistSrv;
+            _helper = helper;
         }
 
         // GET api/Geolist
         [HttpGet]
         public IActionResult GetLists()
         {
-            var result = this._geolistSrv.Get();
+            var result = _geolistSrv.Get();
             return Ok(result);
         }
 
@@ -34,7 +40,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult GetList(int Id)
         {
-            var result = this._geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var result = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
 
             if (result == null)
             {
@@ -47,6 +53,7 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         public IActionResult AddList([FromBody]GeoList item)
         {
+            item.OwnerId = _helper.GetUserIdByClaims(User.Claims);
             var result = _geolistSrv.Add(item);
 
             if (result.Success)
@@ -56,7 +63,6 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // TODO: Remake this
         // PUT api/Geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
@@ -92,12 +98,8 @@ namespace GeoPing.Api.Controllers
         }
 
         // DELETE api/Geolist/
-        //
-        // Ids string looks like array of integers, divided with commas and/or spaces
-        // Example: "1, 10, 11, 100"
-        //
         [HttpDelete]
-        public IActionResult RemoveLists([FromBody]string Ids)
+        public IActionResult RemoveLists(string Ids)
         {
             var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                             .Select(int.Parse)
@@ -107,7 +109,7 @@ namespace GeoPing.Api.Controllers
 
                 foreach (var Id in idList)
                 {
-                    var item = this._geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+                    var item = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
 
                     if (item == null)
                     {
@@ -121,7 +123,12 @@ namespace GeoPing.Api.Controllers
                         return StatusCode(500);
                     }
                 }
-                return NoContent();
+                return Ok(new OperationResult
+                {
+                    Success = true,
+                    Messages = new[] { $"Geolists with Id-s = [{Ids}] were removed" },
+                    Data = Ids
+                });
             }
             return BadRequest($"Something is wrong in IDs string: [{Ids}]");
         }
@@ -131,7 +138,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult RemoveList(int Id)
         {
-            var item = this._geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var item = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
 
             if (item == null)
             {

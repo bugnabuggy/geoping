@@ -1,4 +1,6 @@
-﻿using GeoPing.Api.Interfaces;
+﻿using GeoPing.Api.Data;
+using GeoPing.Api.Interfaces;
+using GeoPing.Api.Models.Entities;
 using GeoPing.Api.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -8,14 +10,19 @@ using System.Threading.Tasks;
 
 namespace GeoPing.Api.Configuration
 {
-    public class AppConfigurator
+    public static class AppConfigurator
     {
-        public static void ConfigureServices(IServiceCollection service)
+        public static void ConfigureServices(IServiceCollection services)
         {
-            service.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<IRepository<GeoList>,DbRepository<GeoList>>();
+            services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
+            services.AddScoped<IRepository<UserPoint>, DbRepository<UserPoint>>();
 
-            service.AddScoped<IGeopointService, GeopointService>();
-            service.AddScoped<IGeolistService, GeolistService>();
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddScoped<IGeopointService, GeopointService>();
+            services.AddScoped<IGeolistService, GeolistService>();
+            services.AddScoped<IHelper, Helper>();
         }
     }
 }
