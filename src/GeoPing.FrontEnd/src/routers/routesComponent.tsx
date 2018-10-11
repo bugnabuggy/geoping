@@ -17,16 +17,8 @@ import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
 import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
-import serviceLocator, { buildEnvironment } from '../services/serviceLocator';
 
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
-  componentDidMount() {
-    serviceLocator.get( 'load_test_data' )
-      .then( ( response: any ) => {
-        sessionStorage.setItem( 'localDB', JSON.stringify( response ) );
-      } );
-  }
-
   render() {
 
     const authorized: boolean = this.props.authorized;

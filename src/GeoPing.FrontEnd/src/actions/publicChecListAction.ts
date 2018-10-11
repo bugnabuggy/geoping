@@ -4,7 +4,8 @@ import {
   PUBLIC_LIST_CHANGE_PAGINATION,
   PUBLIC_LIST_LOAD_LISTS
 } from '../DTO/constantsForReducer/publicCheckList';
-import serviceLocator from '../services/serviceLocator';
+import ICheckListServiceType from '../DTO/checkListServiceType';
+import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
@@ -18,7 +19,8 @@ export const changePagination = ( numberPage: string ) => ( dispatch: IDispatchF
 };
 
 export const loadPublicLists = () => ( dispatch: IDispatchFunction ) => {
-  serviceLocator.get( 'load_public_check_lists' )
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.loadPublicCheckLists()
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
     } )
@@ -28,7 +30,8 @@ export const loadPublicLists = () => ( dispatch: IDispatchFunction ) => {
 };
 
 export const filterPublicCheckLists = ( filters: any ) => ( dispatch: IDispatchFunction ) => {
-  serviceLocator.post( 'filters_public_check_lists', filters )
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.filterPublicCheckList()
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
     } )

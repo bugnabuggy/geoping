@@ -1,13 +1,15 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-import serviceLocator from '../services/serviceLocator';
+import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../DTO/constantsForReducer/checkList';
+import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
+import StaticStorage from '../services/staticStorage';
+import ICheckListServiceType from '../DTO/checkListServiceType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
-import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../DTO/constantsForReducer/checkList';
-import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
 
-export const loadCheckLists = () => ( dispatch: IDispatchFunction ) => {
-  serviceLocator.get( 'load_lists' )
+export const loadCheckLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
+  const checkListService: any = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.loadAllMyCheckLists( idUser )
     .then( ( checkLists: any ) => {
       dispatch( loadCheckListsAction( checkLists ) );
     } )
@@ -16,15 +18,13 @@ export const loadCheckLists = () => ( dispatch: IDispatchFunction ) => {
     } );
 };
 
-export const addCheckList = () => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
 export const deleteCheckList = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
-  serviceLocator.post( 'delete_my_check_list', idCheckList )
+  const checkListService: any = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.deleteMyCheckList( idCheckList )
     .then( ( checkLists: any ) => {
-      // console.log( 'checkLists', checkLists );
-      dispatch( deleteCheckListAction( idCheckList ) );
+      if ( checkLists ) {
+        dispatch( deleteCheckListAction( idCheckList ) );
+      }
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );

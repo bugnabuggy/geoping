@@ -1,17 +1,14 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-import serviceLocator from '../services/serviceLocator';
-import { addNotificationAction } from './notificationsAction';
-import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 import { ITableHistoryStateType } from '../DTO/types/stateTypes/tableHistoryStateType';
+import StaticStorage from '../services/staticStorage';
+import ITableHistoryService from '../DTO/tableHistoryServiceType';
 
 export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
-  serviceLocator.get( 'load_history' )
+
+  const tableHistoryService: ITableHistoryService = StaticStorage.serviceLocator.get( 'ITableHistoryService' );
+  tableHistoryService.getHistory()
     .then( ( response: any ) => {
       dispatch( loadHistoryAction( response ) );
-    } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 

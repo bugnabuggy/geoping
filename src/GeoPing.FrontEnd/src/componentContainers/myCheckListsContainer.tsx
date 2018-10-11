@@ -31,7 +31,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
   };
 
   componentDidMount() {
-    this.props.loadCheckLists();
+    this.props.loadCheckLists('ffdf');
   }
 
   render() {

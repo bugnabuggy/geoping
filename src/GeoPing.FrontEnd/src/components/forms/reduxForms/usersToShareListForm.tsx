@@ -2,29 +2,7 @@ import * as React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Button, FormControl } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-/**/
-function validateFieldEmailListUserShare( value: any ) {
-
-  const regEmail: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  let error: any = {};
-  if ( !value.users || !value.users.length ) {
-    // console.log('value.users', value.users);
-  } else {
-    const usersError: any = [];
-    for ( const index in value.users ) {
-      if ( !regEmail.test( value.users[ index ].email ) ) {
-        usersError[ index ] = { email: 'no user int hte system, will send invitation' };
-      }
-    }
-    if ( usersError.length ) {
-      error.users = usersError;
-    }
-  }
-  return error;
-}
-
-/**/
+import { validateFieldEmailListUserShare } from '../../../validations/emailListUserShare';
 
 function component( props: any ) {
   const { input, meta: { touched, error, valid, visited, active } }: any = props;
@@ -56,17 +34,8 @@ function component( props: any ) {
   );
 }
 
-function fieldComponent( props: any ) {
-  return (
-    <Field
-      name={`${props.index}.email`}
-      component={component}
-    />
-  );
-}
-
 function fieldUser( props: any ) {
-  const { fields, meta: { touched, error, submitFailed } }: any = props;
+  const { fields }: any = props;
   if ( fields.length === 0 ) {
     fields.push( {} );
   }
@@ -113,7 +82,6 @@ function addUserToShareListForm( props: any ): any {
       <FieldArray
         name="users"
         component={fieldUser}
-        // fields={[{}, {}]}
       />
       <div className="modal-share-form-buttons">
         <Button

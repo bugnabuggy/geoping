@@ -1,22 +1,16 @@
-import { ServiceTest } from './serviceTest/serviceTest';
-import { ServiceQa } from './serviceQa/serviceQa';
-import { ServiceProduction } from './serviceProduction/serviceProduction';
-import { ServiceDevelopment } from './serviceDevelopment/serviceDevelopment';
-import { EBuildEnvironment } from '../DTO/environment';
-import IGeopingServicesType from '../DTO/geopingServicesType';
+import IServiceLocator from '../DTO/serviceLocatorType';
 
-const serviceLocatorMap: any = new Map();
+class ServiceLocator implements IServiceLocator {
+  private container: Map<any, any> = new Map<any, any>();
 
-serviceLocatorMap.set('test', new ServiceTest());
-serviceLocatorMap.set('qa', new ServiceQa());
-serviceLocatorMap.set('development', new ServiceDevelopment());
-serviceLocatorMap.set('production', new ServiceProduction());
+  get<S>( type: any ) {
+    return this.container.get( type ) as S;
+  }
 
-export let buildEnvironment: EBuildEnvironment = EBuildEnvironment.Test;
-let serviceLocator: IGeopingServicesType = serviceLocatorMap.get(buildEnvironment);
+  set( type: any, implementation: any ) {
+    this.container.set( type, implementation );
+  }
 
-export function getBuildEnvironment( env: EBuildEnvironment ) {
-  buildEnvironment = env;
 }
 
-export default serviceLocator;
+export default ServiceLocator;

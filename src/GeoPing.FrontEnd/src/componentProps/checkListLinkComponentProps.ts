@@ -11,7 +11,7 @@ export default interface ICheckListLinkComponentProps {
   isCheckGeoPosition: boolean;
   statusMarker: EnumStatusMarker;
 
-  addNewPoint: ( idMarker: string ) => ( dispatch: IDispatchFunction ) => void;
+  addNewPoint: ( idMarker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
   permissionToAddMarker: ( isAddMarker: boolean ) => ( dispatch: IDispatchFunction ) => void;
   cancelAddNewPoint: () => ( dispatch: IDispatchFunction ) => void;
   addNotification: ( message: string, typeNotification: EnumNotificationType ) =>
