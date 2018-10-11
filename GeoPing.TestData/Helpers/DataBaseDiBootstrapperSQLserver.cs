@@ -94,7 +94,7 @@ namespace GeoPing.TestData.Helpers
             return serviceProvider;
         }
 
-        public async Task<ServiceProvider> GetServiceProviderWithSeedDB()
+        public async Task<ServiceProvider> GetServiceProviderWithSeedDb()
         {
             var provider = GetServiceProvider();
             var dbSeed = new TestDbContextInitializer();

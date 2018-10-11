@@ -38,10 +38,10 @@ namespace GeoPing.TestData.Helpers
 
             foreach (var user in _users)
             {
-                var result = await _userManager.CreateAsync(user, TestConfig.DefaultPassword,);
-                if (!result.Success)
+                var result = await _userManager.CreateAsync(user, TestConfig.DefaultPassword);
+                if (!result.Succeeded)
                 {
-                    throw new Exception(string.Concat(result.Messages));
+                    throw new Exception(string.Concat(result.Errors));
                 }
             }
 

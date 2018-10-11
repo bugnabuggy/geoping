@@ -20,8 +20,6 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
             services.AddScoped<IRepository<UserPoint>, DbRepository<UserPoint>>();
 
-            services.AddTransient<IEmailSender, EmailSender>();
-
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IHelper, Helper>();
@@ -36,8 +34,8 @@ namespace GeoPing.Api.Configuration
 
             var roles = new List<IdentityRole>()
             {
-                new IdentityRole("admin"),
-                new IdentityRole("user")
+                new IdentityRole(UsersRoles.Admin),
+                new IdentityRole(UsersRoles.User)
             };
 
             foreach (var role in roles)
@@ -74,12 +72,12 @@ namespace GeoPing.Api.Configuration
                     }
                     if (user.UserName == "testadmin")
                     {
-                        task = userManager.AddToRolesAsync(user, new List<string> { "user", "admin" });
+                        task = userManager.AddToRolesAsync(user, new List<string> { UsersRoles.User, UsersRoles.Admin });
                         //logger.LogInformation("Roles [user] and [admin] were added for user [testadmin].");
                     }
                     else
                     {
-                        task = userManager.AddToRoleAsync(user, "user");
+                        task = userManager.AddToRoleAsync(user, UsersRoles.User);
                         //logger.LogInformation("Role [user] and was added for user [testuser].") ;
                     }
                     task.Wait(10000);

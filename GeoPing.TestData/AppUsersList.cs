@@ -15,20 +15,6 @@ namespace GeoPing.TestData
             };
         }
 
-        //public static N2NUser GetNotInDbUser()
-        //{
-        //    return new N2NUser()
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        NickName = "User",
-        //        Registration = DateTime.UtcNow,
-        //        Email = "test@test.xcom",
-        //        FirstName = "Te",
-        //        LastName = "St",
-        //        PhoneNumber = "+123456789"
-        //    };
-        //}
-
         public static IEnumerable<ApplicationUser> GetList()
         {
             return new List<ApplicationUser>()

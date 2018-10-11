@@ -12,6 +12,6 @@ namespace GeoPing.TestData.Helpers
         ApplicationDbContext GetApplicationDbContext();
 
         ServiceProvider GetServiceProvider();
-        Task<ServiceProvider> GetServiceProviderWithSeedDbAsync();
+        Task<ServiceProvider> GetServiceProviderWithSeedDb();
     }
 }
