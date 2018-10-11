@@ -1,16 +1,16 @@
 import * as React from 'react';
-
+import { post, get } from  '../../services/httpService';
 import LoginReduxForm from './reduxForms/loginForms';
+import ILoginComponentProps from '../../componentProps/loginComponentProps';
 
-class LoginComponent extends React.Component<any, any> {
+class LoginComponent extends React.Component<ILoginComponentProps, any> {
   constructor( props: any ) {
     super ( props );
 
   }
 
   submit( e: any ) {
-    // print the form values to the console
-    // console.log ( 'e', e );
+   // this.props.authorizationUser ( e.login, e.password );
   }
 
     render() {
