@@ -2,26 +2,105 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using GeoPing.Api.Configuration;
 using GeoPing.Api.Data;
+using GeoPing.Api.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GeoPing.TestData.Helpers
 {
     class DataBaseDiBootstrapperSQLserver : IServiceProviderBootstrapper
     {
-        public ApplicationDbContext GetApplicationDbContext()
+        private static object _contextLock = new object();
+        private static bool _contextInitialized = false;
+        private static int _contextCount = 0;
+        private static DbContextOptions<ApplicationDbContext> _options;
+
+        // not for resharper or vs studio test runners, have to be separat test runner project! to use config
+        //private static NameValueCollection _settings = ConfigurationManager.AppSettings;
+
+
+        static DataBaseDiBootstrapperSQLserver()
         {
-            throw new NotImplementedException();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer(TestConfig.ConnectionString);
+            _options = optionsBuilder.Options;
+        }
+
+        public static ApplicationDbContext GetApplicationDbContext()
+        {
+            var ctx = new ApplicationDbContext(_options);
+
+            if (_contextCount < 1)
+            {
+                //clean befor new test session starts
+                //ctx.Database.EnsureDeleted();
+                //ctx.Database.EnsureCreated();
+            }
+
+            lock (_contextLock)
+            {
+                if (!_contextInitialized)
+                {
+                    _contextInitialized = true;
+                    ctx.Database.EnsureDeleted();
+                    ctx.Database.EnsureCreated();
+                }
+            }
+
+            _contextCount++;
+            return ctx;
+        }
+
+        public static bool DisposeDataContext(ApplicationDbContext ctx)
+        {
+            if (_contextCount < 2)
+            {
+                // leave it for investigate information after test run
+                //ctx.Database.EnsureDeleted();
+            }
+            ctx.Dispose();
+
+            _contextCount--;
+            return true;
+        }
+
+        ApplicationDbContext IServiceProviderBootstrapper.GetApplicationDbContext()
+        {
+            return GetApplicationDbContext();
         }
 
         public ServiceProvider GetServiceProvider()
         {
-            throw new NotImplementedException();
+            var services = new ServiceCollection();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(TestConfig.ConnectionString));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Features.Set<IHttpAuthenticationFeature>(new HttpAuthenticationFeature());
+            services.AddSingleton<IHttpContextAccessor>(h => new HttpContextAccessor { HttpContext = httpContext });
+
+            var appConfigurator = new AppConfigurator();
+            appConfigurator.ConfigureServices(services);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            return serviceProvider;
         }
 
-        public Task<ServiceProvider> GetServiceProviderWithSeedDb()
+        public async Task<ServiceProvider> GetServiceProviderWithSeedDB()
         {
-            throw new NotImplementedException();
+            var provider = GetServiceProvider();
+            var dbSeed = new TestDbContextInitializer();
+            await dbSeed.SeedData(provider);
+
+            return provider;
         }
     }
 }
