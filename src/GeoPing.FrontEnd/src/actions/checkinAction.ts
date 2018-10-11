@@ -1,14 +1,12 @@
 import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { loadListsMockService, loadPointsMockService } from '../services/mockServices/checkinMockService';
-import {
-  CHECK_IN_FLAG_CHANGE,
-  CHECK_IN_LOAD_LISTS,
-  CHECK_IN_SELECT_LIST
-} from '../DTO/constantsForReducer/checkin';
-import { addPointsAction } from './googleMapAction';
+import { CHECK_IN_FLAG_CHANGE, CHECK_IN_LOAD_LISTS, CHECK_IN_SELECT_LIST } from '../DTO/constantsForReducer/checkin';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import StaticStorage from '../services/staticStorage';
+import ICheckListServiceType from '../DTO/checkListServiceType';
+import { addPointsAction } from './googleMapAction';
+import IMarkerServiceType from '../DTO/markerServiceType';
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectedListAction( idList ) );
@@ -20,24 +18,27 @@ export const checkin = () => ( dispatch: IDispatchFunction ) => {
 
 /* load */
 export const loadLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
-  loadListsMockService()
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.loadAllMyCheckLists( idUser )
     .then( ( response: any ) => {
-      // console.log(response);
       dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch ( addNotificationAction ( createNotification ( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
+  // serviceLocator.post( 'load_lists', idUser )
 };
 
 export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
-  loadPointsMockService( idList )
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+  markerService.getAllMarkersForCheckList( idList )
     .then( ( response: any ) => {
       dispatch( addPointsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch ( addNotificationAction ( createNotification ( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
+
 };
 
 export const checkinFlag = ( isCheckin: boolean ) => ( dispatch: IDispatchFunction ) => {

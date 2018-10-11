@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-GeoPing.Api-F98F36D9-731D-42EB-B9A3-DBBCAFF87ABB</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\Entities\GeoCatalog.cs" />
+    <Compile Remove="Models\Entities\PointCatalog.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="2.2.0" />

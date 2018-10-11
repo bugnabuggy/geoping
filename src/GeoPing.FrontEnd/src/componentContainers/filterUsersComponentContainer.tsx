@@ -48,8 +48,11 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators ( {
-    changeFilters,
-  }, dispath );
+  bindActionCreators(
+    {
+      changeFilters,
+    },
+    dispath
+  );
 
-export default connect ( mapStateToProps, mapDispatchToProps ) ( FilterUsersComponentContainer );
+export default connect( mapStateToProps, mapDispatchToProps )( FilterUsersComponentContainer );

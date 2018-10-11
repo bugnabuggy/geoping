@@ -9,13 +9,14 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../DTO/constantsForReducer/checkList';
-import { createCheckListMockService } from '../services/mockServices/createCheckListMockService';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
-import { getLocationAddress } from '../services/mapService';
+import { getLocationAddress } from '../services/httpMapService';
 import { addPointAction } from './googleMapAction';
 import { IMarker } from '../DTO/types/googleMapType';
+import StaticStorage from '../services/staticStorage';
+import ICheckListServiceType from '../DTO/checkListServiceType';
 
 export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
   window.navigator.geolocation.getCurrentPosition(
@@ -43,23 +44,24 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
     } );
 };
 
-export const loadGEOPointsList = () => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
-export const deleteGEOPoint = ( idGEOPoint: number ) => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
-export const loadCheckList = ( idCheckList: number ) => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
 export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatchFunction ) => {
-  createCheckListMockService( nameChecklist )
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.createMyCheckList( nameChecklist )
     .then( ( checkList: any ) => {
       dispatch( createCheckListAction( checkList ) );
       dispatch( addNotificationAction( createNotification( 'Check List creating', EnumNotificationType.Success ) ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+    } );
+};
+
+export const updateNameCheckList = ( newNameCheckList: string ) => ( dispatch: IDispatchFunction ) => {
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.updateNameMyCheckList( newNameCheckList )
+    .then( ( response: any ) => {
+      dispatch( changeNameCheckListAction( response ) );
+      dispatch( addNotificationAction( createNotification( 'List name changed', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );

@@ -6,5 +6,6 @@ export default interface IPublicCheckListsComponentContainerProps {
   countPages: number;
   actionPage: number;
 
+  loadPublicLists: () => ( dispatch: IDispatchFunction ) => void;
   changePagination: ( numberPage: string ) => ( dispatch: IDispatchFunction ) => void;
 }

@@ -20,7 +20,7 @@ class ModalChecklistComponentContainer extends React.Component<IModalChecklistCo
           closeModalForCreateCheckList={this.props.closeModalForCreateCheckList}
           // openModalForCreateCheckList={this.props.openModalForCreateCheckList}
         />
-        {this.props.idChecklist > 0 && <Redirect to={'/checklist'}/>}
+        {this.props.idChecklist !== '' && <Redirect to={'/checklist'}/>}
       </React.Fragment>
     );
   }

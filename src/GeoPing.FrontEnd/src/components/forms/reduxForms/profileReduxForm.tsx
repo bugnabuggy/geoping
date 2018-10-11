@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Field, reduxForm} from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { validate } from '../../../validations/userProfileValidate';
-import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { IconLookup } from '@fortawesome/fontawesome-svg-core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 
-const output = (props: any) => {
-  switch (props.labelName) {
+const output = ( props: any ) => {
+  switch ( props.labelName ) {
     case 'Login':
       return (
         <FormControl
@@ -52,15 +53,15 @@ const output = (props: any) => {
         <FormControl
           {...props.input}
         />
-    );
+      );
   }
 };
-const renderInput = (props: any) => {
+const renderInput = ( props: any ) => {
   return (
     <FormGroup>
-      <ControlLabel className="control-profile-label" >{props.labelName}</ControlLabel>{' '}
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{' '}
       <div className="form-input-container">
-      {output(props)}
+        {output( props )}
         <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
@@ -77,12 +78,12 @@ const renderInput = (props: any) => {
         </div>
       </div>
     </FormGroup>
-    );
+  );
 };
 
-function profileForm(props: any): any {
-  const {handleSubmit} = props;
-  return(
+function profileForm( props: any ): any {
+  const { handleSubmit } = props;
+  return (
     <form className="profile-form">
       <Field
         component={renderInput}
@@ -126,9 +127,10 @@ function profileForm(props: any): any {
     </form>
   );
 }
-const profileReduxForm: any = reduxForm({
+
+const profileReduxForm: any = reduxForm( {
   form: 'profile',
   validate
-})((profileForm));
+} )( ( profileForm ) );
 
 export default profileReduxForm;

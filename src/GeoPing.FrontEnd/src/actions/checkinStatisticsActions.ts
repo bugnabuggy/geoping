@@ -5,35 +5,22 @@ import {
   STATISTICS_LOAD_POINTS,
   STATISTICS_LOAD_USERS
 } from '../DTO/constantsForReducer/checkinStatistics';
-import {
-  loadListsService,
-  loadPointsService,
-  loadUsersService
-} from '../services/mockServices/checkinStatisticsMockService';
 import { createNotification } from '../services/helper';
 import { addNotificationAction } from './notificationsAction';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import ICheckListServiceType from '../DTO/checkListServiceType';
+import StaticStorage from '../services/staticStorage';
+import IUser from '../DTO/userServiceType';
+import IMarkerServiceType from '../DTO/markerServiceType';
 
 export const selectList = () => ( dispatch: IDispatchFunction ) => {
   return '';
 };
 
-export const selectUser = () => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
-export const selectPeriod = () => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
-/* may be*/
-export const loadTableData = () => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
-
 /* Load */
 export const loadLists = () => ( dispatch: IDispatchFunction ) => {
-  loadListsService()
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.loadAllMyCheckLists( '' )
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
     } )
@@ -44,7 +31,8 @@ export const loadLists = () => ( dispatch: IDispatchFunction ) => {
 };
 
 export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
-  loadUsersService( idList )
+  const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
+  userService.loadUsersForSharedList( idList )
     .then( ( response: any ) => {
       dispatch( loadUsersAction( response ) );
     } )
@@ -54,7 +42,8 @@ export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) =
 };
 
 export const loadPoints = ( idList: string, idUser: string ) => ( dispatch: IDispatchFunction ) => {
-  loadPointsService( idList, idUser )
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+  markerService.getMarkersForListAndUser( idList, idUser )
     .then( ( response: any ) => {
       dispatch( loadPointsAction( response ) );
     } )

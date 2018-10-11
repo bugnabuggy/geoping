@@ -340,6 +340,7 @@ header nav {
   overflow: auto;
   padding: 0 10px;
   max-height: 500px;
+  min-height: 200px;
 }
 
 .check-list-panel-item {

@@ -25,6 +25,8 @@ import { EnumStatusMarker, IMarker, IPosition } from '../DTO/types/googleMapType
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import StaticStorage from '../services/staticStorage';
+import IMarkerServiceType from '../DTO/markerServiceType';
 
 export const addPoints = ( markers: Array<any> ) => ( dispatch: IDispatchFunction ) => {
   dispatch( addPointsAction( markers ) );
@@ -63,8 +65,15 @@ export const cancelEditingGEOPoint = () => ( dispatch: IDispatchFunction ) => {
   dispatch( cancelEditingGEOPointAction() );
 };
 
-export const addNewPoint = ( idMarker: string ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( addNewPointAction( idMarker ) );
+export const addNewPoint = ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => {
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+  markerService.createNewMarker( marker )
+    .then( ( response: any ) => {
+      dispatch( addNewPointAction( marker.id ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+    } );
 };
 
 export const cancelAddNewPoint = () => ( dispatch: IDispatchFunction ) => {
@@ -95,7 +104,14 @@ export const findLocationForCenterMap = () => ( dispatch: IDispatchFunction ) =>
 };
 
 export const deleteMarker = ( idMarker: string ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( deleteMarkerAction( idMarker ) );
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+  markerService.deleteMarker( idMarker )
+    .then( ( response: any ) => {
+      dispatch( deleteMarkerAction( idMarker ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+    } );
 };
 
 export const userMarkerCreate = ( isCreate: boolean ) => ( dispatch: IDispatchFunction ) => {
@@ -107,7 +123,7 @@ export const markerRender = ( isMarkerRendered: boolean ) => ( dispatch: IDispat
 };
 
 export const addDistance = ( distance: number ) => ( dispatch: IDispatchFunction ) => {
-  dispatch(addDistanceAction(Math.round( distance )));
+  dispatch( addDistanceAction( Math.round( distance ) ) );
 };
 
 export const clearMarkerList = () => ( dispatch: IDispatchFunction ) => {

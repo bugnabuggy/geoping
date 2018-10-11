@@ -48,7 +48,7 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
         />
         <div className="check-list-point">
           <CheckListGeoPointComponent
-            isEditingPoint={this.props.isEditingPoint}
+            checkList={this.props.checkList}
             selectedMarker={this.props.selectedMarker}
             isAddMarker={this.props.isAddMarker}
             isMarkerInstalled={this.props.isMarkerInstalled}
@@ -82,7 +82,7 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    isEditingPoint: state.checkList.isEditing,
+    checkList: state.checkList,
     markers: state.googleMap.markersList,
     selectedMarker: state.googleMap.selectedMarker,
     isAddMarker: state.googleMap.isAddMarker,

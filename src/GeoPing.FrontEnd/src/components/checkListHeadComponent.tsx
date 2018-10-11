@@ -9,14 +9,15 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
       isEdit: true,
     } );
   };
-  blurEdit = () => {
+  blurEdit = ( e: any ) => {
+    if ( this.props.nameChecklist !== e.target.value ) {
+      this.props.updateNameCheckList( e.target.value );
+    }
     this.setState( {
       isEdit: false,
     } );
   };
-  handleChangeName = ( e: any ) => {
-    this.props.changeNameCheckList( e.target.value );
-  };
+
   handleShare = () => {
     this.state = {
       isEdit: false,
@@ -47,8 +48,7 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
                 </ControlLabel>}
                 {this.state.isEdit && <FormControl
                   name="name"
-                  value={this.props.nameChecklist}
-                  onChange={this.handleChangeName}
+                  defaultValue={this.props.nameChecklist}
                   onBlur={this.blurEdit}
                   autoFocus={this.state.isEdit}
                 />}
