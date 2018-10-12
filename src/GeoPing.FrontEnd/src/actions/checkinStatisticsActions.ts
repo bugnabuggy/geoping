@@ -1,17 +1,16 @@
-/* Select */
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   STATISTICS_LOAD_LISTS,
   STATISTICS_LOAD_POINTS,
   STATISTICS_LOAD_USERS
-} from '../DTO/constantsForReducer/checkinStatistics';
+} from '../constantsForReducer/checkinStatistics';
 import { createNotification } from '../services/helper';
 import { addNotificationAction } from './notificationsAction';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
-import ICheckListServiceType from '../DTO/checkListServiceType';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import StaticStorage from '../services/staticStorage';
-import IUser from '../DTO/userServiceType';
-import IMarkerServiceType from '../DTO/markerServiceType';
+import IUser from '../types/serviceTypes/userServiceType';
+import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 
 export const selectList = () => ( dispatch: IDispatchFunction ) => {
   return '';

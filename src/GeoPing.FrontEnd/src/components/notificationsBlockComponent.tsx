@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import INotificationsBlockComponentProps from '../componentProps/notificationsBlockComponentProps';
 import { NotificationComponent } from './notificationComponent';
-import { INotificationType } from '../DTO/types/stateTypes/notificationStateType';
+import { INotificationType } from '../types/stateTypes/notificationStateType';
 
 export class NotificationsBlockComponent extends React.Component<INotificationsBlockComponentProps, any> {
 

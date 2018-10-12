@@ -1,4 +1,4 @@
-import IUser from '../../DTO/userServiceType';
+import IUser from '../../types/serviceTypes/userServiceType';
 import { users } from '../../mocks/checkinStatisticsMock';
 
 export default class MockUserService implements IUser {

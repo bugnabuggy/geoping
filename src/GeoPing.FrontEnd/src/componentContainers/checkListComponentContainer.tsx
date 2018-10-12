@@ -2,10 +2,10 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckListGeoPointComponent } from '../components/checkListGeoPointComponent';
 import { ListPointsComponent } from '../components/listPointsComponent';
-import ICheckListComponentContainerProps from '../componentProps/checkListComponentContainerProps';
+import ICheckListComponentContainerProps from '../componentContainerProps/checkListComponentContainerProps';
 import { checkGEOPosition, editingPermission } from '../actions/checkListAction';
 import {
   addNewPoint,

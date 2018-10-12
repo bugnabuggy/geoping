@@ -1,74 +1,39 @@
 import * as React from 'react';
+import { ReactNode } from 'react';
 import { Route, Switch } from 'react-router';
 import { Redirect } from 'react-router-dom';
-
-import LoginPage from '../pages/loginPage';
-import DashboardPage from '../pages/dashboardPage';
-import ProfilePage from '../pages/profilePage';
-import ChecklistPage from '../pages/checklistPage';
-import CheckinPage from '../pages/checkinPage';
 import HeaderComponentContainer from '../componentContainers/headerComponentContainer';
-import { AboutComponent } from '../pages/aboutPage';
-import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
 import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
 import IRoutesComponentProps from '../componentProps/routerProps/routesComponentProps';
-import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
-import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
-import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
-import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
-import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
+import { ERoleUser } from '../types/stateTypes/userStateType';
+import { baseUrl } from '../constants/routes';
+import routersMap from '../mapForComponents/routersMap';
 
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
+
+  renderRouters( authorize: boolean, userRole: ERoleUser ) {
+    return routersMap( authorize, userRole ).map(
+      ( item: { path: string, component: ReactNode }, index: number ) => {
+        const Component: any = item.component;
+        return (
+          <Route
+            key={index}
+            exact={true}
+            path={item.path}
+            component={Component}
+          />
+        );
+      } );
+  }
+
   render() {
+    const component: any = (
+      <Switch>
+        {this.renderRouters( this.props.authorized, this.props.roleUser )}
 
-    const authorized: boolean = this.props.authorized;
-    let component: any = null;
-    if ( !authorized ) {
-      component = (
-        <React.Fragment>
-          <Switch>
-            <Route exact={true} path="/" component={AboutComponent}/>
-            <Route exact={true} path="/publicchecklist" component={PublicGEOCheckListsPage}/>
-            <Route exact={true} path="/login" component={LoginPage}/>
-            <Route exact={true} path="/register" component={LoginPage}/>
-            <Route exact={true} path="/resetpassword" component={LoginPage}/>
-
-            <Redirect push={true} from="*" to="/"/>
-          </Switch>
-        </React.Fragment>
-      );
-    } else if ( this.props.roleUser === ERoleUser.Admin ) {
-      component = (
-        <React.Fragment>
-          <Switch>
-            <Route exact={true} path="/" component={AboutComponent}/>
-            <Route exact={true} path="/dashboard" component={DashboardPage}/>
-            <Route exact={true} path="/profile" component={ProfilePage}/>
-            <Route exact={true} path="/checklist" component={ChecklistPage}/>
-            <Route exact={true} path="/checkin" component={CheckinPage}/>
-            <Route exact={true} path="/admin/dashboard" component={AdminDashboardPage}/>
-            <Route exact={true} path="/admin/allusers" component={AdminAllUsersPage}/>
-            <Route exact={true} path="/admin/allchecklists" component={AdminAllChecklistPage}/>
-
-            <Redirect push={true} from="*" to="/"/>
-          </Switch>
-        </React.Fragment>
-      );
-    } else {
-      component = (
-        <React.Fragment>
-          <Switch>
-            <Route exact={true} path="/" component={AboutComponent}/>
-            <Route exact={true} path="/dashboard" component={DashboardPage}/>
-            <Route exact={true} path="/profile" component={ProfilePage}/>
-            <Route exact={true} path="/checklist" component={ChecklistPage}/>
-            <Route exact={true} path="/checkin" component={CheckinPage}/>
-
-            <Redirect push={true} from="*" to="/"/>
-          </Switch>
-        </React.Fragment>
-      );
-    }
+        <Redirect push={true} from="*" to={baseUrl}/>
+      </Switch>
+    );
 
     return (
       <React.Fragment>

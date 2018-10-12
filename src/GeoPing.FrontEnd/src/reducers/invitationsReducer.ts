@@ -1,5 +1,5 @@
-import { FILTER_INVITATIONS_LIST, CLOSE_FILTER_INVITATIONS } from  '../DTO/constantsForReducer/filters';
-import IinvitationsStateType from '../DTO/types/stateTypes/invitationsStateType';
+import { FILTER_INVITATIONS_LIST, CLOSE_FILTER_INVITATIONS } from '../constantsForReducer/filters';
+import IinvitationsStateType from '../types/stateTypes/invitationsStateType';
 import { invitationsState } from '../state/invitationsState';
 
 export default function invitationsReducer( state: IinvitationsStateType = invitationsState, action: any ) {

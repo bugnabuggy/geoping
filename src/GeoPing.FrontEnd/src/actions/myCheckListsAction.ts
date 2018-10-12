@@ -1,11 +1,11 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../DTO/constantsForReducer/checkList';
-import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../DTO/constantsForReducer/modal';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../constantsForReducer/checkList';
+import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
 import StaticStorage from '../services/staticStorage';
-import ICheckListServiceType from '../DTO/checkListServiceType';
+import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const loadCheckLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: any = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );

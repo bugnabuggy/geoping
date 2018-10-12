@@ -6,10 +6,25 @@ import { Redirect } from 'react-router-dom';
 import { ModalCheckListFilterComponent } from '../components/modalComponents/checklist/modalCheckListFilterComponent';
 import { ModalChecklistComponent } from '../components/modalComponents/checklist/modalChecklistComponent';
 import { closeModalForCreateCheckList, createCheckList, closeFilterCheckLists } from '../actions/checkListAction';
-import IModalChecklistComponentContainerProps from '../componentProps/modalChecklistComponentContainerProps';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IModalChecklistComponentContainerProps from '../componentContainerProps/modalChecklistComponentContainerProps';
+import IinitialStateType from '../types/stateTypes/initialStateType';
+import { checkListUrl } from '../constants/routes';
 
 class ModalChecklistComponentContainer extends React.Component<IModalChecklistComponentContainerProps, any> {
+  constructor( props: IModalChecklistComponentContainerProps ) {
+    super( props );
+    this.state = {
+      isRedirect: false,
+    };
+  }
+
+  componentDidUpdate( prevProps: IModalChecklistComponentContainerProps ) {
+    if ( prevProps.idChecklist !== this.props.idChecklist ) {
+      this.setState( {
+        isRedirect: true,
+      } );
+    }
+  }
 
   render() {
     return (
@@ -26,7 +41,7 @@ class ModalChecklistComponentContainer extends React.Component<IModalChecklistCo
           closeModalForCreateCheckList={this.props.closeModalForCreateCheckList}
           // openModalForCreateCheckList={this.props.openModalForCreateCheckList}
         />
-        {this.props.idChecklist !== '' && <Redirect to={'/checklist'}/>}
+        {this.state.isRedirect && <Redirect push={true} to={checkListUrl}/>}
       </React.Fragment>
     );
   }

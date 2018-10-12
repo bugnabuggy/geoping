@@ -1,4 +1,4 @@
-import IAllUsersTableStateType from '../DTO/types/stateTypes/allUsersTableStateType';
+import IAllUsersTableStateType from '../types/stateTypes/allUsersTableStateType';
 
 export const allUsersTableState: IAllUsersTableStateType = {
   listUsers: [

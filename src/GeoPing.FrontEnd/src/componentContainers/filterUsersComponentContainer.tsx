@@ -2,10 +2,10 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import IFilterUsersComponentContainerProps from '../componentProps/filterUsersComponentContainerProps';
-import { FilterUsersComponent } from '../components/filterUsersComponent';
-import { IFilterUsersProps } from '../componentProps/filterUsersComponentProps';
+import IinitialStateType from '../types/stateTypes/initialStateType';
+import IFilterUsersComponentContainerProps from '../componentContainerProps/filterUsersComponentContainerProps';
+import { FilterUsersComponent } from '../components/filterComponents/filterUsersComponent';
+import { IFilterUsersProps } from '../componentProps/filterComponentProps/filterUsersComponentProps';
 import { changeFilters } from '../actions/allUsersFilterAction';
 
 class FilterUsersComponentContainer extends React.Component<IFilterUsersComponentContainerProps, any> {

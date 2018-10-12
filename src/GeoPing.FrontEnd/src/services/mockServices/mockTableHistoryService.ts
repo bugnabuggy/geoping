@@ -1,4 +1,4 @@
-import ITableHistoryService from '../../DTO/tableHistoryServiceType';
+import ITableHistoryService from '../../types/serviceTypes/tableHistoryServiceType';
 
 export default class MockTableHistoryService implements ITableHistoryService {
   getHistory() {

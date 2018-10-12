@@ -1,12 +1,12 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { INotificationType } from '../DTO/types/stateTypes/notificationStateType';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { INotificationType } from '../types/stateTypes/notificationStateType';
 import {
   ADD_NOTIFICATION,
   DELETE_ALL_NOTIFICATIONS,
   DELETE_NOTIFICATION
-} from '../DTO/constantsForReducer/notification';
+} from '../constantsForReducer/notification';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const addNotification = ( message: string, typeNotification: EnumNotificationType ) =>
   ( dispatch: IDispatchFunction ) => {

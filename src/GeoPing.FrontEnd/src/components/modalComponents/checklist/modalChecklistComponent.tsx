@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ModalComponent } from './modalComponent';
 import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
-import IModalChecklistComponentProps from '../../../componentProps/modalChecklistComponentProps';
+import IModalChecklistComponentProps from '../../../componentProps/modalComponentProps/modalChecklistComponentProps';
 
 export class ModalChecklistComponent extends React.Component<IModalChecklistComponentProps, any> {
   constructor( props: any ) {

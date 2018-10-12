@@ -16,7 +16,7 @@ import {
   toggleBounce,
   getDistance,
 } from '../../../services/googleMapService';
-import {EnumStatusMarker} from "../../../DTO/types/googleMapType";
+import {EnumStatusMarker} from "../../../types/stateTypes/googleMapStateType";
 
 class GoogleMap extends React.Component {
   map;

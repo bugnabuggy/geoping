@@ -3,7 +3,7 @@ import { Button, ControlLabel, FormControl, FormGroup, Panel, Table } from 'reac
 import { v4 as uuidV4 } from 'uuid';
 
 import ICheckinComponentProps from '../componentProps/checkinComponentProps';
-import { defaultMarker } from '../DTO/constants/defaultMarker';
+import { defaultMarker } from '../constants/defaultMarker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CongratulationsModalComponent } from './modalComponents/congratulationsModalComponent';
 
@@ -16,15 +16,12 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
   };
   handleCheckin = () => {
     if ( this.props.checkin.difference < this.props.selectedPoint.radius ) {
-      // console.log( 'check in' );
       this.setState( {
         checkInPoints: [
           ...this.state.checkInPoints,
           this.props.selectedPoint.id,
         ]
       } );
-    } else {
-      // console.log( 'No' );
     }
   };
   handleSelectList = ( e: any ) => {
@@ -118,7 +115,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
     super( props );
     this.state = {
       checkInPoints: [],
-      showModal: true ,
+      showModal: false,
     };
   }
 

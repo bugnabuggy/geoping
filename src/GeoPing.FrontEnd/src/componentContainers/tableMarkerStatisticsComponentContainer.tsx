@@ -1,10 +1,10 @@
 import * as React from 'react';
 import ITableMarkerStatisticsComponentContainerProps
-  from '../componentProps/tableMarkerStatisticsComponentContainerProps';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+  from '../componentContainerProps/tableMarkerStatisticsComponentContainerProps';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TableMarkerStatisticsComponent } from '../components/tableMarkerStatisticsComponent';
+import { TableMarkerStatisticsComponent } from '../components/tableComponents/tableMarkerStatisticsComponent';
 
 class TableMarkerStatisticsComponentContainer extends React.Component<ITableMarkerStatisticsComponentContainerProps,
   any> {

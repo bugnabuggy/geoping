@@ -1,4 +1,4 @@
-import IUserState, { ERoleUser } from '../DTO/types/stateTypes/userStateType';
+import IUserState, { ERoleUser } from '../types/stateTypes/userStateType';
 
 export const userState: IUserState = {
   name: '',

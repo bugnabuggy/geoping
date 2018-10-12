@@ -1,5 +1,5 @@
-import ICheckListServiceType from '../../DTO/checkListServiceType';
-import IGeolistType from '../../DTO/geolistType';
+import ICheckListServiceType from '../../types/serviceTypes/checkListServiceType';
+import IGeoListType from '../../DTO/geoListDTO';
 import { v4 as uuidV4 } from 'uuid';
 
 export default class MockCheckListService implements ICheckListServiceType {
@@ -48,7 +48,7 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
-  updateMyCheckList( checkList: IGeolistType ) {
+  updateMyCheckList( checkList: IGeoListType ) {
     return new Promise( ( resolve: any, reject: any ) => {
       resolve( 'updateMyCheckList' );
     } );

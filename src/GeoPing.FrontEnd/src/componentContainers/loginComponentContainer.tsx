@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ILoginComponentContainerProps from '../componentProps/loginComponentContainerProps';
+import ILoginComponentContainerProps from '../componentContainerProps/loginComponentContainerProps';
 import LoginComponent from '../components/forms/login';
 import { authorizationUser, signOutUser } from '../actions/userAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class LoginComponentContainer  extends React.Component<ILoginComponentContainerProps , any> {
   render() {
-    console.log(this.props);
     return (
       <LoginComponent
         path={this.props.location.pathname}

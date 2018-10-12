@@ -1,6 +1,6 @@
-import IDispatchFunction from '../../DTO/types/dispatchFunction';
-import { EnumStatusMarker, IMarker, IPosition } from '../../DTO/types/googleMapType';
-import IGoogleMapType from '../../DTO/types/googleMapType';
+import IDispatchFunction from '../../types/functionsTypes/dispatchFunction';
+import { EnumStatusMarker, IMarker, IPosition } from '../../types/stateTypes/googleMapStateType';
+import IGoogleMapType from '../../types/stateTypes/googleMapStateType';
 
 export default interface IGoogleMapComponentContainerProps {
   isCheckIn: boolean;
@@ -19,7 +19,7 @@ export default interface IGoogleMapComponentContainerProps {
   cancelAddNewPoint: () => ( dispatch: IDispatchFunction ) => void;
   putStatusMarker: ( statusMarker: EnumStatusMarker ) => ( dispatch: IDispatchFunction ) => void;
   findLocationForCenterMap: () => ( dispatch: IDispatchFunction ) => void;
-  deleteMarker: ( idMarker: string ) => ( dispatch: IDispatchFunction ) => void;
+  deleteMarker: ( idCheckList: string, idMarker: string ) => ( dispatch: IDispatchFunction ) => void;
   userMarkerCreate: ( isCreate: boolean ) => ( dispatch: IDispatchFunction ) => void;
   markerRender: ( isMarkerRendered: boolean ) => ( dispatch: IDispatchFunction ) => void;
   addDistance: ( distance: number ) => ( dispatch: IDispatchFunction ) => void;

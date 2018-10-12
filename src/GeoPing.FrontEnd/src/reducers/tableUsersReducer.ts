@@ -1,5 +1,5 @@
 import { tableUserState } from '../state/tableUserState';
-import ITableDataStateType from '../DTO/types/stateTypes/tableDataStateType';
+import ITableDataStateType from '../types/stateTypes/tableDataStateType';
 
 export default function tableUserReducer(state: ITableDataStateType = tableUserState, action: any) {
   const reduceObject: any = {

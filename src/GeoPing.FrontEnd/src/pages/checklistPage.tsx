@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IChecklistPageProps } from '../componentProps/checklistPageProps';
+import { IChecklistPageProps } from '../pageProps/checklistPageProps';
 import CheckListTitleComponentContainer from '../componentContainers/checkListTitleComponentContainer';
 import CheckListComponentContainer from '../componentContainers/checkListComponentContainer';
 import GoogleMapComponentContainer from '../componentContainers/googleMapComponentContainer';

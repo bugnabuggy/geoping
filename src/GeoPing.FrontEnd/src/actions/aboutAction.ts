@@ -1,12 +1,12 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { USER_AUTHORIZATION_TEST_PERIOD } from '../DTO/constantsForReducer/user';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { USER_AUTHORIZATION_TEST_PERIOD } from '../constantsForReducer/user';
 import StaticStorage from '../services/staticStorage';
-import IAuthorization from '../DTO/authorizationServiceType';
-import { buildEnvironment, environments, getBuildEnvironment } from '../DTO/environmentsServiceLocator';
-import { EBuildEnvironment } from '../DTO/environment';
+import IAuthorization from '../types/serviceTypes/authorizationServiceType';
+import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
+import { EBuildEnvironment } from '../enums/environment';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const useTestPeriod = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   getBuildEnvironment( EBuildEnvironment.Test );

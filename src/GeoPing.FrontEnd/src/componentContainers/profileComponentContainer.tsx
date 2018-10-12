@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { IProfileContainerProps } from '../componentProps/profileContainerProps';
+import { IProfileContainerProps } from '../componentContainerProps/profileContainerProps';
 import ProfileComponent from '../components/forms/profile';
 import { changePassword, loadProfileData, upgradeAccount } from '../actions/profileAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class ProfileComponentContainer extends React.Component<IProfileContainerProps, any> {
   render() {

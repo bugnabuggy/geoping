@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IDashboardPageProps } from '../componentProps/dashboardPageProps';
+import { IDashboardPageProps } from '../pageProps/dashboardPageProps';
 import TableHistoryDashboardContainer from '../componentContainers/tableHistoryInDashboardContainer';
 import MyCheckListsContainer from '../componentContainers/myCheckListsContainer';
 import ShareCheckListModalComponentContainer from '../componentContainers/shareCheckListModalComponentContainer';

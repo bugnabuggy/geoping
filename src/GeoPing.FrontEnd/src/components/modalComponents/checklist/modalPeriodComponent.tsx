@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 
 import { ModalComponent } from './modalComponent';
-import IModalPeriodComponentProps from '../../../componentProps/modalPeriodComponentProps';
+import IModalPeriodComponentProps from '../../../componentProps/modalComponentProps/modalPeriodComponentProps';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

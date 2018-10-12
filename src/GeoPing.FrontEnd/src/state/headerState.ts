@@ -1,4 +1,4 @@
-import IHeaderStateType from '../DTO/types/stateTypes/headerStateType';
+import IHeaderStateType from '../types/stateTypes/headerStateType';
 
 export const headerState: IHeaderStateType = {
   routeKey: '/'

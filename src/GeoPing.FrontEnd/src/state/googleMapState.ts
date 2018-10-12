@@ -1,4 +1,4 @@
-import IGoogleMapType, { EnumStatusMarker } from '../DTO/types/googleMapType';
+import IGoogleMapType, { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
 
 export const googleMapState: IGoogleMapType = {
   markersList: [

@@ -1,5 +1,5 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { ERoleUser } from '../DTO/types/stateTypes/userStateType';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { ERoleUser } from '../types/stateTypes/userStateType';
 
 export default interface ILoginComponentProps {
   // routeKey: string;

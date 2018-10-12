@@ -1,10 +1,10 @@
-import IPublicCheckListType from '../DTO/types/stateTypes/publicCheckListType';
+import IPublicCheckListType from '../types/stateTypes/publicCheckListType';
 import { publicCheckListState } from '../state/publickCheckListState';
 import {
   PUBLIC_LIST_CHANGE_FILTER,
   PUBLIC_LIST_CHANGE_PAGINATION,
   PUBLIC_LIST_LOAD_LISTS
-} from '../DTO/constantsForReducer/publicCheckList';
+} from '../constantsForReducer/publicCheckList';
 
 export default function publicCheckListReducer( state: IPublicCheckListType = publicCheckListState, action: any ) {
   const reduceObject: any = {

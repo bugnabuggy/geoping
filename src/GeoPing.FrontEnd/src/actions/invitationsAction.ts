@@ -1,10 +1,10 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
-import { FILTER_INVITATIONS_LIST, CLOSE_FILTER_INVITATIONS} from '../DTO/constantsForReducer/filters';
+import { FILTER_INVITATIONS_LIST, CLOSE_FILTER_INVITATIONS } from '../constantsForReducer/filters';
 
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const filterInvitations = () => (dispatch: IDispatchFunction) => {
   dashboardFiltersMockService('filterInvitations')

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckListHeadComponent } from '../components/checkListHeadComponent';
-import ICheckListTitleComponentContainerProps from '../componentProps/checkListTitleComponentContainerProps';
+import ICheckListTitleComponentContainerProps from '../componentContainerProps/checkListTitleComponentContainerProps';
 import { modalPeriodOpenClose, updateNameCheckList } from '../actions/checkListAction';
 import { ModalPeriodComponent } from '../components/modalComponents/checklist/modalPeriodComponent';
 

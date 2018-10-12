@@ -1,4 +1,4 @@
-import IHttpCommunicator from '../DTO/httpCommunicatorType';
+import IHttpCommunicator from '../types/serviceTypes/httpCommunicatorType';
 import HttpCommunicator from './httpService';
 
 export function getLocationAddress( lat: number, lng: number ) {

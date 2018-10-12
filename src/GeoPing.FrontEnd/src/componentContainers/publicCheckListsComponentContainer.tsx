@@ -2,11 +2,12 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import IPublicCheckListsComponentContainerProps from '../componentProps/publicCheckListsComponentContainerProps';
+import IPublicCheckListsComponentContainerProps
+  from '../componentContainerProps/publicCheckListsComponentContainerProps';
 import { PublicListsComponent } from '../components/publicListsComponent';
 import { PaginationComponent } from '../components/paginationComponent';
 import { changePagination, loadPublicLists } from '../actions/publicChecListAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class PublicCheckListsComponentContainer extends React.Component<IPublicCheckListsComponentContainerProps, any> {
   componentDidMount() {

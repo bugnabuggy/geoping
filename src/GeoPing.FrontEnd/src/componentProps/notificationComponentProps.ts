@@ -1,6 +1,6 @@
-import { INotificationType } from '../DTO/types/stateTypes/notificationStateType';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { INotificationType } from '../types/stateTypes/notificationStateType';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export default interface INotificationComponentProps {
   notification: INotificationType;

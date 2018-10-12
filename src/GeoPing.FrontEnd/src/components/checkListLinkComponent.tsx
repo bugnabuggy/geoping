@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 import ICheckListLinkComponent from '../componentProps/checkListLinkComponentProps';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
-import { EnumStatusMarker } from '../DTO/types/googleMapType';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
 
 export class CheckListLinkComponent extends React.Component<ICheckListLinkComponent, any> {
   idNotification: any;

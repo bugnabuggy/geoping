@@ -1,14 +1,10 @@
-import IRegistrationUserType from '../DTO/types/userAction/registrationUserDataType';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { USER_AUTHORIZATION, USER_SIGN_OUT } from '../DTO/constantsForReducer/user';
-// import { post } from '../services/httpService';
+import IRegistrationUserType from '../types/actionsType/registrationUserDataType';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { USER_AUTHORIZATION, USER_SIGN_OUT } from '../constantsForReducer/user';
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
 
-  dispatch ( authorizationUserAction ( true)
-
-);
-
+  dispatch ( authorizationUserAction ( true ) );
 };
 
 export const registrationUser = ( registrationUserData: IRegistrationUserType ) => ( dispatch: IDispatchFunction ) => {

@@ -1,4 +1,4 @@
-import ICheckListStateType from '../DTO/types/stateTypes/checkListStateType';
+import ICheckListStateType from '../types/stateTypes/checkListStateType';
 
 export const checkListState: ICheckListStateType = {
   pointsList: [],

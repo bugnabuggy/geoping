@@ -84,9 +84,9 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
           <div className="col-4 logo-header">
             Geo Ping
           </div>
-          <div>
-            <button onClick={this.handleAuthorization}>Authorization</button>
-          </div>
+          {/*<div>*/}
+            {/*<button onClick={this.handleAuthorization}>Authorization</button>*/}
+          {/*</div>*/}
           <button className="adaptive-menu " onClick={this.handleMenu}>
               <FontAwesomeIcon icon="bars"/>
           </button>

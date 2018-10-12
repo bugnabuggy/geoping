@@ -1,6 +1,6 @@
-import { CHANGE_EMPLOYEE } from '../DTO/constantsForReducer/allUsers';
+import { CHANGE_EMPLOYEE } from '../constantsForReducer/allUsers';
 import { allUsersTableState } from '../state/allUsersTableState';
-import IAllUsersTableStateType from '../DTO/types/stateTypes/allUsersTableStateType';
+import IAllUsersTableStateType from '../types/stateTypes/allUsersTableStateType';
 
 export default function allUsersTableReducer( state: IAllUsersTableStateType = allUsersTableState, action: any ) {
   const reduceObject: any = {

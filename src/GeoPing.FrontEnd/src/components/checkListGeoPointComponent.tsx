@@ -5,7 +5,7 @@ import Slider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
 import ICheckListGeoPointComponentProps from '../componentProps/checkListGeoPointComponentProps';
-import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker } from '../types/stateTypes/googleMapStateType';
 
 export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPointComponentProps, any> {
 

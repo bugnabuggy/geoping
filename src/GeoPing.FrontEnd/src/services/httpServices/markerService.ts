@@ -1,7 +1,8 @@
-import IMarkerServiceType from '../../DTO/markerServiceType';
-import { IMarker } from '../../DTO/types/googleMapType';
-import IHttpCommunicator from '../../DTO/httpCommunicatorType';
+import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
+import { IMarker } from '../../types/stateTypes/googleMapStateType';
+import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
+import { createGeoNewPoint, getGeoPointsForList, removeGeoPoint, updateGeoPoint } from '../../constants/endpoints';
 
 export default class MarkerService implements IMarkerServiceType {
   private communicator: IHttpCommunicator;
@@ -11,23 +12,29 @@ export default class MarkerService implements IMarkerServiceType {
   }
 
   createNewMarker( marker: IMarker ) {
-    return this.communicator.post( '', marker );
+    return this.communicator.post( createGeoNewPoint.replace( '%listid%', marker.id ), marker );
   }
 
-  deleteMarker( idCheckList: string ) {
-    return this.communicator.delete( '' );
+  deleteMarker( idCheckList: string, markerId: string ) {
+    return this.communicator.delete(
+      removeGeoPoint.replace( '%listid%', idCheckList ).replace( '%id%', markerId )
+    );
   }
 
   getAllMarkersForCheckList( idCheckList: string ) {
-    return this.communicator.get( `api/geolist/${idCheckList}/geopoint` );
+    return this.communicator.get( getGeoPointsForList.replace( '%listid%', idCheckList ) );
   }
 
   updateMarker( marker: IMarker ) {
-    return this.communicator.post( '', marker );
+    return this.communicator.put(
+      updateGeoPoint.replace( '%listid%', marker.idList ).replace( '%id%', marker.id ),
+      marker
+    );
   }
 
   getMarkersForListAndUser( idList: string, idUser: string ) {
-    return this.communicator.get( '' );
+    // return this.communicator.get( '' );
+    return new Promise( resolve => '' );
   }
 
 }

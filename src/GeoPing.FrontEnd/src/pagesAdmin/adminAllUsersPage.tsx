@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import TableUsersComponentContainer from '../componentContainers/tableUsersComponentContainer';
 import FilterUsersComponentContainer from '../componentContainers/filterUsersComponentContainer';
+import IAdminAllUserPageProps from '../pageAdminProps/adminAllUserPageProps';
 
-export default class AdminAllUsersPage extends React.Component<any, any> {
+export default class AdminAllUsersPage extends React.Component<IAdminAllUserPageProps, any> {
   render() {
     return (
       <div className="admin-all-users-container">

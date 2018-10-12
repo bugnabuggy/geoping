@@ -1,6 +1,6 @@
-import IAllChecklistFilterStateType from '../DTO/types/stateTypes/allChecklistFilterStateType';
+import IAllChecklistFilterStateType from '../types/stateTypes/allChecklistFilterStateType';
 import { allChecklistFilterState } from '../state/allChecklistFilterState';
-import { ALL_CHECKLIST_FILTER_CHANGE } from '../DTO/constantsForReducer/allChecklist';
+import { ALL_CHECKLIST_FILTER_CHANGE } from '../constantsForReducer/allChecklist';
 
 export default function allChecklistFilterReducer(
   state: IAllChecklistFilterStateType = allChecklistFilterState,

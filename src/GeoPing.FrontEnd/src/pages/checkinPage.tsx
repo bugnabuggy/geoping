@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ICheckinPageProps } from '../componentProps/checkinPageProps';
+import { ICheckinPageProps } from '../pageProps/checkinPageProps';
 import CheckinComponentContainer from '../componentContainers/checkinComponentContainer';
 import GoogleMapComponentContainer from '../componentContainers/googleMapComponentContainer';
 
@@ -13,7 +13,7 @@ export default class CheckinPage extends React.Component<ICheckinPageProps, any>
           <CheckinComponentContainer/>
         </div>
         <div className="checkin-map">
-          {/*<GoogleMapComponentContainer />*/}
+          <GoogleMapComponentContainer />
         </div>
       </div>
     );

@@ -3,7 +3,7 @@ import { Panel } from 'react-bootstrap';
 import { ListPointItemComponent } from './listComponents/listPointItemComponent';
 import { v4 as uuidV4 } from 'uuid';
 import IListPointsComponentProps from '../componentProps/listPointsComponentProps';
-import { IMarker } from '../DTO/types/googleMapType';
+import { IMarker } from '../types/stateTypes/googleMapStateType';
 
 export class ListPointsComponent extends React.Component<IListPointsComponentProps, any> {
 

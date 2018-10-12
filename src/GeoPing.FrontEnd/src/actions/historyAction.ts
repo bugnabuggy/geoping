@@ -1,12 +1,12 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
-import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../DTO/constantsForReducer/filters';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
+import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../constantsForReducer/filters';
 import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
-import { ITableHistoryStateType } from '../DTO/types/stateTypes/tableHistoryStateType';
 import StaticStorage from '../services/staticStorage';
-import ITableHistoryService from '../DTO/tableHistoryServiceType';
+import ITableHistoryService from '../types/serviceTypes/tableHistoryServiceType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
 

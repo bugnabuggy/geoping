@@ -1,5 +1,5 @@
-import IMarkerServiceType from '../../DTO/markerServiceType';
-import { IMarker } from '../../DTO/types/googleMapType';
+import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
+import { IMarker } from '../../types/stateTypes/googleMapStateType';
 import { points } from '../../mocks/checkinStatisticsMock';
 
 export default class MockMarkerService implements IMarkerServiceType {
@@ -14,7 +14,7 @@ export default class MockMarkerService implements IMarkerServiceType {
     } );
   }
 
-  deleteMarker( idCheckList: string ) {
+  deleteMarker( idCheckList: string, markerId: string ) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {

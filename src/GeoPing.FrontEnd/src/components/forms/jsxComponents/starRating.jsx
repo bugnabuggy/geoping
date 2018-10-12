@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 const emptyStarIcon = {prefix: 'far', iconName: 'star'};
 const fullStarIcon = {prefix: 'fas', iconName: 'star'};
 
-export default class StarRaiting extends React.Component {
+export class StarRaiting extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

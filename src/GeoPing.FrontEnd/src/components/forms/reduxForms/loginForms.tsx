@@ -4,6 +4,7 @@ import { validate } from '../../../validations/loginFormValidate';
 import { IconLookup } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { registerUrl, resetPassword } from '../../../constants/routes';
 
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
@@ -47,7 +48,7 @@ function LoginForms( props: any ): any {
         labelName="Login"
       />
       <span className="psw-span">
-        <a href="/resetpassword">forgot</a>
+        <a href={resetPassword}>forgot</a>
       </span>
       <Field
         component={renderInput}
@@ -55,7 +56,7 @@ function LoginForms( props: any ): any {
         labelName="Password"
       />
       <span className="reg-span">
-        <a href="/register">register account</a>
+        <a href={registerUrl}>register account</a>
       </span>
       <Button
         bsStyle="primary"

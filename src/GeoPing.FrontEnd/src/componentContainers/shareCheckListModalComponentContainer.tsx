@@ -3,8 +3,9 @@ import { ShareCheckListModalComponent } from '../components/modalComponents/chec
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { closeModalShare } from '../actions/myCheckListsAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import IShareCheckListModalComponentContainerProps from '../componentProps/shareCheckListModalComponentContainerProps';
+import IinitialStateType from '../types/stateTypes/initialStateType';
+import IShareCheckListModalComponentContainerProps
+  from '../componentContainerProps/shareCheckListModalComponentContainerProps';
 
 class ShareCheckListModalComponentContainer extends React.Component<IShareCheckListModalComponentContainerProps, any> {
   render() {

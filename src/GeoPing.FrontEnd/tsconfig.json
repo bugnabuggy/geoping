@@ -12,13 +12,14 @@
     "jsx": "react",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "inlineSources": true,
     "types": [
       "node",
       "mocha"
     ],
     // "declaration": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "node_modules",

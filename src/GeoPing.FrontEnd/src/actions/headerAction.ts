@@ -1,5 +1,5 @@
-import { EDIT_ROUTE_HEADER_LINK } from '../DTO/constantsForReducer/header';
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import { EDIT_ROUTE_HEADER_LINK } from '../constantsForReducer/header';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 
 export const editRoute = (routeKey: string) => (dispatch: IDispatchFunction) => {
   dispatch(editRouteAction(routeKey));

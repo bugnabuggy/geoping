@@ -1,14 +1,14 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   PUBLIC_LIST_CHANGE_FILTER,
   PUBLIC_LIST_CHANGE_PAGINATION,
   PUBLIC_LIST_LOAD_LISTS
-} from '../DTO/constantsForReducer/publicCheckList';
-import ICheckListServiceType from '../DTO/checkListServiceType';
+} from '../constantsForReducer/publicCheckList';
+import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
-import { EnumNotificationType } from '../DTO/enums/notificationTypeEnum';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const changeFilter = ( nameFilter: string, value: string | number ) => ( dispatch: IDispatchFunction ) => {
   dispatch( changeFilterAction( { nameFilter, value } ) );
@@ -22,7 +22,7 @@ export const loadPublicLists = () => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.loadPublicCheckLists()
     .then( ( response: any ) => {
-      dispatch( loadListsAction( response ) );
+      dispatch( loadListsAction( [] ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );

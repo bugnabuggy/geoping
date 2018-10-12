@@ -2,8 +2,9 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
-import ICheckinStatisticsComponentContainerProps from '../componentProps/checkinStatisticsComponentContainerProps';
+import IinitialStateType from '../types/stateTypes/initialStateType';
+import ICheckinStatisticsComponentContainerProps
+  from '../componentContainerProps/checkinStatisticsComponentContainerProps';
 import { CheckinStatisticsComponent } from '../components/checkinStatisticsComponent';
 import TableMarkerStatisticsComponentContainer from '../componentContainers/tableMarkerStatisticsComponentContainer';
 import { loadLists, loadPoints, loadUsers } from '../actions/checkinStatisticsActions';

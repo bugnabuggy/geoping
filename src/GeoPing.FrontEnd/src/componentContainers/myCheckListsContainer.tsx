@@ -4,13 +4,12 @@ import { bindActionCreators } from 'redux';
 import { Panel } from 'react-bootstrap';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
-import { checkLists } from '../mocks/dashboardCheckListsMock';
+import IMyCheckListsContainerProps  from '../componentContainerProps/myCheckListsContsinerProps';
 import { filterCheckLists } from '../actions/checkListAction';
-import IMyCheckListsContainerProps, { ICheckLists } from '../componentProps/myCheckListsContainerProps';
 import { deleteCheckList, showModalShare } from '../actions/myCheckListsAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { openModalForCreateCheckList } from '../actions/checkListAction';
-import IinitialStateType from '../DTO/types/stateTypes/initialStateType';
+import IinitialStateType from '../types/stateTypes/initialStateType';
 import { loadCheckLists } from '../actions/myCheckListsAction';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {

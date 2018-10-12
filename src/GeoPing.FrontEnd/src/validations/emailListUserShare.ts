@@ -1,6 +1,8 @@
+import { validationEmail } from '../constants/regExpConstants';
+
 export function validateFieldEmailListUserShare( value: any ) {
 
-  const regEmail: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regEmail: RegExp = validationEmail;
   let error: any = {};
   if ( !value.users || !value.users.length ) {
     // console.log('value.users', value.users);

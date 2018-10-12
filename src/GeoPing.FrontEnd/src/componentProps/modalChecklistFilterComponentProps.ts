@@ -1,4 +1,4 @@
-import IDispatchFunction from '../DTO/types/dispatchFunction';
+import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 
 export default interface IModalChecklistFilterComponentProps {
   show: boolean;
