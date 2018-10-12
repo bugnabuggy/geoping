@@ -12,7 +12,7 @@ import IModalStateType from './modalStateType';
 import IPublicCheckListType from './publicCheckListType';
 import INotificationStateType from './notificationStateType';
 import IAllUsersTableStateType from './allUsersTableStateType';
-// import IinvitationsStateType from './invitationsStateType';
+import IinvitationsStateType from './invitationsStateType';
 
 export default interface IinitialStateType {
   allUsersFilter: IAllUsersStateType;
@@ -30,6 +30,6 @@ export default interface IinitialStateType {
   // modal: IModalStateType;
   publicCheckList: IPublicCheckListType;
   notifications: INotificationStateType;
-  // invitations: IinvitationsStateType;
+  invitations: IinvitationsStateType;
   router: any;
 }

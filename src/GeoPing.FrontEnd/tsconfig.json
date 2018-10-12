@@ -12,6 +12,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "inlineSources": true,
     "types": [
       "node",
       "mocha"

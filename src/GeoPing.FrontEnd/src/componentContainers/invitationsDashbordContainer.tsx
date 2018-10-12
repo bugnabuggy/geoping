@@ -36,7 +36,7 @@ class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordC
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    show: true, // state.invitations.showInvitationsFilter
+    show: state.invitations.showInvitationsFilter,
   };
 };
 
