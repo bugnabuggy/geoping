@@ -10,7 +10,7 @@ const getClientEnvironment = require('./config/env');
 
 const env = getClientEnvironment();
 module.exports = merge(common, {
-  devtool: 'nosources-source-map',
+  devtool: 'hidden-source-map',
   mode: 'production',
   entry: path.resolve(__dirname, 'src/index'),
   output: {
