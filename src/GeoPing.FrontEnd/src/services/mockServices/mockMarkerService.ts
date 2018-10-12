@@ -1,5 +1,5 @@
 import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
-import { IMarker } from '../../DTO/types/googleMapType';
+import { IMarker } from '../../types/stateTypes/googleMapStateType';
 import { points } from '../../mocks/checkinStatisticsMock';
 
 export default class MockMarkerService implements IMarkerServiceType {

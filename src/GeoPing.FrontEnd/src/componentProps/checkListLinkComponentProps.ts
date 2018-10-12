@@ -1,6 +1,6 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker } from '../types/stateTypes/googleMapStateType';
 
 export default interface ICheckListLinkComponentProps {
   selectedMarker: IMarker;

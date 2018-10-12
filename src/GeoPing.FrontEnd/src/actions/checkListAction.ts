@@ -9,14 +9,14 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../constantsForReducer/checkList';
-import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../DTO/constantsForReducer/filters';
+import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../constantsForReducer/filters';
 import  { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
 import { getLocationAddress } from '../services/httpMapService';
 import { addPointAction } from './googleMapAction';
-import { IMarker } from '../DTO/types/googleMapType';
+import { IMarker } from '../types/stateTypes/googleMapStateType';
 import StaticStorage from '../services/staticStorage';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 

@@ -1,5 +1,5 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker } from '../types/stateTypes/googleMapStateType';
 
 export default interface IListPointItemComponentProps {
   marker: IMarker;

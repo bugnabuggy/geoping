@@ -1,4 +1,4 @@
-import { EnumStatusMarker, IMarker } from '../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker } from '../types/stateTypes/googleMapStateType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 

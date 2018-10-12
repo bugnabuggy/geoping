@@ -1,6 +1,6 @@
 import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
 import { tableHistoryState } from '../state/tableHistoryState';
-import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../DTO/constantsForReducer/filters';
+import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../constantsForReducer/filters';
 
 export default function tableHistoryReducer( state: ITableHistoryStateType = tableHistoryState, action: any ) {
   const reduceObject: any = {

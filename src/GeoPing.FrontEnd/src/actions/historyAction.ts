@@ -1,6 +1,6 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
-import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../DTO/constantsForReducer/filters';
+import { FILTER_HISTORY_TABLE, CLOSE_FILTER_HISTORY } from '../constantsForReducer/filters';
 import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import StaticStorage from '../services/staticStorage';
 import ITableHistoryService from '../types/serviceTypes/tableHistoryServiceType';

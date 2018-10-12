@@ -1,4 +1,4 @@
-import IGoogleMapType from '../../DTO/types/googleMapType';
+import IGoogleMapType from './googleMapStateType';
 import { ITableHistoryStateType } from './tableHistoryStateType';
 import IHeaderStateType from './headerStateType';
 import IUserState from './userStateType';

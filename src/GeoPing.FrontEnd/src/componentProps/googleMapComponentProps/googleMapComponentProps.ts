@@ -1,4 +1,4 @@
-import IGoogleMapType, { EnumStatusMarker, IMarker, IPosition } from '../../DTO/types/googleMapType';
+import IGoogleMapType, { EnumStatusMarker, IMarker, IPosition } from '../../types/stateTypes/googleMapStateType';
 import IDispatchFunction from '../../types/functionsTypes/dispatchFunction';
 
 export default interface IGoogleMapComponentProps {

@@ -1,6 +1,6 @@
 import IDispatchFunction from '../../types/functionsTypes/dispatchFunction';
-import { EnumStatusMarker, IMarker, IPosition } from '../../DTO/types/googleMapType';
-import IGoogleMapType from '../../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker, IPosition } from '../../types/stateTypes/googleMapStateType';
+import IGoogleMapType from '../../types/stateTypes/googleMapStateType';
 
 export default interface IGoogleMapComponentContainerProps {
   isCheckIn: boolean;

@@ -3,7 +3,7 @@ import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { ModalComponent } from './checklist/modalComponent';
 import ICongratulationsModalComponentProps
   from '../../componentProps/modalComponentProps/congratulationsModalComponentProps';
-import StarRaiting from '../forms/jsxComponents/starRating';
+import { StarRaiting } from '../forms/jsxComponents/starRating';
 
 export class CongratulationsModalComponent extends React.Component<ICongratulationsModalComponentProps, any> {
   render() {

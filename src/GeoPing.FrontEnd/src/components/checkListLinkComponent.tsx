@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import ICheckListLinkComponent from '../componentProps/checkListLinkComponentProps';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { EnumStatusMarker } from '../DTO/types/googleMapType';
+import { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
 
 export class CheckListLinkComponent extends React.Component<ICheckListLinkComponent, any> {
   idNotification: any;

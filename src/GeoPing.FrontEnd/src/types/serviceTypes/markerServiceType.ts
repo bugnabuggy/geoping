@@ -1,4 +1,4 @@
-import { IMarker } from '../../DTO/types/googleMapType';
+import { IMarker } from '../stateTypes/googleMapStateType';
 
 export default interface IMarkerServiceType {
   getAllMarkersForCheckList: ( idCheckList: string ) => Promise<any>;

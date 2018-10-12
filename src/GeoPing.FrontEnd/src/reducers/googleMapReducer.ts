@@ -1,5 +1,5 @@
 import { googleMapState } from '../state/googleMapState';
-import IGoogleMapType, { EnumStatusMarker } from '../DTO/types/googleMapType';
+import IGoogleMapType, { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
 import { defaultMarker } from '../constants/defaultMarker';
 import {
   ADD_MARKERS,

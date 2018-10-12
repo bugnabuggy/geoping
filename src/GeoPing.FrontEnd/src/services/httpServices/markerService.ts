@@ -1,5 +1,5 @@
 import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
-import { IMarker } from '../../DTO/types/googleMapType';
+import { IMarker } from '../../types/stateTypes/googleMapStateType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import { createGeoNewPoint, getGeoPointsForList, removeGeoPoint, updateGeoPoint } from '../../constants/endpoints';

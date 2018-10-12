@@ -8,7 +8,7 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../constantsForReducer/checkList';
-import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../DTO/constantsForReducer/filters';
+import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../constantsForReducer/filters';
 
 export default function checkListReducer( state: ICheckListStateType = checkListState, action: any ) {
   const reduceObject: any = {

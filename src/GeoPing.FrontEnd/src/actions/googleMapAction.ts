@@ -21,7 +21,7 @@ import {
   USER_MARKER_CREATED
 } from '../constantsForReducer/googleMap';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { EnumStatusMarker, IMarker, IPosition } from '../DTO/types/googleMapType';
+import { EnumStatusMarker, IMarker, IPosition } from '../types/stateTypes/googleMapStateType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';

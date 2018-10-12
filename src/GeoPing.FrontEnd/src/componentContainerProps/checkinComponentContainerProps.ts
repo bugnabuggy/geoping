@@ -1,5 +1,5 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { IMarker, IPosition } from '../DTO/types/googleMapType';
+import { IMarker, IPosition } from '../types/stateTypes/googleMapStateType';
 import ICheckinStateType from '../types/stateTypes/checkinStateType';
 
 export default interface ICheckinComponentContainerProps {

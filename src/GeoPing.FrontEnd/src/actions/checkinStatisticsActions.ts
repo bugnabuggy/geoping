@@ -1,4 +1,3 @@
-/* Select */
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   STATISTICS_LOAD_LISTS,
