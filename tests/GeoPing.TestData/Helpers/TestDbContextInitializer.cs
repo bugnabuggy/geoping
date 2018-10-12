@@ -16,7 +16,6 @@ namespace GeoPing.TestData.Helpers
 {
     public class TestDbContextInitializer
     {
-        private static bool _isInitialised = false;
         private ApplicationDbContext _ctx;
         private ApplicationUser[] _users;
 
@@ -24,7 +23,8 @@ namespace GeoPing.TestData.Helpers
         {
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
             var principal = new ClaimsPrincipal(httpContextAccessor.HttpContext.User);
-            httpContextAccessor.HttpContext.User = new GenericPrincipal(new GenericIdentity("GP system initialization"), new[] { UserRoles.Admin });
+            var userRoles = new UserRoles();
+            httpContextAccessor.HttpContext.User = new GenericPrincipal(new GenericIdentity("GP system initialization"), new[] { userRoles.Admin });
 
             var appConfigurator = new AppConfigurator();
             appConfigurator.Initialize(services);
