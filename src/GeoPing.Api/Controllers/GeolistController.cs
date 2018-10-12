@@ -18,10 +18,10 @@ namespace GeoPing.Api.Controllers
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
-        private IHelper _helper;
+        private IClaimsHelper _helper;
 
         public GeolistController(IGeolistService geolistSrv,
-                                 IHelper helper)
+                                 IClaimsHelper helper)
         {
             _geolistSrv = geolistSrv;
             _helper = helper;

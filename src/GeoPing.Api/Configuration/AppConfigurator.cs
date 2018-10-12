@@ -22,7 +22,7 @@ namespace GeoPing.Api.Configuration
 
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
-            services.AddScoped<IHelper, Helper>();
+            services.AddScoped<IClaimsHelper, ClaimsHelper>();
         }
     }
 }

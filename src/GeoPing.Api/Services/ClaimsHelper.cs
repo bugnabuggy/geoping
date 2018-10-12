@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace GeoPing.Api.Services
 {
-    public class Helper : IHelper
+    public class ClaimsHelper : IClaimsHelper
     {
         private UserManager<ApplicationUser> _userManager;
 
-        public Helper(UserManager<ApplicationUser> userManager)
+        public ClaimsHelper(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

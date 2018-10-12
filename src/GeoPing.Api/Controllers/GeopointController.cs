@@ -16,11 +16,11 @@ namespace GeoPing.Api.Controllers
     {
         private IGeopointService _geopointSrv;
         private IGeolistService _geolistSrv;
-        private IHelper _helper;
+        private IClaimsHelper _helper;
 
         public GeopointController(IGeopointService geopointSrv,
                                   IGeolistService geolistSrv,
-                                  IHelper helper)
+                                  IClaimsHelper helper)
         {
             _geopointSrv = geopointSrv;
             _geolistSrv = geolistSrv;
