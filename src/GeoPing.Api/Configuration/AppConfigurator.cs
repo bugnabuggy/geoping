@@ -16,7 +16,9 @@ namespace GeoPing.Api.Configuration
         {
             services.AddScoped<IRepository<GeoList>,DbRepository<GeoList>>();
             services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
+            services.AddScoped<IRepository<UserList>, DbRepository<UserList>>();
             services.AddScoped<IRepository<UserPoint>, DbRepository<UserPoint>>();
+            services.AddScoped<IRepository<ListReview>, DbRepository<ListReview>>();
 
             services.AddTransient<IEmailSender, EmailSender>();
 

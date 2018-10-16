@@ -27,62 +27,62 @@ namespace GeoPing.Api.Data
         {
             base.OnModelCreating(builder);
 
-            // Many-to-one relations between points and list
-            builder.Entity<GeoList>()
-                 .HasMany<GeoPoint>(l => l.GeoPoints)
-                 .WithOne(p => p.GeoList)
-                 .HasForeignKey(p => p.GeoListId)
-                 .OnDelete(DeleteBehavior.Cascade);
-
-            // Many-to-one relations between owned lists and owner-user
-            builder.Entity<ApplicationUser>()
-                 .HasMany<GeoList>(u => u.OwnedLists)
-                 .WithOne(l => l.Owner)
-                 .HasForeignKey(l => l.OwnerId);
-
-            // Many-to-one relations between reviews and list
-            builder.Entity<GeoList>()
-                 .HasMany<ListReview>(l => l.Reviews)
-                 .WithOne(r => r.List)
-                 .HasForeignKey(r => r.ListId)
-                 .OnDelete(DeleteBehavior.Cascade);
-
-            // Many-to-one relations between reviews and user
-            builder.Entity<ApplicationUser>()
-                 .HasMany<ListReview>(u => u.UserReviews)
-                 .WithOne(r => r.User)
-                 .HasForeignKey(r => r.UserId);
-
-
-            // Many-to-many relations between users and lists
-            // UserList is the connection class
-            builder.Entity<UserList>()
-                .HasKey(ul => new { ul.UserId, ul.ListId });
-
-            builder.Entity<UserList>()
-                .HasOne<ApplicationUser>(ul => ul.User)
-                .WithMany(u => u.GeoLists)
-                .HasForeignKey(ul => ul.UserId);
-
-            builder.Entity<UserList>()
-                .HasOne<GeoList>(ul => ul.GeoList)
-                .WithMany(l => l.UsersLists)
-                .HasForeignKey(ul => ul.ListId);
-
-            // Many-to-many relations between users and points
-            // UserPoint is the connection class
-            builder.Entity<UserPoint>()
-                .HasKey(ul => new { ul.UserId, ul.PointId });
-
-            builder.Entity<UserPoint>()
-                .HasOne<ApplicationUser>(up => up.User)
-                .WithMany(u => u.GeoPoints)
-                .HasForeignKey(up => up.UserId);
-
-            builder.Entity<UserPoint>()
-                .HasOne<GeoPoint>(up => up.Point)
-                .WithMany(p => p.UserPoints)
-                .HasForeignKey(up => up.PointId);
+            //// Many-to-one relations between points and list
+            //builder.Entity<GeoList>()
+            //     .HasMany<GeoPoint>(l => l.GeoPoints)
+            //     .WithOne(p => p.GeoList)
+            //     .HasForeignKey(p => p.GeoListId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+            //
+            //// Many-to-one relations between owned lists and owner-user
+            //builder.Entity<ApplicationUser>()
+            //     .HasMany<GeoList>(u => u.OwnedLists)
+            //     .WithOne(l => l.Owner)
+            //     .HasForeignKey(l => l.OwnerId);
+            //
+            //// Many-to-one relations between reviews and list
+            //builder.Entity<GeoList>()
+            //     .HasMany<ListReview>(l => l.Reviews)
+            //     .WithOne(r => r.List)
+            //     .HasForeignKey(r => r.ListId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+            //
+            //// Many-to-one relations between reviews and user
+            //builder.Entity<ApplicationUser>()
+            //     .HasMany<ListReview>(u => u.UserReviews)
+            //     .WithOne(r => r.User)
+            //     .HasForeignKey(r => r.UserId);
+            //
+            //
+            //// Many-to-many relations between users and lists
+            //// UserList is the connection class
+            //builder.Entity<UserList>()
+            //    .HasKey(ul => new { ul.UserId, ul.ListId });
+            //
+            //builder.Entity<UserList>()
+            //    .HasOne<ApplicationUser>(ul => ul.User)
+            //    .WithMany(u => u.GeoLists)
+            //    .HasForeignKey(ul => ul.UserId);
+            //
+            //builder.Entity<UserList>()
+            //    .HasOne<GeoList>(ul => ul.GeoList)
+            //    .WithMany(l => l.UsersLists)
+            //    .HasForeignKey(ul => ul.ListId);
+            //
+            //// Many-to-many relations between users and points
+            //// UserPoint is the connection class
+            //builder.Entity<UserPoint>()
+            //    .HasKey(ul => new { ul.UserId, ul.PointId });
+            //
+            //builder.Entity<UserPoint>()
+            //    .HasOne<ApplicationUser>(up => up.User)
+            //    .WithMany(u => u.GeoPoints)
+            //    .HasForeignKey(up => up.UserId);
+            //
+            //builder.Entity<UserPoint>()
+            //    .HasOne<GeoPoint>(up => up.Point)
+            //    .WithMany(p => p.UserPoints)
+            //    .HasForeignKey(up => up.PointId);
         }
     }
 }

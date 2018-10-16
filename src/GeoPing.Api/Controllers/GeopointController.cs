@@ -29,27 +29,27 @@ namespace GeoPing.Api.Controllers
 
         // GET api/Geopoint
         [HttpGet]
-        public IActionResult GetPoints(long ListId)
+        public IActionResult GetPoints(string ListId)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
-            var result = _geopointSrv.Get(x => x.GeoListId == ListId);
+            var result = _geopointSrv.Get(x => x.GeoListId == Guid.Parse(ListId));
             return Ok(result);
         }
 
         // GET api/geolist/{ListId}/geopoint/{Id}
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetPoint(long ListId, long Id)
+        public IActionResult GetPoint(string ListId, string Id)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            var result = _geopointSrv.Get(x => x.Id == Id && x.GeoListId == ListId).FirstOrDefault();
+            var result = _geopointSrv.Get(x => x.Id == Guid.Parse(Id) && x.GeoListId == Guid.Parse(ListId)).FirstOrDefault();
 
             if (result == null)
             {
@@ -60,14 +60,14 @@ namespace GeoPing.Api.Controllers
 
         // POST api/geolist/{ListId}/geopoint/
         [HttpPost]
-        public IActionResult AddPoint(long ListId, [FromBody]GeoPoint item)
+        public IActionResult AddPoint(string ListId, [FromBody]GeoPoint item)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            item.GeoListId = ListId;
+            item.GeoListId = Guid.Parse(ListId);
             var result = _geopointSrv.Add(item);
 
             if (result.Success)
@@ -80,14 +80,14 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{ListId}/geopoint/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditPoint(long ListId, long Id, [FromBody]GeoPoint item)
+        public IActionResult EditPoint(string ListId, string Id, [FromBody]GeoPoint item)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            if (Id != item.Id)
+            if (Guid.Parse(Id) != item.Id)
             {
                 return BadRequest(new OperationResult
                 {
@@ -97,7 +97,7 @@ namespace GeoPing.Api.Controllers
                 });
             }
 
-            if (!_geopointSrv.Get(x => x.Id == Id).Any())
+            if (!_geopointSrv.Get(x => x.Id == Guid.Parse(Id)).Any())
             {
                 return NotFound(new OperationResult
                 {
@@ -118,22 +118,22 @@ namespace GeoPing.Api.Controllers
 
         // DELETE api/geolist/{ListId}/geopoint/
         [HttpDelete]
-        public IActionResult RemovePoints(long ListId, string Ids)
+        public IActionResult RemovePoints(string ListId, string Ids)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
             var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            .Select(long.Parse)
                             .ToArray();
+
             if (idList != null)
             {
 
                 foreach (var Id in idList)
                 {
-                    var item = _geopointSrv.Get(x => x.Id == Id).FirstOrDefault();
+                    var item = _geopointSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
                     if (item == null)
                     {
@@ -160,14 +160,14 @@ namespace GeoPing.Api.Controllers
         // DELETE api/geolist/{ListId}/geopoint/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemovePoint(long ListId, long Id)
+        public IActionResult RemovePoint(string ListId, string Id)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            var item = _geopointSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var item = _geopointSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
             if (item == null)
             {
@@ -186,9 +186,9 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{ListId}/geopoint/{Id}/check
         [HttpPut]
         [Route("{Id}/check")]
-        public IActionResult CheckIn(long ListId, long Id, [FromBody]GeoPoint item)
+        public IActionResult CheckIn(string ListId, string Id, [FromBody]GeoPoint item)
         {
-            if (_geolistSrv.Get(x => x.Id == ListId) == null)
+            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }

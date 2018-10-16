@@ -38,9 +38,9 @@ namespace GeoPing.Api.Controllers
         // GET api/Geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetList(int Id)
+        public IActionResult GetList(string Id)
         {
-            var result = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var result = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
             if (result == null)
             {
@@ -66,9 +66,9 @@ namespace GeoPing.Api.Controllers
         // PUT api/Geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(int Id, [FromBody]GeoList item)
+        public IActionResult EditList(string Id, [FromBody]GeoList item)
         {
-            if (Id != item.Id)
+            if (Guid.Parse(Id) != item.Id)
             {
                 return BadRequest(new OperationResult
                 {
@@ -78,7 +78,7 @@ namespace GeoPing.Api.Controllers
                 });
             }
 
-            if (!_geolistSrv.Get(x => x.Id == Id).Any())
+            if (!_geolistSrv.Get(x => x.Id == Guid.Parse(Id)).Any())
             {
                 return NotFound(new OperationResult
                 {
@@ -102,14 +102,13 @@ namespace GeoPing.Api.Controllers
         public IActionResult RemoveLists(string Ids)
         {
             var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            .Select(int.Parse)
                             .ToArray();
             if (idList != null)
             {
 
                 foreach (var Id in idList)
                 {
-                    var item = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+                    var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
                     if (item == null)
                     {
@@ -136,9 +135,9 @@ namespace GeoPing.Api.Controllers
         // DELETE api/Geolist/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemoveList(int Id)
+        public IActionResult RemoveList(string Id)
         {
-            var item = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
             if (item == null)
             {
