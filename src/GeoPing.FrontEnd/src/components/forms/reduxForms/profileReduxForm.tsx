@@ -113,6 +113,7 @@ function profileForm( props: any ): any {
       <Button
         bsStyle="primary"
         type="button"
+      //  onClick={this.changePassword}
       >
         Change Password
       </Button>

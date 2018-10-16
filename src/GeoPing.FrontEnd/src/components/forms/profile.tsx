@@ -1,19 +1,35 @@
 import * as React from 'react';
 import ProfileReduxForm from './reduxForms/profileReduxForm';
 import { Button } from 'react-bootstrap';
+import { IProfileComponentProps } from '../../componentProps/profileComponentProps';
 
-class ProfileComponent extends React.Component<any, any> {
+class ProfileComponent extends React.Component<IProfileComponentProps, any> {
 
   constructor(props: any) {
     super(props);
+
+    this.changePassword = this.changePassword.bind(this);
   }
 
+  componentDidMount () {
+    this.props.loadProfileData();
+  }
+  // loadProfile() {
+  //   console.log(this,'this');
+  //   this.props.loadProfileData();
+  //   clearTimeout ( this.timer );
+  // }
+
   submit (e: any) {
-    // print the form values to the console
     const a: any = 'a';
   }
 
+  changePassword() {
+    this.props.changePassword('12345678', '123456789');
+  }
+
   render() {
+     console.log(this.props);
     return (
       <div className="profile-page">
         <div className="flex-box-col">
@@ -21,8 +37,9 @@ class ProfileComponent extends React.Component<any, any> {
           <ProfileReduxForm
             onSubmit={this.submit}
             initialValues={this.props.profileState}
+            // changePassword={this.props.changePassword}
           />
-          <label htmlFor="payment-info">Paiment info</label>
+          <label htmlFor="payment-info">Payment info</label>
           <div className="payment-info">
             <div className="last-paid-flex">
               Last paid {this.props.profileState.lastPaid}
@@ -30,6 +47,7 @@ class ProfileComponent extends React.Component<any, any> {
             <Button
               bsStyle="primary"
               type="button"
+              onClick={this.changePassword}
             >
               Upgrade Account
             </Button>

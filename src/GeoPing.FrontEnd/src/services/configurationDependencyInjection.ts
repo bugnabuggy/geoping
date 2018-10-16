@@ -12,13 +12,14 @@ import MockTableHistoryService from './mockServices/mockTableHistoryService';
 import MockAuthorizationService from './mockServices/mockAuthorizationService';
 import MockCheckListService from './mockServices/mockCheckListService';
 import MockMarkerService from './mockServices/mockMarkerService';
-import ITableHistoryService from '../types/serviceTypes/tableHistoryServiceType';
 import AuthorizationService from './httpServices/authorizationService';
 import CheckListService from './httpServices/checkListService';
 import MockUserService from './mockServices/mockUserService';
 import MarkerService from './httpServices/markerService';
+import ProfileService from './httpServices/profileService';
+import MockProfileService from './mockServices/mockProfileService';
 
-export function configurationDependencyInjerction() {
+export function configurationDependencyInjection() {
 
   environments.set( EBuildEnvironment.Test, testServiceLocator );
   environments.set( EBuildEnvironment.HTTP, httpServiceLocator );
@@ -32,6 +33,7 @@ export function configurationDependencyInjerction() {
   httpServiceLocator.set( 'ICheckListServiceType', new CheckListService() );
   httpServiceLocator.set( 'IMarkerServiceType', new MarkerService() );
   httpServiceLocator.set( 'IUser', new MockUserService() );
+  httpServiceLocator.set( 'IProfileServiceType', new ProfileService() );
 
   /* test services */
   testServiceLocator.set( 'IAuthorization', new MockAuthorizationService() );
@@ -39,5 +41,6 @@ export function configurationDependencyInjerction() {
   testServiceLocator.set( 'ICheckListServiceType', new MockCheckListService() );
   testServiceLocator.set( 'IMarkerServiceType', new MockMarkerService() );
   testServiceLocator.set( 'IUser', new MockUserService() );
+  testServiceLocator.set( 'IProfileServiceType', new MockProfileService() );
 
 }

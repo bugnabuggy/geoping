@@ -2,41 +2,36 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { IProfileContainerProps } from '../componentContainerProps/profileContainerProps';
+import { IProfileComponentContainerProps } from '../componentContainerProps/profileComponentContainerProps';
 import ProfileComponent from '../components/forms/profile';
 import { changePassword, loadProfileData, upgradeAccount } from '../actions/profileAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 
-class ProfileComponentContainer extends React.Component<IProfileContainerProps, any> {
+class ProfileComponentContainer extends React.Component<IProfileComponentContainerProps, any> {
   render() {
     return (
-      <ProfileComponent
-        profileState={this.props.getProfileState}
+        <ProfileComponent
+          profileState={this.props.profileState}
 
-        loadProfileDataAction={this.props.loadProfileData}
-        changePasswordAction={this.props.changePassword}
-        upgradeAccountAction={this.props.upgradeAccount}
-      />
+          loadProfileData={this.props.loadProfileData}
+          changePassword={this.props.changePassword}
+          // upgradeAccount={this.props.upgradeAccount}
+        />
     );
   }
 }
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    getProfileState: state.profile
+    profileState: state.profile
   };
 };
-const mapDispatchToProps = ( dispatch: any ) => {
+const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators(
     {
       loadProfileData,
-      changePassword,
-      upgradeAccount
+      changePassword
     },
     dispatch );
-};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)( ProfileComponentContainer );
+export default connect(mapStateToProps, mapDispatchToProps)( ProfileComponentContainer ) ;
