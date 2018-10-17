@@ -1,4 +1,5 @@
-﻿using GeoPing.Api.Models.DTO;
+﻿using GeoPing.Api.Models;
+using GeoPing.Api.Models.DTO;
 using GeoPing.Api.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,6 @@ namespace GeoPing.Api.Interfaces
 {
     public interface IGeolistService : IDataService<GeoList>
     {
-        IQueryable<GeoList> GetByFilter(GeolistFilterDTO filter, out int totalItems);
+        WebResult<IQueryable<GeoList>> GetByFilter(GeolistFilterDTO filter, out int totalItems);
     }
 }
