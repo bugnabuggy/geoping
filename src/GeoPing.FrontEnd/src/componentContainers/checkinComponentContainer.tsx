@@ -7,11 +7,11 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckinComponent } from '../components/checkinComponent';
 import { checkinFlag, loadLists, loadPoints, selectList } from '../actions/checkinAction';
 import { ICheckinFunctions } from '../componentProps/checkinComponentProps';
-import { clearMarkerList, findLocationForCenterMap, markerRender, selectedMarker } from '../actions/googleMapAction';
+import { selectPoint } from '../actions/googleMapAction';
 
 class CheckinComponentContainer extends React.Component<ICheckinComponentContainerProps, any> {
   componentDidMount() {
-    this.props.findLocationForCenterMap();
+    // this.props.findLocationForCenterMap();
     this.props.loadLists( 'gggf5df-fj8y5dg-df54sdfg-f4d5' );
     if ( !this.props.checkin.isCheckIn ) {
       this.props.checkinFlag( true );
@@ -27,18 +27,14 @@ class CheckinComponentContainer extends React.Component<ICheckinComponentContain
       loadLists: this.props.loadLists,
       loadPoints: this.props.loadPoints,
       selectList: this.props.selectList,
-      selectedMarker: this.props.selectedMarker,
-      markerRender: this.props.markerRender,
-      clearMarkerList: this.props.clearMarkerList,
+      selectPoint: this.props.selectPoint,
     };
 
     return (
       <React.Fragment>
         <CheckinComponent
           checkin={this.props.checkin}
-          markersList={this.props.markersList}
-          position={this.props.position}
-          selectedPoint={this.props.selectedPoint}
+          googleMap={this.props.googleMap}
           functions={functions}
         />
       </React.Fragment>
@@ -48,10 +44,8 @@ class CheckinComponentContainer extends React.Component<ICheckinComponentContain
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    markersList: state.googleMap.markersList,
+    googleMap: state.googleMap,
     checkin: state.checkin,
-    position: state.googleMap.position,
-    selectedPoint: state.googleMap.selectedMarker,
   };
 };
 
@@ -62,10 +56,8 @@ const mapDispatchToProps = ( dispath: any ) =>
       loadPoints,
       selectList,
       checkinFlag,
-      selectedMarker,
-      findLocationForCenterMap,
-      markerRender,
-      clearMarkerList,
+      selectPoint,
+      // findLocationForCenterMap,
     },
     dispath );
 

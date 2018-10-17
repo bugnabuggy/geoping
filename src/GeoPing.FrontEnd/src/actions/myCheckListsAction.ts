@@ -1,5 +1,9 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { DELETE_MY_CHECK_LISTS, LOAD_MY_CHECK_LISTS } from '../constantsForReducer/checkList';
+import {
+  CLEAR_STATE_MY_CHECK_LIST,
+  DELETE_MY_CHECK_LISTS,
+  LOAD_MY_CHECK_LISTS
+} from '../constantsForReducer/checkList';
 import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
 import StaticStorage from '../services/staticStorage';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
@@ -39,6 +43,10 @@ export const closeModalShare = () => ( dispatch: IDispatchFunction ) => {
   dispatch( closeModalShareAction( false ) );
 };
 
+export const clearStateMyCheckLists = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearStateMyCheckListsAction() );
+};
+
 /* Action */
 function showModalShareAction( checkListId: string ): Object {
   return { type: SHOW_MODAL_SHARE, checkListId };
@@ -54,4 +62,8 @@ function loadCheckListsAction( checklists: Array<any> ): Object {
 
 function deleteCheckListAction( checkListId: string ): Object {
   return { type: DELETE_MY_CHECK_LISTS, checkListId };
+}
+
+function clearStateMyCheckListsAction(): { type: string } {
+  return { type: CLEAR_STATE_MY_CHECK_LIST };
 }

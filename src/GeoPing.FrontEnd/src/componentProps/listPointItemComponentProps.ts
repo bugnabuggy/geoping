@@ -1,12 +1,15 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { EnumStatusMarker, IMarker } from '../types/stateTypes/googleMapStateType';
+import IGeoPoint from '../DTO/geoPointDTO';
+import { EnumStatusMarker } from '../enums/statusMarker';
+import ICheckListStateType from '../types/stateTypes/checkListStateType';
 
 export default interface IListPointItemComponentProps {
-  marker: IMarker;
-  selectedMarkerId: string;
+  geoPoint: IGeoPoint;
+  selectedGeoPointId: string;
+  statusGeoPoint: EnumStatusMarker;
+  checkList: ICheckListStateType;
 
-  editingPermission: ( isEditing: boolean ) => ( dispatch: IDispatchFunction ) => void;
-  selectMarker: ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
-  putStatusMarker: ( statusMarker: EnumStatusMarker ) => ( dispatch: IDispatchFunction ) => void;
-  deleteMarker: ( idCheckList: string, idMarker: string  ) => ( dispatch: IDispatchFunction ) => void;
+  selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
+  deleteGeoPoint: ( idPoint: string, statusMarker: EnumStatusMarker, idList?: string ) =>
+    ( dispatch: IDispatchFunction ) => void;
 }

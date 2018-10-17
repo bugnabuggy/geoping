@@ -31,6 +31,7 @@ main {
 
 #map {
   height: 100%;
+  width: 100%;
 }
 
 .cursor-pointer {
@@ -360,6 +361,22 @@ header nav {
   background: rgb(195, 195, 195);
 }
 
+.check-list-panel-container {
+  position: relative;
+}
+
+.check-list-panel-link-container {
+  position: absolute;
+  display: flex;
+  top: 15px;
+  right: 10px;
+  align-items: center;
+  font-size: 15px;
+  justify-content: space-between;
+  width: 70px;
+  height: 20px;
+}
+
 .dashboard-invitations-title {
   display: flex;
   align-items: center;
@@ -421,6 +438,10 @@ header nav {
 .check-in-select-point-action {
   color: #fff;
   background-color: #007bff;
+}
+
+.check-in-point-checked {
+  background: #80c08f;
 }
 
 .check-in-select-point-icon {
@@ -537,8 +558,8 @@ header nav {
   position: absolute;
   width: 14px;
   height: 10px;
-  top: 0px;
-  bottom: 0px;
+  top: 0;
+  bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
   line-height: 0;
@@ -560,8 +581,8 @@ header nav {
   position: absolute;
   width: 10px;
   height: 10px;
-  top: 0px;
-  bottom: 0px;
+  top: 0;
+  bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
   line-height: 0;
@@ -602,15 +623,15 @@ header nav {
 }
 
 .react-toggle--focus .react-toggle-thumb {
-  -webkit-box-shadow: 0px 0px 3px 2px #0099E0;
-  -moz-box-shadow: 0px 0px 3px 2px #0099E0;
-  box-shadow: 0px 0px 2px 3px #0099E0;
+  -webkit-box-shadow: 0 0 3px 2px #0099E0;
+  -moz-box-shadow: 0 0 3px 2px #0099E0;
+  box-shadow: 0 0 2px 3px #0099E0;
 }
 
 .react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
-  -webkit-box-shadow: 0px 0px 5px 5px #0099E0;
-  -moz-box-shadow: 0px 0px 5px 5px #0099E0;
-  box-shadow: 0px 0px 5px 5px #0099E0;
+  -webkit-box-shadow: 0 0 5px 5px #0099E0;
+  -moz-box-shadow: 0 0 5px 5px #0099E0;
+  box-shadow: 0 0 5px 5px #0099E0;
 }
 
 .modal-toggle-label {
@@ -762,7 +783,7 @@ header nav {
 
 .list-item-icon-globe, .list-item-icon-plus-square {
   font-size: 1.6em;
-  margin: 0px 10px;
+  margin: 0 10px;
 }
 
 .list-item-icons {
@@ -836,9 +857,10 @@ header nav {
 
 .check-list-container {
   display: grid;
-  grid-template-rows: [row1] min-content [row2] 1fr [row3];
+  grid-template-rows: [row1] max-content [row2] minmax(500px, 1fr) [row3];
   grid-template-columns: [col1] minmax(400px, 1fr) [col2] 3fr;
   grid-gap: 5px;
+  height: 100%;
 }
 
 .check-list-title {
@@ -863,6 +885,9 @@ header nav {
   grid-row-start: row1;
   grid-row-end: row3;
   padding: 0 10px 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .check-list-head {
@@ -973,6 +998,10 @@ header nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.check-list-point-item:hover {
+  background: #b2b2ba;
 }
 
 .check-list-point-item-action {
@@ -1421,7 +1450,7 @@ select.form-control:not([size]):not([multiple]) {
   /**/
   .check-list-container {
     display: grid;
-    grid-template-rows: [row1] min-content [row2] minmax(500px, 1fr) [row3] max-content;
+    grid-template-rows: [row1] min-content [row2] minmax(500px, 1fr) [row3] min-content;
     grid-template-columns: [col1] 1fr;
     grid-gap: 5px;
   }

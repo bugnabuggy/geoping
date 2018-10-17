@@ -32,7 +32,7 @@ class CheckListTitleComponentContainer extends React.Component<ICheckListTitleCo
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    nameChecklist: state.checkList.nameChecklist,
+    nameChecklist: state.checkList.name,
     isShowModal: state.checkList.isShowModal,
   };
 };

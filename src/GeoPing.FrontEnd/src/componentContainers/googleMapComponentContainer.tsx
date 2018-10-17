@@ -7,46 +7,44 @@ import IGoogleMapComponentContainerProps
   from '../componentProps/googleMapComponentProps/googleMapComponentContainerProps';
 import {
   addDistance,
-  addPoints,
-  cancelAddNewPoint,
-  deleteMarker,
-  findLocationForCenterMap,
-  markerInstalled,
-  markerRender,
-  moveDragMarker,
-  moveEndMarker,
-  moveStartMarker,
-  permissionToAddMarker,
-  putStatusMarker,
-  selectedMarker,
-  userMarkerCreate
+  addNewPoint,
+  changeMovingGeoPoint,
+  clearStateGoogleMap,
+  deleteGeoPoint,
+  findGeoPosition,
+  geoPointListIsCreate,
+  permissionAdd,
+  selectPoint
 } from '../actions/googleMapAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
-import { editingPermission } from '../actions/checkListAction';
+import { addNewPointForMyGeoPosition, editingPermission } from '../actions/checkListAction';
 
 class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentContainerProps, any> {
+  componentDidMount() {
+    this.props.findGeoPosition();
+  }
+
+  componentWillUnmount() {
+    this.props.clearStateGoogleMap();
+  }
+
   render() {
     return (
       <React.Fragment>
         <GoogleMapComponent
           googleMap={this.props.googleMap}
-          isEditing={this.props.isEditing}
+          checkList={this.props.checkList}
           selectedListId={this.props.selectedListId}
           isCheckIn={this.props.isCheckIn}
 
-          selectMarker={this.props.selectMarker}
-          moveStartMarker={this.props.moveStartMarker}
-          moveDragMarker={this.props.moveDragMarker}
-          moveEndMarker={this.props.moveEndMarker}
-          permissionToAddMarker={this.props.permissionToAddMarker}
+          selectPoint={this.props.selectPoint}
+          addNewPoint={this.props.addNewPoint}
+          permissionAdd={this.props.permissionAdd}
           editingPermission={this.props.editingPermission}
-          markerInstalled={this.props.markerInstalled}
-          cancelAddNewPoint={this.props.cancelAddNewPoint}
-          putStatusMarker={this.props.putStatusMarker}
-          findLocationForCenterMap={this.props.findLocationForCenterMap}
-          deleteMarker={this.props.deleteMarker}
-          userMarkerCreate={this.props.userMarkerCreate}
-          markerRender={this.props.markerRender}
+          changeMovingGeoPoint={this.props.changeMovingGeoPoint}
+          deleteGeoPoint={this.props.deleteGeoPoint}
+          addNewPointForMyGeoPosition={this.props.addNewPointForMyGeoPosition}
+          geoPointListIsCreate={this.props.geoPointListIsCreate}
           addDistance={this.props.addDistance}
         />
       </React.Fragment>
@@ -57,7 +55,7 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     isCheckIn: state.checkin.isCheckIn,
-    isEditing: state.checkList.isEditing,
+    checkList: state.checkList,
     selectedListId: state.checkin.selectedListId,
     googleMap: state.googleMap,
   };
@@ -66,21 +64,17 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
-      addPoints,
-      selectMarker: selectedMarker,
-      moveStartMarker,
-      moveDragMarker,
-      moveEndMarker,
-      permissionToAddMarker,
+      addNewPoint,
+      selectPoint,
+      findGeoPosition,
+      permissionAdd,
       editingPermission,
-      markerInstalled,
-      cancelAddNewPoint,
-      putStatusMarker,
-      findLocationForCenterMap,
-      deleteMarker,
-      userMarkerCreate,
-      markerRender,
+      changeMovingGeoPoint,
+      deleteGeoPoint,
+      addNewPointForMyGeoPosition,
+      geoPointListIsCreate,
       addDistance,
+      clearStateGoogleMap,
     },
     dispath );
 

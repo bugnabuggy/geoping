@@ -15,7 +15,9 @@ export default class ChecklistPage extends React.Component<IChecklistPageProps, 
             <CheckListTitleComponentContainer />
           </div>
           <div className="check-list">
-            <CheckListComponentContainer/>
+            <CheckListComponentContainer
+              idCheckList={this.props.match.params.id}
+            />
           </div>
           <div className="check-list-map">
             <GoogleMapComponentContainer />

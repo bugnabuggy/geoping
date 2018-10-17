@@ -2,15 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Panel } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
-import IMyCheckListsContainerProps  from '../componentContainerProps/myCheckListsContsinerProps';
-import { filterCheckLists } from '../actions/checkListAction';
-import { deleteCheckList, showModalShare } from '../actions/myCheckListsAction';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { openModalForCreateCheckList } from '../actions/checkListAction';
+import IMyCheckListsContainerProps from '../componentContainerProps/myCheckListsContsinerProps';
+import { filterCheckLists, openModalForCreateCheckList } from '../actions/checkListAction';
+import { clearStateMyCheckLists, deleteCheckList, loadCheckLists, showModalShare } from '../actions/myCheckListsAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
-import { loadCheckLists } from '../actions/myCheckListsAction';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {
 
@@ -31,7 +29,11 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
   };
 
   componentDidMount() {
-    this.props.loadCheckLists('ffdf');
+    this.props.loadCheckLists( 'ffdf' );
+  }
+
+  componentWillUnmount() {
+    this.props.clearStateMyCheckLists();
   }
 
   render() {
@@ -70,14 +72,15 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   };
 };
 const mapDispatchToProps = ( dispatch: any ) =>
-  bindActionCreators (
+  bindActionCreators(
     {
       showModalShare,
       openModalForCreateCheckList,
       filterCheckLists,
       loadCheckLists,
       deleteCheckList,
-  },
+      clearStateMyCheckLists,
+    },
     dispatch );
 
 export default connect( mapStateToProps, mapDispatchToProps )( MyCheckListsContainer );

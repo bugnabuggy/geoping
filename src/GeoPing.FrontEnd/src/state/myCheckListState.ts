@@ -1,4 +1,6 @@
-export const myCheckList: any = {
+import IMyCheckListsStateType from '../types/stateTypes/myCheckListsStateType';
+
+export const myCheckList: IMyCheckListsStateType = {
   isShowModalShare: false,
   idCheckListShow: '',
   idCheckListDelete: '',

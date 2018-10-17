@@ -36,9 +36,17 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
-  loadMyCheckList( idCheckLIst: string ) {
+  loadMyCheckList( idCheckList: string ) {
     return new Promise( ( resolve: any, reject: any ) => {
-      resolve( 'loadMyCheckList' );
+      setTimeout(
+        () => {
+          resolve(
+            JSON.parse(
+              sessionStorage.getItem( 'localDB' ) ).my_check_list.find( ( item: any ) => item.id === idCheckList )
+          );
+        },
+        1000
+      );
     } );
   }
 

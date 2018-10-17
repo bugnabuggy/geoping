@@ -1,10 +1,6 @@
 import ICheckinStateType from '../types/stateTypes/checkinStateType';
 import { checkinState } from '../state/checkinState';
-import {
-  CHECK_IN_FLAG_CHANGE,
-  CHECK_IN_LOAD_LISTS,
-  CHECK_IN_SELECT_LIST
-} from '../constantsForReducer/checkin';
+import { CHECK_IN_FLAG_CHANGE, CHECK_IN_LOAD_LISTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 import { ADD_DISTANCE_BETWEEN_POINTS, SELECT_MARKER } from '../constantsForReducer/googleMap';
 
 export default function checkinReducer( state: ICheckinStateType = checkinState, action: any ) {

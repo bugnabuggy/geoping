@@ -9,23 +9,31 @@ import {
   MODAL_PERIOD_OPEN_CLOSE,
   OPEN_MODAL_FOR_CREATE_CHECK_LIST
 } from '../constantsForReducer/checkList';
-import { FILTER_CHECKLIST_LIST, CLOSE_FILTER_CHECKLIST } from '../constantsForReducer/filters';
-import  { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
+import {
+  ADD_GEO_POINT_FROM_MY_POSITION,
+  CLEAR_STATE_CHECK_LIST,
+  CLOSE_FILTER_CHECKLIST,
+  FILTER_CHECKLIST_LIST,
+  LOAD_CHECK_LIST_DATA
+} from '../constantsForReducer/filters';
+import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { addNotificationAction } from './notificationsAction';
 import { getLocationAddress } from '../services/httpMapService';
-import { addPointAction } from './googleMapAction';
-import { IMarker } from '../types/stateTypes/googleMapStateType';
 import StaticStorage from '../services/staticStorage';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
+import IGeoPoint from '../DTO/geoPointDTO';
+import IGeoListType from '../DTO/geoListDTO';
+import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
+import { addListPointsAction } from './googleMapAction';
 
 export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
   window.navigator.geolocation.getCurrentPosition(
     ( location: any ) => {
       getLocationAddress( location.coords.latitude, location.coords.longitude )
         .then( ( response: any ) => {
-          const marker: IMarker = {
+          const marker: IGeoPoint = {
             id: uuidV4(),
             idList: '',
             name: '',
@@ -35,7 +43,7 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
             lng: Number( location.coords.longitude ),
           };
 
-          dispatch( addPointAction( marker ) );
+          // dispatch( addPointAction( marker ) );
         } )
         .catch( ( error: any ) => {
           dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
@@ -57,17 +65,17 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
-export const filterCheckLists = () => (dispatch: IDispatchFunction) => {
-  dashboardFiltersMockService('filterCheckLists')
-    .then(() => {
-      dispatch( filterCheckListsAction(true ));
-    })
-    .catch(( error: any) => {
+export const filterCheckLists = () => ( dispatch: IDispatchFunction ) => {
+  dashboardFiltersMockService( 'filterCheckLists' )
+    .then( () => {
+      dispatch( filterCheckListsAction( true ) );
+    } )
+    .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
-    });
+    } );
 };
-export const closeFilterCheckLists = () => (dispatch: IDispatchFunction) => {
-  dispatch(closeFilterCheckListsAction( false ) );
+export const closeFilterCheckLists = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( closeFilterCheckListsAction( false ) );
 };
 export const updateNameCheckList = ( newNameCheckList: string ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
@@ -101,6 +109,30 @@ export const modalPeriodOpenClose = ( isState: boolean ) => ( dispatch: IDispatc
   dispatch( modalPeriodOpenCloseAction( isState ) );
 };
 
+export const addNewPointForMyGeoPosition = ( isMyGeoPosition: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( addNewPointForMyGeoPositionAction( isMyGeoPosition ) );
+};
+
+export const loadCheckListData = ( idUser: string, idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+  checkListService.loadMyCheckList( idCheckList )
+    .then( ( checkList: any ) => {
+      dispatch( loadCheckListDataAction( checkList ) );
+      return markerService.getAllMarkersForCheckList( idCheckList );
+    } )
+    .then( ( geoPoints: Array<IGeoPoint> ) => {
+      dispatch( addListPointsAction( geoPoints ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+    } );
+};
+
+export const clearStateCheckList = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearStateCheckListAction() );
+};
+
 /* Actions */
 
 function createCheckListAction( checklist: any ): Object {
@@ -126,9 +158,24 @@ function changeNameCheckListAction( nameChecklist: string ): Object {
 function modalPeriodOpenCloseAction( isState: boolean ): Object {
   return { type: MODAL_PERIOD_OPEN_CLOSE, isState };
 }
-function filterCheckListsAction(isShow: boolean): Object {
+
+function filterCheckListsAction( isShow: boolean ): Object {
   return { type: FILTER_CHECKLIST_LIST, isShow };
 }
-function closeFilterCheckListsAction(isShow: boolean): Object {
+
+function closeFilterCheckListsAction( isShow: boolean ): Object {
   return { type: CLOSE_FILTER_CHECKLIST, isShow };
+}
+
+function addNewPointForMyGeoPositionAction( isMyGeoPosition: boolean ): { type: string, isMyGeoPosition: boolean } {
+  return { type: ADD_GEO_POINT_FROM_MY_POSITION, isMyGeoPosition };
+}
+
+function loadCheckListDataAction( checkList: IGeoListType ):
+  { type: string, checkList: IGeoListType } {
+  return { type: LOAD_CHECK_LIST_DATA, checkList };
+}
+
+function clearStateCheckListAction(): { type: string } {
+  return { type: CLEAR_STATE_CHECK_LIST };
 }

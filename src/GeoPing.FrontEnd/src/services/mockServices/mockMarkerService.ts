@@ -1,9 +1,9 @@
 import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
-import { IMarker } from '../../types/stateTypes/googleMapStateType';
 import { points } from '../../mocks/checkinStatisticsMock';
+import IGeoPoint from '../../DTO/geoPointDTO';
 
 export default class MockMarkerService implements IMarkerServiceType {
-  createNewMarker( marker: IMarker ) {
+  createNewMarker( marker: IGeoPoint ) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
@@ -41,7 +41,7 @@ export default class MockMarkerService implements IMarkerServiceType {
     } );
   }
 
-  updateMarker( marker: IMarker ) {
+  updateMarker( marker: IGeoPoint ) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
