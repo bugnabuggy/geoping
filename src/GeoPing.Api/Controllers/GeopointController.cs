@@ -29,14 +29,20 @@ namespace GeoPing.Api.Controllers
 
         // GET api/Geopoint
         [HttpGet]
-        public IActionResult GetPoints(string ListId)
+        public IActionResult GetPointsByFilter(string ListId, GeopointFilterDTO filter)
         {
             if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
-            var result = _geopointSrv.Get(x => x.GeoListId == Guid.Parse(ListId));
-            return Ok(result);
+
+            var result = _geopointSrv.GetByFilter(ListId, filter, out int totalItems);
+
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         // GET api/geolist/{ListId}/geopoint/{Id}

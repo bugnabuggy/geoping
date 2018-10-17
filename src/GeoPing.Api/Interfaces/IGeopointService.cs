@@ -10,7 +10,7 @@ namespace GeoPing.Api.Interfaces
 {
     public interface IGeopointService : IDataService<GeoPoint>
     {
-        IQueryable<GeoList> GetByFilter(GeopointFilterDTO filter);
+        WebResult<IQueryable<GeoPoint>> GetByFilter(string listId, GeopointFilterDTO filter, out int totalItems);
 
         OperationResult CheckPoint(GeoPoint point, string userId);
     }
