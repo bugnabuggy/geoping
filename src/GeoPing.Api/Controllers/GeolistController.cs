@@ -30,18 +30,14 @@ namespace GeoPing.Api.Controllers
 
         // GET api/Geolist
         [HttpGet]
-        public IActionResult GetLists()
-        {
-            var result = _geolistSrv.Get();
-            return Ok(result);
-        }
-
-        // GET api/Geolist
-        [HttpGet]
         public IActionResult GetListsByFilter(GeolistFilterDTO filter)
         {
             var result = _geolistSrv.GetByFilter(filter, out int totalItems);
-            return Ok(result);
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         // GET api/Geolist/{Id}
