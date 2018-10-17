@@ -47,6 +47,86 @@ namespace GeoPing.Api.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser, string returnUrl = null)
+        {
+            /*
+             * Checks if user with submitted email is exists
+             */
+            //var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
+           
+            if(_dbContext.Users.Any(u => u.Email == registerUser.Email))
+            {
+                return BadRequest(new OperationResult
+                {
+                    Success = false,
+                    Messages = new[] { "Invalid username or email" }
+                });
+            }
+
+            ViewData["ReturnUrl"] = returnUrl;
+            
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = registerUser.UserName, Email = registerUser.Email };
+                
+                var result = await _userManager.CreateAsync(user, registerUser.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    return Ok(new OperationResult
+                    {
+                        Success = true,
+                        Messages = new[] { "User was successfully registered" }
+                    });
+                }
+                AddErrors(result);
+            }
+            /*
+            * If we got this far, something failed
+            */
+            return BadRequest(new OperationResult
+            {
+                Success = false,
+                Messages = new[] { "Something was failed while user registration" }
+            });
+        }
+        
+        #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        #endregion
+        
         /*
         [HttpGet]
         [AllowAnonymous]
@@ -410,84 +490,5 @@ namespace GeoPing.Api.Controllers
         }
         */
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser, string returnUrl = null)
-        {
-            /*
-             * Checks if user with submitted email is exists
-             */
-            //var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
-           
-            if(_dbContext.Users.Any(u => u.Email == registerUser.Email))
-            {
-                return BadRequest(new OperationResult
-                {
-                    Success = false,
-                    Messages = new[] { "Invalid username or email" }
-                });
-            }
-
-            ViewData["ReturnUrl"] = returnUrl;
-            
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = registerUser.UserName, Email = registerUser.Email };
-                
-                var result = await _userManager.CreateAsync(user, registerUser.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    return Ok(new OperationResult
-                    {
-                        Success = true,
-                        Messages = new[] { "User was successfully registered" }
-                    });
-                }
-                AddErrors(result);
-            }
-            /*
-            * If we got this far, something failed
-            */
-            return BadRequest(new OperationResult
-            {
-                Success = false,
-                Messages = new[] { "Something was failed while user registration" }
-            });
-        }
-        
-        #region Helpers
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-        }
-
-        #endregion
     }
 }

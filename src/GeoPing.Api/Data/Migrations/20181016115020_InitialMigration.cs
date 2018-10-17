@@ -50,6 +50,23 @@ namespace GeoPing.Api.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GeoPoints",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 240, nullable: true),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
+                    Radius = table.Column<double>(nullable: false),
+                    GeoListId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoPoints", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -159,74 +176,44 @@ namespace GeoPing.Api.Data.Migrations
                 name: "GeoLists",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Description = table.Column<string>(maxLength: 240, nullable: true),
                     IsPublic = table.Column<bool>(nullable: false),
                     Rating = table.Column<float>(nullable: false),
                     PeriodFrom = table.Column<DateTime>(nullable: false),
                     PeriodTo = table.Column<DateTime>(nullable: false),
-                    OwnerId = table.Column<string>(nullable: true)
+                    OwnerId = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GeoLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GeoLists_AspNetUsers_OwnerId",
-                        column: x => x.OwnerId,
+                        name: "FK_GeoLists_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "GeoPoints",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false),
-                    Description = table.Column<string>(maxLength: 240, nullable: true),
-                    Latitude = table.Column<double>(nullable: false),
-                    Longitude = table.Column<double>(nullable: false),
-                    Radius = table.Column<double>(nullable: false),
-                    GeoListId = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GeoPoints", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GeoPoints_GeoLists_GeoListId",
-                        column: x => x.GeoListId,
-                        principalTable: "GeoLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     Rating = table.Column<float>(nullable: false),
                     Comment = table.Column<string>(maxLength: 240, nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    ListId = table.Column<long>(nullable: false)
+                    ListId = table.Column<Guid>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_GeoLists_ListId",
-                        column: x => x.ListId,
-                        principalTable: "GeoLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reviews_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Reviews_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -236,50 +223,44 @@ namespace GeoPing.Api.Data.Migrations
                 name: "UserLists",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    ListId = table.Column<long>(nullable: false),
-                    IsTrusted = table.Column<bool>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    ListId = table.Column<Guid>(nullable: false),
+                    AssessLevel = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLists", x => new { x.UserId, x.ListId });
+                    table.PrimaryKey("PK_UserLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserLists_GeoLists_ListId",
-                        column: x => x.ListId,
-                        principalTable: "GeoLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserLists_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserLists_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserPoints",
                 columns: table => new
                 {
-                    PointId = table.Column<long>(nullable: false),
-                    UserId = table.Column<string>(nullable: false),
-                    CheckTime = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PointId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    CheckTime = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPoints", x => new { x.UserId, x.PointId });
+                    table.PrimaryKey("PK_UserPoints", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserPoints_GeoPoints_PointId",
-                        column: x => x.PointId,
-                        principalTable: "GeoPoints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserPoints_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserPoints_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -322,34 +303,24 @@ namespace GeoPing.Api.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GeoLists_OwnerId",
+                name: "IX_GeoLists_ApplicationUserId",
                 table: "GeoLists",
-                column: "OwnerId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GeoPoints_GeoListId",
-                table: "GeoPoints",
-                column: "GeoListId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ListId",
+                name: "IX_Reviews_ApplicationUserId",
                 table: "Reviews",
-                column: "ListId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserId",
-                table: "Reviews",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserLists_ListId",
+                name: "IX_UserLists_ApplicationUserId",
                 table: "UserLists",
-                column: "ListId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPoints_PointId",
+                name: "IX_UserPoints_ApplicationUserId",
                 table: "UserPoints",
-                column: "PointId");
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -370,6 +341,12 @@ namespace GeoPing.Api.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "GeoLists");
+
+            migrationBuilder.DropTable(
+                name: "GeoPoints");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
@@ -380,12 +357,6 @@ namespace GeoPing.Api.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "GeoPoints");
-
-            migrationBuilder.DropTable(
-                name: "GeoLists");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
