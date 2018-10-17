@@ -24,12 +24,9 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
     const a: any = 'a';
   }
 
-  changePassword() {
-    this.props.changePassword('12345678', '123456789');
-  }
+
 
   render() {
-     console.log(this.props);
     return (
       <div className="profile-page">
         <div className="flex-box-col">

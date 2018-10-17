@@ -11,8 +11,9 @@ export default function profileReducer(state: IProfileStateType = profileState, 
 }
 
 function loadProfileData(state: IProfileStateType, action: any) {
+  state = Object.assign(profileState, action.profile);
   return {
-    profileState: action
+    ...state
 
   };
 }

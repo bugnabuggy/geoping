@@ -22,7 +22,6 @@ export const changePassword = ( password: string, newPassword: string ) => ( dis
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
   userService.changePassword(password, newPassword)
     .then( (message: string) => {
-      console.log('asdasd');
       dispatch( addNotificationAction( createNotification (
         message, EnumNotificationType.Success ) ) );
     } )
@@ -34,6 +33,6 @@ export const changePassword = ( password: string, newPassword: string ) => ( dis
 export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {
   const co: any = 'a';
 };
-function loadProfileDataAction(profile: object): Object {
+function loadProfileDataAction(profile: Array<string>): Object {
   return {type: LOAD_INFO, profile};
 }

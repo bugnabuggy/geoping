@@ -81,6 +81,10 @@ const renderInput = ( props: any ) => {
   );
 };
 
+function openModalChangePassword() {
+  ////
+}
+
 function profileForm( props: any ): any {
   const { handleSubmit } = props;
   return (
@@ -113,7 +117,7 @@ function profileForm( props: any ): any {
       <Button
         bsStyle="primary"
         type="button"
-      //  onClick={this.changePassword}
+        onClick={this.openModalChangePassword}
       >
         Change Password
       </Button>
