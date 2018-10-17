@@ -8,5 +8,6 @@ namespace GeoPing.Api.Interfaces
 {
     public interface IGeolistService : IDataService<GeoList>
     {
+
     }
 }
