@@ -5,8 +5,8 @@ import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import StaticStorage from '../services/staticStorage';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
-import { addPointsAction } from './googleMapAction';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
+import { addListPointsAction } from './googleMapAction';
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectedListAction( idList ) );
@@ -26,19 +26,17 @@ export const loadLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) =
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
-  // serviceLocator.post( 'load_lists', idUser )
 };
 
 export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
   markerService.getAllMarkersForCheckList( idList )
     .then( ( response: any ) => {
-      dispatch( addPointsAction( response ) );
+      dispatch( addListPointsAction( response ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
-
 };
 
 export const checkinFlag = ( isCheckin: boolean ) => ( dispatch: IDispatchFunction ) => {

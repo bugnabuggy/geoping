@@ -1,10 +1,16 @@
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 
 export const checkListState: ICheckListStateType = {
-  pointsList: [],
-  idChecklist: '',
+  id: '',
   isShowModal: false,
-  nameChecklist: 'Checklist',
+  name: '',
   isEditing: false,
-  showFilterCheckList: false
+  showFilterCheckList: false,
+  isMyGeoPosition: false,
+  description: '',
+  isPublic: false,
+  ownerId: '',
+  periodFrom: '',
+  periodTo: '',
+  rating: null,
 };

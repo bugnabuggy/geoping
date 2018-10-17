@@ -69,7 +69,7 @@
       "lat": 54.9788,
       "lng": 73.367,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "db120849-a1c9-48b3-b8cc-99cbcdd6ec5c",
@@ -78,7 +78,7 @@
       "lat": 54.97,
       "lng": 73.35,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "091b2476-c1e7-4a7e-8893-c42ffb904402",
@@ -87,7 +87,7 @@
       "lat": 54.96,
       "lng": 73.364,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "e1615fd7-94fe-4a83-b0e9-ecae2c22a6fc",
@@ -96,7 +96,7 @@
       "lat": 54.98865,
       "lng": 73.36755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "b5d43cbf-8907-47da-993a-bce29c14a982",
@@ -105,7 +105,7 @@
       "lat": 54.9888,
       "lng": 73.35799,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "21051201-1c27-4c96-a6cf-8feb84cb93c2",
@@ -114,7 +114,7 @@
       "lat": 54.9887,
       "lng": 73.36755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "d89c0a45-a425-461b-8453-7c298ae60380",
@@ -123,7 +123,7 @@
       "lat": 54.8887,
       "lng": 73.35855,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "d0aef771-a813-42d2-8af5-2eee1e371cc9",
@@ -132,7 +132,7 @@
       "lat": 54.7887,
       "lng": 73.36474,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "23219ae4-6403-469c-aadb-064ff4deca38",
@@ -141,7 +141,7 @@
       "lat": 54.9816,
       "lng": 73.3669,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "78b0a3d5-3b46-46e2-a4db-5097fe3a4321",
@@ -150,7 +150,7 @@
       "lat": 54.98333,
       "lng": 73.36357,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "e64dc3da-291d-4092-b35e-80a4862aee3c",
@@ -159,7 +159,7 @@
       "lat": 54.94587,
       "lng": 73.36369,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "2e69e21c-c073-4425-8140-56423b15a727",
@@ -168,7 +168,7 @@
       "lat": 54.9387,
       "lng": 73.367475,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "8055767c-1384-4fad-9790-bf0fe22ab311",
@@ -177,7 +177,7 @@
       "lat": 54.7887,
       "lng": 73.3745,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "76e8c32e-68b5-4bf0-9b13-13dc0394d88d",
@@ -186,7 +186,7 @@
       "lat": 54.8487,
       "lng": 73.46755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "fb1221e8-47a7-45e4-ac58-ab200640a358",
@@ -195,7 +195,7 @@
       "lat": 54.8787,
       "lng": 73.45755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "3e51f20e-4d32-4e41-985f-f57f0d965090",
@@ -204,7 +204,7 @@
       "lat": 54.8877,
       "lng": 73.46755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "9056a2ba-d275-4b83-b682-a0d4df1a3b97",
@@ -213,7 +213,7 @@
       "lat": 54.89887,
       "lng": 73.45755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "09bd1b4a-0d48-46ce-a04c-ec8723c1eb12",
@@ -222,7 +222,7 @@
       "lat": 54.6887,
       "lng": 73.47755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "f84238d0-cde6-4bf9-b53f-393dcd5d7f18",
@@ -231,7 +231,7 @@
       "lat": 54.876345,
       "lng": 73.43755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "bff54728-547a-4d80-93f2-9143c89c87f0",
@@ -240,7 +240,7 @@
       "lat": 54.89634,
       "lng": 73.59755,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "580035db-77b8-4bfa-ac7d-f00f546a7672",
@@ -249,7 +249,7 @@
       "lat": 54.87542,
       "lng": 73.3458,
       "radius": 30,
-      "description": ""
+      "description": "address"
     },
     {
       "id": "b3bb598b-2aa9-41f1-98c6-5308a1d35e87",
@@ -258,7 +258,7 @@
       "lat": 54.87563,
       "lng": 73.3589,
       "radius": 30,
-      "description": ""
+      "description": "address"
     }
   ],
   "public_check_lists": [
@@ -321,6 +321,78 @@
       "author": "TravelAgency",
       "subscribers": 800,
       "raiting": 5
+    }
+  ],
+  "my_check_list": [
+    {
+      "id": "mn6vu7zdkiexbps4myvxafhmptubt1nngpontz8b3g",
+      "name": "List one",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
+    },
+    {
+      "id": "tli791k0iqvn14ztxt1aou9cj2u1ihoaoj6ppabfyjq",
+      "name": "List two",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
+    },
+    {
+      "id": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
+      "name": "Test List",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
+    },
+    {
+      "id": "ohniocg93yid0oz4ozdixtncdlevonep5qnl1vkvcsj",
+      "name": "Tomatos",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
+    },
+    {
+      "id": "z8jm2xzz0erquo88ajmzfvdrio4kr1i244koqidb3q",
+      "name": "Apple",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
+    },
+    {
+      "id": "3dkqxifz6v57fyda86ocmun6bffq48kh7rtukvlpofe",
+      "name": "Storage",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
+    },
+    {
+      "id": "is09jpjfimsofol20h3bgqf26h1d21pq7gambxixljch",
+      "name": "Lisiy",
+      "description": "description",
+      "isPublic": false,
+      "rating": 4,
+      "periodFrom": "",
+      "periodTo": "",
+      "ownerId": ""
     }
   ],
   "check_list": {

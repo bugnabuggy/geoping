@@ -1,6 +1,6 @@
-import { IMarker } from '../types/stateTypes/googleMapStateType';
+import IGeoPoint from '../DTO/geoPointDTO';
 
-export const defaultMarker: IMarker = {
+export const defaultMarker: IGeoPoint = {
   id: '',
   idList: '',
   name: '',

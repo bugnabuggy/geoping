@@ -1,12 +1,11 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { IMarker, IPosition } from '../types/stateTypes/googleMapStateType';
 import ICheckinStateType from '../types/stateTypes/checkinStateType';
+import IGeoPoint from '../DTO/geoPointDTO';
+import { IGoogleMapStateType } from '../types/stateTypes/googleMapStateType';
 
 export default interface ICheckinComponentProps {
-  markersList: Array<IMarker>;
   checkin: ICheckinStateType;
-  position: IPosition;
-  selectedPoint: IMarker;
+  googleMap: IGoogleMapStateType;
   functions: ICheckinFunctions;
 }
 
@@ -14,7 +13,5 @@ export interface ICheckinFunctions {
   loadLists: ( idUser: string ) => ( dispatch: IDispatchFunction ) => void;
   loadPoints: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
   selectList: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
-  selectedMarker: ( marker: IMarker ) => ( dispatch: IDispatchFunction ) => void;
-  markerRender: ( isMarkerRendered: boolean ) => ( dispatch: IDispatchFunction ) => void;
-  clearMarkerList: () => ( dispatch: IDispatchFunction ) => void;
+  selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
 }

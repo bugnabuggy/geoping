@@ -7,3 +7,4 @@ export const MODAL_PERIOD_OPEN_CLOSE: string = 'MODAL_PERIOD_OPEN_CLOSE';
 
 export const LOAD_MY_CHECK_LISTS: string = 'LOAD_MY_CHECK_LISTS';
 export const DELETE_MY_CHECK_LISTS: string = 'DELETE_MY_CHECK_LISTS';
+export const CLEAR_STATE_MY_CHECK_LIST: string = 'CLEAR_STATE_MY_CHECK_LIST';

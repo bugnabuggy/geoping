@@ -5,51 +5,38 @@ import Slider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
 import ICheckListGeoPointComponentProps from '../componentProps/checkListGeoPointComponentProps';
-import { EnumStatusMarker, IMarker } from '../types/stateTypes/googleMapStateType';
+import { EnumStatusMarker } from '../enums/statusMarker';
+import IGeoPoint from '../DTO/geoPointDTO';
 
 export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPointComponentProps, any> {
 
   handleChangeInput = ( e: any ) => {
-    this.props.changeDataGEOPoint ( this.props.selectedMarker.id, e.target.name, e.target.value );
+    this.props.changeDataGeoPoint( e.target.name, e.target.value );
   };
 
   handleChangeSlider = ( value: number ) => {
-    this.props.changeDataGEOPoint ( this.props.selectedMarker.id, 'radius', value );
+    this.props.changeDataGeoPoint( 'radius', value );
   };
 
   handleClickOk = ( e: any ) => {
-    e.stopPropagation ();
-    const newMarker: IMarker = {
-      id: this.props.selectedMarker.id,
-      radius: this.props.selectedMarker.radius,
-      lng: this.props.selectedMarker.lng,
-      lat: this.props.selectedMarker.lat,
-      idList: this.props.checkList.idChecklist,
-      name: this.props.selectedMarker.name,
-      description: this.props.selectedMarker.description,
+    e.stopPropagation();
+    const newMarker: IGeoPoint = {
+      ...this.props.googleMap.selectedGeoPoint,
+      idList: this.props.checkList.id,
     };
-    this.props.addNewPoint ( newMarker );
-    this.props.editingPermission ( false );
-    this.props.putStatusMarker ( EnumStatusMarker.None );
+    this.props.saveGeoPoint( newMarker );
   };
 
   handleClickCancel = ( e: any ) => {
-    e.stopPropagation ();
-    this.props.markerInstalled ( false );
-    this.props.editingPermission ( false );
-    if ( this.props.statusMarker === EnumStatusMarker.New ) {
-      this.props.cancelAddNewPoint ();
-    } else if ( this.props.statusMarker === EnumStatusMarker.Edit ) {
-      this.props.cancelEditingGEOPoint ();
-    }
-    this.props.putStatusMarker ( EnumStatusMarker.None );
+    e.stopPropagation();
+    this.props.cancelGeoPoint();
   };
 
   render() {
     let style: string = 'default';
-    if ( this.props.statusMarker === EnumStatusMarker.New ) {
+    if ( this.props.googleMap.statusMarker === EnumStatusMarker.New ) {
       style = 'success';
-    } else if ( this.props.statusMarker === EnumStatusMarker.Edit ) {
+    } else if ( this.props.googleMap.statusMarker === EnumStatusMarker.Edit ) {
       style = 'warning';
     }
     return (
@@ -64,7 +51,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <ControlLabel>Name</ControlLabel>
                 <FormControl
                   name="name"
-                  value={this.props.selectedMarker.name}
+                  value={this.props.googleMap.selectedGeoPoint.name}
                   onChange={this.handleChangeInput}
                   disabled={!this.props.checkList.isEditing}
                 />
@@ -79,7 +66,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 </ControlLabel>
                 <FormControl
                   name="lat"
-                  value={this.props.selectedMarker.lat}
+                  value={this.props.googleMap.selectedGeoPoint.lat}
                   onChange={this.handleChangeInput}
                   disabled={!this.props.checkList.isEditing}
                 />
@@ -90,7 +77,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 </ControlLabel>
                 <FormControl
                   name="lng"
-                  value={this.props.selectedMarker.lng}
+                  value={this.props.googleMap.selectedGeoPoint.lng}
                   onChange={this.handleChangeInput}
                   disabled={!this.props.checkList.isEditing}
                 />
@@ -104,7 +91,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   Radius
                 </ControlLabel>
                 <Slider
-                  value={this.props.selectedMarker.radius}
+                  value={this.props.googleMap.selectedGeoPoint.radius}
                   min={0}
                   max={300}
                   onChange={this.handleChangeSlider}
@@ -114,7 +101,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                   className="check-list-geo-point-form-label-distance"
                 >
                   <ControlLabel>
-                    {this.props.selectedMarker.radius}m
+                    {this.props.googleMap.selectedGeoPoint.radius}m
                   </ControlLabel>
                 </div>
               </FormGroup>
@@ -124,7 +111,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <FormControl
                   name="description"
                   componentClass="textarea"
-                  value={this.props.selectedMarker.description}
+                  value={this.props.googleMap.selectedGeoPoint.description}
                   onChange={this.handleChangeInput}
                   placeholder="Approximate address"
                   disabled={!this.props.checkList.isEditing}

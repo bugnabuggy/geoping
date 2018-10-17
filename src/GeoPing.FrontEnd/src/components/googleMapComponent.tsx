@@ -4,9 +4,6 @@ import GoogleMap from './forms/jsxComponents/googleMap';
 import IGoogleMapComponentProps from '../componentProps/googleMapComponentProps/googleMapComponentProps';
 
 export default class GoogleMapComponent extends React.Component<IGoogleMapComponentProps, any> {
-  componentDidMount() {
-    this.props.findLocationForCenterMap();
-  }
 
   render() {
     return (
@@ -14,26 +11,22 @@ export default class GoogleMapComponent extends React.Component<IGoogleMapCompon
         {this.props.googleMap.position.isSuccess ?
           ( <GoogleMap
             isCheckIn={this.props.isCheckIn}
-            isEditing={this.props.isEditing}
+            checkList={this.props.checkList}
             selectedListId={this.props.selectedListId}
             googleMap={this.props.googleMap}
 
-            selectMarker={this.props.selectMarker}
-            moveStartMarker={this.props.moveStartMarker}
-            moveDragMarker={this.props.moveDragMarker}
-            moveEndMarker={this.props.moveEndMarker}
-            permissionToAddMarker={this.props.permissionToAddMarker}
+            selectPoint={this.props.selectPoint}
+            addNewPoint={this.props.addNewPoint}
+            permissionAdd={this.props.permissionAdd}
             editingPermission={this.props.editingPermission}
-            markerInstalled={this.props.markerInstalled}
-            cancelAddNewPoint={this.props.cancelAddNewPoint}
-            putStatusMarker={this.props.putStatusMarker}
-            deleteMarker={this.props.deleteMarker}
-            userMarkerCreate={this.props.userMarkerCreate}
-            markerRender={this.props.markerRender}
+            changeMovingGeoPoint={this.props.changeMovingGeoPoint}
+            deleteGeoPoint={this.props.deleteGeoPoint}
+            addNewPointForMyGeoPosition={this.props.addNewPointForMyGeoPosition}
+            geoPointListIsCreate={this.props.geoPointListIsCreate}
             addDistance={this.props.addDistance}
           /> )
           :
-          ( <div>fsdfsdf</div> )}
+          ( <div>Please allow the browser to determine your location.</div> )}
       </React.Fragment>
     );
   }

@@ -8,8 +8,5 @@ export default interface IMyCheckListsContainerProps {
   openModalForCreateCheckList: () => ( dispatch: IDispatchFunction ) => void;
   loadCheckLists: ( idUser: string ) => ( dispatch: IDispatchFunction ) => void;
   deleteCheckList: ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => void;
-}
-
-export interface ICheckLists {
-  name: string;
+  clearStateMyCheckLists: () => ( dispatch: IDispatchFunction ) => void;
 }

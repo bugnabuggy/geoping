@@ -1,26 +1,28 @@
-import IGoogleMapType, { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
+import { IGoogleMapStateType } from '../types/stateTypes/googleMapStateType';
+import { EnumStatusMarker } from '../enums/statusMarker';
 
-export const googleMapState: IGoogleMapType = {
-  markersList: [
+export const googleMapState: IGoogleMapStateType = {
+  geoPoints: [
     // {
-    //   id: uuidV4 (),
+    //   id: 'ffff',
     //   name: 'Просто',
+    //   idList: 'ff',
     //   lat: 54.9924400,
     //   lng: 73.3685900,
     //   radius: 50,
     //   description: ``,
     // },
     // {
-    //   id: uuidV4 (),
+    //   id: 'ggggg',
     //   name: 'Omsk',
+    //   idList: 'ff',
     //   lat: 54.9924410,
     //   lng: 71.3674810,
     //   radius: 200,
     //   description: ``,
     // }
   ],
-  markersForMap: [],
-  selectedMarker: {
+  selectedGeoPoint: {
     id: '',
     idList: '',
     name: '',
@@ -29,39 +31,17 @@ export const googleMapState: IGoogleMapType = {
     radius: 0,
     description: '',
   },
-  selectedMarkerForMap: {},
   isAddMarker: false,
   moveStartMarker: {
-    id: '',
     lat: 0,
     lng: 0,
-  },
-  moveEndMarker: {
-    id: '',
-    lat: 0,
-    lng: 0,
-  },
-  newMarker: {
-    id: '',
-    idList: '',
-    name: '',
-    lat: 0,
-    lng: 0,
-    radius: 0,
-    description: ''
   },
   position: {
     isSuccess: false,
     lat: 0,
     lng: 0,
   },
-  isThereIsNewMarker: false,
-  isMarkerInstalled: false,
-  isMarkerSaved: false,
-  isMarkerCanceled: false,
   statusMarker: EnumStatusMarker.None,
-  isCheckGeoPosition: false,
-  deleteIdMarker: '',
-  isUserMarkerCreated: false,
-  isMarkerRendered: false,
+  idDeleteMarker: '',
+  isGeoPointListIsCreated: false,
 };

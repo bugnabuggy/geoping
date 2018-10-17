@@ -4,51 +4,47 @@ import { Link } from 'react-router-dom';
 
 import ICheckListLinkComponent from '../componentProps/checkListLinkComponentProps';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
+import { EnumStatusMarker } from '../enums/statusMarker';
 
 export class CheckListLinkComponent extends React.Component<ICheckListLinkComponent, any> {
   idNotification: any;
 
   handleNewPoint = () => {
-    this.props.permissionToAddMarker ( true );
-    this.props.putStatusMarker ( EnumStatusMarker.New );
-    this.idNotification = this.props.addNotification (
+    this.idNotification = this.props.addNotification(
       'Click on the place on the map where you want to set the point or click cancel',
       EnumNotificationType.Primary
     );
+    this.props.permissionAdd( true );
   };
 
   handleCheckGeoPoisition = () => {
-    this.props.editingPermission ( true );
-    this.props.markerInstalled ( true );
-    this.props.permissionToAddMarker ( false );
-    this.props.checkGEOPosition ();
-    this.props.putStatusMarker ( EnumStatusMarker.New );
-    this.props.deleteNotification ( this.idNotification );
+    this.props.addNewPointForMyGeoPosition( true );
   };
 
   handleCancelAddNewPoint = ( e: any ) => {
-    e.stopPropagation ();
-    this.props.permissionToAddMarker ( false );
-    this.props.cancelAddNewPoint ();
-    this.props.deleteNotification ( this.idNotification );
-    this.props.putStatusMarker ( EnumStatusMarker.None );
+    e.stopPropagation();
+
+    this.props.permissionAdd( false );
+    this.props.deleteNotification( this.idNotification );
   };
 
   componentDidUpdate( prevProps: ICheckListLinkComponent ) {
-    if ( this.idNotification && !this.props.isAddMarker ) {
-      this.props.deleteNotification ( this.idNotification );
+    if ( this.idNotification && !this.props.googleMap.isAddMarker ) {
+      this.props.deleteNotification( this.idNotification );
       this.idNotification = null;
     }
   }
 
   render() {
     const disableAddPoint: boolean =
-      this.props.isAddMarker ||
-      ( this.props.isMarkerInstalled && ( !this.props.isMarkerSaved || !this.props.isMarkerCanceled ) ) ||
-      this.props.statusMarker === EnumStatusMarker.Edit;
+      this.props.googleMap.isAddMarker ||
+      ( this.props.googleMap.statusMarker === EnumStatusMarker.Edit ||
+        this.props.googleMap.statusMarker === EnumStatusMarker.New );
+
     const disableCheckGEOPosition: boolean =
-      ( this.props.isCheckGeoPosition || this.props.statusMarker === EnumStatusMarker.Edit );
+      this.props.googleMap.isAddMarker ||
+      ( this.props.googleMap.statusMarker === EnumStatusMarker.Edit ||
+        this.props.googleMap.statusMarker === EnumStatusMarker.New );
 
     return (
       <React.Fragment>
@@ -72,7 +68,7 @@ export class CheckListLinkComponent extends React.Component<ICheckListLinkCompon
               add new point
             </span>
           </Link>
-          {this.props.isAddMarker && (
+          {this.props.googleMap.isAddMarker && (
             <Link
               to="#"
               className="check-list-cancel-new-point cursor-pointer"
@@ -99,7 +95,7 @@ export class CheckListLinkComponent extends React.Component<ICheckListLinkCompon
             onClick={this.handleCheckGeoPoisition}
           >
             <span>
-              check geo position
+              put a point on the position
             </span>
           </Link>
         </div>

@@ -3,22 +3,22 @@ import { Panel } from 'react-bootstrap';
 import { ListPointItemComponent } from './listComponents/listPointItemComponent';
 import { v4 as uuidV4 } from 'uuid';
 import IListPointsComponentProps from '../componentProps/listPointsComponentProps';
-import { IMarker } from '../types/stateTypes/googleMapStateType';
+import IGeoPoint from '../DTO/geoPointDTO';
 
 export class ListPointsComponent extends React.Component<IListPointsComponentProps, any> {
 
   renderPointItem = () => {
-    return this.props.markers.map ( ( point: IMarker ) => {
+    return this.props.geoPoints.map( ( geoPoint: IGeoPoint ) => {
       return (
         <ListPointItemComponent
-          key={uuidV4 ()}
-          marker={point}
-          selectedMarkerId={this.props.selectedMarkerId}
+          key={uuidV4()}
+          geoPoint={geoPoint}
+          selectedGeoPointId={this.props.selectedGeoPointId}
+          statusGeoPoint={this.props.statusGeoPoint}
+          checkList={this.props.checkList}
 
-          editingPermission={this.props.editingPermission}
-          selectMarker={this.props.selectMarker}
-          putStatusMarker={this.props.putStatusMarker}
-          deleteMarker={this.props.deleteMarker}
+          selectPoint={this.props.selectPoint}
+          deleteGeoPoint={this.props.deleteGeoPoint}
         />
       );
     } );
@@ -27,13 +27,13 @@ export class ListPointsComponent extends React.Component<IListPointsComponentPro
   render() {
     return (
       <Panel
-        style={{ width: '100%', height: '100%' }}
+        style={{ maxHeight: '500px', overflow: 'auto' }}
       >
         <Panel.Heading>
           Geo Points
         </Panel.Heading>
         <Panel.Body>
-          {this.renderPointItem ()}
+          {this.renderPointItem()}
         </Panel.Body>
       </Panel>
     );

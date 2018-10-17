@@ -1,8 +1,8 @@
 import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
-import { IMarker } from '../../types/stateTypes/googleMapStateType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import { createGeoNewPoint, getGeoPointsForList, removeGeoPoint, updateGeoPoint } from '../../constants/endpoints';
+import IGeoPoint from '../../DTO/geoPointDTO';
 
 export default class MarkerService implements IMarkerServiceType {
   private communicator: IHttpCommunicator;
@@ -11,7 +11,7 @@ export default class MarkerService implements IMarkerServiceType {
     this.communicator = StaticStorage.serviceLocator.get( 'IHttpCommunicator' );
   }
 
-  createNewMarker( marker: IMarker ) {
+  createNewMarker( marker: IGeoPoint ) {
     return this.communicator.post( createGeoNewPoint.replace( '%listid%', marker.id ), marker );
   }
 
@@ -25,7 +25,7 @@ export default class MarkerService implements IMarkerServiceType {
     return this.communicator.get( getGeoPointsForList.replace( '%listid%', idCheckList ) );
   }
 
-  updateMarker( marker: IMarker ) {
+  updateMarker( marker: IGeoPoint ) {
     return this.communicator.put(
       updateGeoPoint.replace( '%listid%', marker.idList ).replace( '%id%', marker.id ),
       marker

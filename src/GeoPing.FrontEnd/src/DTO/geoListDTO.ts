@@ -7,8 +7,4 @@ export default interface IGeoListType {
   periodFrom: string;
   periodTo: string;
   ownerId: string;
-  owner: any;
-  reviews: any;
-  geoPoints: any;
-  usersLists: any;
 }
