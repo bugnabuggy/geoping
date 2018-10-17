@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
 using GeoPing.Api.Models;
+using GeoPing.Api.Models.DTO;
 using GeoPing.Api.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -33,6 +34,11 @@ namespace GeoPing.Api.Services
         public IQueryable<GeoPoint> Get(Expression<Func<GeoPoint, bool>> func)
         {
             return _pointRep.Data.Where(func);
+        }
+
+        public IQueryable<GeoList> GetByFilter(GeopointFilterDTO filter)
+        {
+            throw new NotImplementedException();
         }
 
         public OperationResult<GeoPoint> Add(GeoPoint item)

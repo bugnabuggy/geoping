@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
 using GeoPing.Api.Models;
+using GeoPing.Api.Models.DTO;
 using GeoPing.Api.Models.Entities;
 using GeoPing.Api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,14 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetLists()
         {
             var result = _geolistSrv.Get();
+            return Ok(result);
+        }
+
+        // GET api/Geolist
+        [HttpGet]
+        public IActionResult GetListsByFilter(GeolistFilterDTO filter)
+        {
+            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
             return Ok(result);
         }
 

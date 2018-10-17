@@ -20,14 +20,19 @@ namespace GeoPing.Api.Models.Entities
         [MaxLength(240)]
         public string Description { get; set; }
 
-        public bool IsPublic { get; set; }
-
-        public float Rating { get; set; }
+        public string OwnerId { get; set; }
 
         public DateTime PeriodFrom { get; set; }
         public DateTime PeriodTo { get; set; }
 
-        public string OwnerId { get; set; }
+        public int SubscribersNumber { get; set; }
+
+        public bool IsPublic { get; set; }
+
+        public float Rating { get; set; }
+
+
+
 
         //public ApplicationUser Owner { get; set; }
 
