@@ -1,7 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RuntimeFrameWorkVersion>2.0.9</RuntimeFrameWorkVersion>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <UserSecretsId>aspnet-GeoPing.Api-F98F36D9-731D-42EB-B9A3-DBBCAFF87ABB</UserSecretsId>
     <StartupObject></StartupObject>
   </PropertyGroup>
@@ -23,8 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
