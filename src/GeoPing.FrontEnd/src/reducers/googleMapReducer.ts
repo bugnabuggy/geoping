@@ -98,8 +98,8 @@ function changeMovingGeoPoint( state: IGoogleMapStateType, action: any ): IGoogl
       }
       :
       {
-        lng: 0,
-        lat: 0,
+        lng: null,
+        lat: null,
       };
 
   return {
@@ -149,6 +149,12 @@ function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
       statusMarker: EnumStatusMarker.None,
     };
   } else if ( state.statusMarker === EnumStatusMarker.Edit ) {
+    let moveMarker: any = {};
+    if ( state.moveStartMarker.lat !== null && state.moveStartMarker.lng !== null ) {
+      moveMarker = {
+        ...state.moveStartMarker,
+      };
+    }
     return {
       ...state,
       geoPoints: [
@@ -156,7 +162,7 @@ function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
           return item.id === state.selectedGeoPoint.id ?
             {
               ...item,
-              ...state.moveStartMarker,
+              ...moveMarker,
             }
             :
             item;

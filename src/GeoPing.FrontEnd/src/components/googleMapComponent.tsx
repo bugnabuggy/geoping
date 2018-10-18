@@ -24,6 +24,7 @@ export default class GoogleMapComponent extends React.Component<IGoogleMapCompon
             addNewPointForMyGeoPosition={this.props.addNewPointForMyGeoPosition}
             geoPointListIsCreate={this.props.geoPointListIsCreate}
             addDistance={this.props.addDistance}
+            getMyAddress={this.props.getMyAddress}
           /> )
           :
           ( <div>Please allow the browser to determine your location.</div> )}

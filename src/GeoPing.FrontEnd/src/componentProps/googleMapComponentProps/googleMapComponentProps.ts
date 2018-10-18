@@ -20,4 +20,5 @@ export default interface IGoogleMapComponentProps {
   addNewPointForMyGeoPosition: ( isMyGeoPosition: boolean ) => ( dispatch: IDispatchFunction ) => void;
   geoPointListIsCreate: ( isGeoPointListIsCreated: boolean ) => ( dispatch: IDispatchFunction ) => void;
   addDistance: ( distance: number ) => ( dispatch: IDispatchFunction ) => void;
+  getMyAddress: () => (dispatch: IDispatchFunction) => void;
 }

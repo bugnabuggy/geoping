@@ -33,13 +33,14 @@ export const googleMapState: IGoogleMapStateType = {
   },
   isAddMarker: false,
   moveStartMarker: {
-    lat: 0,
-    lng: 0,
+    lat: null,
+    lng: null,
   },
   position: {
     isSuccess: false,
     lat: 0,
     lng: 0,
+    address: '',
   },
   statusMarker: EnumStatusMarker.None,
   idDeleteMarker: '',
