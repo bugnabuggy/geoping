@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeoPing.Api.Interfaces
 {
-    public interface IHelper
+    public interface IClaimsHelper
     {
         string GetUserIdByClaims(IEnumerable<Claim> claims);
 

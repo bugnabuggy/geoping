@@ -27,6 +27,9 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
   render() {
     return (
       <Panel
+        className={`
+        ${ this.props.selectedGeoPointId && this.props.selectedGeoPointId !== this.props.geoPoint.id ?
+        ' check-list-point-item-disable ' : ''}`}
         onClick={this.handleSelectPoint}
       >
         <Panel.Body

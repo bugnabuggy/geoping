@@ -4,11 +4,13 @@ import {
   addMyPositionPoint,
   constructorMapService,
   createMapAPI,
+  createUserMarkerAPI,
   deleteAllMarkersAPI,
   deleteMarkerAPI,
   deselectMarkerAPI,
   getDistance,
   selectMarkerAPI,
+  setCoordinatesForUserMarker,
   settingPointsByCoordinates,
 } from '../../../services/googleMapService';
 import {EnumStatusMarker} from "../../../enums/statusMarker";
@@ -27,10 +29,14 @@ class GoogleMap extends React.Component {
     };
     constructorMapService(window.google, options, this);
     createMapAPI();
-
+    this.props.getMyAddress();
     if (this.props.googleMap.geoPoints.length > 0) {
       addListMarkersAPI(this.props.googleMap.geoPoints);
       this.props.geoPointListIsCreate(true);
+    }
+
+    if (this.props.googleMap.position.isSuccess) {
+      createUserMarkerAPI();
     }
   }
 
@@ -63,13 +69,18 @@ class GoogleMap extends React.Component {
       this.props.addNewPointForMyGeoPosition(false);
     }
 
-    if (this.props.googleMap.geoPoints.length > 0 && !this.props.googleMap.isGeoPointListIsCreated) {
+    if (!this.props.googleMap.isGeoPointListIsCreated) {
       deleteAllMarkersAPI();
       addListMarkersAPI(this.props.googleMap.geoPoints);
       this.props.geoPointListIsCreate(true);
     }
     if (this.props.googleMap.selectedGeoPoint.id && this.props.googleMap.position.isSuccess && this.props.isCheckIn) {
       getDistance();
+    }
+
+    if (prevProps.googleMap.position.lat !== this.props.googleMap.position.lat ||
+        prevProps.googleMap.position.lng !== this.props.googleMap.position.lng) {
+      setCoordinatesForUserMarker(this.props.googleMap.position);
     }
   }
 

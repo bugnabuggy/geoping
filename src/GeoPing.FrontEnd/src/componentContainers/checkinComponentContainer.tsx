@@ -7,7 +7,8 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckinComponent } from '../components/checkinComponent';
 import { checkinFlag, loadLists, loadPoints, selectList } from '../actions/checkinAction';
 import { ICheckinFunctions } from '../componentProps/checkinComponentProps';
-import { selectPoint } from '../actions/googleMapAction';
+import { getMyAddress, selectPoint } from '../actions/googleMapAction';
+import { saveHistory } from '../actions/historyAction';
 
 class CheckinComponentContainer extends React.Component<ICheckinComponentContainerProps, any> {
   componentDidMount() {
@@ -28,6 +29,8 @@ class CheckinComponentContainer extends React.Component<ICheckinComponentContain
       loadPoints: this.props.loadPoints,
       selectList: this.props.selectList,
       selectPoint: this.props.selectPoint,
+      getMyAddress: this.props.getMyAddress,
+      saveHistory: this.props.saveHistory,
     };
 
     return (
@@ -57,6 +60,8 @@ const mapDispatchToProps = ( dispath: any ) =>
       selectList,
       checkinFlag,
       selectPoint,
+      getMyAddress,
+      saveHistory,
       // findLocationForCenterMap,
     },
     dispath );

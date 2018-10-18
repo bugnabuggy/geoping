@@ -22,10 +22,11 @@ function checkinLoadLists( state: ICheckinStateType, action: any ) {
   };
 }
 
-function selectList( state: ICheckinStateType, action: any ) {
+function selectList( state: ICheckinStateType, action: any ): ICheckinStateType {
   return {
     ...state,
     selectedListId: action.idList,
+    difference: null,
   };
 }
 

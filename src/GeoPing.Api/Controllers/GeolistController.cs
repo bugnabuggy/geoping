@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
 using GeoPing.Api.Models;
+using GeoPing.Api.Models.DTO;
 using GeoPing.Api.Models.Entities;
 using GeoPing.Api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -18,10 +19,10 @@ namespace GeoPing.Api.Controllers
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
-        private IHelper _helper;
+        private IClaimsHelper _helper;
 
         public GeolistController(IGeolistService geolistSrv,
-                                 IHelper helper)
+                                 IClaimsHelper helper)
         {
             _geolistSrv = geolistSrv;
             _helper = helper;
@@ -29,18 +30,22 @@ namespace GeoPing.Api.Controllers
 
         // GET api/Geolist
         [HttpGet]
-        public IActionResult GetLists()
+        public IActionResult GetListsByFilter(GeolistFilterDTO filter)
         {
-            var result = _geolistSrv.Get();
-            return Ok(result);
+            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         // GET api/Geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetList(int Id)
+        public IActionResult GetList(string Id)
         {
-            var result = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var result = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
             if (result == null)
             {
@@ -66,9 +71,9 @@ namespace GeoPing.Api.Controllers
         // PUT api/Geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(int Id, [FromBody]GeoList item)
+        public IActionResult EditList(string Id, [FromBody]GeoList item)
         {
-            if (Id != item.Id)
+            if (Guid.Parse(Id) != item.Id)
             {
                 return BadRequest(new OperationResult
                 {
@@ -78,7 +83,7 @@ namespace GeoPing.Api.Controllers
                 });
             }
 
-            if (!_geolistSrv.Get(x => x.Id == Id).Any())
+            if (!_geolistSrv.Get(x => x.Id == Guid.Parse(Id)).Any())
             {
                 return NotFound(new OperationResult
                 {
@@ -102,14 +107,13 @@ namespace GeoPing.Api.Controllers
         public IActionResult RemoveLists(string Ids)
         {
             var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            .Select(int.Parse)
                             .ToArray();
             if (idList != null)
             {
 
                 foreach (var Id in idList)
                 {
-                    var item = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+                    var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
                     if (item == null)
                     {
@@ -136,9 +140,9 @@ namespace GeoPing.Api.Controllers
         // DELETE api/Geolist/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemoveList(int Id)
+        public IActionResult RemoveList(string Id)
         {
-            var item = _geolistSrv.Get(x => x.Id == Id).FirstOrDefault();
+            var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
 
             if (item == null)
             {

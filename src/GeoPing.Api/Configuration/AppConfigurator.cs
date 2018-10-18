@@ -18,11 +18,13 @@ namespace GeoPing.Api.Configuration
         {
             services.AddScoped<IRepository<GeoList>, DbRepository<GeoList>>();
             services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
+            services.AddScoped<IRepository<UserList>, DbRepository<UserList>>();
             services.AddScoped<IRepository<UserPoint>, DbRepository<UserPoint>>();
+            services.AddScoped<IRepository<ListReview>, DbRepository<ListReview>>();
 
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
-            services.AddScoped<IHelper, Helper>();
+            services.AddScoped<IClaimsHelper, ClaimsHelper>();
         }
 
         public void Initialize(IServiceProvider services)

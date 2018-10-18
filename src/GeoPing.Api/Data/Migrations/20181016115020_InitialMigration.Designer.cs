@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeoPing.Api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181008115013_InitialMigration")]
+    [Migration("20181016115020_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,8 +77,10 @@ namespace GeoPing.Api.Data.Migrations
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoList", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("Description")
                         .HasMaxLength(240);
@@ -99,20 +101,20 @@ namespace GeoPing.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("GeoLists");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoPoint", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description")
                         .HasMaxLength(240);
 
-                    b.Property<long>("GeoListId");
+                    b.Property<Guid>("GeoListId");
 
                     b.Property<double>("Latitude");
 
@@ -126,20 +128,20 @@ namespace GeoPing.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GeoListId");
-
                     b.ToTable("GeoPoints");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.ListReview", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(240);
 
-                    b.Property<long>("ListId");
+                    b.Property<Guid>("ListId");
 
                     b.Property<float>("Rating");
 
@@ -147,39 +149,47 @@ namespace GeoPing.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ListId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.UserList", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int>("AssessLevel");
+
+                    b.Property<Guid>("ListId");
+
                     b.Property<string>("UserId");
 
-                    b.Property<long>("ListId");
+                    b.HasKey("Id");
 
-                    b.Property<bool>("IsTrusted");
-
-                    b.HasKey("UserId", "ListId");
-
-                    b.HasIndex("ListId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserLists");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.UserPoint", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<long>("PointId");
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<DateTime>("CheckTime");
 
-                    b.HasKey("UserId", "PointId");
+                    b.Property<Guid>("PointId");
 
-                    b.HasIndex("PointId");
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserPoints");
                 });
@@ -294,55 +304,30 @@ namespace GeoPing.Api.Data.Migrations
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoList", b =>
                 {
-                    b.HasOne("GeoPing.Api.Models.ApplicationUser", "Owner")
+                    b.HasOne("GeoPing.Api.Models.ApplicationUser")
                         .WithMany("OwnedLists")
-                        .HasForeignKey("OwnerId");
-                });
-
-            modelBuilder.Entity("GeoPing.Api.Models.Entities.GeoPoint", b =>
-                {
-                    b.HasOne("GeoPing.Api.Models.Entities.GeoList", "GeoList")
-                        .WithMany("GeoPoints")
-                        .HasForeignKey("GeoListId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.ListReview", b =>
                 {
-                    b.HasOne("GeoPing.Api.Models.Entities.GeoList", "List")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ListId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GeoPing.Api.Models.ApplicationUser", "User")
+                    b.HasOne("GeoPing.Api.Models.ApplicationUser")
                         .WithMany("UserReviews")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.UserList", b =>
                 {
-                    b.HasOne("GeoPing.Api.Models.Entities.GeoList", "GeoList")
-                        .WithMany("UsersLists")
-                        .HasForeignKey("ListId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GeoPing.Api.Models.ApplicationUser", "User")
+                    b.HasOne("GeoPing.Api.Models.ApplicationUser")
                         .WithMany("GeoLists")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("GeoPing.Api.Models.Entities.UserPoint", b =>
                 {
-                    b.HasOne("GeoPing.Api.Models.Entities.GeoPoint", "Point")
-                        .WithMany("UserPoints")
-                        .HasForeignKey("PointId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GeoPing.Api.Models.ApplicationUser", "User")
+                    b.HasOne("GeoPing.Api.Models.ApplicationUser")
                         .WithMany("GeoPoints")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

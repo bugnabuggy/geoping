@@ -10,7 +10,8 @@ namespace GeoPing.Api.Models.Entities
     public class GeoPoint
     {
         [Key]
-        public long Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -25,9 +26,10 @@ namespace GeoPing.Api.Models.Entities
         [Required]
         public double Radius { get; set; }
 
-        public long GeoListId { get; set; }
-        public virtual GeoList GeoList { get; set; }
+        public Guid GeoListId { get; set; }
 
-        public virtual IEnumerable<UserPoint> UserPoints { get; set; }
+        //public GeoList GeoList { get; set; }
+
+        //public IEnumerable<UserPoint> UserPoints { get; set; }
     }
 }
