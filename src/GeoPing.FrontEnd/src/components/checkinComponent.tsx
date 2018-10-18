@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Button, ControlLabel, FormControl, FormGroup, Panel, Table } from 'react-bootstrap';
+import { Button, ControlLabel, FormGroup, Panel, Table } from 'react-bootstrap';
 import { v4 as uuidV4 } from 'uuid';
+import Select from 'react-select';
 
 import ICheckinComponentProps from '../componentProps/checkinComponentProps';
 import { defaultMarker } from '../constants/defaultMarker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CongratulationsModalComponent } from './modalComponents/congratulationsModalComponent';
+import IHistoryDataDTO from '../DTO/historyDataDTO';
 
 export class CheckinComponent extends React.Component<ICheckinComponentProps, any> {
   openModal = () => {
@@ -13,6 +15,9 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
   };
   closeModal = () => {
     this.setState( { showModal: false } );
+  };
+  handleCheckMyGeoPosition = () => {
+    this.props.functions.getMyAddress();
   };
   handleCheckin = () => {
     if ( this.props.checkin.difference < this.props.googleMap.selectedGeoPoint.radius ) {
@@ -23,10 +28,21 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         ]
       } );
     }
+    const list: any = this.props.checkin.selectList.find( item => item.id === this.props.checkin.selectedListId );
+    const historyData: IHistoryDataDTO = {
+      apporxAddress: this.props.googleMap.position.address,
+      checkList: list ? list.name : '',
+      dateTime: `${new Date().toLocaleDateString( 'ru' )} ${new Date().toLocaleTimeString( 'ru' )}`,
+      id: uuidV4(),
+      latLng: `${this.props.googleMap.position.lat} / ${this.props.googleMap.position.lng}`,
+    };
+
+    // console.log( 'historyData', historyData );
+    this.props.functions.saveHistory('', historyData );
   };
   handleSelectList = ( e: any ) => {
-    this.props.functions.selectList( e.target.value );
-    this.props.functions.loadPoints( e.target.value );
+    this.props.functions.selectList( e.value );
+    this.props.functions.loadPoints( e.value );
   };
   handleSelectPoint = ( e: any ) => {
     if ( e.target.id === this.props.googleMap.selectedGeoPoint.id ) {
@@ -68,7 +84,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
             id={item.id}
             onClick={this.handleSelectPoint}
             className={`${item.id === this.props.googleMap.selectedGeoPoint.id && 'check-in-select-point-action'}
-            cursor-pointer ${ checkedPoint && 'check-in-point-checked' }`}
+            cursor-pointer ${ checkedPoint && 'check-in-point-checked' } check-in-select-point`}
           >
             <td
               id={item.id}
@@ -89,27 +105,19 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
     } );
   };
   renderListOption = () => {
-    return this.props.checkin.selectList.map( ( item: any, index: number ) => {
-      const key: string = `lists_${index}`;
-      return (
-        <React.Fragment
-          key={key}
-        >
-          {index === 0 && (
-            <option
-              value={'0'}
-            >
-              - None -
-            </option>
-          )}
-          <option
-            value={item.id}
-          >
-            {item.name}
-          </option>
-        </React.Fragment>
-      );
+    const options: Array<{ value: string, label: string }> = [
+      {
+        value: '',
+        label: '- None -'
+      }
+    ];
+    this.props.checkin.selectList.forEach( ( item: any ) => {
+      options.push( {
+        value: item.id,
+        label: item.name,
+      } );
     } );
+    return options;
   };
 
   constructor( props: ICheckinComponentProps ) {
@@ -134,13 +142,12 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           >
             Select List
           </ControlLabel>
-          <FormControl
-            componentClass="select"
-            placeholder="select"
+          <Select
+            options={this.renderListOption()}
+            className="check-in-select"
             onChange={this.handleSelectList}
-          >
-            {this.renderListOption()}
-          </FormControl>
+            isLoading={!!!this.props.checkin.selectList.length}
+          />
         </FormGroup>
         <FormGroup>
           <ControlLabel>Select Point</ControlLabel>
@@ -154,13 +161,24 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
             </Table>
           </Panel>
         </FormGroup>
-        <Button
-          bsStyle={validationStateButton}
-          onClick={this.handleCheckin}
-          disabled={!!this.state.checkInPoints.find( ( il: any ) => il === this.props.googleMap.selectedGeoPoint.id )}
+        <div
+          className="check-in-buttons-container"
         >
-          Check In
-        </Button>
+          <Button
+            bsStyle={validationStateButton}
+            onClick={this.handleCheckin}
+            disabled={!!this.state.checkInPoints.find( ( il: any ) => il === this.props.googleMap.selectedGeoPoint.id )}
+          >
+            Check In
+          </Button>
+
+          <Button
+            bsStyle="primary"
+            onClick={this.handleCheckMyGeoPosition}
+          >
+            Check my geo position
+          </Button>
+        </div>
         <div>
           <ControlLabel
             className="check-in-current-coordinates"

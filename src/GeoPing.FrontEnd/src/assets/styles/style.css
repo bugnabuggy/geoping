@@ -426,6 +426,16 @@ header nav {
   width: 200px;
 }
 
+.check-in-buttons-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.check-in-select {
+  width: 400px;
+}
+
 .check-in-current-coordinates {
   display: block;
 }
@@ -438,6 +448,10 @@ header nav {
 .check-in-select-point-action {
   color: #fff;
   background-color: #007bff;
+}
+
+.check-in-select-point {
+  border-bottom: #dddddd 1px solid;
 }
 
 .check-in-point-checked {
@@ -998,6 +1012,11 @@ header nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.check-list-point-item-disable {
+  pointer-events: none;
+  background: #dfdfdf;
 }
 
 .check-list-point-item:hover {

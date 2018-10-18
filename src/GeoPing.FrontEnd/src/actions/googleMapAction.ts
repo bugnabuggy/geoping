@@ -22,6 +22,7 @@ import StaticStorage from '../services/staticStorage';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import IGeoPoint from '../DTO/geoPointDTO';
 import { EnumStatusMarker } from '../enums/statusMarker';
+import { getGeoCode } from '../services/googleMapService';
 
 export const addListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
@@ -68,12 +69,39 @@ export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
         lng: location.coords.longitude,
         lat: location.coords.latitude,
         isSuccess: true,
+        address: '',
       };
       dispatch( findGeoPositionAction( position ) );
     },
     ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
+};
+
+export const getMyAddress = () => (dispatch: IDispatchFunction) => {
+  window.navigator.geolocation.getCurrentPosition(
+    ( location: any ) => {
+      const pos: any = {
+        lng: location.coords.longitude,
+        lat: location.coords.latitude,
+      };
+      getGeoCode( pos )
+        .then( ( address: string ) => {
+          const position: IPosition = {
+            lng: location.coords.longitude,
+            lat: location.coords.latitude,
+            isSuccess: true,
+            address: address,
+          };
+          dispatch( findGeoPositionAction( position ) );
+        } )
+        .catch( ( error: any ) => {
+          dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+        } );
+    },
+    ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    });
 };
 
 export const permissionAdd = ( isPermissionAdd: boolean ) => ( dispatch: IDispatchFunction ) => {

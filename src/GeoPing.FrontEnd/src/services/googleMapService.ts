@@ -11,6 +11,8 @@ let _markers: Array<any> = [];
 let _options: any;
 let _that: any;
 
+let idUserMarker: any = '';
+
 const pinColor: string = '26b430';
 const iconSelectedGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
@@ -69,6 +71,19 @@ export function getDistance() {
   _that.props.addDistance( distance );
 }
 
+export function setCoordinatesForUserMarker( coordinates: any ) {
+  if ( idUserMarker ) {
+    const marker: any = findGeoPoint( idUserMarker );
+    if (marker) {
+      const latLng: any = {
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+      };
+      setPosition(marker, latLng);
+    }
+  }
+}
+
 function createMap( htmlElement: any ) {
   _googleMap = new _googleLib.maps.Map( htmlElement, _options );
   _googleMap.addListener( 'click', handleMapListener );
@@ -101,10 +116,18 @@ function iconDefaultGeoPoint( timeout: number ) {
 }
 
 function iconUserGeoPoint( timeout: number ) {
+  idUserMarker = uuidV4();
+  const userGeoPoint: IGeoPoint = {
+    ...defaultMarker,
+    id: idUserMarker,
+    name: 'Me',
+    lat: _that.props.googleMap.position.lat,
+    lng: _that.props.googleMap.position.lng,
+  };
   setTimeout(
     () => {
       createGeoPoint(
-        _that.props.selectedGeoPoint,
+        userGeoPoint,
         createMarkerImage( iconUserGeoPointUrl ),
         false
       );
@@ -158,17 +181,20 @@ function deleteGeoPoint( idGeoPoint: string ) {
   const marker: any = findGeoPoint( idGeoPoint );
   if ( marker ) {
     marker.setMap( null );
+    _markers = _markers.filter( ( point: any ) => {
+      return point.id !== marker.id;
+    } );
   }
-  _markers = _markers.filter( ( point: any ) => {
-    return point.id !== marker.id;
-  } );
 }
 
 function deleteAllGeoPoint() {
-  _markers.forEach( ( marker: any ) => {
-    marker.setMap( null );
+  _markers = _markers.filter( ( marker: any ) => {
+    if (marker.id !== idUserMarker) {
+      marker.setMap( null );
+    } else {
+      return marker;
+    }
   } );
-  _markers = [];
 }
 
 function handleMapListener( event: any ) {
@@ -204,13 +230,14 @@ function handleGeoPointDrag( e: any ) {
   _that.props.changeMovingGeoPoint( newGeoPoint );
 }
 
-function getGeoCode( latLng: any ): Promise<string> {
+export function getGeoCode( latLng: any ): Promise<string> {
   return new Promise<string>( ( resolve: any, reject: any ) => {
     _geoCoder.geocode(
       {
         latLng
       },
       ( results: any, status: any ) => {
+
         if ( status === _googleLib.maps.GeocoderStatus.OK ) {
           if ( results[ 0 ] ) {
             resolve( results[ 0 ].formatted_address );
@@ -224,13 +251,14 @@ function getGeoCode( latLng: any ): Promise<string> {
 
 export function settingPointsByCoordinates( geoPoints: Array<IGeoPoint> ) {
   geoPoints.forEach( ( geoPoint: IGeoPoint ) => {
-    const merker: any = findGeoPoint( geoPoint.id );
-    if ( merker ) {
+    const marker: any = findGeoPoint( geoPoint.id );
+    if ( marker ) {
       const latLng: any = {
         lat: geoPoint.lat,
         lng: geoPoint.lng,
       };
-      merker.setPosition( latLng );
+      // marker.setPosition( latLng );
+      setPosition(marker, latLng);
     }
   } );
 }
@@ -266,4 +294,11 @@ function createMarkerImage( iconUrl: string ) {
 
 function findGeoPoint( idGeoPoint: string ) {
   return _markers.find( item => item.id === idGeoPoint );
+}
+
+function setPosition(marker: any, coordinates: { lat: string, lng: string }) {
+  const latLng: any = {
+    ...coordinates,
+  };
+  marker.setPosition( latLng );
 }

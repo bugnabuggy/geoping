@@ -5,6 +5,7 @@ export interface IPosition {
   lat: number;
   lng: number;
   isSuccess: boolean;
+  address: string;
 }
 
 export interface IGoogleMapStateType {
