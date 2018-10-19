@@ -84,4 +84,67 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
+  loadUserWhoHasAccess( idList: string ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          resolve(
+            JSON.parse( sessionStorage.getItem( 'localDB' ) ).users_who_has_access
+              .filter( ( item: any ) => item.idList === idList )
+          );
+        },
+        1000
+      );
+    } );
+  }
+
+  sharedCheckListForUser( idList: string, emails: Array<string> ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          const localDB: any = JSON.parse( sessionStorage.getItem( 'localDB' ) );
+          localDB.users_who_has_access = [
+            ...localDB.users_who_has_access,
+            ...emails.map( ( name: any ) => {
+              return {
+                id: uuidV4(),
+                idList: idList,
+                name: name.email,
+                status: 'Pending',
+                invitationDate: 'date'
+              };
+            } )
+          ];
+          sessionStorage.setItem( 'localDB', JSON.stringify( localDB ) );
+          resolve( localDB.users_who_has_access.filter( ( item: any ) => item.idList === idList ) );
+        },
+        1000
+      );
+    } );
+  }
+
+  providePublicAccess( idList: string, isPublic: boolean ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          const localDB: any = JSON.parse( sessionStorage.getItem( 'localDB' ) );
+          localDB.dashboard_my_check_lists = [
+            ...localDB.dashboard_my_check_lists.map( ( item: any ) => {
+              return item.id === idList ?
+                {
+                  ...item,
+                  public: isPublic,
+                }
+                :
+                item;
+            } )
+          ];
+          sessionStorage.setItem('localDB', JSON.stringify(localDB));
+          resolve( 'ok' );
+        },
+        1000
+      );
+    } );
+  }
+
 }

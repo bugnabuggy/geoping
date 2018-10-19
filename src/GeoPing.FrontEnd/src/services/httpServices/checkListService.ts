@@ -47,4 +47,15 @@ export default class CheckListService implements ICheckListServiceType {
     return new Promise( resolve => '' );
   }
 
+  loadUserWhoHasAccess( idList: string ) {
+    return new Promise( resolve => '' );
+  }
+  sharedCheckListForUser(  idList: string, emails: Array<string> ) {
+    return new Promise( resolve => '' );
+  }
+
+  providePublicAccess( idList: string, isPublic: boolean ) {
+    return new Promise( resolve => '' );
+  }
+
 }
