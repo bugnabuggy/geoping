@@ -1,16 +1,12 @@
-﻿using System;
+﻿using GeoPing.Api.Interfaces;
+using GeoPing.Core.Entities;
+using GeoPing.Core.Models;
+using GeoPing.Core.Services;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GeoPing.Api.Interfaces;
-using GeoPing.Api.Models;
-using GeoPing.Api.Models.DTO;
-using GeoPing.Api.Models.Entities;
-using GeoPing.Api.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GeoPing.Api.Controllers
 {
@@ -29,15 +25,24 @@ namespace GeoPing.Api.Controllers
         }
 
         // GET api/Geolist
+        //[HttpGet]
+        //public IActionResult GetListsByFilter(GeolistFilterDTO filter)
+        //{
+        //    var result = _geolistSrv.GetByFilter(filter, out int totalItems);
+        //    if(result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
+
+        // GET api/Geolist
         [HttpGet]
-        public IActionResult GetListsByFilter(GeolistFilterDTO filter)
+        public IActionResult GetListsByFilter()
         {
-            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
-            if(result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = _geolistSrv.Get();
+
+            return Ok(result);
         }
 
         // GET api/Geolist/{Id}
@@ -58,7 +63,7 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         public IActionResult AddList([FromBody]GeoList item)
         {
-            item.OwnerId = _helper.GetUserIdByClaims(User.Claims);
+            item.OwnerId = _helper.GetAppUserIdByClaims(User.Claims);
             var result = _geolistSrv.Add(item);
 
             if (result.Success)

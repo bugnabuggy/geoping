@@ -1,23 +1,19 @@
+using GeoPing.Api.Configuration;
+using GeoPing.Infrastructure.Data;
+using GeoPing.Infrastructure.Models;
+using GeoPing.Utilities.Logger;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using GeoPing.Api.Data;
-using GeoPing.Api.Models;
-using GeoPing.Api.Services;
-using GeoPing.Utilities.Logger;
-using IdentityServer4;
-using IdentityServer4.AccessTokenValidation;
-using System.Reflection;
-using GeoPing.Api.Configuration;
-using GeoPing.Api.Interfaces;
 
 namespace GeoPing.Api
 {
@@ -59,7 +55,7 @@ namespace GeoPing.Api
                 });
 
             // Setting password requirements 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            services.AddIdentity<AppIdentityUser, IdentityRole>(options => {
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
             })
@@ -71,7 +67,7 @@ namespace GeoPing.Api
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<ApplicationUser>()
+                .AddAspNetIdentity<AppIdentityUser>()
                 /*
                 // this adds the operational data from DB (codes, tokens, consents)
                 

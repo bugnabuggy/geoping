@@ -1,8 +1,10 @@
-﻿using GeoPing.Api.Data;
+﻿using Geoping.Services;
+using GeoPing.Api.Helpers;
 using GeoPing.Api.Interfaces;
-using GeoPing.Api.Models;
-using GeoPing.Api.Models.Entities;
-using GeoPing.Api.Services;
+using GeoPing.Core.Entities;
+using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
+using GeoPing.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,11 +18,17 @@ namespace GeoPing.Api.Configuration
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRepository<GeoList>, DbRepository<GeoList>>();
+
             services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
-            services.AddScoped<IRepository<UserList>, DbRepository<UserList>>();
-            services.AddScoped<IRepository<UserPoint>, DbRepository<UserPoint>>();
+            services.AddScoped<IRepository<GeoList>, DbRepository<GeoList>>();
+            services.AddScoped<IRepository<PublicList>, DbRepository<PublicList>>();
+            services.AddScoped<IRepository<CheckIn>, DbRepository<CheckIn>>();
+            services.AddScoped<IRepository<GeoPingToken>, DbRepository<GeoPingToken>>();
+            services.AddScoped<IRepository<GeoPingUser>, DbRepository<GeoPingUser>>();
             services.AddScoped<IRepository<ListReview>, DbRepository<ListReview>>();
+            services.AddScoped<IRepository<ListSharing>, DbRepository<ListSharing>>();
+            services.AddScoped<IRepository<SupportMessage>, DbRepository<SupportMessage>>();
+            services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
 
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
@@ -31,7 +39,7 @@ namespace GeoPing.Api.Configuration
         {
             // TODO: Make logging done here
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
             var appUserRoles = new UserRoles();
             var appUsers = new Users();
             //var logger = services.GetRequiredService<ILogger>();
