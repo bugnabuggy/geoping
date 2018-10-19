@@ -14,12 +14,14 @@ import INotificationStateType from './notificationStateType';
 import IAllUsersTableStateType from './allUsersTableStateType';
 import IinvitationsStateType from './invitationsStateType';
 import IMyCheckListsStateType from './myCheckListsStateType';
+import ISharedCheckListStateType from './sharedCheckListStateType';
 
 export default interface IinitialStateType {
   allUsersFilter: IAllUsersStateType;
   allUsersTable: IAllUsersTableStateType;
   checkin: ICheckinStateType;
   myCheckList: IMyCheckListsStateType;
+  sharedCheckList: ISharedCheckListStateType;
   checkinStatistics: ICheckinStatisticsStateType;
   checkList: ICheckListStateType;
   profile: IProfileStateType;

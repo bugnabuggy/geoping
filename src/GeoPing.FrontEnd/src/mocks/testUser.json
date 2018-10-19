@@ -34,31 +34,38 @@
   "dashboard_my_check_lists": [
     {
       "id": "mn6vu7zdkiexbps4myvxafhmptubt1nngpontz8b3g",
-      "name": "List one"
+      "name": "List one",
+      "public": true
     },
     {
       "id": "tli791k0iqvn14ztxt1aou9cj2u1ihoaoj6ppabfyjq",
-      "name": "List two"
+      "name": "List two",
+      "public": false
     },
     {
       "id": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
-      "name": "Test List"
+      "name": "Test List",
+      "public": true
     },
     {
       "id": "ohniocg93yid0oz4ozdixtncdlevonep5qnl1vkvcsj",
-      "name": "Tomatos"
+      "name": "Tomatos",
+      "public": false
     },
     {
       "id": "z8jm2xzz0erquo88ajmzfvdrio4kr1i244koqidb3q",
-      "name": "Apple"
+      "name": "Apple",
+      "public": true
     },
     {
       "id": "3dkqxifz6v57fyda86ocmun6bffq48kh7rtukvlpofe",
-      "name": "Storage"
+      "name": "Storage",
+      "public": false
     },
     {
       "id": "is09jpjfimsofol20h3bgqf26h1d21pq7gambxixljch",
-      "name": "Lisiy"
+      "name": "Lisiy",
+      "public": true
     }
   ],
   "points": [
@@ -393,6 +400,29 @@
       "periodFrom": "",
       "periodTo": "",
       "ownerId": ""
+    }
+  ],
+  "users_who_has_access": [
+    {
+      "id": "9602281D-6FC0-46B4-AE11-9087202E00F0",
+      "idList": "tli791k0iqvn14ztxt1aou9cj2u1ihoaoj6ppabfyjq",
+      "name": "User One",
+      "status": "Pending",
+      "invitationDate": "date"
+    },
+    {
+      "id": "39DE25F4-3466-4FD1-ACA7-602099EBC445",
+      "idList": "tli791k0iqvn14ztxt1aou9cj2u1ihoaoj6ppabfyjq",
+      "name": "User Two",
+      "status": "Declined",
+      "invitationDate": "date"
+    },
+    {
+      "id": "E48D455B-3EFE-4D6D-958F-9AEE53F4F9F8",
+      "idList": "tli791k0iqvn14ztxt1aou9cj2u1ihoaoj6ppabfyjq",
+      "name": "User Three",
+      "status": "Accepted",
+      "invitationDate": "date"
     }
   ],
   "check_list": {
