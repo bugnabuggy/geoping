@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!--
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
+    -->
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RuntimeFrameWorkVersion>2.0.9</RuntimeFrameWorkVersion>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.9" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.2.1" />
+    <PackageReference Include="NLog" Version="4.5.10" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
     <PackageReference Include="NLog.Targets.Syslog" Version="5.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

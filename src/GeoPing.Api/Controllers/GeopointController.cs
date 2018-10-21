@@ -1,13 +1,12 @@
 ﻿using GeoPing.Api.Interfaces;
-using GeoPing.Api.Models;
-using GeoPing.Api.Models.DTO;
-using GeoPing.Api.Models.Entities;
+using GeoPing.Core.Entities;
+using GeoPing.Core.Models;
+using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
@@ -27,22 +26,37 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
+        //// GET api/Geopoint
+        //[HttpGet]
+        //public IActionResult GetPointsByFilter(string ListId, GeopointFilterDTO filter)
+        //{
+        //    if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
+        //    {
+        //        return BadRequest($"There is no list with Id = [{ListId}].");
+        //    }
+
+        //    var result = _geopointSrv.GetByFilter(ListId, filter, out int totalItems);
+
+        //    if(result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
+
         // GET api/Geopoint
+
         [HttpGet]
-        public IActionResult GetPointsByFilter(string ListId, GeopointFilterDTO filter)
+        public IActionResult GetPointsByFilter(string ListId)
         {
             if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
             {
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            var result = _geopointSrv.GetByFilter(ListId, filter, out int totalItems);
+            var result = _geopointSrv.Get(x => x.ListId == Guid.Parse(ListId));
 
-            if(result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(result);
         }
 
         // GET api/geolist/{ListId}/geopoint/{Id}
@@ -55,7 +69,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            var result = _geopointSrv.Get(x => x.Id == Guid.Parse(Id) && x.GeoListId == Guid.Parse(ListId)).FirstOrDefault();
+            var result = _geopointSrv.Get(x => x.Id == Guid.Parse(Id) && x.ListId == Guid.Parse(ListId)).FirstOrDefault();
 
             if (result == null)
             {
@@ -73,7 +87,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{ListId}].");
             }
 
-            item.GeoListId = Guid.Parse(ListId);
+            item.ListId = Guid.Parse(ListId);
             var result = _geopointSrv.Add(item);
 
             if (result.Success)
@@ -189,25 +203,25 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // PUT api/geolist/{ListId}/geopoint/{Id}/check
-        [HttpPut]
-        [Route("{Id}/check")]
-        public IActionResult CheckIn(string ListId, string Id, [FromBody]GeoPoint item)
-        {
-            if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
-            {
-                return BadRequest($"There is no list with Id = [{ListId}].");
-            }
+        //// PUT api/geolist/{ListId}/geopoint/{Id}/check
+        //[HttpPut]
+        //[Route("{Id}/check")]
+        //public IActionResult CheckIn(string ListId, string Id, [FromBody]GeoPoint item)
+        //{
+        //    if (_geolistSrv.Get(x => x.Id == Guid.Parse(ListId)) == null)
+        //    {
+        //        return BadRequest($"There is no list with Id = [{ListId}].");
+        //    }
 
-            var userId = _helper.GetUserIdByClaims(User.Claims);
+        //    var userId = _helper.GetUserIdByClaims(User.Claims);
 
-            var result = _geopointSrv.CheckPoint(item, userId);
+        //    var result = _geopointSrv.CheckPoint(item, userId);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GeoPing.Api.Configuration;
-using GeoPing.Api.Data;
-using GeoPing.Api.Models;
+using GeoPing.Core.Models;
+using GeoPing.Infrastructure.Data;
+using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,21 +18,22 @@ namespace GeoPing.TestData.Helpers
     public class TestDbContextInitializer
     {
         private ApplicationDbContext _ctx;
-        private ApplicationUser[] _users;
+        private AppIdentityUser[] _users;
 
         public async Task SeedData(IServiceProvider services)
         {
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
             var principal = new ClaimsPrincipal(httpContextAccessor.HttpContext.User);
             var userRoles = new UserRoles();
-            httpContextAccessor.HttpContext.User = new GenericPrincipal(new GenericIdentity("GP system initialization"), new[] { userRoles.Admin });
+            httpContextAccessor.HttpContext.User = new GenericPrincipal(
+                new GenericIdentity("GP system initialization"), new[] { userRoles.Admin });
 
             var appConfigurator = new AppConfigurator();
             appConfigurator.Initialize(services);
 
             _ctx = services.GetService<ApplicationDbContext>();
 
-            var _userManager = services.GetService<UserManager<ApplicationUser>>();
+            var _userManager = services.GetService<UserManager<AppIdentityUser>>();
             await _userManager.CreateAsync(AppUsersList.GetIdentityUser(), TestConfig.DefaultPassword);
 
             _users = AppUsersList.GetList().ToArray();

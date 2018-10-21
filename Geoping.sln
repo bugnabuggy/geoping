@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.TestData", "tests\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Api.Tests", "tests\GeoPing.Api.Tests\GeoPing.Api.Tests.csproj", "{430EAD87-B85E-41BC-AB16-6794F6370927}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoPing.Infrastructure", "src\GeoPing.Infrastructure\GeoPing.Infrastructure.csproj", "{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geoping.Services", "src\Geoping.Services\Geoping.Services.csproj", "{55A77FD3-C1E7-4346-B852-6244627982F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{430EAD87-B85E-41BC-AB16-6794F6370927}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{430EAD87-B85E-41BC-AB16-6794F6370927}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{430EAD87-B85E-41BC-AB16-6794F6370927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55A77FD3-C1E7-4346-B852-6244627982F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55A77FD3-C1E7-4346-B852-6244627982F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55A77FD3-C1E7-4346-B852-6244627982F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55A77FD3-C1E7-4346-B852-6244627982F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +69,8 @@ Global
 		{CF30C8B4-0CD2-4603-A046-4EFF4D9E1883} = {8D55F8D7-5BAB-46D2-93F8-A44B49D36EAE}
 		{D4A3D4E8-6530-41DF-A092-ABD44FD67CBF} = {FF4C6CBE-1A44-429D-A221-0FE1251B0608}
 		{430EAD87-B85E-41BC-AB16-6794F6370927} = {FF4C6CBE-1A44-429D-A221-0FE1251B0608}
+		{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC} = {8D55F8D7-5BAB-46D2-93F8-A44B49D36EAE}
+		{55A77FD3-C1E7-4346-B852-6244627982F6} = {8D55F8D7-5BAB-46D2-93F8-A44B49D36EAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C667CE7F-682B-4DDB-9CD5-D6C5CF5BAA8B}
