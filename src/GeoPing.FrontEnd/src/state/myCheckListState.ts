@@ -5,4 +5,5 @@ export const myCheckList: IMyCheckListsStateType = {
   idCheckListShow: '',
   idCheckListDelete: '',
   checkLists: [],
+  isLoading: false,
 };

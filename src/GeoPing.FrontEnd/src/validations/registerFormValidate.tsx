@@ -29,5 +29,11 @@ export const validate = ( values: any ) => {
   } else {
     errors.confirmPassword = 'required to be filled out';
   }
+  if ( !values.termsOfService ) {
+    errors.termsOfService = 'you must agree to the terms';
+  }
+  if (!values.captcha) {
+    errors.captcha = 'confirm that you are not a robot';
+  }
   return errors;
 };

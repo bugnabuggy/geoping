@@ -2,7 +2,8 @@ import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   CLEAR_STATE_MY_CHECK_LIST,
   DELETE_MY_CHECK_LISTS,
-  LOAD_MY_CHECK_LISTS
+  LOAD_MY_CHECK_LISTS,
+  MY_CHECK_LIST_LOADING
 } from '../constantsForReducer/checkList';
 import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
 import StaticStorage from '../services/staticStorage';
@@ -12,13 +13,16 @@ import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 
 export const loadCheckLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( loadingAction( true ) );
   const checkListService: any = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.loadAllMyCheckLists( idUser )
     .then( ( checkLists: any ) => {
       dispatch( loadCheckListsAction( checkLists ) );
+      dispatch( loadingAction( false ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( loadingAction( false ) );
     } );
 };
 
@@ -66,4 +70,8 @@ function deleteCheckListAction( checkListId: string ): Object {
 
 function clearStateMyCheckListsAction(): { type: string } {
   return { type: CLEAR_STATE_MY_CHECK_LIST };
+}
+
+function loadingAction( loading: boolean ): { type: string, loading: boolean } {
+  return { type: MY_CHECK_LIST_LOADING, loading };
 }

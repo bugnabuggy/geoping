@@ -1,4 +1,4 @@
-export default interface IUserWitchAccessDTO {
+export default interface IUserWithAccessDTO {
   id: string;
   idList: string;
   name: string;

@@ -1,7 +1,7 @@
-import IUserWitchAccessDTO from '../../DTO/userWitchAccessDTO';
+import ISharedCheckListStateType from '../../types/stateTypes/sharedCheckListStateType';
 
 export default interface IModalShareCheckListTableComponentProps {
-  users: Array<IUserWitchAccessDTO>;
+  sharedCheckList: ISharedCheckListStateType;
 }
 
 export interface IUsersListAccess {

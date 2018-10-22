@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ILoginPageProps } from '../pageProps/loginPageProps';
-import RegisterComponent from '../components/forms/register';
+import RegisterComponentContainer from '../componentContainers/registerComponentContainer';
 import { loginUrl, registerUrl, resetPassword } from '../constants/routes';
 import LoginComponentContainer from '../componentContainers/loginComponentContainer';
 
@@ -8,7 +8,7 @@ export default class LoginPage extends React.Component<ILoginPageProps, any> {
   render() {
     const form: any = {
       [ resetPassword ]: 'Reset Password',
-      [ registerUrl ]: RegisterComponent,
+      [ registerUrl ]: RegisterComponentContainer,
       [ loginUrl ]: LoginComponentContainer,
     };
     const Component: any = form[ this.props.location.pathname ];
