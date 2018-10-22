@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
     -->
-    <TargetFrameworks>netcoreapp2.1;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <UserSecretsId>aspnet-GeoPing.Api-F98F36D9-731D-42EB-B9A3-DBBCAFF87ABB</UserSecretsId>
