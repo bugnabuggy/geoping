@@ -1,7 +1,9 @@
 ﻿using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
+using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +24,23 @@ namespace GeoPing.Api.Controllers
         private readonly SignInManager<AppIdentityUser> _signInManager;
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IEmailService _emailSender;
+        private readonly IAccountService _accountSrv;
 
         public AccountController(
             UserManager<AppIdentityUser> userManager,
             SignInManager<AppIdentityUser> signInManager,
             ILogger<AccountController> logger,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext,
+            IEmailService emailSender,
+            IAccountService accountSrv)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _dbContext = dbContext;
+            _emailSender = emailSender;
+            _accountSrv = accountSrv;
         }
 
         [TempData]
@@ -51,12 +59,7 @@ namespace GeoPing.Api.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser, string returnUrl = null)
         {
-            /*
-             * Checks if user with submitted email is exists
-             */
-            //var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
-           
-            if(_dbContext.Users.Any(u => u.Email == registerUser.Email))
+            if (_dbContext.Users.Any(u => u.Email == registerUser.Email))
             {
                 return BadRequest(new OperationResult
                 {
@@ -66,11 +69,11 @@ namespace GeoPing.Api.Controllers
             }
 
             ViewData["ReturnUrl"] = returnUrl;
-            
+
             if (ModelState.IsValid)
             {
                 var user = new AppIdentityUser { UserName = registerUser.UserName, Email = registerUser.Email };
-                
+
                 var result = await _userManager.CreateAsync(user, registerUser.Password);
                 if (result.Succeeded)
                 {
@@ -93,7 +96,7 @@ namespace GeoPing.Api.Controllers
                 Messages = new[] { "Something was failed while user registration" }
             });
         }
-        
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -117,7 +120,7 @@ namespace GeoPing.Api.Controllers
         }
 
         #endregion
-        
+
         /*
         [HttpGet]
         [AllowAnonymous]

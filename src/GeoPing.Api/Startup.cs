@@ -130,7 +130,7 @@ namespace GeoPing.Api
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler();
             }
 
             app.UseCors(builder =>
@@ -138,19 +138,13 @@ namespace GeoPing.Api
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
                 builder.AllowAnyOrigin();
-                builder.AllowCredentials();
             });
 
             app.UseStaticFiles();
 
             app.UseIdentityServer();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc();
         }
     }
 }

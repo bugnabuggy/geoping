@@ -5,6 +5,7 @@ using GeoPing.Core.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
+using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,6 +30,8 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<ListSharing>, DbRepository<ListSharing>>();
             services.AddScoped<IRepository<SupportMessage>, DbRepository<SupportMessage>>();
             services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
+
+            services.AddTransient<IEmailService, EmailService>();
 
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
