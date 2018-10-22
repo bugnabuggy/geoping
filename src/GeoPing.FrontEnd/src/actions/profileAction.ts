@@ -5,11 +5,11 @@ import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { LOAD_INFO, UPGRADE_ACCOUNT } from '../constantsForReducer/profile';
+import { LOAD_INFO, UPGRADE_ACCOUNT, SHOW_MODAL_WINDOW, CLOSE_MODAL_WINDOW } from '../constantsForReducer/profile';
 
-export const loadProfileData = () => ( dispatch: IDispatchFunction ) => {
+export const loadProfileData = (idUser: string) => ( dispatch: IDispatchFunction ) => {
   const profileService: IProfileServiceType = StaticStorage.serviceLocator.get( 'IProfileServiceType' );
-  profileService.loadProfileData()
+  profileService.loadProfileData( idUser )
     .then( (profile: any) => {
       dispatch( loadProfileDataAction( profile ) );
     })
@@ -30,9 +30,34 @@ export const changePassword = ( password: string, newPassword: string ) => ( dis
     } );
 };
 
+export const updateProfileData = ( data: any ) => ( dispatch: IDispatchFunction ) => {
+  const profileService: IProfileServiceType = StaticStorage.serviceLocator.get('IProfileServiceType');
+  profileService.updateProfileData(data)
+    .then((message: string) => {
+      dispatch(addNotificationAction(createNotification(
+        message, EnumNotificationType.Success)));
+    })
+    .catch((error: any) => {
+      dispatch(addNotificationAction(createNotification(error, EnumNotificationType.Danger)));
+    });
+};
 export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {
   const co: any = 'a';
 };
-function loadProfileDataAction(profile: Array<string>): Object {
+
+export const showModalChangePassword = () => (dispatch: IDispatchFunction ) => {
+  dispatch(showModalChangePasswordAction( true ));
+};
+export const closeModalChangePassword = () => (dispatch: IDispatchFunction ) => {
+  dispatch(closeModalChangePasswordAction( false ));
+};
+
+function closeModalChangePasswordAction(isShow: boolean): Object {
+  return {type: CLOSE_MODAL_WINDOW, isShow};
+}
+function showModalChangePasswordAction(isShow: boolean): Object {
+  return {type: SHOW_MODAL_WINDOW, isShow};
+}
+function loadProfileDataAction(profile: any[]): Object {
   return {type: LOAD_INFO, profile};
 }

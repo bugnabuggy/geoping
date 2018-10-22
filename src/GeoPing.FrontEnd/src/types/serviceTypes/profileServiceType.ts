@@ -1,4 +1,5 @@
 export default interface IProfileServiceType {
-  loadProfileData: () => Promise<any>;
+  loadProfileData: (idUser: string) => Promise<any>;
+  updateProfileData: (data: any) => Promise<any>;
   upgradeAccount: () => Promise<any>;
 }

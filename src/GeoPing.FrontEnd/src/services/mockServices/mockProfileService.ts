@@ -21,4 +21,10 @@ export default class MockProfileService implements IProfileServiceType {
       );
     } );
   }
+
+  updateProfileData() {
+    return new Promise ((resolve: any, reject: any) => {
+      resolve ('your credentials was updated');
+    });
+  }
 }

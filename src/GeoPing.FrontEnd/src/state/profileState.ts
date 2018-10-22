@@ -7,4 +7,6 @@ export const profileState: IProfileStateType = {
   phone: '',
   accountType: '',
   lastPaid: '',
+  isShowModal: false,
+  isLoaded: false
 };
