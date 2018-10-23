@@ -1,5 +1,7 @@
+import IUserWitchAccessDTO from '../../DTO/userWitchAccessDTO';
+
 export default interface IModalShareCheckListTableComponentProps {
-  users: Array<IUsersListAccess>;
+  users: Array<IUserWitchAccessDTO>;
 }
 
 export interface IUsersListAccess {

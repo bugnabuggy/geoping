@@ -19,6 +19,7 @@ import allUsersTableReducer from './allUsersTableReducer';
 import allChecklistFilterReducer from './allChecklistFilterReducer';
 import invitationsReducer from './invitationsReducer';
 import myCheckListReducer from './myCheckListReducer';
+import sharedCheckListReducer from './sharedCheckListReducer';
 
 export default function createReducer(injectedReducers: any) {
   return combineReducers({
@@ -30,6 +31,7 @@ export default function createReducer(injectedReducers: any) {
     profile: profileReducer,
     tableUser: tableUserReducer,
     myCheckList: myCheckListReducer,
+    sharedCheckList: sharedCheckListReducer,
     checkinStatistics: checkinStatisticsReducer,
     checkin: checkinReducer,
     header: headerReducer,

@@ -15,7 +15,7 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
             {item.name}
           </td>
           <td>
-            {item.access}
+            {item.status}
           </td>
           <td>
             <div

@@ -6,6 +6,7 @@ import {
 } from '../constantsForReducer/checkList';
 import { myCheckList } from '../state/myCheckListState';
 import IMyCheckListsStateType from '../types/stateTypes/myCheckListsStateType';
+import { PROVIDE_PUBLIC_ACCESS } from '../constantsForReducer/sharedCheckList';
 
 export default function myCheckListReducer( state: IMyCheckListsStateType = myCheckList, action: any ) {
   const reduceObject: any = {
@@ -14,6 +15,7 @@ export default function myCheckListReducer( state: IMyCheckListsStateType = myCh
     [ LOAD_MY_CHECK_LISTS ]: loadMyCheckLists,
     [ DELETE_MY_CHECK_LISTS ]: deleteMyCheckList,
     [ CLEAR_STATE_MY_CHECK_LIST ]: clearStateMyCheckList,
+    [ PROVIDE_PUBLIC_ACCESS ]: providePublicAccess,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -52,5 +54,22 @@ function deleteMyCheckList( state: IMyCheckListsStateType, action: any ): IMyChe
 function clearStateMyCheckList( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
   return {
     ...myCheckList,
+  };
+}
+
+function providePublicAccess( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
+  return {
+    ...state,
+    checkLists: [
+      ...state.checkLists.map( ( item: any ) => {
+        return item.id === action.idList ?
+          {
+            ...item,
+            public: action.isPublic,
+          }
+          :
+          item;
+      } )
+    ],
   };
 }
