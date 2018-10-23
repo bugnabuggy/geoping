@@ -1,8 +1,8 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
 
 export default interface ITableHistoryDashboardContainerProps {
-  show: boolean;
-  history: any;
+  tableHistory: ITableHistoryStateType;
 
   filterHistory: () => ( dispatch: IDispatchFunction ) => void;
   closeFilterHistory: () => ( dispatch: IDispatchFunction ) => void;

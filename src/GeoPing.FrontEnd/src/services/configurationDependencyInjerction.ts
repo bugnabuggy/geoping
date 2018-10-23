@@ -17,6 +17,7 @@ import AuthorizationService from './httpServices/authorizationService';
 import CheckListService from './httpServices/checkListService';
 import MockUserService from './mockServices/mockUserService';
 import MarkerService from './httpServices/markerService';
+import { AxiosRequestConfig } from 'axios';
 
 export function configurationDependencyInjerction() {
 
@@ -25,8 +26,17 @@ export function configurationDependencyInjerction() {
 
   StaticStorage.serviceLocator = environments.get( buildEnvironment );
 
+  const httpHeader: AxiosRequestConfig = {
+    headers: {
+      client_id: process.env.REACT_APP_CLIENT_ID,
+      client_secret: process.env.REACT_APP_CLIENT_SECRET,
+      grant_type: process.env.REACT_APP_GRANT_TYPE,
+      scope: process.env.REACT_APP_SCOPE,
+    }
+  };
+
   /* http services */
-  httpServiceLocator.set( 'IHttpCommunicator', new HttpCommunicator() );
+  httpServiceLocator.set( 'IHttpCommunicator', new HttpCommunicator( httpHeader ) );
   httpServiceLocator.set( 'IAuthorization', new AuthorizationService() );
   httpServiceLocator.set( 'ITableHistoryService', new TableHistoryService() );
   httpServiceLocator.set( 'ICheckListServiceType', new CheckListService() );

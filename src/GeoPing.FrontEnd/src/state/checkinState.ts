@@ -5,4 +5,6 @@ export const checkinState: ICheckinStateType = {
   difference: null,
   isCheckIn: false,
   selectedListId: '',
+  isListLoading: false,
+  isPointLoading: false,
 };

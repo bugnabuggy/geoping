@@ -2,7 +2,8 @@ import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/moda
 import {
   CLEAR_STATE_MY_CHECK_LIST,
   DELETE_MY_CHECK_LISTS,
-  LOAD_MY_CHECK_LISTS
+  LOAD_MY_CHECK_LISTS,
+  MY_CHECK_LIST_LOADING
 } from '../constantsForReducer/checkList';
 import { myCheckList } from '../state/myCheckListState';
 import IMyCheckListsStateType from '../types/stateTypes/myCheckListsStateType';
@@ -16,6 +17,7 @@ export default function myCheckListReducer( state: IMyCheckListsStateType = myCh
     [ DELETE_MY_CHECK_LISTS ]: deleteMyCheckList,
     [ CLEAR_STATE_MY_CHECK_LIST ]: clearStateMyCheckList,
     [ PROVIDE_PUBLIC_ACCESS ]: providePublicAccess,
+    [ MY_CHECK_LIST_LOADING ]: loading,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -71,5 +73,12 @@ function providePublicAccess( state: IMyCheckListsStateType, action: any ): IMyC
           item;
       } )
     ],
+  };
+}
+
+function loading( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
+  return {
+    ...state,
+    isLoading: action.loading,
   };
 }

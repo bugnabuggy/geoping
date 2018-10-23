@@ -1,5 +1,6 @@
-import IUserWitchAccessDTO from '../../DTO/userWitchAccessDTO';
+import IUserWithAccessDTO from '../../DTO/userWitchAccessDTO';
 
 export default interface ISharedCheckListStateType {
-  listUsersWitchAccess: Array<IUserWitchAccessDTO>;
+  listUsersWitchAccess: Array<IUserWithAccessDTO>;
+  isLoading: boolean;
 }
