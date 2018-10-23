@@ -35,8 +35,8 @@ namespace GeoPing.Utilities.Logger
                     Protocol = ProtocolType.Tcp,
                     Tcp = new TcpConfig()
                     {
-                        Server = "logs7.papertrailapp.com",
-                        Port = 51378,
+                        Server = "logs4.papertrailapp.com",
+                        Port = 49554,
                         Tls = new TlsConfig()
                         {
                             Enabled = true

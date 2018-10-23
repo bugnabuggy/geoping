@@ -3,4 +3,5 @@ import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateTyp
 export const tableHistoryState: ITableHistoryStateType = {
   history: [],
   showHistoryFilter: false,
+  isLoading: false,
 };

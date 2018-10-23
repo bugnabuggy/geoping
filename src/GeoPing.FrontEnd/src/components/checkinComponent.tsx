@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, ControlLabel, FormGroup, Panel, Table } from 'react-bootstrap';
 import { v4 as uuidV4 } from 'uuid';
 import Select from 'react-select';
+import { PulseLoader } from 'react-spinners';
 
 import ICheckinComponentProps from '../componentProps/checkinComponentProps';
 import { defaultMarker } from '../constants/defaultMarker';
@@ -38,7 +39,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
     };
 
     // console.log( 'historyData', historyData );
-    this.props.functions.saveHistory('', historyData );
+    this.props.functions.saveHistory( '', historyData );
   };
   handleSelectList = ( e: any ) => {
     this.props.functions.selectList( e.value );
@@ -146,7 +147,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
             options={this.renderListOption()}
             className="check-in-select"
             onChange={this.handleSelectList}
-            isLoading={!!!this.props.checkin.selectList.length}
+            isLoading={this.props.checkin.isListLoading}
           />
         </FormGroup>
         <FormGroup>
@@ -156,7 +157,36 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           >
             <Table>
               <tbody>
-              {this.renderPointList()}
+              {this.props.checkin.isPointLoading ?
+                (
+                  <tr>
+                    <td>
+                      <div className="container-spinner-center">
+                        <PulseLoader
+                          sizeUnit="px"
+                          size={15}
+                          margin="4px"
+                          color={'#a9a9a9'}
+                          loading={this.props.checkin.isPointLoading}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                )
+                :
+                this.props.googleMap.geoPoints.length > 0 ?
+                  this.renderPointList()
+                  :
+                  (
+                    <tr>
+                      <td>
+                        <React.Fragment>
+                          No points
+                        </React.Fragment>
+                      </td>
+                    </tr>
+                  )
+              }
               </tbody>
             </Table>
           </Panel>

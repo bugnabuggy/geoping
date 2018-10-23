@@ -5,7 +5,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
     -->
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <ApplicationIcon />
     <OutputType>Library</OutputType>

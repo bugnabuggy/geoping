@@ -12,7 +12,7 @@ module.exports = {
   },
   module: {
     rules: [
-      {test: /\.(tsx|ts)?$/, include: path.join(__dirname, 'src'), use: 'awesome-typescript-loader'},
+      {test: /\.(tsx|ts)?$/, include: path.join(__dirname, 'src'), use: 'ts-loader'},
       { test: /\.(jsx|js)?$/, include: path.join(__dirname, 'src'), use: 'babel-loader' },
       { test: /(\.css)$/, use: [
           {loader: 'style-loader'},

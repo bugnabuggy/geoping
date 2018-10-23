@@ -13,9 +13,8 @@ export default class HttpCommunicator implements IHttpCommunicator {
   private accessToken: string;
   private config: AxiosRequestConfig;
 
-  constructor()
-  constructor( _config?: AxiosRequestConfig ) {
-    this.accessToken = localStorage.getItem( 'token' );
+  constructor( _config: AxiosRequestConfig = {} ) {
+    this.accessToken = localStorage.getItem( 'token' ) || '';
     this.config = _config;
   }
 
@@ -28,10 +27,7 @@ export default class HttpCommunicator implements IHttpCommunicator {
   }
 
   post( url: string, data: any ) {
-    // return axios.post( url, data, this.config );
-    return new Promise( (resolve: any, reject: any) => {
-      resolve();
-    });
+    return axios.post( url, data, this.config );
   }
 
   put( url: string, data: any ) {

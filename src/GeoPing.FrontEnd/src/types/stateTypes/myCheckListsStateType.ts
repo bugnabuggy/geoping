@@ -3,4 +3,5 @@ export default interface IMyCheckListsStateType {
   idCheckListShow: string;
   idCheckListDelete: string;
   checkLists: Array<any>;
+  isLoading: boolean;
 }

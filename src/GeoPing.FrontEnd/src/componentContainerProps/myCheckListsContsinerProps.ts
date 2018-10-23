@@ -1,7 +1,8 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import IMyCheckListsStateType from '../types/stateTypes/myCheckListsStateType';
 
 export default interface IMyCheckListsContainerProps {
-  checkLists: Array<any>;
+  myCheckList: IMyCheckListsStateType;
 
   filterCheckLists: () => ( dispatch: IDispatchFunction ) => void;
   showModalShare: ( checkListId: string ) => ( dispatch: IDispatchFunction ) => void;
