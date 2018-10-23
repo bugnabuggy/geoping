@@ -27,13 +27,10 @@ export function configurationDependencyInjerction() {
   StaticStorage.serviceLocator = environments.get( buildEnvironment );
 
   const httpHeader: AxiosRequestConfig = {
-    headers: {
-      client_id: process.env.REACT_APP_CLIENT_ID,
-      client_secret: process.env.REACT_APP_CLIENT_SECRET,
-      grant_type: process.env.REACT_APP_GRANT_TYPE,
-      scope: process.env.REACT_APP_SCOPE,
-    }
+    headers: {}
   };
+
+  console.log('process.env', process.env);
 
   /* http services */
   httpServiceLocator.set( 'IHttpCommunicator', new HttpCommunicator( httpHeader ) );
