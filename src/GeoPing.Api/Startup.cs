@@ -63,7 +63,8 @@ namespace GeoPing.Api
                 .AddDefaultTokenProviders();
 
             // Configure IdentityServer with in-memory stores, keys, clients and res
-            services.AddIdentityServer()
+            services.AddIdentityServer(options =>
+            options.PublicOrigin = _configuration.GetSection("ServerHost").Value)
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
@@ -94,7 +95,7 @@ namespace GeoPing.Api
             })
             .AddIdentityServerAuthentication(options =>
             {
-                options.Authority = Constants.ServerUrl;
+                options.Authority = _configuration.GetSection("ServerHost").Value;
                 options.RequireHttpsMetadata = false;
                 options.ApiName = Constants.ApiName;
                 options.ApiSecret = Constants.ClientSecret;
