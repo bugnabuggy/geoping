@@ -7,6 +7,7 @@ using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,16 @@ namespace GeoPing.Api.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService _accountSrv;
+        private readonly IEmailService _emailSvc;
+        private UserManager<AppIdentityUser> _userManager;
 
-        public AccountController(IAccountService accountSrv)
+        public AccountController(IAccountService accountSrv,
+                                 IEmailService emailSvc,
+                                 UserManager<AppIdentityUser> userManager)
         {
             _accountSrv = accountSrv;
+            _emailSvc = emailSvc;
+            _userManager = userManager;
         }
 
         [TempData]
@@ -60,6 +67,32 @@ namespace GeoPing.Api.Controllers
 
             if (result.Success)
             {
+                var appUser = await _userManager.FindByEmailAsync(registerUser.Email);
+
+                var code = _userManager.GenerateEmailConfirmationTokenAsync(appUser).Result;
+
+                var callbackUrl = Url.Action("ConfirmEmail",
+                                             "Account",
+                                             new { userId = appUser.Id, code = code },
+                                             protocol: HttpContext.Request.Scheme);
+
+                _emailSvc.Send(new EmailMessage()
+                {
+                    FromAddress = new EmailAddress()
+                    {
+                        Name = "GeopingTeam",
+                        Address = "noreply@geoping.info"
+                    },
+                    ToAddress = new EmailAddress()
+                    {
+                        Name = registerUser.UserName,
+                        Address = registerUser.Email
+                    },
+                    Subject = "Email confirmation",
+                    Content = _emailSvc.GetConfirmationMail(registerUser.UserName, callbackUrl)
+
+                });
+
                 return Ok(result);
             }
             return BadRequest(result);

@@ -1,6 +1,7 @@
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
+using GeoPing.Utilities.EmailSender;
 using GeoPing.Utilities.Logger;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +42,7 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(_configuration);
+            services.AddSingleton<IEmailConfiguration>(_configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));

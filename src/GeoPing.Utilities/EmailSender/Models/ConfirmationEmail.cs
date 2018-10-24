@@ -20,7 +20,7 @@ namespace GeoPing.Utilities.EmailSender.Models
             string mail = $"Greetings {_userName}, \n" + "We have received your request to create an " +
                           $"account on Geoping.info with the name {_userName} on {DateTime.UtcNow.ToLongDateString()}.\n" +
                           "Before the account creation process can be finalized we need to verify your email address. " +
-                          "You can do that by clicking the link below.\n " +
+                          $"You can do that by clicking <a href='{_link}'>here</a> or the link below.\n " +
                           $"{_link} \n" +
                           "This link is valid for 24 hours. \n" +
                           "If this request was not made by you please disregard this email.The account creation will not be " +

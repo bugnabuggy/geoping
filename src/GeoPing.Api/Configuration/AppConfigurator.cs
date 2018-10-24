@@ -19,7 +19,6 @@ namespace GeoPing.Api.Configuration
     {
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
             services.AddScoped<IRepository<GeoList>, DbRepository<GeoList>>();
             services.AddScoped<IRepository<PublicList>, DbRepository<PublicList>>();
