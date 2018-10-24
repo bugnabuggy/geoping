@@ -1,5 +1,7 @@
+import ISharedCheckListStateType from '../../types/stateTypes/sharedCheckListStateType';
+
 export default interface IModalShareCheckListTableComponentProps {
-  users: Array<IUsersListAccess>;
+  sharedCheckList: ISharedCheckListStateType;
 }
 
 export interface IUsersListAccess {

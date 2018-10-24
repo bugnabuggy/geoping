@@ -1,273 +1,219 @@
 import { googleMapState } from '../state/googleMapState';
-import IGoogleMapType, { EnumStatusMarker } from '../types/stateTypes/googleMapStateType';
-import { defaultMarker } from '../constants/defaultMarker';
+import { IGoogleMapStateType } from '../types/stateTypes/googleMapStateType';
 import {
-  ADD_MARKERS,
-  ADD_NEW_POINT,
-  ADD_POINT,
-  CANCEL_ADD_NEW_POINT,
-  CANCEL_EDITING_GEO_POINT,
-  CHANGE_DATA_GEO_POINT, CLEAR_MARKER_LIST,
-  DELETE_MARKER,
-  EDIT_GEO_POINT,
-  FIND_LOCATION_FOR_CENTER_MAP,
-  MARKER_INSTALED,
-  MARKERS_RENDERED,
-  MOVE_DRAG_MARKER,
-  MOVE_END_MARKER,
-  MOVE_START_MARKER,
-  PERMISSION_TO_ADD_MARKER,
-  PUT_STATUS_MARKER,
-  SELECT_MARKER,
-  USER_MARKER_CREATED
+  ADD_LIST_POINTS,
+  ADD_NEW_GEO_POINT,
+  CANCEL_GEO_POINT,
+  CHANGE_DATA_GEO_POINT,
+  CHANGE_MOVING_GEO_POINT,
+  CLEAR_STATE_GOOGLE_MAP,
+  DELETE_GEO_POINT,
+  FIND_GEO_POSITION,
+  GEO_POINT_LIST_IS_CREATED,
+  PERMISSION_TO_ADD,
+  SAVE_GEO_POINT,
+  SELECT_GEO_POINT
 } from '../constantsForReducer/googleMap';
+import { EnumStatusMarker } from '../enums/statusMarker';
+import IGeoPoint from '../DTO/geoPointDTO';
+import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/filters';
+import { defaultMarker } from '../constants/defaultMarker';
+import { CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 
-export default function googleMapReducer( state: IGoogleMapType = googleMapState, action: any ) {
+export default function googleMapReducer( state: IGoogleMapStateType = googleMapState, action: any ) {
   const reduceObject: any = {
-    [ ADD_MARKERS ]: addPoints,
-    [ PERMISSION_TO_ADD_MARKER ]: permissionToAddMarker,
-    [ SELECT_MARKER ]: selectMarker,
-    [ MOVE_START_MARKER ]: moveStartMarker,
-    [ MOVE_DRAG_MARKER ]: moveDragMarker,
-    [ MOVE_END_MARKER ]: moveEndMarker,
-    [ CHANGE_DATA_GEO_POINT ]: changeDataGEOPoint,
-    [ CANCEL_EDITING_GEO_POINT ]: cancelEditingGEOPoint,
-    [ EDIT_GEO_POINT ]: editGEOPoint,
-    [ ADD_POINT ]: addPoint,
-    [ MARKER_INSTALED ]: markerInstaled,
-    [ CANCEL_ADD_NEW_POINT ]: cancelAddNewPoint,
-    [ ADD_NEW_POINT ]: addNewPoint,
-    [ PUT_STATUS_MARKER ]: putStatusMarker,
-    [ FIND_LOCATION_FOR_CENTER_MAP ]: findLocationForCenterMap,
-    [ DELETE_MARKER ]: deleteMarker,
-    [ USER_MARKER_CREATED ]: userMarkerCreated,
-    [ MARKERS_RENDERED ]: markerRendered,
-    [CLEAR_MARKER_LIST]: clearMarkerList,
+    [ ADD_LIST_POINTS ]: addListPoints,
+    [ SELECT_GEO_POINT ]: selectGeoPoint,
+    [ DELETE_GEO_POINT ]: deleteGEOPoint,
+    [ ADD_NEW_GEO_POINT ]: addNewGeoPoint,
+    [ FIND_GEO_POSITION ]: findGeoPosition,
+    [ PERMISSION_TO_ADD ]: permissionAdd,
+    [ CHANGE_MOVING_GEO_POINT ]: changeMovingGeoPoint,
+    [ SAVE_GEO_POINT ]: saveGeoPoint,
+    [ CANCEL_GEO_POINT ]: cancelGeoPoint,
+    [ CHANGE_DATA_GEO_POINT ]: changeDataGeoPoint,
+    [ ADD_GEO_POINT_FROM_MY_POSITION ]: addGeoPointFromMyPosition,
+    [ GEO_POINT_LIST_IS_CREATED ]: geoPointListCreate,
+    [ CHECK_IN_SELECT_LIST ]: checkInSelectList,
+    [ CLEAR_STATE_GOOGLE_MAP ]: clearStateGoogleMap,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
-function addPoints( state: IGoogleMapType, action: any ) {
+function addListPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    markersList: [ ...action.markers ],
+    geoPoints: action.geoPoints,
+    isGeoPointListIsCreated: false,
   };
 }
 
-function permissionToAddMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state );
-  newState.isAddMarker = action.isAddMarker;
-  return newState;
+function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    selectedGeoPoint: state.geoPoints.find( geoPoint => geoPoint.id === action.geoPoint.id ) || action.geoPoint,
+    statusMarker: action.geoPoint.id ? EnumStatusMarker.Edit : EnumStatusMarker.None,
+  };
 }
 
-function selectMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign(
-    {},
-    state,
-    { selectedMarker: action.marker },
-    { moveStartMarker: googleMapState.moveStartMarker },
-    { moveEndMarker: googleMapState.moveEndMarker }
-  );
-  return newState;
+function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    geoPoints: state.geoPoints.filter( geoPoint => geoPoint.id !== action.idPoint ),
+    idDeleteMarker: action.idPoint,
+  };
 }
 
-function moveStartMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    moveStartMarker: action.markerCoords,
-    isThereIsNewMarker: false,
-  } );
-  return newState;
+function addNewGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    selectedGeoPoint: action.geoPoint,
+    statusMarker: EnumStatusMarker.New,
+  };
 }
 
-function moveDragMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    selectedMarker: {
-      ...state.selectedMarker,
-      ...action.markerCoords
-    }
-  } );
-  return newState;
+function findGeoPosition( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    position: action.geoPosition,
+  };
 }
 
-function moveEndMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    selectedMarker: {
-      ...state.selectedMarker,
-      ...action.markerCoords
-    }
-  } );
-  return newState;
+function permissionAdd( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    isAddMarker: action.isPermissionAdd
+  };
 }
 
-function changeDataGEOPoint( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    selectedMarker: {
-      ...state.selectedMarker,
-      [ action.field ]: action.value,
-    },
-    isMarkerCanceled: false,
-    isMarkerSaved: false,
-    isThereIsNewMarker: false,
-  } );
-  return newState;
-}
-
-function cancelEditingGEOPoint( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    isMarkerInstalled: false,
-    isMarkerCanceled: true,
-    isMarkerSaved: false,
-    isCheckGeoPosition: false,
-    selectedMarker: {
-      ...defaultMarker,
-    },
-    markersList: [
-      ...state.markersList,
-      // ...state.markersList.map ( ( item: any ) => {
-      //   debugger
-      //   if ( item.id === newSelectedMarker.id ) {
-      //     return state.selectedMarker;
-      //   } else {
-      //     return item;
-      //   }
-      // } )
-    ]
-  } );
-  return newState;
-}
-
-function editGEOPoint( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    markers: [
-      ...state.markersList.map( item => {
-        return item.id === state.selectedMarker.id ? state.selectedMarker : item;
-      } )
-    ]
-  } );
-  return newState;
-}
-
-function addPoint( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    selectedMarker: {
-      ...action.marker,
-    },
-    isThereIsNewMarker: true,
-    isMarkerCanceled: false,
-    isMarkerSaved: false,
-    isCheckGeoPosition: true,
-  } );
-  return newState;
-}
-
-function markerInstaled( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    isMarkerInstalled: action.isMarkerInstaled,
-    isMarkerCanceled: false,
-    isMarkerSaved: false,
-  } );
-  return newState;
-}
-
-function cancelAddNewPoint( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    selectedMarker: { ...defaultMarker },
-    isMarkerInstalled: false,
-    isMarkerCanceled: true,
-    isMarkerSaved: false,
-    isCheckGeoPosition: false,
-    isThereIsNewMarker: false,
-    markersForMap: [
-      ...state.markersForMap.filter( item => {
-        if ( state.selectedMarker.id === item.id ) {
-          item.setMap( null );
-        } else {
-          return item;
-        }
-      } )
-    ],
-  } );
-  return newState;
-}
-
-function addNewPoint( state: IGoogleMapType, action: any ) {
-  let markerList: any;
-  if ( state.statusMarker === EnumStatusMarker.Edit ) {
-    markerList = state.markersList.map( item => {
-      if ( action.idMarker === item.id ) {
-        return state.selectedMarker;
-      } else {
-        return item;
+function changeMovingGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const tempGeoPoint: IGeoPoint = state.geoPoints
+    .find( ( geoPoint: IGeoPoint ) => geoPoint.id === state.selectedGeoPoint.id );
+  const moveStartMarker: { lat: number, lng: number } =
+    state.statusMarker === EnumStatusMarker.Edit ?
+      {
+        lat: tempGeoPoint.lat,
+        lng: tempGeoPoint.lng,
       }
-    } );
-  } else {
-    markerList = [
-      ...state.markersList,
-      state.selectedMarker
-    ];
+      :
+      {
+        lng: null,
+        lat: null,
+      };
+
+  return {
+    ...state,
+    moveStartMarker: moveStartMarker,
+    selectedGeoPoint: {
+      ...state.selectedGeoPoint,
+      ...action.geoPoint,
+    },
+  };
+}
+
+function saveGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const newGeoListGeopoints: Array<IGeoPoint> =
+    state.statusMarker === EnumStatusMarker.New ?
+      [
+        ...state.geoPoints,
+        action.geoPoint,
+      ]
+      :
+      state.statusMarker === EnumStatusMarker.Edit ?
+        [
+          ...state.geoPoints.map( item => {
+            return item.id === action.geoPoint.id ? action.geoPoint : item;
+          } ),
+        ]
+        :
+        [
+          ...state.geoPoints,
+        ];
+  return {
+    ...state,
+    geoPoints: [
+      ...newGeoListGeopoints,
+    ],
+    selectedGeoPoint: googleMapState.selectedGeoPoint,
+    statusMarker: EnumStatusMarker.None,
+  };
+}
+
+function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  if ( state.statusMarker === EnumStatusMarker.New ) {
+    return {
+      ...state,
+      idDeleteMarker: state.selectedGeoPoint.id,
+      selectedGeoPoint: googleMapState.selectedGeoPoint,
+      statusMarker: EnumStatusMarker.None,
+    };
+  } else if ( state.statusMarker === EnumStatusMarker.Edit ) {
+    let moveMarker: any = {};
+    if ( state.moveStartMarker.lat !== null && state.moveStartMarker.lng !== null ) {
+      moveMarker = {
+        ...state.moveStartMarker,
+      };
+    }
+    return {
+      ...state,
+      geoPoints: [
+        ...state.geoPoints.map( item => {
+          return item.id === state.selectedGeoPoint.id ?
+            {
+              ...item,
+              ...moveMarker,
+            }
+            :
+            item;
+        } )
+      ],
+      selectedGeoPoint: googleMapState.selectedGeoPoint,
+      statusMarker: EnumStatusMarker.None,
+    };
   }
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    markersList: [
-      ...markerList
-    ],
-    selectedMarker: { ...defaultMarker },
-    isMarkerSaved: true,
-    isMarkerInstalled: false,
-    isMarkerCanceled: false,
-    isCheckGeoPosition: false,
-    isThereIsNewMarker: false,
-  } );
-  return newState;
 }
 
-function putStatusMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, { statusMarker: action.statusMarker } );
-  return newState;
-}
-
-function findLocationForCenterMap( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, { position: action.position } );
-  return newState;
-}
-
-function deleteMarker( state: IGoogleMapType, action: any ) {
-  const newState: IGoogleMapType = Object.assign( {}, state, {
-    markersList: [
-      ...state.markersList.filter( item => {
-        if ( item.id !== action.idMarker ) {
-          return item;
-        }
-      } )
-    ],
-    deleteIdMarker: action.idMarker,
-    selectedMarker: { ...defaultMarker },
-    isMarkerSaved: false,
-    isMarkerInstalled: false,
-    isMarkerCanceled: false,
-    isCheckGeoPosition: false,
-    isThereIsNewMarker: false,
-  } );
-  return newState;
-}
-
-function userMarkerCreated( state: IGoogleMapType, action: any ) {
+function changeDataGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    isUserMarkerCreated: action.isCreate,
+    selectedGeoPoint: {
+      ...state.selectedGeoPoint,
+      [ action.field ]: action.data,
+    },
   };
 }
 
-function markerRendered( state: IGoogleMapType, action: any ) {
+function addGeoPointFromMyPosition( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    isMarkerRendered: action.isMarkerRendered,
+    // idDeleteMarker: state.selectedGeoPoint.id ? state.selectedGeoPoint.id : '',
+    selectedGeoPoint: {
+      ...defaultMarker,
+      // id: !!state.selectedGeoPoint.id ? state.selectedGeoPoint.id : uuidV4(),
+      lat: state.position.lat,
+      lng: state.position.lng,
+    },
+    statusMarker: EnumStatusMarker.New,
   };
 }
 
-function clearMarkerList( state: IGoogleMapType, action: any ) {
+function geoPointListCreate( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    markersList: googleMapState.markersList,
+    isGeoPointListIsCreated: action.listCreated,
+  };
+}
+
+function checkInSelectList( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    selectedGeoPoint: googleMapState.selectedGeoPoint,
+  };
+}
+
+function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...googleMapState,
   };
 }

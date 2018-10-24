@@ -3,6 +3,7 @@
     "es2015",
     "react"
   ],
+  "plugins": ["emotion"],
   "env": {
     "development": {
       "presets": [

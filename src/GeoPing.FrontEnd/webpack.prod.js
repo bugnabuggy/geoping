@@ -17,13 +17,9 @@ module.exports = merge(common, {
     publicPath: './',
     filename: 'bundle.js',
   },
-  // devServer: {
-  //   contentBase: path.resolve('./dist'),
-  //   inline: true,
-  // },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin(env.stringified['process.env']),
     new UglifyJSPlugin({
       sourceMap: true
     }),

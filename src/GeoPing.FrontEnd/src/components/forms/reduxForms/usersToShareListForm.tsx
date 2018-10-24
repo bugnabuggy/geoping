@@ -78,13 +78,14 @@ function fieldUser( props: any ) {
 function addUserToShareListForm( props: any ): any {
   const { handleSubmit } = props;
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <FieldArray
         name="users"
         component={fieldUser}
       />
       <div className="modal-share-form-buttons">
         <Button
+          type="submit"
         >
           Send invitations
         </Button>

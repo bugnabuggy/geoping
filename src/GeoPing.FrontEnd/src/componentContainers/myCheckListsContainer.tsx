@@ -2,20 +2,19 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Panel } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PulseLoader } from 'react-spinners';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
-import IMyCheckListsContainerProps  from '../componentContainerProps/myCheckListsContsinerProps';
-import { filterCheckLists } from '../actions/checkListAction';
-import { deleteCheckList, showModalShare } from '../actions/myCheckListsAction';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { openModalForCreateCheckList } from '../actions/checkListAction';
+import IMyCheckListsContainerProps from '../componentContainerProps/myCheckListsContsinerProps';
+import { filterCheckLists, openModalForCreateCheckList } from '../actions/checkListAction';
+import { clearStateMyCheckLists, deleteCheckList, loadCheckLists, showModalShare } from '../actions/myCheckListsAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
-import { loadCheckLists } from '../actions/myCheckListsAction';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {
 
   renderComponentCheckLists = () => {
-    const components: Array<any> = this.props.checkLists.map( ( item: any, index: number ) => {
+    const components: Array<any> = this.props.myCheckList.checkLists.map( ( item: any, index: number ) => {
       const key: string = `${index}_checkLists`;
       return (
         <CheckListComponent
@@ -31,7 +30,11 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
   };
 
   componentDidMount() {
-    this.props.loadCheckLists('ffdf');
+    this.props.loadCheckLists( 'ffdf' );
+  }
+
+  componentWillUnmount() {
+    this.props.clearStateMyCheckLists();
   }
 
   render() {
@@ -39,6 +42,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
       <React.Fragment>
         <div className="dashboard-check-list-title">
           <h4>My Check lists</h4>
+
           <div
             className="dashboard-check-list-icon-pluse dashboard-check-list-icon-pluse-container cursor-pointer"
             onClick={this.props.openModalForCreateCheckList}
@@ -55,7 +59,29 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
         <Panel>
           <div className="dashboard-check-list-panel-body">
             <Panel.Body>
-              {this.renderComponentCheckLists()}
+
+              {this.props.myCheckList.isLoading ?
+                (
+                  <div className="container-spinner-center">
+                    <PulseLoader
+                      sizeUnit="px"
+                      size={15}
+                      margin="4px"
+                      color={'#a9a9a9'}
+                      loading={this.props.myCheckList.isLoading}
+                    />
+                  </div>
+                )
+                :
+                this.props.myCheckList.checkLists.length > 0 ?
+                  this.renderComponentCheckLists()
+                  :
+                  (
+                    <React.Fragment>
+                      No records
+                    </React.Fragment>
+                  )
+              }
             </Panel.Body>
           </div>
         </Panel>
@@ -66,18 +92,19 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    checkLists: state.myCheckList.checkLists,
+    myCheckList: state.myCheckList,
   };
 };
 const mapDispatchToProps = ( dispatch: any ) =>
-  bindActionCreators (
+  bindActionCreators(
     {
       showModalShare,
       openModalForCreateCheckList,
       filterCheckLists,
       loadCheckLists,
       deleteCheckList,
-  },
+      clearStateMyCheckLists,
+    },
     dispatch );
 
 export default connect( mapStateToProps, mapDispatchToProps )( MyCheckListsContainer );

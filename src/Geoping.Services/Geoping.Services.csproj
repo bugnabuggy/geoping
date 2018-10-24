@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
+    <ProjectReference Include="..\GeoPing.Infrastructure\GeoPing.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

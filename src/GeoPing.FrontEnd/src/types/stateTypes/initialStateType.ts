@@ -1,4 +1,4 @@
-import IGoogleMapType from './googleMapStateType';
+import { IGoogleMapStateType } from './googleMapStateType';
 import { ITableHistoryStateType } from './tableHistoryStateType';
 import IHeaderStateType from './headerStateType';
 import IUserState from './userStateType';
@@ -13,12 +13,15 @@ import IPublicCheckListType from './publicCheckListType';
 import INotificationStateType from './notificationStateType';
 import IAllUsersTableStateType from './allUsersTableStateType';
 import IinvitationsStateType from './invitationsStateType';
+import IMyCheckListsStateType from './myCheckListsStateType';
+import ISharedCheckListStateType from './sharedCheckListStateType';
 
 export default interface IinitialStateType {
   allUsersFilter: IAllUsersStateType;
   allUsersTable: IAllUsersTableStateType;
   checkin: ICheckinStateType;
-  myCheckList: any;
+  myCheckList: IMyCheckListsStateType;
+  sharedCheckList: ISharedCheckListStateType;
   checkinStatistics: ICheckinStatisticsStateType;
   checkList: ICheckListStateType;
   profile: IProfileStateType;
@@ -26,7 +29,7 @@ export default interface IinitialStateType {
   user: IUserState;
   header: IHeaderStateType;
   tableHistory: ITableHistoryStateType;
-  googleMap: IGoogleMapType;
+  googleMap: IGoogleMapStateType;
   // modal: IModalStateType;
   publicCheckList: IPublicCheckListType;
   notifications: INotificationStateType;

@@ -1,48 +1,20 @@
-export default interface IGoogleMapType {
-  markersList: Array<IMarker>;
-  markersForMap: Array<any>;
-  isAddMarker: boolean;
-  selectedMarker: IMarker;
-  selectedMarkerForMap: any;
-  moveStartMarker: IMoveMarker;
-  moveEndMarker: IMoveMarker;
-  isThereIsNewMarker: boolean;
-  newMarker: IMarker;
-  isMarkerInstalled: boolean;
-  isMarkerSaved: boolean;
-  isMarkerCanceled: boolean;
-  statusMarker: EnumStatusMarker;
-  isCheckGeoPosition: boolean;
-  position: IPosition;
-  deleteIdMarker: string;
-  isUserMarkerCreated: boolean;
-  isMarkerRendered: boolean;
-}
-
-export interface IMarker {
-  id: string;
-  idList: string;
-  name: string;
-  lat: number;
-  lng: number;
-  radius: number;
-  description: string;
-}
-
-export interface IMoveMarker {
-  id: string;
-  lat: number;
-  lng: number;
-}
+import IGeoPoint from '../../DTO/geoPointDTO';
+import { EnumStatusMarker } from '../../enums/statusMarker';
 
 export interface IPosition {
   lat: number;
   lng: number;
   isSuccess: boolean;
+  address: string;
 }
 
-export enum EnumStatusMarker {
-  None = 'none',
-  New = 'new',
-  Edit = 'edit',
+export interface IGoogleMapStateType {
+  geoPoints: Array<IGeoPoint>;
+  selectedGeoPoint: IGeoPoint;
+  isAddMarker: boolean;
+  position: IPosition;
+  statusMarker: EnumStatusMarker;
+  idDeleteMarker: string;
+  moveStartMarker: { lat: number, lng: number };
+  isGeoPointListIsCreated: boolean;
 }

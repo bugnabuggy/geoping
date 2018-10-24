@@ -1,6 +1,7 @@
 export const endpointBaseUrl: string = process.env.REACT_APP_API_BASE_URL;
 
 export const getToken: string = `${endpointBaseUrl}/connect/token`;
+export const registration: string = `${endpointBaseUrl}/registration`;
 
 /* endpoints for geo lists */
 export const getAllGeoLists: string = `${endpointBaseUrl}/api/geolist`;

@@ -5,4 +5,6 @@ export default interface ICheckinStateType {
   difference: number;
   isCheckIn: boolean;
   selectedListId: string;
+  isListLoading: boolean;
+  isPointLoading: boolean;
 }

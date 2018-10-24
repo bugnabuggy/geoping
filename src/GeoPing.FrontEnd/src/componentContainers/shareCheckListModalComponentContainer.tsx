@@ -6,22 +6,36 @@ import { closeModalShare } from '../actions/myCheckListsAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import IShareCheckListModalComponentContainerProps
   from '../componentContainerProps/shareCheckListModalComponentContainerProps';
+import {
+  clearSharedCheckList,
+  loadUsersForShared, providePublicAccess,
+  sendAccessUsersForCheckList
+} from '../actions/sharedCheckListAction';
 
 class ShareCheckListModalComponentContainer extends React.Component<IShareCheckListModalComponentContainerProps, any> {
   render() {
+    return this.props.myCheckList.isShowModalShare ?
+      (
+        <ShareCheckListModalComponent
+          myCheckList={this.props.myCheckList}
+          sharedCheckList={this.props.sharedCheckList}
 
-    return (
-      <ShareCheckListModalComponent
-        show={this.props.show}
-        closeModalShare={this.props.closeModalShare}
-      />
-    );
+          closeModalShare={this.props.closeModalShare}
+          loadUsersForShared={this.props.loadUsersForShared}
+          clearSharedCheckList={this.props.clearSharedCheckList}
+          sendAccessUsersForCheckList={this.props.sendAccessUsersForCheckList}
+          providePublicAccess={this.props.providePublicAccess}
+        />
+      )
+      :
+      null;
   }
 }
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    show: state.myCheckList.isShowModalShare,
+    myCheckList: state.myCheckList,
+    sharedCheckList: state.sharedCheckList,
   };
 };
 
@@ -29,6 +43,10 @@ const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
       closeModalShare,
+      loadUsersForShared,
+      clearSharedCheckList,
+      sendAccessUsersForCheckList,
+      providePublicAccess,
     },
     dispath );
 

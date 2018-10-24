@@ -15,12 +15,14 @@ import { notificationState } from './notificationsState';
 import { allUsersTableState } from './allUsersTableState';
 import { myCheckList } from './myCheckListState';
 import { invitationsState } from './invitationsState';
+import { sharedCheckList } from './sharedCheckListState';
 
 const initialState: IinitialStateType = {
   allUsersFilter: allUsersFilterState,
   allUsersTable: allUsersTableState,
   checkin: checkinState,
   myCheckList: myCheckList,
+  sharedCheckList: sharedCheckList,
   checkinStatistics: checkinStatisticsState,
   checkList: checkListState,
   profile: profileState,

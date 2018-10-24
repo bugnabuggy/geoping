@@ -3,25 +3,20 @@ import { Panel } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IListPointItemComponentProps from '../../componentProps/listPointItemComponentProps';
 import { defaultMarker } from '../../constants/defaultMarker';
-import { EnumStatusMarker } from '../../types/stateTypes/googleMapStateType';
 
 export class ListPointItemComponent extends React.Component<IListPointItemComponentProps, any> {
 
   handleSelectPoint = () => {
-    if ( this.props.selectedMarkerId === this.props.marker.id ) {
-      this.props.editingPermission ( false );
-      this.props.selectMarker ( defaultMarker );
-      this.props.putStatusMarker ( EnumStatusMarker.None );
+    if ( this.props.geoPoint.id === this.props.selectedGeoPointId ) {
+      this.props.selectPoint( defaultMarker );
     } else {
-      this.props.editingPermission ( true );
-      this.props.selectMarker ( this.props.marker );
-      this.props.putStatusMarker ( EnumStatusMarker.Edit );
+      this.props.selectPoint( this.props.geoPoint );
     }
   };
 
   handleDeletePoint = ( e: any ) => {
     e.stopPropagation();
-    this.props.deleteMarker ( this.props.marker.idList, this.props.marker.id );
+    this.props.deleteGeoPoint( this.props.geoPoint.id, this.props.statusGeoPoint, this.props.checkList.id );
   };
   // handleEditPoint = ( e: any ) => {
   //   e.stopPropagation();
@@ -32,15 +27,18 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
   render() {
     return (
       <Panel
+        className={`
+        ${ this.props.selectedGeoPointId && this.props.selectedGeoPointId !== this.props.geoPoint.id ?
+        ' check-list-point-item-disable ' : ''}`}
         onClick={this.handleSelectPoint}
       >
         <Panel.Body
           bsClass="success"
-          className={`check-list-point-item
-          ${ this.props.selectedMarkerId === this.props.marker.id && 'check-list-point-item-action'}
+          className={`check-list-point-item cursor-pointer
+          ${ this.props.selectedGeoPointId === this.props.geoPoint.id && 'check-list-point-item-action'}
           `}
         >
-          <span>{this.props.marker.name}</span>
+          <span>{this.props.geoPoint.name}</span>
           <div className="check-list-point-item-image-container">
             {/*<div*/}
             {/*className="icon-hover-color cursor-pointer"*/}

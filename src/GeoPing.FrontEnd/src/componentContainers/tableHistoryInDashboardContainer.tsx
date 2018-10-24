@@ -28,11 +28,11 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
           </div>
         </div>
         <ModalFilterHistoryComponent
-          show={this.props.show}
+          show={this.props.tableHistory.showHistoryFilter}
           closeFilterHistory={this.props.closeFilterHistory}
         />
         <TableHistoryDashboard
-          history={this.props.history}
+          tableHistory={this.props.tableHistory}
         />
       </React.Fragment>
     );
@@ -42,8 +42,6 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     tableHistory: state.tableHistory,
-    show: state.tableHistory.showHistoryFilter,
-    history: state.tableHistory.history,
   };
 };
 

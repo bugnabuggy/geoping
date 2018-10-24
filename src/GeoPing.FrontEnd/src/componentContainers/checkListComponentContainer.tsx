@@ -6,73 +6,59 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckListGeoPointComponent } from '../components/checkListGeoPointComponent';
 import { ListPointsComponent } from '../components/listPointsComponent';
 import ICheckListComponentContainerProps from '../componentContainerProps/checkListComponentContainerProps';
-import { checkGEOPosition, editingPermission } from '../actions/checkListAction';
-import {
-  addNewPoint,
-  cancelAddNewPoint,
-  cancelEditingGEOPoint,
-  changeDataGEOPoint,
-  deleteMarker,
-  editGEOPoint,
-  markerInstalled,
-  permissionToAddMarker,
-  putStatusMarker,
-  selectedMarker
-} from '../actions/googleMapAction';
+import { addNewPointForMyGeoPosition, clearStateCheckList, loadCheckListData } from '../actions/checkListAction';
 import { CheckListLinkComponent } from '../components/checkListLinkComponent';
 import { addNotification, deleteNotification } from '../actions/notificationsAction';
+import {
+  addNewPoint,
+  cancelGeoPoint,
+  changeDataGeoPoint,
+  deleteGeoPoint,
+  permissionAdd,
+  saveGeoPoint,
+  selectPoint
+} from '../actions/googleMapAction';
 
 class CheckListComponentContainer extends React.Component<ICheckListComponentContainerProps, any> {
+  componentDidMount() {
+    this.props.loadCheckListData( '', this.props.idCheckList );
+  }
+
+  componentWillUnmount() {
+    this.props.clearStateCheckList();
+  }
 
   render() {
     return (
       <React.Fragment>
         <CheckListLinkComponent
-          isAddMarker={this.props.isAddMarker}
-          isMarkerInstalled={this.props.isMarkerInstalled}
-          isMarkerSaved={this.props.isMarkerSaved}
-          isMarkerCanceled={this.props.isMarkerCanceled}
-          selectedMarker={this.props.selectedMarker}
-          isCheckGeoPosition={this.props.isCheckGeoPosition}
-          statusMarker={this.props.statusMarker}
+          googleMap={this.props.googleMap}
 
-          addNewPoint={this.props.addNewPoint}
-          permissionToAddMarker={this.props.permissionToAddMarker}
-          cancelAddNewPoint={this.props.cancelAddNewPoint}
+          permissionAdd={this.props.permissionAdd}
           addNotification={this.props.addNotification}
           deleteNotification={this.props.deleteNotification}
-          checkGEOPosition={this.props.checkGEOPosition}
-          editingPermission={this.props.editingPermission}
-          markerInstalled={this.props.markerInstalled}
-          putStatusMarker={this.props.putStatusMarker}
+          addNewPoint={this.props.addNewPoint}
+          addNewPointForMyGeoPosition={this.props.addNewPointForMyGeoPosition}
         />
         <div className="check-list-point">
           <CheckListGeoPointComponent
             checkList={this.props.checkList}
-            selectedMarker={this.props.selectedMarker}
-            isAddMarker={this.props.isAddMarker}
-            isMarkerInstalled={this.props.isMarkerInstalled}
-            statusMarker={this.props.statusMarker}
+            googleMap={this.props.googleMap}
 
-            editGEOPoint={this.props.editGEOPoint}
-            changeDataGEOPoint={this.props.changeDataGEOPoint}
-            cancelEditingGEOPoint={this.props.cancelEditingGEOPoint}
-            cancelAddNewPoint={this.props.cancelAddNewPoint}
-            markerInstalled={this.props.markerInstalled}
-            addNewPoint={this.props.addNewPoint}
-            editingPermission={this.props.editingPermission}
-            putStatusMarker={this.props.putStatusMarker}
+            saveGeoPoint={this.props.saveGeoPoint}
+            changeDataGeoPoint={this.props.changeDataGeoPoint}
+            cancelGeoPoint={this.props.cancelGeoPoint}
           />
         </div>
         <div className="check-list-points-list">
           <ListPointsComponent
-            markers={this.props.markers}
-            selectedMarkerId={this.props.selectedMarker.id}
+            geoPoints={this.props.googleMap.geoPoints}
+            selectedGeoPointId={this.props.googleMap.selectedGeoPoint.id}
+            statusGeoPoint={this.props.googleMap.statusMarker}
+            checkList={this.props.checkList}
 
-            editingPermission={this.props.editingPermission}
-            selectMarker={this.props.selectMarker}
-            putStatusMarker={this.props.putStatusMarker}
-            deleteMarker={this.props.deleteMarker}
+            selectPoint={this.props.selectPoint}
+            deleteGeoPoint={this.props.deleteGeoPoint}
           />
         </div>
       </React.Fragment>
@@ -83,35 +69,26 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     checkList: state.checkList,
-    markers: state.googleMap.markersList,
-    selectedMarker: state.googleMap.selectedMarker,
-    isAddMarker: state.googleMap.isAddMarker,
-    isMarkerInstalled: state.googleMap.isMarkerInstalled,
-    isMarkerSaved: state.googleMap.isMarkerSaved,
-    isMarkerCanceled: state.googleMap.isMarkerCanceled,
-    statusMarker: state.googleMap.statusMarker,
-    isCheckGeoPosition: state.googleMap.isCheckGeoPosition,
+    googleMap: state.googleMap,
   };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
-  bindActionCreators (
+  bindActionCreators(
     {
-    editingPermission,
-    selectMarker: selectedMarker,
-    editGEOPoint,
-    changeDataGEOPoint,
-    cancelEditingGEOPoint,
-    addNewPoint,
-    permissionToAddMarker,
-    cancelAddNewPoint,
-    addNotification,
-    deleteNotification,
-    checkGEOPosition,
-    markerInstalled,
-    putStatusMarker,
-    deleteMarker,
-  },
+      permissionAdd,
+      saveGeoPoint,
+      changeDataGeoPoint,
+      cancelGeoPoint,
+      selectPoint,
+      addNotification,
+      deleteNotification,
+      addNewPoint,
+      addNewPointForMyGeoPosition,
+      deleteGeoPoint,
+      loadCheckListData,
+      clearStateCheckList,
+    },
     dispath );
 
 export default connect( mapStateToProps, mapDispatchToProps )( CheckListComponentContainer );

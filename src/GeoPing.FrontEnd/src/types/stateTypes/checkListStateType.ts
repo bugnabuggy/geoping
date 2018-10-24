@@ -1,10 +1,14 @@
-import IPointType from './pointType';
-
 export default interface ICheckListStateType {
-  pointsList: Array<IPointType>;
   isShowModal: boolean;
-  idChecklist: string;
-  nameChecklist: string;
+  id: string;
+  name: string;
   isEditing: boolean;
   showFilterCheckList: boolean;
+  isMyGeoPosition: boolean;
+  description: string;
+  isPublic: boolean;
+  rating: number;
+  periodFrom: string;
+  periodTo: string;
+  ownerId: string;
 }
