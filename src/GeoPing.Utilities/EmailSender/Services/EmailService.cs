@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using GeoPing.Utilities.EmailSender.Models;
+using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
 using System;
@@ -37,6 +38,11 @@ namespace GeoPing.Utilities.EmailSender
                 emailClient.Send(message);
                 emailClient.Disconnect(true);
             }
+        }
+
+        public string GetConfirmationMail(string username, string link)
+        {
+            return new ConfirmationEmail(username, link).GetMail();
         }
     }
 }

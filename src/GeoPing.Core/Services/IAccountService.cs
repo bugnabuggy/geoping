@@ -3,11 +3,12 @@ using GeoPing.Core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GeoPing.Core.Services
 {
     public interface IAccountService
     {
-        OperationResult Register(RegisterUserDTO user);
+        Task<OperationResult> Register(RegisterUserDTO registerUser);
     }
 }

@@ -20,26 +20,10 @@ namespace GeoPing.Api.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<AppIdentityUser> _userManager;
-        private readonly SignInManager<AppIdentityUser> _signInManager;
-        private readonly ILogger _logger;
-        private readonly ApplicationDbContext _dbContext;
-        private readonly IEmailService _emailSender;
         private readonly IAccountService _accountSrv;
 
-        public AccountController(
-            UserManager<AppIdentityUser> userManager,
-            SignInManager<AppIdentityUser> signInManager,
-            ILogger<AccountController> logger,
-            ApplicationDbContext dbContext,
-            IEmailService emailSender,
-            IAccountService accountSrv)
+        public AccountController(IAccountService accountSrv)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _dbContext = dbContext;
-            _emailSender = emailSender;
             _accountSrv = accountSrv;
         }
 
@@ -48,53 +32,37 @@ namespace GeoPing.Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register()
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return Ok();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser)
         {
-            if (_dbContext.Users.Any(u => u.Email == registerUser.Email))
-            {
-                return BadRequest(new OperationResult
-                {
-                    Success = false,
-                    Messages = new[] { "Invalid username or email" }
-                });
-            }
-
-            ViewData["ReturnUrl"] = returnUrl;
+            var result = new OperationResult();
 
             if (ModelState.IsValid)
             {
-                var user = new AppIdentityUser { UserName = registerUser.UserName, Email = registerUser.Email };
-
-                var result = await _userManager.CreateAsync(user, registerUser.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    return Ok(new OperationResult
-                    {
-                        Success = true,
-                        Messages = new[] { "User was successfully registered" }
-                    });
-                }
-                AddErrors(result);
+                result = await _accountSrv.Register(registerUser);
             }
-            /*
-            * If we got this far, something failed
-            */
-            return BadRequest(new OperationResult
+            else
             {
-                Success = false,
-                Messages = new[] { "Something was failed while user registration" }
-            });
+                result = new OperationResult()
+                {
+                    Data = registerUser,
+                    Messages = new string[] { "Model is invalid" },
+                    Success = false
+                };
+            }
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         #region Helpers
@@ -104,18 +72,6 @@ namespace GeoPing.Api.Controllers
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
 
