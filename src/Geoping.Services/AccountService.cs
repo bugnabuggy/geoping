@@ -36,7 +36,7 @@ namespace Geoping.Services
         public async Task<OperationResult> Register(RegisterUserDTO registerUser)
         {
             // Checking if there is another user with given Email and UserName
-            if(IsUserExists(registerUser, out string item))
+            if (IsUserExists(registerUser, out string item))
             {
                 return new OperationResult
                 {
@@ -75,6 +75,28 @@ namespace Geoping.Services
             {
                 Success = false,
                 Messages = new[] { "Something was failed while user registration" }
+            };
+        }
+
+        public async Task<OperationResult> ChangePassword(string identityUserId, ChangePasswordDTO changePassword)
+        {
+            var user = await _userManager.FindByIdAsync(identityUserId);
+
+            var result = await _userManager.ChangePasswordAsync
+                (user, changePassword.OldPassword, changePassword.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return new OperationResult
+                {
+                    Success = true,
+                    Messages = new[] { "Password was changed successfully" }
+                };
+            }
+            return new OperationResult
+            {
+                Success = false,
+                Messages = new[] { "There was fault while changing password. Check if the old password is correct" }
             };
         }
 
