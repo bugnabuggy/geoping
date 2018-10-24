@@ -36,23 +36,13 @@ namespace Geoping.Services
         public async Task<OperationResult> Register(RegisterUserDTO registerUser)
         {
             // Checking if there is another user with given Email and UserName
-            if (_userManager.FindByEmailAsync(registerUser.Email).Result != null)
+            if(IsUserExists(registerUser, out string item))
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     Data = registerUser,
                     Success = false,
-                    Messages = new[] { "Email is invalid or was already taken" }
-                };
-            }
-
-            if (_userManager.FindByNameAsync(registerUser.UserName).Result != null)
-            {
-                return new OperationResult()
-                {
-                    Data = registerUser,
-                    Success = false,
-                    Messages = new[] { "Username is invalid or was already taken" }
+                    Messages = new[] { $"{item} is invalid or was already taken" }
                 };
             }
 
@@ -88,8 +78,20 @@ namespace Geoping.Services
             };
         }
 
-        public bool UserExist(RegisterUserDTO user)
+        public bool IsUserExists(RegisterUserDTO user, out string item)
         {
+            if (_userManager.FindByEmailAsync(user.Email).Result != null)
+            {
+                item = "Email";
+                return true;
+            }
+
+            if (_userManager.FindByNameAsync(user.UserName).Result != null)
+            {
+                item = "UserName";
+                return true;
+            }
+            item = "";
             return false;
         }
     }

@@ -132,14 +132,12 @@ namespace GeoPing.Api.Controllers
                         },
                         Subject = "Email confirmation",
                         Content = _emailSvc.GetConfirmationMail(registerUser.UserName, callbackUrl)
-
                     });
                 }
                 else
                 {
                     ConfirmAccountWithoutEmail(appUser);
                 }
-
                 return Ok(result);
             }
             return BadRequest(result);
