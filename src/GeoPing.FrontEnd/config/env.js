@@ -39,6 +39,7 @@ function getClientEnvironment() {
       return env;
     }, {}),
   };
+  console.info('process', process);
   return { raw, stringified };
 }
 
