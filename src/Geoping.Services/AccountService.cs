@@ -19,12 +19,12 @@ namespace Geoping.Services
     {
         private readonly UserManager<AppIdentityUser> _userManager;
         private readonly SignInManager<AppIdentityUser> _signInManager;
-        private readonly ILogger _logger;
+        private readonly ILogger<AccountService> _logger;
         private readonly ApplicationDbContext _dbContext;
 
         public AccountService(UserManager<AppIdentityUser> userManager,
                               SignInManager<AppIdentityUser> signInManager,
-                              ILogger logger,
+                              ILogger<AccountService> logger,
                               ApplicationDbContext dbContext)
         {
             _userManager = userManager;

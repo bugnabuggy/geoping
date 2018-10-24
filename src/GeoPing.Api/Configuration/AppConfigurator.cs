@@ -35,6 +35,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IClaimsHelper, ClaimsHelper>();
+            services.AddScoped<IAccountService, AccountService>();
         }
 
         public void Initialize(IServiceProvider services)
