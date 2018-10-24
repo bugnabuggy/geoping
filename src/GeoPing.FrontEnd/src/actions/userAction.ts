@@ -11,7 +11,8 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
   const authorizeService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
   authorizeService.signin( email, password )
     .then( ( token: string ) => {
-      // dispatch ( authorizationUserAction ( true ) );
+      dispatch ( authorizationUserAction ( true ) );
+      console.info( 'token', JSON.parse(atob(token.split('.')[1])));
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
