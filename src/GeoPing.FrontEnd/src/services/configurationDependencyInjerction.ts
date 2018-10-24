@@ -30,7 +30,7 @@ export function configurationDependencyInjerction() {
     headers: {}
   };
 
-  console.log('process.env', process.env);
+  console.info('process', process);
 
   /* http services */
   httpServiceLocator.set( 'IHttpCommunicator', new HttpCommunicator( httpHeader ) );
