@@ -10,8 +10,9 @@ import { EnumNotificationType } from '../enums/notificationTypeEnum';
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   const authorizeService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
   authorizeService.signin( email, password )
-    .then( ( response: any ) => {
-      // dispatch ( authorizationUserAction ( true ) );
+    .then( ( token: string ) => {
+      dispatch ( authorizationUserAction ( true ) );
+      console.info( 'token', JSON.parse(atob(token.split('.')[1])));
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
@@ -47,6 +48,8 @@ export const resetPasswordEnterNewPassword = ( newPassword: string ) => ( dispat
 };
 
 export const signOutUser = () => ( dispatch: IDispatchFunction ) => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('token_type');
   dispatch( signOutUserAction() );
 };
 
