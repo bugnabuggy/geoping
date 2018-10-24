@@ -55,7 +55,7 @@ namespace GeoPing.Api.Controllers
                     FromAddress = new EmailAddress()
                     {
                         Name = "GeopingTeam",
-                        Address = "noreply@geoping.info"
+                        Address = "test@geoping.info"
                     },
                     ToAddress = new EmailAddress()
                     {
