@@ -21,7 +21,14 @@ namespace GeoPing.Api.Configuration
             Email = "testuser@geoping.com",
             EmailConfirmed = true
         };
-        
+
+        public AppIdentityUser NoReply = new AppIdentityUser
+        {
+            UserName = "noreply",
+            Email = "noreply@geoping.com",
+            EmailConfirmed = true
+        };
+
         public IList<AppIdentityUser> ToList()
         {
             return new List<AppIdentityUser>

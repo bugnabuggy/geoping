@@ -5,6 +5,7 @@ using GeoPing.Core.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
+using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +19,6 @@ namespace GeoPing.Api.Configuration
     {
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddScoped<IRepository<GeoPoint>, DbRepository<GeoPoint>>();
             services.AddScoped<IRepository<GeoList>, DbRepository<GeoList>>();
             services.AddScoped<IRepository<PublicList>, DbRepository<PublicList>>();
@@ -30,9 +30,13 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<SupportMessage>, DbRepository<SupportMessage>>();
             services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
 
+            services.AddTransient<IEmailService, EmailService>();
+
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IClaimsHelper, ClaimsHelper>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IGPUserService, GPUserService>();
         }
 
         public void Initialize(IServiceProvider services)
