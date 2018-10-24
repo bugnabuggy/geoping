@@ -19,7 +19,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.DefinePlugin(env.stringified['process.env']),
+    new webpack.DefinePlugin(env.stringified),
     new UglifyJSPlugin({
       sourceMap: true
     }),
