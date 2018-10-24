@@ -1,4 +1,5 @@
-﻿using GeoPing.Core.Models;
+﻿using GeoPing.Api.Interfaces;
+using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Data;
@@ -27,19 +28,22 @@ namespace GeoPing.Api.Controllers
         private readonly IEmailService _emailSvc;
         private UserManager<AppIdentityUser> _userManager;
         private IGPUserService _gpUserSrv;
+        private IClaimsHelper _helper;
 
         public AccountController(IAccountService accountSrv,
                                  IEmailService emailSvc,
                                  UserManager<AppIdentityUser> userManager,
                                  IConfiguration configuration,
-                                 IGPUserService gpUserSrv)
+                                 IGPUserService gpUserSrv,
+                                 IClaimsHelper helper)
         {
             _accountSrv = accountSrv;
             _emailSvc = emailSvc;
             _userManager = userManager;
             _configuration = configuration;
             _gpUserSrv = gpUserSrv;
-    }
+            _helper = helper;
+        }
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -146,9 +150,40 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
+        // POST /account/changepassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("changepassword")]
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordDTO changePassword)
+        {
+            var result = await _accountSrv.ChangePassword(_helper.GetIdentityUserIdByClaims(User.Claims), changePassword);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // POST /account/resetpassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [Route("resetpassword")]
+        public async Task<IActionResult> ResetPassword(string loginOrEmail)
+        {
+            //var result = await _accountSrv.ResetPassword(User.Identity.Name, changePassword);
+            //if (result.Success)
+            //{
+            //    return Ok(result);
+            //}
+            //return BadRequest(result);
+            return Ok();
+        }
+
         // GET /account/confirmemail
         [HttpGet]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         [Route("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
