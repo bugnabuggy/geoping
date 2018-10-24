@@ -22,21 +22,24 @@ namespace GeoPing.Api.Controllers
     [Route("account")]
     public class AccountController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly IAccountService _accountSrv;
         private readonly IEmailService _emailSvc;
         private UserManager<AppIdentityUser> _userManager;
-        private readonly IConfiguration _configuration;
+        private IGPUserService _gpUserSrv;
 
         public AccountController(IAccountService accountSrv,
                                  IEmailService emailSvc,
                                  UserManager<AppIdentityUser> userManager,
-                                 IConfiguration configuration)
+                                 IConfiguration configuration,
+                                 IGPUserService gpUserSrv)
         {
             _accountSrv = accountSrv;
             _emailSvc = emailSvc;
             _userManager = userManager;
             _configuration = configuration;
-        }
+            _gpUserSrv = gpUserSrv;
+    }
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -170,6 +173,7 @@ namespace GeoPing.Api.Controllers
             {
                 result.Success = true;
                 result.Messages = new[] { $"User with Id = [{userId}] was successfully confirmed" };
+                _gpUserSrv.AddGPUserForIdentity(userId, user.Email, user.UserName);
                 return Ok(result);
             }
 
@@ -182,6 +186,7 @@ namespace GeoPing.Api.Controllers
         private void ConfirmAccountWithoutEmail(AppIdentityUser appUser)
         {
             _userManager.FindByEmailAsync(appUser.Email).Result.EmailConfirmed = true;
+            _gpUserSrv.AddGPUserForIdentity(appUser.Id, appUser.Email, appUser.UserName);
         }
 
         #region Helpers

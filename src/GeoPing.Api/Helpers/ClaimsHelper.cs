@@ -39,13 +39,13 @@ namespace GeoPing.Api.Helpers
         public Guid GetAppUserIdByClaims(IEnumerable<Claim> claims)
         {
             return claims != null
-                   ? GetIdentityUserByClaims(claims).GPUserID
+                   ? GetAppUserByClaims(claims).Id
                    : Guid.Empty;
         }
 
         public GeoPingUser GetAppUserByClaims(IEnumerable<Claim> claims)
         {
-            return _gpUserRepo.Data.FirstOrDefault(x => x.Id == GetAppUserIdByClaims(claims));
+            return _gpUserRepo.Data.FirstOrDefault(x => x.IdentityId == GetIdentityUserIdByClaims(claims));
         }
     }
 }
