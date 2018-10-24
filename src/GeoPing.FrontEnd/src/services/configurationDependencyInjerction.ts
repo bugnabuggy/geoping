@@ -20,7 +20,7 @@ import ProfileService from './httpServices/profileService';
 import MockProfileService from './mockServices/mockProfileService';
 import { AxiosRequestConfig } from 'axios';
 
-export function configurationDependencyInjection() {
+export function configurationDependencyInjerction() {
 
   environments.set( EBuildEnvironment.Test, testServiceLocator );
   environments.set( EBuildEnvironment.HTTP, httpServiceLocator );
