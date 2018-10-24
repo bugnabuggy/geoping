@@ -35,7 +35,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCheckCircle, far, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import { configurationDependencyInjection } from './services/configurationDependencyInjection';
+import { configurationDependencyInjerction } from './services/configurationDependencyInjerction';
 
 library.add(
   faFilter,
@@ -62,7 +62,7 @@ library.add(
   far
 );
 
-configurationDependencyInjection();
+configurationDependencyInjerction();
 
 const history = createBrowserHistory();
 
