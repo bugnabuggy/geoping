@@ -13,6 +13,7 @@ export const profileUrl: string = `${baseUrl}profile`;
 export const checkListUrl: string = `${baseUrl}check_list/:id`;
 export const checkInUrl: string = `${baseUrl}check_in`;
 export const checkInStatistics: string = `${baseUrl}check_in_statistics`;
+export const logOutUrl: string = `${baseUrl}log_out`;
 
 /* url for admin role user */
 export const adminPrefixUrl: string = 'admin/';

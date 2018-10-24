@@ -13,18 +13,36 @@ export default class AuthorizationService implements IAuthorization {
 
   signin( email: string, password: string ) {
     const userSignIn: FormData = new FormData();
-    userSignIn.append( 'email', email );
+    userSignIn.append( 'username', email );
     userSignIn.append( 'password', password );
+    userSignIn.append( 'client_id', process.env.REACT_APP_CLIENT_ID );
+    userSignIn.append( 'client_secret', process.env.REACT_APP_CLIENT_SECRET );
+    userSignIn.append( 'grant_type', process.env.REACT_APP_GRANT_TYPE );
+    userSignIn.append( 'scope', process.env.REACT_APP_SCOPE );
 
-    return this.communicator.post( getToken, userSignIn );
+    // return this.communicator.post( getToken, userSignIn );
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.post( getToken, userSignIn )
+        .then( ( response: any ) => {
+          if ( response.status === 200 ) {
+            localStorage.setItem( 'token', response.data.access_token );
+            localStorage.setItem( 'token_type', response.data.token_type );
+            resolve( response.data.access_token );
+          }
+          reject( { error: { response: { status: response.status } } } );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 
   registrationUser( registrationUserData: IRegistrationUserType ) {
     const user: FormData = new FormData();
 
-    user.append( 'login', registrationUserData.login );
-    user.append( 'email', registrationUserData.email );
-    user.append( 'password', registrationUserData.password );
+    user.append( 'UserName', registrationUserData.login );
+    user.append( 'Email', registrationUserData.email );
+    user.append( 'Password', registrationUserData.password );
 
     return this.communicator.post( registration, user );
   }
