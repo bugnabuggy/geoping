@@ -1,11 +1,12 @@
 import IProfileStateType from '../types/stateTypes/profileStateType';
 
 export const profileState: IProfileStateType = {
-  login: 'testLogin',
-  fullName: 'alex',
-  email: 'ale@ad.aty',
-  phone: '912-213-1232',
-  accountType: 'basic',
-  lastPaid: 'random-string',
+  login: '',
+  fullName: '',
+  email: '',
+  phone: '',
+  accountType: '',
+  lastPaid: '',
+  isShowModal: false,
+  isLoaded: false
 };
-// random-test-words, delete after

@@ -428,5 +428,13 @@
   "check_list": {
     "name": "",
     "id": ""
+  },
+  "user_profile": {
+    "email": "ares@gmail.com",
+    "login": "asdsad",
+    "accountType": "basic",
+    "fullName": "asdsadd",
+    "phone": "800-555-3535",
+    "lastPaid": "never"
   }
 }
