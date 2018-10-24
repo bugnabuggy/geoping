@@ -31,6 +31,10 @@ export function configurationDependencyInjerction() {
   };
 
   console.info('process', process);
+  console.info('process.env', process.env);
+  console.info('process.env.NODE_ENV', process.env.NODE_ENV);
+  console.info('process.env.REACT_APP_API_BASE_URL', process.env.REACT_APP_API_BASE_URL);
+  console.info('process.env.REACT_APP_CLIENT_ID', process.env.REACT_APP_CLIENT_ID);
 
   /* http services */
   httpServiceLocator.set( 'IHttpCommunicator', new HttpCommunicator( httpHeader ) );
