@@ -212,7 +212,7 @@ namespace GeoPing.Api.Controllers
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         [Route("confirm-reset")]
-        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]string newPassword)
+        public async Task<IActionResult> ConfirmReset(string userId, string token, string newPassword)
         {
             if (userId == null || token == null)
             {
