@@ -2,7 +2,13 @@ import ICheckListServiceType from '../../types/serviceTypes/checkListServiceType
 import IGeoListType from '../../DTO/geoListDTO';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
-import { createNewGeoList, getGeoListForId, removeGeoList, updateGeoList } from '../../constants/endpoints';
+import {
+  createNewGeoList,
+  endpointBaseUrl,
+  getGeoListForId,
+  removeGeoList,
+  updateGeoList
+} from '../../constants/endpoints';
 
 export default class CheckListService implements ICheckListServiceType {
   private communicator: IHttpCommunicator;
@@ -20,8 +26,7 @@ export default class CheckListService implements ICheckListServiceType {
   }
 
   loadAllMyCheckLists( idUser: string ) {
-    // return this.communicator.post( '', { idUser } );
-    return new Promise( resolve => '' );
+    return this.communicator.post( endpointBaseUrl + '/myCheckList', { idUser } );
   }
 
   loadMyCheckList( idCheckLIst: string ) {
@@ -42,9 +47,8 @@ export default class CheckListService implements ICheckListServiceType {
     return new Promise( resolve => '' );
   }
 
-  filterPublicCheckList() {
-    // return this.communicator.post( '', 'filter'  );
-    return new Promise( resolve => '' );
+  filterPublicCheckList(filters: any) {
+    return this.communicator.post( endpointBaseUrl + '/publick', filters );
   }
 
   loadUserWhoHasAccess( idList: string ) {

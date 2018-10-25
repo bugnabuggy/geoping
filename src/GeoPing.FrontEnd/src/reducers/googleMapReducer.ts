@@ -16,9 +16,10 @@ import {
 } from '../constantsForReducer/googleMap';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
-import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/filters';
 import { defaultMarker } from '../constants/defaultMarker';
 import { CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
+import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/checkList';
+import { STATISTICS_LOAD_POINTS } from '../constantsForReducer/checkinStatistics';
 
 export default function googleMapReducer( state: IGoogleMapStateType = googleMapState, action: any ) {
   const reduceObject: any = {
@@ -36,6 +37,7 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ GEO_POINT_LIST_IS_CREATED ]: geoPointListCreate,
     [ CHECK_IN_SELECT_LIST ]: checkInSelectList,
     [ CLEAR_STATE_GOOGLE_MAP ]: clearStateGoogleMap,
+    [ STATISTICS_LOAD_POINTS ]: statisticsLoadPoints,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -187,10 +189,8 @@ function changeDataGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleM
 function addGeoPointFromMyPosition( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    // idDeleteMarker: state.selectedGeoPoint.id ? state.selectedGeoPoint.id : '',
     selectedGeoPoint: {
       ...defaultMarker,
-      // id: !!state.selectedGeoPoint.id ? state.selectedGeoPoint.id : uuidV4(),
       lat: state.position.lat,
       lng: state.position.lng,
     },
@@ -215,5 +215,13 @@ function checkInSelectList( state: IGoogleMapStateType, action: any ): IGoogleMa
 function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...googleMapState,
+  };
+}
+
+function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    geoPoints: action.points,
+    isGeoPointListIsCreated: false,
   };
 }

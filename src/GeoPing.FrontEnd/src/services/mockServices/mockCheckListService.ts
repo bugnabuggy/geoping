@@ -73,7 +73,7 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
-  filterPublicCheckList() {
+  filterPublicCheckList(filters: any) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {

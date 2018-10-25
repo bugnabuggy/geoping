@@ -11,14 +11,12 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
   const authorizeService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
   authorizeService.signin( email, password )
     .then( ( token: string ) => {
-      dispatch ( authorizationUserAction ( true ) );
-      console.info( 'token', JSON.parse(atob(token.split('.')[1])));
+      dispatch( authorizationUserAction( true ) );
+      console.info( 'token', JSON.parse( atob( token.split( '.' )[ 1 ] ) ) );
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      // if ( error.response.status === 400 ) {
       dispatch( addNotificationAction( createNotification( 'Invalid client', EnumNotificationType.Danger ) ) );
-      // }
     } );
 };
 
@@ -27,15 +25,14 @@ export const registrationUser = ( registrationUserData: IRegistrationUserType ) 
   authorizeService.registrationUser( registrationUserData )
     .then( ( response: any ) => {
       dispatch( addNotificationAction( createNotification( 'You registered', EnumNotificationType.Success ) ) );
+      authorizationUser( registrationUserData.login, registrationUserData.password )( dispatch );
     } )
     .catch( ( error: any ) => {
-      // if ( error.response.status === 404 ) {
       dispatch( addNotificationAction(
         createNotification(
-          'Registration is not possible at this time',
+          error.response.data.messages[ 0 ],
           EnumNotificationType.Danger
         ) ) );
-      // }
     } );
 };
 
@@ -48,9 +45,13 @@ export const resetPasswordEnterNewPassword = ( newPassword: string ) => ( dispat
 };
 
 export const signOutUser = () => ( dispatch: IDispatchFunction ) => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('token_type');
+  localStorage.removeItem( 'token' );
+  localStorage.removeItem( 'token_type' );
   dispatch( signOutUserAction() );
+};
+
+export const authorizationUserFlag = ( isAuthorize: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( authorizationUserAction( isAuthorize ) );
 };
 
 /* Actions */

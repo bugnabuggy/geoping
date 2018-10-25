@@ -31,12 +31,12 @@ export const loadPublicLists = () => ( dispatch: IDispatchFunction ) => {
 
 export const filterPublicCheckLists = ( filters: any ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.filterPublicCheckList()
+  checkListService.filterPublicCheckList(filters)
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 

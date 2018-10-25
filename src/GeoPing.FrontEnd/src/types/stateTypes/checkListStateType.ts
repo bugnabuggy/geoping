@@ -11,4 +11,5 @@ export default interface ICheckListStateType {
   periodFrom: string;
   periodTo: string;
   ownerId: string;
+  isGeoPointLoading: boolean;
 }

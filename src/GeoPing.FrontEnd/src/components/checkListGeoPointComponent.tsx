@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ControlLabel, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Slider from 'rc-slider';
 
@@ -7,11 +6,18 @@ import 'rc-slider/assets/index.css';
 import ICheckListGeoPointComponentProps from '../componentProps/checkListGeoPointComponentProps';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
+import { Card, CardBody, CardHeader, FormGroup, Input, Label } from 'reactstrap';
 
 export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPointComponentProps, any> {
 
   handleChangeInput = ( e: any ) => {
     this.props.changeDataGeoPoint( e.target.name, e.target.value );
+  };
+
+  handleChangeCoords = ( e: any ) => {
+    if ( !isNaN( Number( e.target.value ) ) ) {
+      this.props.changeDataGeoPoint( e.target.name, Number( e.target.value ) );
+    }
   };
 
   handleChangeSlider = ( value: number ) => {
@@ -41,15 +47,13 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
     }
     return (
       <React.Fragment>
-        <Panel bsStyle={style}>
-          <Panel.Heading>
-            Geo Point
-          </Panel.Heading>
-          <Panel.Body>
+        <Card outline={true} color={style}>
+          <CardHeader tag="h3" className={`bg-${style} ${style !== 'default' && 'text-white'}`}>Geo Point</CardHeader>
+          <CardBody>
             <div className="check-list-geo-point-form">
               <FormGroup>
-                <ControlLabel>Name</ControlLabel>
-                <FormControl
+                <Label>Name</Label>
+                <Input
                   name="name"
                   value={this.props.googleMap.selectedGeoPoint.name}
                   onChange={this.handleChangeInput}
@@ -59,37 +63,39 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
               <FormGroup
                 className="check-list-geo-point-form-group-lat-long"
               >
-                <ControlLabel
+                <Label
                   className="check-list-geo-point-form-label-lat"
                 >
                   Lat
-                </ControlLabel>
-                <FormControl
+                </Label>
+                <Input
                   name="lat"
+                  type="number"
                   value={this.props.googleMap.selectedGeoPoint.lat}
-                  onChange={this.handleChangeInput}
+                  onChange={this.handleChangeCoords}
                   disabled={!this.props.checkList.isEditing}
                 />
-                <ControlLabel
+                <Label
                   className="check-list-geo-point-form-label-long"
                 >
                   Long
-                </ControlLabel>
-                <FormControl
+                </Label>
+                <Input
                   name="lng"
+                  type="number"
                   value={this.props.googleMap.selectedGeoPoint.lng}
-                  onChange={this.handleChangeInput}
+                  onChange={this.handleChangeCoords}
                   disabled={!this.props.checkList.isEditing}
                 />
               </FormGroup>
               <FormGroup
                 className="check-list-geo-point-form-group-radius"
               >
-                <ControlLabel
+                <Label
                   className="check-list-geo-point-form-label-radius"
                 >
                   Radius
-                </ControlLabel>
+                </Label>
                 <Slider
                   value={this.props.googleMap.selectedGeoPoint.radius}
                   min={0}
@@ -100,17 +106,17 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <div
                   className="check-list-geo-point-form-label-distance"
                 >
-                  <ControlLabel>
+                  <Label>
                     {this.props.googleMap.selectedGeoPoint.radius}m
-                  </ControlLabel>
+                  </Label>
                 </div>
               </FormGroup>
               <div
                 className="check-list-geo-point-form-text-area"
               >
-                <FormControl
+                <Input
                   name="description"
-                  componentClass="textarea"
+                  type="textarea"
                   value={this.props.googleMap.selectedGeoPoint.description}
                   onChange={this.handleChangeInput}
                   placeholder="Approximate address"
@@ -134,8 +140,8 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 )}
               </div>
             </div>
-          </Panel.Body>
-        </Panel>
+          </CardBody>
+        </Card>
       </React.Fragment>
     );
   }

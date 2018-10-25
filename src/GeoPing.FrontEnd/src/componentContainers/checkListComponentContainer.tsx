@@ -52,9 +52,7 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
         </div>
         <div className="check-list-points-list">
           <ListPointsComponent
-            geoPoints={this.props.googleMap.geoPoints}
-            selectedGeoPointId={this.props.googleMap.selectedGeoPoint.id}
-            statusGeoPoint={this.props.googleMap.statusMarker}
+            googleMap={this.props.googleMap}
             checkList={this.props.checkList}
 
             selectPoint={this.props.selectPoint}

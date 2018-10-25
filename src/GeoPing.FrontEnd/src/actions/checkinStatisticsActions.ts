@@ -31,7 +31,7 @@ export const loadLists = () => ( dispatch: IDispatchFunction ) => {
 
 export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
-  userService.loadUsersForSharedList( idList )
+  userService.loadUserForStatistic( idList )
     .then( ( response: any ) => {
       dispatch( loadUsersAction( response ) );
     } )

@@ -25,6 +25,20 @@ export default class MockUserService implements IUser {
     } );
   }
 
+  loadUserForStatistic( idList: string ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          resolve(
+            JSON.parse( sessionStorage.getItem( 'localDB' ) ).check_in_statistics_users
+              .filter( ( item: any ) => item.idList === idList )
+          );
+        },
+        1000
+      );
+    } );
+  }
+
   changePassword (password: string, newPassword: string) {
     return new Promise(( resolve: any, reject: any ) => {
       setTimeout(
@@ -35,4 +49,5 @@ export default class MockUserService implements IUser {
       );
     });
   }
+
 }

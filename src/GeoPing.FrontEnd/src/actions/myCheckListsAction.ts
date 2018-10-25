@@ -21,7 +21,7 @@ export const loadCheckLists = ( idUser: string ) => ( dispatch: IDispatchFunctio
       dispatch( loadingAction( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadingAction( false ) );
     } );
 };
@@ -35,7 +35,7 @@ export const deleteCheckList = ( idCheckList: string ) => ( dispatch: IDispatchF
       }
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
