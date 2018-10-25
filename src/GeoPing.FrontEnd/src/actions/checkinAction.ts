@@ -32,7 +32,7 @@ export const loadLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) =
       dispatch( loadingCheckLists( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadingCheckLists( false ) );
     } );
 };
@@ -46,7 +46,7 @@ export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) 
       dispatch( loadingGeoPoints( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadingGeoPoints( false ) );
     } );
 };

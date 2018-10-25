@@ -11,14 +11,18 @@ class TableMarkerStatisticsComponentContainer extends React.Component<ITableMark
   render() {
     return (
       <React.Fragment>
-        <TableMarkerStatisticsComponent/>
+        <TableMarkerStatisticsComponent
+          googleMap={this.props.googleMap}
+        />
       </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = ( state: IinitialStateType ) => {
-  return {};
+  return {
+    googleMap: state.googleMap,
+  };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>

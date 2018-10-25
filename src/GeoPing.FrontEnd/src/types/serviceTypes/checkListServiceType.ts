@@ -13,7 +13,7 @@ export default interface ICheckListServiceType {
 
   deleteMyCheckList: ( idCheckLIst: string ) => Promise<any>;
 
-  filterPublicCheckList: () => Promise<any>;
+  filterPublicCheckList: ( filters: any) => Promise<any>;
 
   sharedCheckListForUser: ( idList: string, emails: Array<string> ) => Promise<any>;
   providePublicAccess: ( idList: string, isPublic: boolean ) => Promise<any>;

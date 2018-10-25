@@ -2,6 +2,7 @@ import ITableHistoryService from '../../types/serviceTypes/tableHistoryServiceTy
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import IHistoryDataDTO from '../../DTO/historyDataDTO';
+import { endpointBaseUrl } from '../../constants/endpoints';
 
 export default class TableHistoryService implements ITableHistoryService {
   private communicator: IHttpCommunicator;
@@ -10,8 +11,7 @@ export default class TableHistoryService implements ITableHistoryService {
   }
 
   getHistory() {
-    // return this.communicator.get('#');
-    return new Promise( resolve => '' );
+    return this.communicator.get(endpointBaseUrl + '/history');
   }
 
   addRecordForHistory( idUser: string, historyData: IHistoryDataDTO ) {

@@ -412,10 +412,6 @@ header nav {
   font-size: 1.3em;
 }
 
-.modal-header {
-  display: block;
-}
-
 /* Check in*/
 .checkin-container {
   width: 100%;
@@ -691,7 +687,7 @@ header nav {
 
 .add-user-to-share-list {
   height: 30px;
-  position: relative;
+  width: 0;
 }
 
 .add-user-to-share-list-icon {
@@ -945,7 +941,7 @@ header nav {
 
 .check-list-head-name-icons-container {
   display: flex;
-  width: 50px;
+  width: 60px;
   justify-content: space-between;
 }
 

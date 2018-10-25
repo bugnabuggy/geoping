@@ -1,32 +1,18 @@
 import * as React from 'react';
-import { ControlLabel, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import { debounce } from 'throttle-debounce';
 
 import IFilterForPublicCheckListsComponentProps
   from '../../componentProps/filterComponentProps/filterForPublicCheckListsComponentProps';
+import { Card, CardBody, FormGroup, Input, Label } from 'reactstrap';
 
 export class FilterForPublicCheckListsComponent extends React.Component<IFilterForPublicCheckListsComponentProps, any> {
-
-  user: any;
-  name: any;
-  subscribers: any;
+  _debounce: any;
   handleChange = ( e: any ) => {
-    const filterBy: any = {
-      Name: this.name,
-      User: this.user,
-      Subscribers: this.subscribers,
-    };
-    filterBy[ e.target.name ](
-      {
-        name: e.target.name,
-        value: e.target.name === 'Subscribers' ? Number( e.target.value ) : e.target.value
-      }
-    );
-
     const value: string | number = e.target.name === 'Subscribers' ? Number( e.target.value ) : e.target.value;
+    this._debounce();
     this.props.changeFilter( e.target.name, value );
   };
-  filter = ( filter: any ) => {
+  filter = () => {
     const filters: any = {
       name: this.props.filterName,
       user: this.props.filterUser,
@@ -38,46 +24,41 @@ export class FilterForPublicCheckListsComponent extends React.Component<IFilterF
   constructor( props: any ) {
     super( props );
     const debounceTime: number = 2000;
-    this.user = debounce( debounceTime, this.filter );
-    this.name = debounce( debounceTime, this.filter );
-    this.subscribers = debounce( debounceTime, this.filter );
+    this._debounce = debounce( debounceTime, this.filter );
   }
 
   render() {
     return (
       <React.Fragment>
-        <Panel>
-          <Panel.Body className="publick-check-list-filter-panel-body">
+        <Card>
+          <CardBody className="publick-check-list-filter-panel-body">
             <FormGroup className="filter-form-group-name">
-              <ControlLabel>
+              <Label>
                 Name
-              </ControlLabel>
-              <FormControl
-                name="Name"
-                onChange={this.handleChange}
-              />
+              </Label>
+              <Input name="Name" onChange={this.handleChange}/>
             </FormGroup>
             <FormGroup className="filter-form-group-user">
-              <ControlLabel>
+              <Label>
                 User
-              </ControlLabel>
-              <FormControl
+              </Label>
+              <Input
                 name="User"
                 onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup className="filter-form-group-subscribers">
-              <ControlLabel>
+              <Label>
                 Subscribers >
-              </ControlLabel>
-              <FormControl
+              </Label>
+              <Input
                 name="Subscribers"
                 type="number"
                 onChange={this.handleChange}
               />
             </FormGroup>
-          </Panel.Body>
-        </Panel>
+          </CardBody>
+        </Card>
       </React.Fragment>
     );
   }

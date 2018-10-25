@@ -53,6 +53,10 @@ export const signOutUser = () => ( dispatch: IDispatchFunction ) => {
   dispatch( signOutUserAction() );
 };
 
+export const authorizationUserFlag = ( isAuthorize: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch(authorizationUserAction(isAuthorize));
+};
+
 /* Actions */
 
 function authorizationUserAction( authorization: boolean ): Object {

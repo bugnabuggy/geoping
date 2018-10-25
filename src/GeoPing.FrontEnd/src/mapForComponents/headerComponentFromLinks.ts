@@ -3,7 +3,7 @@ import {
   baseUrl,
   checkInUrl,
   dashboardUrl,
-  loginUrl,
+  loginUrl, logOutUrl,
   profileUrl,
   publicCheckListUrl,
   registerUrl
@@ -39,9 +39,9 @@ export const authorizedLinks: Array<any> = [
         isAdmin: true,
       },
       {
-        path: '/',
+        path: logOutUrl,
         text: 'Sign out',
-        id: '/#'
+        id: logOutUrl
       }
     ],
   }

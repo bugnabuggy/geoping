@@ -1,5 +1,4 @@
 import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
-import { points } from '../../mocks/checkinStatisticsMock';
 import IGeoPoint from '../../DTO/geoPointDTO';
 
 export default class MockMarkerService implements IMarkerServiceType {
@@ -56,7 +55,10 @@ export default class MockMarkerService implements IMarkerServiceType {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
-          resolve( points.filter( ( item: any ) => item.idList === idList && item.idUser === idUser ) );
+          resolve(
+            JSON.parse( sessionStorage.getItem( 'localDB' ) ).check_in_statistics_point
+              .filter( ( item: any ) => item.idList === idList && item.idUser === idUser )
+          );
         },
         1000
       );

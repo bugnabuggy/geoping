@@ -7,14 +7,15 @@ import {
   CREATE_CHECK_LIST,
   EDITING_PERMISSION_POINT,
   MODAL_PERIOD_OPEN_CLOSE,
-  OPEN_MODAL_FOR_CREATE_CHECK_LIST
-} from '../constantsForReducer/checkList';
-import {
+  OPEN_MODAL_FOR_CREATE_CHECK_LIST,
   ADD_GEO_POINT_FROM_MY_POSITION,
   CLEAR_STATE_CHECK_LIST,
+  LOAD_CHECK_LIST_DATA,
+  LOAD_MARKERS_FOR_CHECK_LIST
+} from '../constantsForReducer/checkList';
+import {
   CLOSE_FILTER_CHECKLIST,
   FILTER_CHECKLIST_LIST,
-  LOAD_CHECK_LIST_DATA
 } from '../constantsForReducer/filters';
 import { dashboardFiltersMockService } from '../services/mockServices/dashboardFiltersMockService';
 import { createNotification } from '../services/helper';
@@ -62,7 +63,7 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch( addNotificationAction( createNotification( 'Check List creating', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 export const filterCheckLists = () => ( dispatch: IDispatchFunction ) => {
@@ -71,7 +72,7 @@ export const filterCheckLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( filterCheckListsAction( true ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 export const closeFilterCheckLists = () => ( dispatch: IDispatchFunction ) => {
@@ -85,7 +86,7 @@ export const updateNameCheckList = ( newNameCheckList: string ) => ( dispatch: I
       dispatch( addNotificationAction( createNotification( 'List name changed', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -119,13 +120,16 @@ export const loadCheckListData = ( idUser: string, idCheckList: string ) => ( di
   checkListService.loadMyCheckList( idCheckList )
     .then( ( checkList: any ) => {
       dispatch( loadCheckListDataAction( checkList ) );
+      dispatch( loadMarkersForCheckListAction( true ) );
       return markerService.getAllMarkersForCheckList( idCheckList );
     } )
     .then( ( geoPoints: Array<IGeoPoint> ) => {
       dispatch( addListPointsAction( geoPoints ) );
+      dispatch( loadMarkersForCheckListAction( false ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( loadMarkersForCheckListAction( false ) );
     } );
 };
 
@@ -178,4 +182,8 @@ function loadCheckListDataAction( checkList: IGeoListType ):
 
 function clearStateCheckListAction(): { type: string } {
   return { type: CLEAR_STATE_CHECK_LIST };
+}
+
+function loadMarkersForCheckListAction( isLoading: boolean ): { type: string, isLoading: boolean } {
+  return { type: LOAD_MARKERS_FOR_CHECK_LIST, isLoading };
 }

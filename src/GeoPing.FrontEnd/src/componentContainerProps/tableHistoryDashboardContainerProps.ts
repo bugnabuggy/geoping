@@ -7,4 +7,5 @@ export default interface ITableHistoryDashboardContainerProps {
   filterHistory: () => ( dispatch: IDispatchFunction ) => void;
   closeFilterHistory: () => ( dispatch: IDispatchFunction ) => void;
   loadHistory: () => ( dispatch: IDispatchFunction ) => void;
+  clearTableHistory: () => ( dispatch: IDispatchFunction ) => void;
 }

@@ -1,6 +1,5 @@
 import IAuthorization from '../../types/serviceTypes/authorizationServiceType';
 import * as testUser from '../../mocks/testUser.json';
-import * as uuidV5 from 'uuid/v5';
 import IRegistrationUserType from '../../types/actionsType/registrationUserDataType';
 
 export default class MockAuthorizationService implements IAuthorization {
@@ -19,7 +18,9 @@ export default class MockAuthorizationService implements IAuthorization {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
-          resolve( uuidV5( email, uuidV5.DNS ) );
+          const token: string = JSON.parse(sessionStorage.getItem('localDB')).token;
+          localStorage.setItem('token', token);
+          resolve( token );
         },
         1000
       );

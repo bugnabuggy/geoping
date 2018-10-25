@@ -12,27 +12,9 @@ export class TableMarkerStatisticsComponent extends React.Component<ITableMarker
   };
 
   render() {
-    const test: any = [
-      {
-        id: '1',
-        name: 'Point 1',
-        lat: '36.4444444',
-        lng: '73.548988',
-        radius: 30,
-        check: true,
-      },
-      {
-        id: '2',
-        name: 'Point 2',
-        lat: '36.4444444',
-        lng: '73.548988',
-        radius: 30,
-        check: false,
-      }
-    ];
     return (
       <BootstrapTable
-        data={test}
+        data={this.props.googleMap.geoPoints}
         trClassName={this.rowClassNameFormat}
         maxHeight="500px"
       >
