@@ -31,7 +31,7 @@ namespace Geoping.Services
             return new UserNameAndAvatarDTO()
             {
                 UserName = data.Login,
-                Avatar = data.Avatar
+                Avatar = Convert.ToBase64String(data.Avatar)
             };
         }
 
