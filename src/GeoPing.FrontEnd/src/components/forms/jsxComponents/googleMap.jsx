@@ -35,7 +35,7 @@ class GoogleMap extends React.Component {
       this.props.geoPointListIsCreate(true);
     }
 
-    if (this.props.googleMap.position.isSuccess) {
+    if (this.props.googleMap.position.isSuccess && this.props.isCheckIn) {
       createUserMarkerAPI();
     }
   }
@@ -80,6 +80,8 @@ class GoogleMap extends React.Component {
 
     if (prevProps.googleMap.position.lat !== this.props.googleMap.position.lat ||
         prevProps.googleMap.position.lng !== this.props.googleMap.position.lng) {
+      console.log('prevProps.googleMap.position', prevProps.googleMap.position);
+      console.log('this.props.googleMap.position', this.props.googleMap.position);
       setCoordinatesForUserMarker(this.props.googleMap.position);
     }
   }

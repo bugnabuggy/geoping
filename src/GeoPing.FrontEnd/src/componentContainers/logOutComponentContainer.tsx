@@ -6,10 +6,15 @@ import { signOutUser } from '../actions/userAction';
 import ILogOutComponentContainerProps from '../componentContainerProps/logOutComponentContainerProps';
 import { baseUrl } from '../constants/routes';
 import { Redirect } from 'react-router';
+import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
+import { EBuildEnvironment } from '../enums/environment';
+import StaticStorage from '../services/staticStorage';
 
 class LogOutComponentContainer extends React.Component<ILogOutComponentContainerProps, any> {
 
   componentDidMount() {
+    getBuildEnvironment( EBuildEnvironment.HTTP );
+    StaticStorage.serviceLocator = environments.get( buildEnvironment );
     this.props.signOutUser();
   }
 

@@ -14,14 +14,14 @@ export default function checkinStatisticsReducer(
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
-function loadLists( state: ICheckinStatisticsStateType, action: any ) {
+function loadLists( state: ICheckinStatisticsStateType, action: any ): ICheckinStatisticsStateType {
   return {
     ...state,
     selectList: action.lists,
   };
 }
 
-function loadUsers( state: ICheckinStatisticsStateType, action: any ) {
+function loadUsers( state: ICheckinStatisticsStateType, action: any ): ICheckinStatisticsStateType {
   return {
     ...state,
     selectUser: action.users,

@@ -23,7 +23,7 @@ export default function checkinReducer( state: ICheckinStateType = checkinState,
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
-function checkinLoadLists( state: ICheckinStateType, action: any ) {
+function checkinLoadLists( state: ICheckinStateType, action: any ): ICheckinStateType {
   return {
     ...state,
     selectList: action.lists,
@@ -38,21 +38,21 @@ function selectList( state: ICheckinStateType, action: any ): ICheckinStateType 
   };
 }
 
-function checkinFlag( state: ICheckinStateType, action: any ) {
+function checkinFlag( state: ICheckinStateType, action: any ): ICheckinStateType {
   return {
     ...state,
     isCheckIn: action.isCheckin,
   };
 }
 
-function addDistanceBetweenPoints( state: ICheckinStateType, action: any ) {
+function addDistanceBetweenPoints( state: ICheckinStateType, action: any ): ICheckinStateType {
   return {
     ...state,
     difference: action.distance,
   };
 }
 
-function selectMarker( state: ICheckinStateType, action: any ) {
+function selectMarker( state: ICheckinStateType, action: any ): ICheckinStateType {
   if ( action.marker.id === '' ) {
     return {
       ...state,

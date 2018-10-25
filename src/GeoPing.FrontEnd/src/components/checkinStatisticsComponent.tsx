@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { ControlLabel, FormGroup } from 'react-bootstrap';
 import * as moment from 'moment';
 import DatePicker from 'react-datepicker';
-import { v4 as uuidV4 } from 'uuid';
+import Select from 'react-select';
 
 import { CustomDateComponent } from './customDateComponent';
 
@@ -11,11 +11,20 @@ import ICheckinStatisticsComponentProps from '../componentProps/checkinStatistic
 
 export class CheckinStatisticsComponent extends React.Component<ICheckinStatisticsComponentProps, any> {
   handleSelectUser = ( e: any ) => {
-    this.props.loadPoints( this.state.selectList, e.target.value );
+    if (e) {
+      this.props.loadPoints( this.state.selectList, e.value );
+    } else {
+      this.props.loadPoints( this.state.selectList, '' );
+    }
   };
   handleSelectList = ( e: any ) => {
-    this.props.loadUsers( e.target.value );
-    this.setState( { selectList: e.target.value } );
+    if (e) {
+      this.props.loadUsers( e.value );
+      this.setState( { selectList: e.value } );
+    } else {
+      this.props.loadUsers( '' );
+      this.setState( { selectList: '' } );
+    }
   };
   handleSelectStart = ( date: any ) => {
     this.setState( {
@@ -27,67 +36,30 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       endDate: date,
     } );
   };
-  renderOptioUsers = ( props: Array<any> ) => {
-    const element: Array<any> = props.map( ( item: any, index: number ) => {
-      return (
-        <React.Fragment
-          key={uuidV4()}
-        >
-          {
-            index === 0 &&
-            <React.Fragment>
-              <option
-                value=""
-              >
-                - None -
-              </option>
-              <option
-                value="all"
-              >
-                - All -
-              </option>
-            </React.Fragment>
-          }
-          <option
-            value={item.id}
-          >
-            {item.name}
-          </option>
-        </React.Fragment>
-      );
+  renderOptionUsers = ( props: Array<any> ) => {
+    const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
+      return {
+        value: item.id,
+        label: item.name,
+      };
     } );
-    return element;
+    return options;
   };
   renderOptionLists = ( props: Array<any> ) => {
-    const element: Array<any> = props.map( ( item: any, index: number ) => {
-      return (
-        <React.Fragment
-          key={uuidV4()}
-        >
-          {
-            index === 0 &&
-            <option
-              value=""
-            >
-              - None -
-            </option>
-          }
-          <option
-            value={item.id}
-          >
-            {item.name}
-          </option>
-        </React.Fragment>
-      );
+    const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
+      return {
+        value: item.id,
+        label: item.name,
+      };
     } );
-    return element;
+    return options;
   };
 
   constructor( props: any ) {
     super( props );
     this.state = {
-      startDate: moment(),
-      endDate: moment().add( 1, 'days' ),
+      startDate: moment().subtract( 1, 'days' ),
+      endDate: moment(),
       selectList: '',
     };
   }
@@ -98,27 +70,23 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
         <h3>Check in statistics</h3>
         <FormGroup className="check-in-statistics-form-select">
           <ControlLabel className="check-in-statistics-form-label">Select List</ControlLabel>
-          <FormControl
+          <Select
+            options={this.renderOptionLists( this.props.checkinStatistics.selectList )}
             className="check-in-statistics-form-input"
-            componentClass="select"
-            placeholder="select"
-            size={1}
             onChange={this.handleSelectList}
-          >
-            {this.renderOptionLists( this.props.checkinStatistics.selectList )}
-          </FormControl>
+            isClearable={true}
+          />
         </FormGroup>
         <FormGroup className="check-in-statistics-form-select">
           <ControlLabel className="check-in-statistics-form-label">Select User</ControlLabel>
-          <FormControl
+          <Select
+            options={this.renderOptionUsers( this.props.checkinStatistics.selectUser )}
             className="check-in-statistics-form-input"
-            componentClass="select"
-            placeholder="select"
-            size={1}
             onChange={this.handleSelectUser}
-          >
-            {this.renderOptioUsers( this.props.checkinStatistics.selectUser )}
-          </FormControl>
+            hideSelectedOptions={true}
+            isClearable={true}
+
+          />
         </FormGroup>
         <FormGroup className="check-in-statistics-form-select">
           <ControlLabel className="check-in-statistics-form-label">Select Period</ControlLabel>

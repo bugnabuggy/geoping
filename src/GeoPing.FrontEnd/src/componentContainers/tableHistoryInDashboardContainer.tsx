@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import ITableHistoryDashboardContainerProps from '../componentContainerProps/tableHistoryDashboardContainerProps';
 import { TableHistoryDashboard } from '../components/tableComponents/tableHistoryDashboard';
-import { loadHistory } from '../actions/historyAction';
+import { clearTableHistory, loadHistory } from '../actions/historyAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { filterHistory, closeFilterHistory } from '../actions/historyAction';
 import ModalFilterHistoryComponent from '../components/modalComponents/modalFilterHistoryComponent';
@@ -13,6 +13,9 @@ import ModalFilterHistoryComponent from '../components/modalComponents/modalFilt
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
   componentDidMount() {
     this.props.loadHistory();
+  }
+  componentWillUnmount() {
+    this.props.clearTableHistory();
   }
 
   render() {
@@ -50,7 +53,8 @@ const mapDispatchToProps = ( dispatch: any ) =>
     {
       filterHistory,
       loadHistory,
-      closeFilterHistory
+      closeFilterHistory,
+      clearTableHistory,
   },
     dispatch );
 

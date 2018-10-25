@@ -19,7 +19,7 @@ export const useTestPeriod = ( email: string, password: string ) => ( dispatch: 
       dispatch( useTestPeriodAction( true ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 

@@ -13,4 +13,5 @@ export const checkListState: ICheckListStateType = {
   periodFrom: '',
   periodTo: '',
   rating: null,
+  isGeoPointLoading: false,
 };

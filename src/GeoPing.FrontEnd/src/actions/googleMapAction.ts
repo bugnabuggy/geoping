@@ -78,7 +78,7 @@ export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
     } );
 };
 
-export const getMyAddress = () => (dispatch: IDispatchFunction) => {
+export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
   window.navigator.geolocation.getCurrentPosition(
     ( location: any ) => {
       const pos: any = {
@@ -101,7 +101,7 @@ export const getMyAddress = () => (dispatch: IDispatchFunction) => {
     },
     ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-    });
+    } );
 };
 
 export const permissionAdd = ( isPermissionAdd: boolean ) => ( dispatch: IDispatchFunction ) => {

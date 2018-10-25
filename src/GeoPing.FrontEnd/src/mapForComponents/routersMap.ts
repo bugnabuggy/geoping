@@ -10,7 +10,7 @@ import {
   checkInUrl,
   checkListUrl,
   dashboardUrl,
-  loginUrl,
+  loginUrl, logOutUrl,
   profileUrl,
   publicCheckListUrl,
   registerUrl,
@@ -27,6 +27,7 @@ import CheckinStatisticsPage from '../pages/checkinStatisticsPage';
 import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
+import LogOutComponentContainer from '../componentContainers/logOutComponentContainer';
 
 export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
 
@@ -77,6 +78,10 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       {
         path: checkInStatistics,
         component: CheckinStatisticsPage,
+      },
+      {
+        path: logOutUrl,
+        component: LogOutComponentContainer,
       }
     ] );
     if ( userRole === ERoleUser.Admin ) {
