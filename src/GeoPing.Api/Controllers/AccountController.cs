@@ -1,47 +1,45 @@
-﻿using System;
+﻿using GeoPing.Api.Interfaces;
+using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Data;
+using GeoPing.Infrastructure.Models;
+using GeoPing.Utilities.EmailSender;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using GeoPing.Api.Models;
-using GeoPing.Api.Services;
-using GeoPing.Api.Models.DTO;
-using IdentityServer4.Extensions;
-using GeoPing.Api.Data;
-using Microsoft.Extensions.DependencyInjection;
-using GeoPing.Api.Interfaces;
 
 namespace GeoPing.Api.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
+    [Route("account")]
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IConfiguration _configuration;
+        private readonly IAccountService _accountSrv;
+        private readonly IEmailService _emailSvc;
+        private UserManager<AppIdentityUser> _userManager;
+        private IClaimsHelper _helper;
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
-            ILogger<AccountController> logger,
-            ApplicationDbContext dbContext)
+        public AccountController(IAccountService accountSrv,
+                                 IEmailService emailSvc,
+                                 UserManager<AppIdentityUser> userManager,
+                                 IConfiguration configuration,
+                                 IClaimsHelper helper)
         {
+            _accountSrv = accountSrv;
+            _emailSvc = emailSvc;
             _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
-            _logger = logger;
-            _dbContext = dbContext;
+            _configuration = configuration;
+            _helper = helper;
         }
 
         [TempData]
@@ -49,60 +47,157 @@ namespace GeoPing.Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult TestSend()
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser, string returnUrl = null)
-        {
-            /*
-             * Checks if user with submitted email is exists
-             */
-            //var context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
-           
-            if(_dbContext.Users.Any(u => u.Email == registerUser.Email))
+            try
             {
-                return BadRequest(new OperationResult
+                _emailSvc.Send(new EmailMessage()
                 {
-                    Success = false,
-                    Messages = new[] { "Invalid username or email" }
+                    FromAddress = new EmailAddress()
+                    {
+                        Name = "GeopingTeam",
+                        Address = "test@geoping.info"
+                    },
+                    ToAddress = new EmailAddress()
+                    {
+                        Name = "shefard55r@yandex.ru",
+                        Address = "shefard55r@yandex.ru"
+                    },
+                    Subject = "Email confirmation",
+                    Content = "Test"
+
                 });
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
-            ViewData["ReturnUrl"] = returnUrl;
-            
+            return Ok();
+        }
+
+        // POST /account/register
+        [HttpPost]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser)
+        {
+            var result = new OperationResult();
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = registerUser.UserName, Email = registerUser.Email };
-                
-                var result = await _userManager.CreateAsync(user, registerUser.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    return Ok(new OperationResult
-                    {
-                        Success = true,
-                        Messages = new[] { "User was successfully registered" }
-                    });
-                }
-                AddErrors(result);
+                result = await _accountSrv.RegisterAsync(registerUser);
             }
-            /*
-            * If we got this far, something failed
-            */
-            return BadRequest(new OperationResult
+            else
             {
-                Success = false,
-                Messages = new[] { "Something was failed while user registration" }
-            });
+                result = new OperationResult()
+                {
+                    Data = registerUser,
+                    Messages = new string[] { "Model is invalid" },
+                    Success = false
+                };
+            }
+
+            if (result.Success)
+            {
+                var appUser = await _userManager.FindByEmailAsync(registerUser.Email);
+
+                if (_configuration.GetValue<bool>("isEmailConfirmationOn"))
+                {
+                    var code = _userManager.GenerateEmailConfirmationTokenAsync(appUser).Result;
+
+                    SendSecurityEmail(appUser, code, "ConfirmEmail", "Email confirmation");
+                }
+                else
+                {
+                    await _accountSrv.ConfirmAccountWithoutEmailAsync(registerUser.Email);
+                }
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
-        
+
+        // POST /account/changepassword
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [Route("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordDTO changePassword)
+        {
+            var result = await _accountSrv.ChangePasswordAsync(_helper.GetIdentityUserIdByClaims(User.Claims), changePassword);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // POST /account/resetpassword
+        [HttpPost]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        [Route("resetPassword")]
+        public async Task<IActionResult> ResetPasswordRequest(string loginOrEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(loginOrEmail);
+            if (user == null)
+            {
+                user = await _userManager.FindByNameAsync(loginOrEmail);
+                if (user == null)
+                {
+                    return BadRequest("There is no user with given login or email");
+                }
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
+
+            return Ok("A password reset confirmation email has been sent to email address you specified");
+        }
+
+        // GET /account/confirmemail
+        [HttpGet]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        [Route("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
+            }
+
+            var result = await _accountSrv.ConfirmEmailAsync(userId, token);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // POST /account/confirmreset
+        [HttpGet]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        [Route("confirmReset")]
+        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]string newPassword)
+        {
+            if (userId == null || token == null)
+            {
+                return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
+            }
+
+            var result = await _accountSrv.ConfirmResetAsync(userId, token, newPassword);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -113,20 +208,35 @@ namespace GeoPing.Api.Controllers
             }
         }
 
-        private IActionResult RedirectToLocal(string returnUrl)
+        // Sends security emails for given user with given security token for specified action, 
+        // Action field is endpoint of action
+        // Subject field is email subject
+        private void SendSecurityEmail(AppIdentityUser user, string code, string action, string subject)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            var callbackUrl = Url.Action(action,
+                                         "Account",
+                                         new { userId = user.Id, code = code },
+                                         protocol: HttpContext.Request.Scheme);
+
+            _emailSvc.Send(new EmailMessage()
             {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
+                FromAddress = new EmailAddress()
+                {
+                    Name = "GeopingTeam",
+                    Address = "noreply@geoping.info"
+                },
+                ToAddress = new EmailAddress()
+                {
+                    Name = user.UserName,
+                    Address = user.Email
+                },
+                Subject = subject,
+                Content = _emailSvc.GetConfirmationMail(user.UserName, callbackUrl)
+            });
         }
 
         #endregion
-        
+
         /*
         [HttpGet]
         [AllowAnonymous]

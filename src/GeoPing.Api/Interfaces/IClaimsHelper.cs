@@ -1,4 +1,5 @@
-﻿using GeoPing.Api.Models;
+﻿using GeoPing.Core.Entities;
+using GeoPing.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,12 @@ namespace GeoPing.Api.Interfaces
 {
     public interface IClaimsHelper
     {
-        string GetUserIdByClaims(IEnumerable<Claim> claims);
+        string GetIdentityUserIdByClaims(IEnumerable<Claim> claims);
 
-        ApplicationUser GetUserByClaims(IEnumerable<Claim> claims);
+        AppIdentityUser GetIdentityUserByClaims(IEnumerable<Claim> claims);
+
+        Guid GetAppUserIdByClaims(IEnumerable<Claim> claims);
+
+        GeoPingUser GetAppUserByClaims(IEnumerable<Claim> claims);
     }
 }

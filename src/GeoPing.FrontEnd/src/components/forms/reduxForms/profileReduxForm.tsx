@@ -82,7 +82,7 @@ const renderInput = ( props: any ) => {
 };
 
 function profileForm( props: any ): any {
-  const { handleSubmit } = props;
+  const { handleSubmit,  } = props;
   return (
     <form className="profile-form">
       <Field
@@ -113,6 +113,7 @@ function profileForm( props: any ): any {
       <Button
         bsStyle="primary"
         type="button"
+        onClick={props.showModalChangePassword}
       >
         Change Password
       </Button>

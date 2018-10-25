@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { IProfilePageProps } from '../pageProps/profilePageProps';
-import ProfileComponentContainer   from  '../componentContainers/profileComponentContainer';
-
+import ProfileComponentContainer from '../componentContainers/profileComponentContainer';
 export default class ProfilePage extends React.Component<IProfilePageProps, any> {
   render() {
     return (
       <React.Fragment>
-        <ProfileComponentContainer />
+        <div>
+          <ProfileComponentContainer/>
+        </div>
       </React.Fragment>
     );
   }

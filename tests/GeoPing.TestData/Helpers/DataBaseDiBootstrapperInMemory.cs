@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using GeoPing.Api.Configuration;
-using GeoPing.Api.Data;
-using GeoPing.Api.Models;
+using GeoPing.Infrastructure.Data;
+using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +31,7 @@ namespace GeoPing.TestData.Helpers
             services.AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<ApplicationDbContext>(opt => opt.UseInMemoryDatabase("TestDB"));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<AppIdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var httpContext = new DefaultHttpContext();

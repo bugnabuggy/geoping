@@ -5,4 +5,6 @@ export default interface IProfileStateType {
   phone: string;
   accountType: string;
   lastPaid: string;
+  isShowModal: boolean;
+  isLoaded: boolean;
 }

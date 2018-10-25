@@ -1,11 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <!--
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
+    -->
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameWorkVersion>2.1.4</RuntimeFrameWorkVersion>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 
 </Project>
