@@ -74,7 +74,7 @@ namespace GeoPing.TestData.Helpers
             return GetApplicationDbContext();
         }
 
-        public ServiceProvider GetServiceProvider()
+        public IServiceProvider GetServiceProvider()
         {
             var services = new ServiceCollection();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(TestConfig.ConnectionString));
@@ -94,11 +94,11 @@ namespace GeoPing.TestData.Helpers
             return serviceProvider;
         }
 
-        public async Task<ServiceProvider> GetServiceProviderWithSeedDb()
+        public IServiceProvider GetServiceProviderWithSeedDb()
         {
             var provider = GetServiceProvider();
             var dbSeed = new TestDbContextInitializer();
-            await dbSeed.SeedData(provider);
+            dbSeed.SeedData(provider);
 
             return provider;
         }
