@@ -1,43 +1,41 @@
-﻿using System;
+﻿using GeoPing.Core.Models;
+using GeoPing.Infrastructure.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using GeoPing.Api.Models;
 
 namespace GeoPing.TestData
 {
     class AppUsersList
     {
-        internal static ApplicationUser GetIdentityUser()
+        internal static AppIdentityUser GetIdentityUser()
         {
-            return new ApplicationUser()
+            return new AppIdentityUser()
             {
                 UserName = "Tester"
             };
         }
 
-        public static IEnumerable<ApplicationUser> GetList()
+        public static IEnumerable<AppIdentityUser> GetList()
         {
-            return new List<ApplicationUser>()
+            return new List<AppIdentityUser>()
             {
-                new ApplicationUser()
+                new AppIdentityUser()
                 {
                     UserName = "Tester1",
                     Email = "test1@test.com",
-                    FullName = "Test, the 1st",
                     PhoneNumber = "+1234567891"
                 },
-                new ApplicationUser()
+                new AppIdentityUser()
                 {
                     UserName = "Tester2",
                     Email = "test2@test.com",
-                    FullName = "Test, the 2nd",
                     PhoneNumber = "+1234567892"
                 },
-                new ApplicationUser()
+                new AppIdentityUser()
                 {
                     UserName = "Tester3",
                     Email = "test3@test.com",
-                    FullName = "Test, the 3rd",
                     PhoneNumber = "+1234567893"
                 }
             };

@@ -1,4 +1,4 @@
-﻿using GeoPing.Api.Models;
+﻿using GeoPing.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,21 +8,30 @@ namespace GeoPing.Api.Configuration
 {
     public class Users
     {
-        public ApplicationUser Admin = new ApplicationUser
+        public AppIdentityUser Admin = new AppIdentityUser
         {
             UserName = "testadmin",
-            Email = "testadmin@geoping.com"
+            Email = "testadmin@geoping.com",
+            EmailConfirmed = true
         };
 
-        public ApplicationUser User = new ApplicationUser
+        public AppIdentityUser User = new AppIdentityUser
         {
             UserName = "testuser",
-            Email = "testuser@geoping.com"
+            Email = "testuser@geoping.com",
+            EmailConfirmed = true
         };
-        
-        public IList<ApplicationUser> ToList()
+
+        public AppIdentityUser NoReply = new AppIdentityUser
         {
-            return new List<ApplicationUser>
+            UserName = "noreply",
+            Email = "noreply@geoping.com",
+            EmailConfirmed = true
+        };
+
+        public IList<AppIdentityUser> ToList()
+        {
+            return new List<AppIdentityUser>
             {
                 Admin,
                 User

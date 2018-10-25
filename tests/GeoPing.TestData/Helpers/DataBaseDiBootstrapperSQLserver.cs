@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using GeoPing.Api.Configuration;
-using GeoPing.Api.Data;
-using GeoPing.Api.Models;
+﻿using GeoPing.Api.Configuration;
+using GeoPing.Infrastructure.Data;
+using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GeoPing.TestData.Helpers
 {
@@ -79,7 +79,7 @@ namespace GeoPing.TestData.Helpers
             var services = new ServiceCollection();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(TestConfig.ConnectionString));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<AppIdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var httpContext = new DefaultHttpContext();
