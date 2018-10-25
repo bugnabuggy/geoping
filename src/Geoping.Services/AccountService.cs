@@ -61,7 +61,6 @@ namespace Geoping.Services
 
                 return new OperationResult
                 {
-                    Data = registerUser,
                     Success = true,
                     Messages = new[] { "User was successfully registered, now he should validate his " +
                                        "account according instructions were sent to provided email address" }
@@ -170,6 +169,25 @@ namespace Geoping.Services
         public OperationResult GetProfile(Guid gpUserId)
         {
             var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
+
+            if (result == null)
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { "User was not found" }
+                };
+            }
+            return new OperationResult()
+            {
+                Data = result,
+                Messages = new[] { "The following user was found" },
+                Success = true
+            };
+        }
+
+        public OperationResult GetShortProfile(Guid gpUserId)
+        {
+            var result = _gpUserSrv.GetUserNameAndAvatar(x => x.Id == gpUserId);
 
             if (result == null)
             {

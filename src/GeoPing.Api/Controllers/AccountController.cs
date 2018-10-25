@@ -42,41 +42,7 @@ namespace GeoPing.Api.Controllers
             _configuration = configuration;
             _helper = helper;
         }
-
-        [TempData]
-        public string ErrorMessage { get; set; }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult TestSend()
-        {
-            try
-            {
-                _emailSvc.Send(new EmailMessage()
-                {
-                    FromAddress = new EmailAddress()
-                    {
-                        Name = "GeopingTeam",
-                        Address = "test@geoping.info"
-                    },
-                    ToAddress = new EmailAddress()
-                    {
-                        Name = "shefard55r@yandex.ru",
-                        Address = "shefard55r@yandex.ru"
-                    },
-                    Subject = "Email confirmation",
-                    Content = "Test"
-
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-
-            return Ok();
-        }
-
+                
         // POST /account/register
         [HttpPost]
         [AllowAnonymous]
@@ -182,6 +148,21 @@ namespace GeoPing.Api.Controllers
             if(result.Success)
             {
                 return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // GET /account/account/short
+        [HttpGet]
+        [Route("profile/short")]
+        public IActionResult GetShortProfile()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+            var result = _accountSrv.GetShortProfile(userId);
+
+            if (result.Success)
+            {
+                Ok(result);
             }
             return BadRequest(result);
         }

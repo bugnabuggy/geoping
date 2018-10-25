@@ -19,6 +19,7 @@ namespace GeoPing.Core.Services
         Task<OperationResult> ConfirmResetAsync(string userId, string token, string newPassword);
         Task ConfirmAccountWithoutEmailAsync(string userEmail);
         OperationResult GetProfile(Guid gpUserId);
+        OperationResult GetShortProfile(Guid userId);
         OperationResult EditProfile(Guid loggedUserId, GeoPingUser user);
     }
 }
