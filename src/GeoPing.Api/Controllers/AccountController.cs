@@ -119,7 +119,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST /account/changepassword
+        // POST /account/change-password
         [HttpPost]
         //[ValidateAntiForgeryToken]
         [Route("change-password")]
@@ -133,7 +133,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST /account/resetpassword
+        // POST /account/reset-password
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
@@ -165,7 +165,7 @@ namespace GeoPing.Api.Controllers
             var result = _accountSrv.GetProfile(_helper.GetAppUserIdByClaims(User.Claims));
             if (result.Success)
             {
-                return Ok();
+                return Ok(result);
             }
             return BadRequest(result);
         }
@@ -186,7 +186,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // GET /account/confirmemail
+        // GET /account/confirm-email
         [HttpGet]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
@@ -207,7 +207,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST /account/confirmreset
+        // POST /account/confirm-reset
         [HttpGet]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
