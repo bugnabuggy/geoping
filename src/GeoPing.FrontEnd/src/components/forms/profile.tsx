@@ -3,6 +3,7 @@ import ProfileReduxForm from './reduxForms/profileReduxForm';
 import { Button } from 'react-bootstrap';
 import { IProfileComponentProps } from '../../componentProps/profileComponentProps';
 import { ModalChangePasswordComponent } from  '../modalComponents/modalChangePasswordComponent';
+import IUserType from '../../DTO/userDTO';
 
 class ProfileComponent extends React.Component<IProfileComponentProps, any> {
 
@@ -17,11 +18,14 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
   }
 
   submit (e: any) {
-    const newProfileData: any = {
+    const newProfileData: IUserType = {
+      id: this.props.profileState.id,
       email: e.email,
       login: e.login,
       accountType: e.accountType,
-      fullName: e.fullName,
+      firstName: e.firstName,
+      lastName: e.lastName,
+      birthday: e.birthday,
       phone: e.phone,
       lastPaid: e.lastPaid,
     };
@@ -49,7 +53,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
           <label htmlFor="payment-info">Payment info</label>
           <div className="payment-info">
             <div className="last-paid-flex">
-              Last paid {this.props.profileState.lastPaid}
+              Last paid <em>{this.props.profileState.lastPaid}</em>
             </div>
             <Button
               bsStyle="primary"

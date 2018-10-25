@@ -1,10 +1,13 @@
 import IProfileStateType from '../types/stateTypes/profileStateType';
 
 export const profileState: IProfileStateType = {
+  id: '',
   login: '',
-  fullName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   phone: '',
+  birthday: '',
   accountType: '',
   lastPaid: '',
   isShowModal: false,

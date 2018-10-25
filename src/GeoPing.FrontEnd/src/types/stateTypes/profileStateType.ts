@@ -1,6 +1,9 @@
 export default interface IProfileStateType {
+  id: string;
   login: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
   email: string;
   phone: string;
   accountType: string;

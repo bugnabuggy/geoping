@@ -17,6 +17,7 @@ import CheckListService from './httpServices/checkListService';
 import MockUserService from './mockServices/mockUserService';
 import MarkerService from './httpServices/markerService';
 import ProfileService from './httpServices/profileService';
+import UserService from './httpServices/userService';
 import MockProfileService from './mockServices/mockProfileService';
 import { AxiosRequestConfig } from 'axios';
 
@@ -37,7 +38,7 @@ export function configurationDependencyInjerction() {
   httpServiceLocator.set( 'ITableHistoryService', new TableHistoryService() );
   httpServiceLocator.set( 'ICheckListServiceType', new CheckListService() );
   httpServiceLocator.set( 'IMarkerServiceType', new MarkerService() );
-  httpServiceLocator.set( 'IUser', new MockUserService() );
+  httpServiceLocator.set( 'IUser', new UserService() );
   httpServiceLocator.set( 'IProfileServiceType', new ProfileService() );
 
   /* test services */

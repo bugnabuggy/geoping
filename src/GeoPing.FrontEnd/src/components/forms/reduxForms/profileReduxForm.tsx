@@ -36,7 +36,23 @@ const output = ( props: any ) => {
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
         />
       );
-    case 'Full Name':
+    case 'First Name':
+      return (
+        <FormControl
+          {...props.input}
+          type="text"
+          placeholder={props.placeholder}
+        />
+      );
+      case 'Last Name':
+      return (
+        <FormControl
+          {...props.input}
+          type="text"
+          placeholder={props.placeholder}
+        />
+      );
+      case 'Birthday':
       return (
         <FormControl
           {...props.input}
@@ -92,8 +108,18 @@ function profileForm( props: any ): any {
       />
       <Field
         component={renderInput}
-        name="fullName"
-        labelName="Full Name"
+        name="firstName"
+        labelName="First Name"
+      />
+      <Field
+        component={renderInput}
+        name="lastName"
+        labelName="Last Name"
+      />
+      <Field
+        component={renderInput}
+        name="birthday"
+        labelName="Birthday"
       />
       <Field
         component={renderInput}
