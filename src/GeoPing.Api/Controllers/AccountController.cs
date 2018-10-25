@@ -1,4 +1,5 @@
 ﻿using GeoPing.Api.Interfaces;
+using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
@@ -154,6 +155,35 @@ namespace GeoPing.Api.Controllers
             SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 
             return Ok("A password reset confirmation email has been sent to email address you specified");
+        }
+
+        // GET /account/profile
+        [HttpGet]
+        [Route("profile")]
+        public IActionResult GetProfile()
+        {
+            var result = _accountSrv.GetProfile(_helper.GetAppUserIdByClaims(User.Claims));
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest(result);
+        }
+
+        // PUT /account/profile
+        [HttpPut]
+        [Route("profile")]
+        public IActionResult EditProfile(GeoPingUser user)
+        {
+            var loggedUserId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            var result = _accountSrv.EditProfile(loggedUserId, user);
+
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         // GET /account/confirmemail
