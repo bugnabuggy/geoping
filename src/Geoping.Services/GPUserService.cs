@@ -1,8 +1,11 @@
 ﻿using GeoPing.Core.Entities;
+using GeoPing.Core.Models;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Geoping.Services
@@ -14,6 +17,21 @@ namespace Geoping.Services
         public GPUserService(IRepository<GeoPingUser> gpUserRepo)
         {
             _gpUserRepo = gpUserRepo;
+        }
+
+        public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
+        {
+            return _gpUserRepo.Data.FirstOrDefault(func);
+        }
+
+        public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
+        {
+            return new OperationResult<GeoPingUser>()
+            {
+                Data = _gpUserRepo.Update(user),
+                Messages = new[] { "Profile was successfully edited." },
+                Success = true
+            };
         }
 
         public void AddGPUserForIdentity(string identityUserId, string email, string username)

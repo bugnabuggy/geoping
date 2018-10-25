@@ -25,7 +25,7 @@ namespace GeoPing.TestData.Helpers
             return ctx;
         }
 
-        public ServiceProvider GetServiceProvider()
+        public IServiceProvider GetServiceProvider()
         {
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase()
@@ -49,11 +49,11 @@ namespace GeoPing.TestData.Helpers
             return serviceProvider;
         }
 
-        public async Task<ServiceProvider> GetServiceProviderWithSeedDb()
+        public IServiceProvider GetServiceProviderWithSeedDb()
         {
             var provider = GetServiceProvider();
             var dbSeed = new TestDbContextInitializer();
-            await dbSeed.SeedData(provider);
+            dbSeed.SeedData(provider);
 
             return provider;
         }

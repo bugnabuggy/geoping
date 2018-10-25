@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeoPing.TestData
+namespace GeoPing.TestData.Data
 {
     class AppUsersList
     {
@@ -24,19 +24,22 @@ namespace GeoPing.TestData
                 {
                     UserName = "Tester1",
                     Email = "test1@test.com",
-                    PhoneNumber = "+1234567891"
+                    PhoneNumber = "+1234567891",
+                    EmailConfirmed = true
                 },
                 new AppIdentityUser()
                 {
                     UserName = "Tester2",
                     Email = "test2@test.com",
-                    PhoneNumber = "+1234567892"
+                    PhoneNumber = "+1234567892",
+                    EmailConfirmed = true
                 },
                 new AppIdentityUser()
                 {
                     UserName = "Tester3",
                     Email = "test3@test.com",
-                    PhoneNumber = "+1234567893"
+                    PhoneNumber = "+1234567893",
+                    EmailConfirmed = true
                 }
             };
         }

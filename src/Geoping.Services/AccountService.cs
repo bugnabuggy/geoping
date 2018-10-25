@@ -1,4 +1,5 @@
-﻿using GeoPing.Core.Models;
+﻿using GeoPing.Core.Entities;
+using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Data;
@@ -165,6 +166,47 @@ namespace Geoping.Services
 
             _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
         }
+
+        public OperationResult GetProfile(Guid gpUserId)
+        {
+            var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
+
+            if (result == null)
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { "User was not found" }
+                };
+            }
+            return new OperationResult()
+            {
+                Data = result,
+                Messages = new[] { "The following user was found" },
+                Success = true
+            };
+        }
+
+        public OperationResult EditProfile(Guid loggedUserId, GeoPingUser user)
+        {
+            if (loggedUserId == user.Id)
+            {
+                var result = _gpUserSrv.EditUser(user);
+                if (result.Success)
+                {
+                    return new OperationResult()
+                    {
+                        Data = user,
+                        Success = true,
+                        Messages = new[] { "Profile tou are trying to edit is not yours or something went wrong while editing" }
+                    };
+                }
+            }
+            return new OperationResult()
+            {
+                Messages = new[] { "Profile tou are trying to edit is not yours or something went wrong while editing" }
+            };
+        }
+
         public bool IsUserExists(RegisterUserDTO user, out string item)
         {
             if (_userManager.FindByEmailAsync(user.Email).Result != null)

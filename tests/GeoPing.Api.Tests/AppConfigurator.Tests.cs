@@ -1,5 +1,6 @@
 ﻿using GeoPing.Api.Configuration;
 using GeoPing.Core.Models;
+using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.TestData.Helpers;
 using Microsoft.AspNetCore.Identity;
@@ -25,29 +26,26 @@ namespace GeoPing.Api.Tests
 
             var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            var appUserRoles = new UserRoles();
-            var appUsers = new Users();
-
-            foreach(var role in appUserRoles.ToList())
+            var ctx = services.GetService<ApplicationDbContext>();
+            var UserRoles = ctx.Roles;
+            var Users = ctx.Users;
+            
+            foreach (var identityUser in Users.ToList())
             {
-                Assert.IsTrue(roleManager.Roles.Any(r => r.Name.Equals(role)));
+                Assert.IsTrue(userManager.Users.Any(u => u.Email.Equals(identityUser.Email)));
+                Assert.IsTrue(userManager.Users.Any(u => u.UserName.Equals(identityUser.UserName)));
+                Assert.IsTrue(ctx.GPUsers.Any(u => u.IdentityId == identityUser.Id));
             }
 
-            foreach (var appUser in appUsers.ToList())
-            {
-                Assert.IsTrue(userManager.Users.Any(u => u.Email.Equals(appUser.Email)));
-                Assert.IsTrue(userManager.Users.Any(u => u.UserName.Equals(appUser.UserName)));
-            }
+            var admin = userManager.Users.FirstOrDefault(u => u.UserName.Equals("testadmin"));
+            var user = userManager.Users.FirstOrDefault(u => u.UserName.Equals("testuser"));
 
-            var admin = userManager.Users.FirstOrDefault(u => u.UserName.Equals(appUsers.Admin.UserName));
-            var user = userManager.Users.FirstOrDefault(u => u.UserName.Equals(appUsers.User.UserName));
-
-            foreach(var role in appUserRoles.ToList())
+            foreach(var role in UserRoles.ToList())
             {
-                Assert.IsTrue(userManager.IsInRoleAsync(admin, role).Result);
+                Assert.IsTrue(userManager.IsInRoleAsync(admin, role.Name).Result);
             }
-            Assert.IsTrue(userManager.IsInRoleAsync(user, appUserRoles.User).Result);
-            Assert.IsFalse(userManager.IsInRoleAsync(user, appUserRoles.Admin).Result);
+            Assert.IsTrue(userManager.IsInRoleAsync(user, "user").Result);
+            Assert.IsFalse(userManager.IsInRoleAsync(user, "admin").Result);
         }
     }
 }
