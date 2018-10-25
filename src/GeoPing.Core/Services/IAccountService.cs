@@ -9,7 +9,12 @@ namespace GeoPing.Core.Services
 {
     public interface IAccountService
     {
-        Task<OperationResult> Register(RegisterUserDTO registerUser);
-        Task<OperationResult> ChangePassword(string identityUserId, ChangePasswordDTO changePassword);
+        Task<OperationResult> RegisterAsync(RegisterUserDTO registerUser);
+        Task<OperationResult> ChangePasswordAsync(string identityUserId, ChangePasswordDTO changePassword);
+        bool IsUserExists(RegisterUserDTO user, out string item);
+        bool IsUserExists(string userId);
+        Task<OperationResult> ConfirmEmailAsync(string userId, string token);
+        Task<OperationResult> ConfirmResetAsync(string userId, string token, string newPassword);
+        Task ConfirmAccountWithoutEmailAsync(string userEmail);
     }
 }
