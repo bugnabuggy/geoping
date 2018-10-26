@@ -1,6 +1,7 @@
 ﻿using GeoPing.Api.Interfaces;
 using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,25 +26,25 @@ namespace GeoPing.Api.Controllers
         }
 
         // GET api/Geolist
-        //[HttpGet]
-        //public IActionResult GetListsByFilter(GeolistFilterDTO filter)
-        //{
-        //    var result = _geolistSrv.GetByFilter(filter, out int totalItems);
-        //    if(result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        // GET api/Geolist
         [HttpGet]
-        public IActionResult GetListsByFilter()
+        public IActionResult GetListsByFilter(GeolistFilterDTO filter)
         {
-            var result = _geolistSrv.Get();
-
-            return Ok(result);
+            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
+
+        //// GET api/Geolist
+        //[HttpGet]
+        //public IActionResult GetListsByFilter()
+        //{
+        //    var result = _geolistSrv.Get();
+
+        //    return Ok(result);
+        //}
 
         // GET api/Geolist/{Id}
         [HttpGet]
