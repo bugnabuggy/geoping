@@ -30,6 +30,8 @@ webpack(webpackConfig).run(function (err, stats) {
   //fs.createReadStream('src/index.html').pipe(fs.createWriteStream('dist/index.html'));
   fs.createReadStream('src/assets/styles/style.css').pipe(fs.createWriteStream('dist/assets/styles/style.css'));
   fs.createReadStream('src/assets/images/avatar.png').pipe(fs.createWriteStream('dist/assets/images/avatar.png'));
+  fs.createReadStream('src/assets/images/avatar.png').pipe(fs.createWriteStream('dist/assets/images/google-button.png'));
+  fs.createReadStream('src/assets/images/avatar.png').pipe(fs.createWriteStream('dist/assets/images/google-button-hover.png'));
   console.log('index.html and asssets written to /dist'.blue);
   console.log('Your app has been compiled in production mode and written to /dist. It\'s ready to roll!'.blue);
   return 0;
