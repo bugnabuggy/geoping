@@ -4,6 +4,7 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getVirtualDatabase, useTestPeriod } from '../actions/aboutAction';
+import { redirectDaschboard } from '../actions/userAction';
 
 class AboutComponentContainer extends React.Component<IAboutComponentContainerProps, any> {
   tempStyle = {
@@ -16,6 +17,7 @@ class AboutComponentContainer extends React.Component<IAboutComponentContainerPr
   handleClick = ( e: any ) => {
     this.props.useTestPeriod( 'test', 'Password@123' );
     this.props.getVirtualDatabase();
+    this.props.redirectDaschboard( true );
   };
 
   render() {
@@ -34,7 +36,9 @@ class AboutComponentContainer extends React.Component<IAboutComponentContainerPr
 }
 
 const mapStateToProps = ( state: IinitialStateType ) => {
-  return {};
+  return {
+    user: state.user,
+  };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
@@ -42,6 +46,7 @@ const mapDispatchToProps = ( dispath: any ) =>
     {
       useTestPeriod,
       getVirtualDatabase,
+      redirectDaschboard,
     },
     dispath );
 

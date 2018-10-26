@@ -1,6 +1,6 @@
 import IRegistrationUserType from '../types/actionsType/registrationUserDataType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { USER_AUTHORIZATION, USER_SIGN_OUT } from '../constantsForReducer/user';
+import { REDIRECT_DASHBOARD_FOR_LOGIN, USER_AUTHORIZATION, USER_SIGN_OUT } from '../constantsForReducer/user';
 import IAuthorization from '../types/serviceTypes/authorizationServiceType';
 import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
@@ -54,6 +54,10 @@ export const authorizationUserFlag = ( isAuthorize: boolean ) => ( dispatch: IDi
   dispatch( authorizationUserAction( isAuthorize ) );
 };
 
+export const redirectDaschboard = ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch(redirectDaschboardAction(isRedirect));
+};
+
 /* Actions */
 
 function authorizationUserAction( authorization: boolean ): Object {
@@ -62,4 +66,8 @@ function authorizationUserAction( authorization: boolean ): Object {
 
 function signOutUserAction(): Object {
   return { type: USER_SIGN_OUT };
+}
+
+function redirectDaschboardAction( isRedirect: boolean ) {
+  return { type: REDIRECT_DASHBOARD_FOR_LOGIN, isRedirect };
 }

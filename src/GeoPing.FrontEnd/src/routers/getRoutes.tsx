@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Routes from './routesComponent';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
-import { authorizationUserFlag } from '../actions/userAction';
+import { authorizationUserFlag, redirectDaschboard } from '../actions/userAction';
 import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
+import { dashboardUrl } from '../constants/routes';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   authorized = () => {
@@ -18,21 +19,22 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         getBuildEnvironment( EBuildEnvironment.Test );
         StaticStorage.serviceLocator = environments.get( buildEnvironment );
       }
-      if ( !this.props.authorized ) {
+      if ( !this.props.user.authorized ) {
         this.props.authorizationUserFlag( true );
       }
     } else {
-      if ( this.props.authorized ) {
+      if ( this.props.user.authorized ) {
         this.props.authorizationUserFlag( false );
       }
     }
   };
 
-  componentDidUpdate( prevProps: IGetRoutesProps ) {
+  constructor( props: IGetRoutesProps ) {
+    super( props );
     this.authorized();
   }
-  constructor(props: IGetRoutesProps) {
-    super(props);
+
+  componentDidUpdate( prevProps: IGetRoutesProps ) {
     this.authorized();
   }
 
@@ -41,8 +43,12 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
       <React.Fragment>
         <Routes
           authorized={!!localStorage.getItem( 'token' )}
-          roleUser={this.props.roleUser}
+          roleUser={this.props.user.roleUser}
         />
+        {this.props.user.authorized &&
+        this.props.user.redirectDashboard &&
+        this.props.location !== dashboardUrl &&
+        <Redirect to={dashboardUrl}/>}
       </React.Fragment>
     );
   }
@@ -50,9 +56,8 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    authorized: state.user.authorized,
     location: state.router.location.pathname,
-    roleUser: state.user.roleUser,
+    user: state.user,
   };
 };
 
@@ -60,6 +65,7 @@ const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
       authorizationUserFlag,
+      redirectDaschboard,
     },
     dispath );
 

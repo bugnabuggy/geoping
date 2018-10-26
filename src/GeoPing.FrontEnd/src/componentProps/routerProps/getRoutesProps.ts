@@ -1,10 +1,10 @@
-import { ERoleUser } from '../../types/stateTypes/userStateType';
+import IUserState from '../../types/stateTypes/userStateType';
 import IDispatchFunction from '../../types/functionsTypes/dispatchFunction';
 
 export default interface IGetRoutesProps {
-  authorized: boolean;
   location: any;
-  roleUser: ERoleUser;
+  user: IUserState;
 
   authorizationUserFlag: ( isAuthorize: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  redirectDaschboard: ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => void;
 }

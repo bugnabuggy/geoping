@@ -12,4 +12,6 @@ export default interface ILoginComponentContainerProps {
 
   authorizationUser: ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => void;
   signOutUser: () => ( dispatch: IDispatchFunction ) => void;
+  authorizationUserFlag: ( isAuthorize: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  redirectDaschboard: ( isRedirect: boolean ) => (dispatch: IDispatchFunction) => void;
 }

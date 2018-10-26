@@ -3,6 +3,7 @@ export default interface IUserStateType {
   avatar: string;
   authorized: boolean;
   roleUser: ERoleUser;
+  redirectDashboard: boolean;
 }
 
 export enum ERoleUser {
