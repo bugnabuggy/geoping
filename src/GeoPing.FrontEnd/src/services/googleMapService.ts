@@ -16,7 +16,7 @@ let idUserMarker: any = '';
 const pinColor: string = '26b430';
 const iconSelectedGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
-const iconUserGeoPointUrl: string = 'assets/images/card-pin.png';
+const iconUserGeoPointUrl: string = '/assets/images/card-pin.png';
 const defaultTimeForAnimateMarkers: number = 300;
 
 export function constructorMapService( google: any, options: any, that: any ) {
