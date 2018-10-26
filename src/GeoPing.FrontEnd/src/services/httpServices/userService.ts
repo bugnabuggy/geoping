@@ -13,6 +13,11 @@ export default class UserService implements IUser {
   loadUsersForSharedList(idChecklists: string) {
     return new Promise(resolve => '');
   }
+
+  loadUserForStatistic(idList: string ) {
+    return new Promise(resolve => '');
+  }
+
   changePassword(password: string, newPassword: string) {
     const data = {
       'OldPassword': password,
