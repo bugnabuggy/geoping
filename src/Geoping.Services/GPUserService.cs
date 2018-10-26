@@ -25,10 +25,10 @@ namespace Geoping.Services
             return _gpUserRepo.Data.FirstOrDefault(func);
         }
 
-        public UserNameAndAvatarDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
+        public ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
         {
             var data = GetUser(func);
-            return new UserNameAndAvatarDTO()
+            return new ShortUserInfoDTO()
             {
                 UserName = data.Login,
                 Avatar = Convert.ToBase64String(data.Avatar)
