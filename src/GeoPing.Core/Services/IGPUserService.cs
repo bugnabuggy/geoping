@@ -1,5 +1,6 @@
 ﻿using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace GeoPing.Core.Services
     public interface IGPUserService
     {
         GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func);
+        ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func);
         void AddGPUserForIdentity(string identityUserId, string email, string username);
         OperationResult<GeoPingUser> EditUser(GeoPingUser user);
     }

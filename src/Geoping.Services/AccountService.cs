@@ -61,7 +61,6 @@ namespace Geoping.Services
 
                 return new OperationResult
                 {
-                    Data = registerUser,
                     Success = true,
                     Messages = new[] { "User was successfully registered, now he should validate his " +
                                        "account according instructions were sent to provided email address" }
@@ -167,18 +166,18 @@ namespace Geoping.Services
             _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
         }
 
-        public OperationResult GetProfile(Guid gpUserId)
+        public OperationResult<GeoPingUser> GetProfile(Guid gpUserId)
         {
             var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
 
             if (result == null)
             {
-                return new OperationResult()
+                return new OperationResult<GeoPingUser>()
                 {
                     Messages = new[] { "User was not found" }
                 };
             }
-            return new OperationResult()
+            return new OperationResult<GeoPingUser>()
             {
                 Data = result,
                 Messages = new[] { "The following user was found" },
@@ -186,14 +185,33 @@ namespace Geoping.Services
             };
         }
 
-        public OperationResult EditProfile(Guid loggedUserId, GeoPingUser user)
+        public OperationResult<ShortUserInfoDTO> GetShortProfile(Guid gpUserId)
+        {
+            var result = _gpUserSrv.GetUserNameAndAvatar(x => x.Id == gpUserId);
+
+            if (result == null)
+            {
+                return new OperationResult<ShortUserInfoDTO>()
+                {
+                    Messages = new[] { "User was not found" }
+                };
+            }
+            return new OperationResult<ShortUserInfoDTO>()
+            {
+                Data = result,
+                Messages = new[] { "The following user was found" },
+                Success = true
+            };
+        }
+
+        public OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUser user)
         {
             if (loggedUserId == user.Id)
             {
                 var result = _gpUserSrv.EditUser(user);
                 if (result.Success)
                 {
-                    return new OperationResult()
+                    return new OperationResult<GeoPingUser>()
                     {
                         Data = user,
                         Success = true,
@@ -201,7 +219,7 @@ namespace Geoping.Services
                     };
                 }
             }
-            return new OperationResult()
+            return new OperationResult<GeoPingUser>()
             {
                 Messages = new[] { "Profile tou are trying to edit is not yours or something went wrong while editing" }
             };

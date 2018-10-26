@@ -1,5 +1,6 @@
 ﻿using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
@@ -22,6 +23,16 @@ namespace Geoping.Services
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
         {
             return _gpUserRepo.Data.FirstOrDefault(func);
+        }
+
+        public ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
+        {
+            var data = GetUser(func);
+            return new ShortUserInfoDTO()
+            {
+                UserName = data.Login,
+                Avatar = Convert.ToBase64String(data.Avatar)
+            };
         }
 
         public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
