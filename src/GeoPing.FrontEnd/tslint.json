@@ -24,7 +24,7 @@
     ],
     "interface-name": [
       true,
-      "never-prefix"
+      "always-prefix"
     ],
     "jsdoc-format": true,
     "jsx-no-lambda": false,
@@ -48,7 +48,6 @@
       "log",
       "error",
       "debug",
-      "info",
       "time",
       "timeEnd",
       "trace"
@@ -80,7 +79,8 @@
     "radix": true,
     "semicolon": [
       true,
-      "always"
+      "always",
+      "ignore-bound-class-methods"
     ],
     "switch-default": true,
     "trailing-comma": [

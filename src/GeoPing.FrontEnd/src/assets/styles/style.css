@@ -1,160 +1,1675 @@
-html, body{
-    margin: 0px;
-    padding: 0px;
-    height: 100%; 
-    position: relative;
-    min-height: 100%;
+:root {
+  --success-color: #5cb85c;
+  --danger-color: #d9534f;
 }
 
-.awdawd-vertical-align-middle{
-    vertical-align: middle;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-width: 470px;
+  width: 100%;
 }
 
-.container-div-width-100{
-    height:100%;
+html {
+  font-size: 0.9em;
 }
 
-.footer{
-    position: absolute;
-    margin: 0px;
-    padding: 0px;
-    bottom: 0px;
-    height: 70px;
-    background-color: #F0F0E9;
+main {
+  width: 100%;
+  position: relative;
+}
+[class="active nav-link"] {
+  background-color: #c7c7c7;
+  border-radius: 20px;
+  text-align: center;
+}
+.card {
+  margin-bottom: 10px;
+}
+#app {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 100px minmax(min-content, 1fr) minmax(100px, 120px);
+  grid-template-columns: 100%;
+  grid-gap: 5px;
 }
 
-.footer-content{
-    margin-top: 10px;
+#map {
+  height: 100%;
+  width: 100%;
 }
 
-.content-block{
-    min-height: 350px;
+.cursor-pointer {
+  cursor: pointer;
 }
 
-.form{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 45%;
+ul {
+  margin-left: 0;
+  padding-left: 0;
 }
 
-.image-block{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 30%;
-    min-height: 200px;
+li {
+  list-style-type: none;
 }
 
-.image{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    height: 100px;
+header {
+  width: 100%;
 }
 
-.input-margin{
-    margin: 10px 0 10px 0;
+.table-sort-icon {
+  margin-left: 10px;
+}
+select.form-control:not([size]):not([multiple]) {
+  height: 34px;
 }
 
-.button-cursor-pointer{
-    cursor: pointer;
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
 }
 
-.input-error{
-    border: solid 1px red;
+.container-spinner-center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.label{
-    margin: 5px 10px 0px 5px;
+.google-button {
+  margin-top: 30px;
 }
 
-.table-margin{
-    margin: 10px;
+.google-button-img {
+  width: 191px;
+  height: 46px;
 }
 
-.form-style{
-    margin: 10px;
-    width: 300px;
+.google-button-img:hover {
+  content: url("/assets/images/google-button-hover.png");
 }
 
-.form-container{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-/*
-    CSS GRID
-*/
+/* Header ******************************************************************/
+/*.header-container {*/
+/*height: 100%;*/
+/*border: solid 1px black;*/
+/*}*/
 
-.wrapper{
+.header-container-row {
+  height: 100%;
+  width: 100%;
+}
+
+.logo-header {
+  font-size: 2rem;
+}
+
+.header-link {
+  margin: 0 5px 0 5px;
+}
+
+/*login ************************************************/
+.login-page {
+  height: 100%;
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  max-width: 500px;
+}
+
+header nav {
+  height: 100%;
+}
+
+.adaptive-menu {
+  display: none;
+}
+
+.psw-span {
+  position: relative;
+  top: 29px;
+  left: 105px;
+  font-size: 16px !important
+}
+
+.reg-span {
+  position: relative;
+  top: 8px;
+  font-size: 16px !important
+}
+
+.login-btn {
+  margin-left: 16px;
+}
+
+/**/
+
+/*Sign up*/
+
+.form-input-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.form-icon-container {
+  font-size: 1.5em;
+  width: 25px;
+  min-width: 25px;
+  position: relative;
+  position: absolute;
+  right: -50px;
+}
+
+.tooltip_form {
+  top: -45px;
+  right: -19px;
+  width: max-content;
+  position: absolute;
+  line-height: 20px;
+  padding: 5px 10px 5px 10px;
+  font-size: 14px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  background: rgb(66, 66, 66);
+  border-radius: 10px;
+  box-shadow: rgba(66, 66, 66, 0.5) 6px 6px 10px 0;
+}
+
+.tooltip_form:after {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 8px;
+  border-style: solid;
+  border-color: rgb(66, 66, 66) transparent transparent transparent;
+  top: 30px;
+  right: 20px;
+}
+
+.form-icon-check {
+  color: #71a46d;
+}
+
+.form-icon-times {
+  color: #a4575b;
+}
+
+.sign-container {
+  height: 100%;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+  max-width: 500px;
+  padding: 0 20px 0 20px;
+}
+
+.isValid-check {
+  display: inline-block;
+  position: relative;
+  left: 30px;
+  bottom: 27px;
+  float: right;
+}
+.register-btn {
+  margin-top: 20px;
+}
+/*ProfilePage*/
+.profile-page {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.flex-box-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.profile-form {
+  padding: 40px 160px;
+  max-width: 1000px;
+  border: 1px solid;
+  margin-bottom: 40px;
+}
+.profile-label {
+  font-size: 1.5em;
+  float: left;
+}
+.payment-info {
+  max-width: 500px;
+}
+.last-paid-flex {
+  padding: 20px 0;
+}
+.profile-flex-btn {
+  display: flex;
+  padding: 6px 19px;
+  margin-top: 15px;
+}
+/**/
+
+/* Dashboard **************************************************************/
+.dashboard-container {
+  width: 100%;
+  padding: 0 20px 0 20px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: [row1] 50px [row2] minmax(200px, 500px) [row3] minmax(200px, max-content) [row4];
+  grid-template-columns: [col1] minmax(200px, 1fr) [col2] minmax(200px, 1fr) [col3];
+  grid-gap: 10px;
+}
+
+.dashboard-title {
+  grid-column-start: col1;
+  grid-column-end: col3;
+  grid-row-start: row1;
+  grid-row-end: row2;
+}
+
+.dashboard-table-title {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-table {
+  grid-column-start: col1;
+  grid-column-end: col3;
+  grid-row-start: row2;
+  grid-row-end: row3;
+}
+
+.table-responsive {
+  overflow-x: unset;
+}
+
+/*.dashboard-table div:last-child {*/
+  /*height: calc(100% - 40px);*/
+/*}*/
+
+.dashboard-table div table {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+}
+
+.dashboard-table div table thead {
+  flex: 0 0 auto;
+  width: calc(100% - 0.9em);
+}
+
+.dashboard-table div table tbody {
+  flex: 1 1 auto;
+  display: block;
+  overflow-y: auto;
+}
+
+.dashboard-table div table tbody tr {
+  width: 100%;
+}
+
+.dashboard-table div table tbody tr, .dashboard-table div table thead {
+  display: table;
+  table-layout: fixed;
+}
+
+.dashboard-table-icon {
+  margin-left: 10px;
+}
+
+.dashboard-table-icon:hover, .dashboard-check-list-icon-filter:hover, .dashboard-check-list-icon-pluse:hover,
+.check-list-panel-item-icons:hover, .field-to-share-list-icon:hover, .field-to-share-list-icon-minus:hover,
+.add-user-to-share-list-icon:hover, .list-item-icon-globe:hover, .list-item-icon-plus-square:hover,
+.icon-hover-color:hover {
+  color: blue;
+}
+
+.check-list-panel-item-icons {
+  width: 18px !important;
+  height: 16px;
+  color: black;
+}
+
+.dashboard-check-list-title {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-check-list-icon-filter-container {
+  margin-left: 10px;
+}
+
+.dashboard-check-list-icon-pluse-container {
+  margin-left: 10px;
+}
+
+.dashboard-check-list {
+  grid-column-start: col1;
+  grid-column-end: col2;
+  grid-row-start: row3;
+  grid-row-end: row4;
+  place-self: center;
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-check-list-panel-body {
+  height: 100%;
+  overflow: auto;
+  padding: 0 10px;
+  max-height: 500px;
+  min-height: 200px;
+}
+
+.check-list-panel-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+}
+
+.check-list-panel-item div:nth-child(2) {
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.check-list-panel:hover {
+  background: rgb(195, 195, 195);
+}
+
+.check-list-panel-container {
+  position: relative;
+}
+
+.check-list-panel-link-container {
+  position: absolute;
+  display: flex;
+  top: 15px;
+  right: 10px;
+  align-items: center;
+  font-size: 15px;
+  justify-content: space-between;
+  width: 70px;
+  height: 20px;
+}
+
+.dashboard-invitations-title {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-invitations {
+  grid-column-start: col2;
+  grid-column-end: col3;
+  grid-row-start: row3;
+  grid-row-end: row4;
+}
+
+.block-accepted, .block-new {
+  height: 50%;
+}
+
+.block-accepted span, .block-new span {
+  font-size: 1.3em;
+}
+
+/* Check in*/
+.checkin-container {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: [row1] 1fr;
+  grid-template-columns: [col1] minmax(300px, 400px) [col2] 1fr;
+  grid-gap: 10px;
+}
+
+.checkin-map {
+  min-height: 500px;
+  max-height: 100%;
+}
+
+.check-in-select-list-container {
+  display: flex;
+  align-items: center;
+}
+
+.check-in-select-list-label {
+  width: 200px;
+}
+
+.check-in-buttons-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.check-in-select {
+  width: 400px;
+}
+
+.check-in-current-coordinates {
+  display: block;
+}
+
+.check-in-select-point-container {
+  height: 200px;
+  overflow: auto;
+}
+
+.check-in-select-point-action {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.check-in-select-point {
+  border-bottom: #dddddd 1px solid;
+}
+
+.check-in-point-checked {
+  background: #80c08f;
+}
+
+.check-in-select-point-icon {
+  color: #28a745;
+}
+
+.check-in-select-point-paragraph {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 350px;
+}
+
+.check-in-modal-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rate-icon-empty, .rate-icon-full {
+  font-size: 4rem;
+  color: gold;
+}
+
+.rate-container {
+  position: relative;
+  width: 370px;
+}
+
+.rate-tooltip {
+  position: absolute;
+  right: 1px;
+  border: #6992929e 1px solid;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  background: #6992929e;
+  color: white;
+  background: rgb(142,226,215); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(142,226,215,1) 14%, rgba(105,146,146,1) 84%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+/**/
+
+/* Modal share check list **************************************************************************/
+/* toggle */
+.react-toggle {
+  touch-action: pan-x;
+
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.react-toggle-screenreader-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.react-toggle--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.25s;
+  transition: opacity 0.25s;
+}
+
+.react-toggle-track {
+  width: 50px;
+  height: 24px;
+  padding: 0;
+  border-radius: 30px;
+  background-color: #4D4D4D;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #000000;
+}
+
+.react-toggle--checked .react-toggle-track {
+  background-color: #19AB27;
+}
+
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #128D15;
+}
+
+.react-toggle-track-check {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 0;
+  left: 8px;
+  opacity: 0;
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-track-check {
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle-track-x {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 0;
+  right: 10px;
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-track-x {
+  opacity: 0;
+}
+
+.react-toggle-thumb {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #4D4D4D;
+  border-radius: 50%;
+  background-color: #FAFAFA;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-thumb {
+  left: 27px;
+  border-color: #19AB27;
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  -webkit-box-shadow: 0 0 3px 2px #0099E0;
+  -moz-box-shadow: 0 0 3px 2px #0099E0;
+  box-shadow: 0 0 2px 3px #0099E0;
+}
+
+.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+  -webkit-box-shadow: 0 0 5px 5px #0099E0;
+  -moz-box-shadow: 0 0 5px 5px #0099E0;
+  box-shadow: 0 0 5px 5px #0099E0;
+}
+
+.modal-toggle-label {
+  display: flex;
+  align-items: center;
+  width: 310px;
+}
+
+.modal-toggle-text {
+  margin-left: 20px;
+}
+
+.field-to-share-list {
+  margin: 10px 0;
+  width: 370px;
+}
+
+.field-to-share-list-container, .field-to-share-list-li {
+  position: relative;
+}
+
+.field-to-share-list-icon, .field-to-share-list-icon-minus {
+  position: absolute;
+  top: 6px;
+  right: 50px;
+  font-size: 1.4em;
+}
+
+.add-user-to-share-list {
+  height: 30px;
+  width: 0;
+}
+
+.add-user-to-share-list-icon {
+  position: absolute;
+  font-size: 1.4em;
+  right: 110px;
+}
+
+.field-to-share-list-icon-minus {
+  right: 20px;
+  z-index: 1;
+}
+
+.modal-share-form-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-share-form-buttons button {
+  margin: 5px 10px;
+}
+
+.user-access-table-container {
+  height: 200px;
+}
+
+.user-access-table-container table {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+}
+
+.user-access-table-container table thead {
+  flex: 0 0 auto;
+  width: calc(100% - 0.9em);
+}
+
+.user-access-table-container table tbody {
+  flex: 1 1 auto;
+  display: block;
+  overflow-y: auto;
+}
+
+.user-access-table-container table tbody tr {
+  width: 100%;
+}
+
+.user-access-table-container table tbody tr, .user-access-table-container table thead {
+  display: table;
+  table-layout: fixed;
+}
+
+/*************************************************************************************/
+/* Public geo checklists */
+.public-check-list-container {
+  width: 100%;
+  padding: 0 20px 0 20px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: [row1] 50px [row2] minmax(50px, 100px) [row3] 120px [row4] minmax(min-content, max-content) [row5];
+  grid-template-columns: [col1] minmax(200px, 1fr) [col2];
+  grid-gap: 10px;
+}
+
+.publick-check-list-filter-panel-body {
+  display: grid;
+  grid-template-rows: [row1] 70px;
+  grid-template-columns: [col1] minmax(200px, 1fr) [col2] minmax(200px, 1fr) [col3] minmax(200px, 1fr);
+  grid-gap: 10px;
+}
+
+.filter-form-group-name, .filter-form-group-user, .filter-form-group-subscribers {
+  grid-row-start: row1;
+  grid-row-end: row1;
+}
+
+.filter-form-group-name {
+  grid-column-start: col1;
+  grid-column-end: col1;
+}
+
+.filter-form-group-user {
+  grid-column-start: col2;
+  grid-column-end: col2;
+}
+
+.filter-form-group-subscribers {
+  grid-column-start: col3;
+  grid-column-end: col3;
+}
+
+.public-check-list-info {
+  text-align: justify;
+}
+
+.public-check-lists {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-rows: [row1] 100% [row2] 40px;
+  grid-template-columns: [col1] 1fr;
+}
+
+.list-item-info {
+  font-size: 0.8em;
+}
+
+.list-item-name {
+  font-size: 1.4em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.list-item-icon-star {
+  margin-left: 5px;
+}
+
+.list-item-icon-globe, .list-item-icon-plus-square {
+  font-size: 1.6em;
+  margin: 0 10px;
+}
+
+.list-item-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.public-check-list-pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 40px;
+}
+
+/*************************************************************************************/
+
+/* Notification */
+.notification-container {
+  position: absolute;
+  width: 100%;
+
+  z-index: 1000;
+}
+
+.notification-alert {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification span:first-child {
+  width: calc(100% - 190px);
+  text-align: justify;
+}
+
+.notification-dismiss {
+  min-width: 175px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-dismiss a:nth-child(1) {
+  margin-right: 10px;
+}
+
+.notification-dismiss a:nth-child(2) {
+  margin-left: 10px;
+}
+
+.notification-dismiss-icon {
+  margin-right: 10px;
+}
+
+.notification-link {
+  /*color: black;*/
+}
+
+/*************************************************************************************/
+
+/* Check list */
+
+.check-list-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.check-list-modal-buttons button:first-child {
+  margin-right: 20px;
+}
+
+.check-list-container {
+  display: grid;
+  grid-template-rows: [row1] max-content [row2] minmax(500px, 1fr) [row3];
+  grid-template-columns: [col1] minmax(400px, 1fr) [col2] 3fr;
+  grid-gap: 5px;
+  height: 100%;
+}
+
+.check-list-title {
+  grid-column-start: col1;
+  grid-column-end: col2;
+  grid-row-start: row1;
+  grid-row-end: row1;
+  padding: 0 10px 0 10px;
+}
+
+.check-list {
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
+  padding: 0 10px 0 10px;
+}
+
+.check-list-map {
+  grid-column-start: col2;
+  grid-column-end: col3;
+  grid-row-start: row1;
+  grid-row-end: row3;
+  padding: 0 10px 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.check-list-head {
+  margin-bottom: 5px;
+}
+
+.check-list-point {
+  display: contents;
+}
+
+.check-list-points-list {
+  display: contents;
+}
+
+.check-list-head-name-container, .check-list-head-name, .check-list-head-period {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.check-list-head-name {
+  min-width: 170px;
+  width: 270px;
+  font-size: 1.3em;
+}
+
+.check-list-head-name-icons-container {
+  display: flex;
+  width: 60px;
+  justify-content: space-between;
+}
+
+.check-list-head-period {
+  min-width: 60px;
+  font-size: 1.3em;
+}
+
+.check-list-add-new-point, .check-list-check-geo-position {
+  display: flex;
+  align-items: center;
+  font-size: 1.3em;
+  min-width: 170px;
+}
+
+.check-list-add-new-point span, .check-list-check-geo-position span {
+  margin-left: 20px;
+}
+
+.check-list-cancel-new-point {
+  margin-left: 30px;
+}
+
+.check-list-geo-point-form {
+  width: 100%;
+  height: 100%;
+}
+
+.check-list-geo-point-form-label-lat, .check-list-geo-point-form-label-long {
+  margin-right: 20px;
+}
+
+.check-list-geo-point-form-label-long {
+  margin-left: 15px;
+}
+
+.check-list-geo-point-form-group-lat-long, .check-list-geo-point-form-group-radius {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.check-list-geo-point-form-label-radius {
+  margin-right: 20px;
+}
+
+.check-list-geo-point-form-label-distance {
+  margin-left: 20px;
+  min-width: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.check-list-geo-point-form-text-area {
+}
+
+.check-list-geo-point-form-text-area textarea {
+  text-align: justify;
+  min-height: 120px;
+}
+
+.check-list-geo-point-form-text-area-icon {
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+
+.check-list-geo-point-form-text-area-icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.check-list-points {
+  height: 100%;
+  width: 100%;
+}
+
+.check-list-point-item, .check-list-point-item-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.check-list-point-item-disable {
+  pointer-events: none;
+  background: #dfdfdf;
+}
+
+.check-list-point-item:hover {
+  background: #b2b2ba;
+}
+
+.check-list-point-item-action {
+  background: #b3eba8;
+}
+
+.check-list-point-item span:first-child {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.check-list-point-item-image-container {
+  width: 50px;
+  min-width: 50px;
+}
+
+.disabled-link {
+  pointer-events: none;
+  color: #999999;
+}
+
+.check-list-head-name-form-group {
+  margin-bottom: 0;
+  height: 61px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.check-list-head-name p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.check-list-modal-period-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.check-list-modal-period-item-radio {
+  width: 150px;
+}
+
+.check-list-modal-period-item-input {
+  width: 300px;
+}
+
+.check-list-modal-period-buttons {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.5rem;
+}
+
+.check-list-modal-period-buttons div:first-child {
+  margin-right: 20px;
+}
+
+/*************************************************************************************/
+
+/* Admin dashboard */
+
+.admin-dashboard-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard-link {
+  font-size: 2em;
+  margin: 20px;
+}
+
+/*************************************************************************************/
+
+/* Admin all users */
+.admin-all-users-container {
+  display: grid;
+  padding: 10px;
+  height: 100%;
+  grid-template-rows: [row1] 50px [row2] minmax(200px, 1fr);
+  grid-template-columns: [col1] minmax(500px, 1fr) [col2] minmax(250px, 350px);
+  grid-gap: 5px;
+}
+
+.react-bs-table-container {
+  width: 100%;
+}
+
+.admin-all-users-container h3 {
+  grid-column-start: col1;
+  grid-column-end: col2;
+  grid-row-start: row1;
+  grid-row-end: row1;
+}
+
+.admin-all-users-filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: black 1px solid;
+  /*height: max-content;*/
+  max-height: 600px;
+  grid-column-start: col2;
+  grid-column-end: col2;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-all-users-table-container {
+  display: flex;
+  justify-content: center;
+
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.test {
+  text-align: right;
+}
+
+.filter-users-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.filter-users-field-name, .filter-users-field-data, .filter-users-field-list-count, .filter-users-field-status,
+.filter-users-field-official, .filter-users-field-admin, .filter-users-field-buttons {
+  width: 100%;
+  padding: 10px;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
+.filter-users-field-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-users-field-buttons button {
+  margin: 0 5px;
+}
+
+.filter-users-field-official label:first-child, .filter-users-field-admin label:first-child {
+  margin-right: 10px;
+}
+
+/*************************************************************************************/
+
+
+/* Check in Statistics*/
+.check-in-statistics {
+  height: 100%;
+  display: grid;
+  grid-template-rows: [row1] minmax(max-content, 1fr);
+  grid-template-columns: [col1] minmax(300px, 500px) [col2] minmax(max-content, 1fr);
+  grid-gap: 5px;
+}
+
+.check-in-statistics-container {
+  padding: 10px;
+}
+
+.check-in-statistics-form-container {
+
+}
+
+.check-in-statistics-form-select, .check-in-statistics-form-period {
+  display: flex;
+  align-items: center;
+}
+
+.check-in-statistics-form-label {
+  width: 150px;
+}
+
+.check-in-statistics-form-input {
+  width: 300px;
+}
+
+.check-in-statistics-form-period {
+  width: 300px;
+}
+
+.check-in-statistics-form-period-date {
+  margin: 0 10px 5px 10px;
+}
+
+.custom-input-date {
+  margin: 0 10px 0 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.custom-input-date-icon {
+  margin: 0 0 0 10px;
+  width: 100%;
+}
+
+.statistics-table-check {
+  background: var(--success-color, #128D15);
+  color: white;
+}
+
+.statistics-table-not-check {
+  background: var(--danger-color, #a4575b);
+  color: white;
+}
+
+/* Admin all checklist */
+.admin-checklist-container {
+  display: grid;
+  padding: 10px;
+  height: 100%;
+  grid-template-rows: [row1] 50px [row2] minmax(500px, 1fr);
+  grid-template-columns: [col1] 1fr [col2] minmax(250px, 350px);
+  grid-gap: 5px;
+}
+
+.admin-checklist-filter-container {
+  grid-column-start: col2;
+  grid-column-end: col2;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-checklist-table {
+  grid-column-start: col1;
+  grid-column-end: col1;
+  grid-row-start: row2;
+  grid-row-end: row2;
+}
+
+.admin-checklist-filter {
+  border: black 1px solid;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-checklist-filter-field-name, .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
+.admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
+  width: 100%;
+}
+
+.admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points {
+  flex-direction: row;
+  display: flex;
+}
+
+.admin-checklist-filter-field-created-from, .admin-checklist-filter-field-geo-points-from {
+  width: 50%;
+}
+
+.admin-checklist-filter-field-created-to, .admin-checklist-filter-field-geo-points-to {
+  width: 50%;
+}
+
+.admin-checklist-filter-field-public label:first-child, .admin-checklist-filter-field-created-from,
+.admin-checklist-filter-field-geo-points-from {
+  margin-right: 10px;
+}
+
+.admin-checklist-filter-field-public label:nth-child(2), .admin-checklist-filter-field-created-to,
+.admin-checklist-filter-field-geo-points-to {
+  margin-left: 10px;
+}
+
+.admin-checklist-filter-field-button {
+  display: flex;
+  justify-content: space-around;
+}
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
+/**/
+select.form-control:not([size]):not([multiple]) {
+  height: 34px;
+}
+/**/
+
+/*************************************************************************************/
+/*  Media queries*/
+@media (max-width: 800px) {
+  #app {
+    height: 100vh;
     display: grid;
-    grid-template-columns: repeat(6, [col] 1fr);
-    grid-template-rows: 100px minmax(200px, 5fr) minmax(70px, 100px);
+    grid-template-rows: min-content minmax(min-content, 1fr) minmax(100px, 120px);
+    grid-template-columns: 100%;
     grid-gap: 5px;
-    align-content: stretch;
+  }
+
+  .adaptive-menu {
+    display: block;
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    z-index: 2;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background-color: #FAFAFA;
+    z-index: 1;
+  }
+
+  .nav.false {
+    display: none;
+  }
+
+  .rounded-circle {
+    display: none;
+  }
+
+  .dashboard-container {
+    width: 100%;
+    padding: 0 20px 0 20px;
     height: 100%;
-    padding-top: 20px;
-}
+    display: grid;
+    grid-template-rows: [row1] 50px [row2] minmax(200px, 500px) [row3] minmax(200px, 100%) [row4] minmax(200px, 100%) [row5];
+    grid-template-columns: [col1] minmax(200px, 1fr);
+    grid-gap: 10px;
+  }
 
-.wrapper-image{
-    grid-column: 3 / 5;
-    grid-row: 1;
-    align-self: center;
-    justify-self: center;
-}
+  .dashboard-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row2;
+  }
 
-.wrapper-image-block{
+  .dashboard-table-title {
+    /*grid-column-start: col1;*/
+    /*grid-column-end: col1;*/
+    /*grid-row-start: row2;*/
+    /*grid-row-end: row3;*/
+    /*position: relative;*/
+  }
+
+  .dashboard-table {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row3;
+    font-size: 0.8em;
+  }
+
+  .dashboard-check-list-title {
+    display: flex;
+    align-items: center;
+  }
+
+  .dashboard-check-list {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row4;
+    place-self: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dashboard-invitations-title {
+    display: flex;
+    align-items: center;
+  }
+
+  .dashboard-invitations {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row4;
+    grid-row-end: row5;
+  }
+
+  .public-check-list-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: [row1] 50px [row2] minmax(170px, 200px) [row3] 240px [row4] minmax(200px, 1fr) [row5];
+    grid-template-columns: [col1] minmax(200px, 100%) [col2];
+    grid-gap: 10px;
+  }
+
+  /* Check in*/
+  .checkin-container {
+    display: grid;
+    grid-template-rows: [row1] minmax(100px, max-content) [row2] 1fr;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 10px;
+  }
+
+  .checkin-form {
+    height: max-content;
+  }
+
+  .checkin-map {
+    height: 400px;
+  }
+
+  /**/
+  /* Public check list filter*/
+  .publick-check-list-filter-panel-body {
+    display: grid;
+    grid-template-rows: [row1] 55px [row2] 55px [row3] 55px;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 10px;
+  }
+
+  .filter-form-group-name, .filter-form-group-user, .filter-form-group-subscribers {
+    grid-column-start: col1;
+    grid-column-end: col1;
+  }
+
+  .filter-form-group-name {
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .filter-form-group-user {
+    grid-row-start: row2;
+    grid-row-end: row2;
+  }
+
+  .filter-form-group-subscribers {
+    grid-row-start: row3;
+    grid-row-end: row3;
+  }
+
+  /**/
+  /**/
+  .check-list-container {
+    display: grid;
+    grid-template-rows: [row1] min-content [row2] minmax(500px, 1fr) [row3] min-content;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
+  }
+
+  .check-list-title {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .check-list {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row3;
+    padding: 0 10px 0 10px;
+  }
+
+  .check-list-map {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row2;
+    padding-bottom: 10px;
+    margin: 10px 0 10px 0;
+  }
+
+  /* Admin all users */
+  .admin-all-users-container {
+    display: grid;
+    padding: 10px;
+    height: 100%;
+    grid-template-rows: [row1] 50px [row2] minmax(200px, max-content) [row3] minmax(max-content, 1fr);
+    grid-template-columns: [col1] 100%;
+    grid-gap: 5px;
+  }
+
+  .admin-all-users-container h3 {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row1;
+    grid-row-end: row1;
+  }
+
+  .admin-all-users-filter-container {
+    border: black 1px solid;
+  }
+
+  /* Admin all checklist */
+  .admin-checklist-container {
+    display: grid;
+    padding: 10px;
+    height: 100%;
+    grid-template-rows: [row1] 50px [row2] minmax(250px, max-content) [row3] minmax(500px, 1fr);
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
+  }
+
+  .admin-checklist-filter-container {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row2;
+    grid-row-end: row2;
+  }
+
+  .admin-all-users-table-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .admin-checklist-table {
+    grid-column-start: col1;
+    grid-column-end: col1;
+    grid-row-start: row3;
+    grid-row-end: row3;
+  }
+
+  .filter-users-container, .filter-users-field-data, .filter-users-field-list-count {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .filter-users-container {
+    width: 100%;
     align-items: center;
+  }
+
+  .filter-users-field-name {
+    order: 1;
+    width: 50%;
+  }
+
+  .filter-users-field-data {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-users-field-data-from, .filter-users-field-data-to, .filter-users-field-list-count-from, .filter-users-field-list-count-to {
+    width: 50%;
+  }
+
+  .filter-users-field-data-from, .filter-users-field-list-count-from {
+    padding-right: 10px;
+  }
+
+  .filter-users-field-data-to, .filter-users-field-list-count-to {
+    padding-left: 10px;
+  }
+
+  .filter-users-field-list-count {
+    order: 4;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-users-field-status {
+    order: 2;
+    width: 50%;
+  }
+
+  .filter-users-field-official {
+    order: 5;
+    width: 50%;
+  }
+
+  .filter-users-field-admin {
+    order: 6;
+    width: 50%;
+  }
+
+  .filter-users-field-buttons {
+    order: 7;
+  }
+
+  /****************************************************************************************/
+  .admin-checklist-filter-field-name .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
+  .admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
+    /*display: flex;*/
+  }
+
+  .admin-checklist-filter-field-name {
+    order: 1;
+    width: 50%;
+    padding-right: 10px;
+  }
+
+  .admin-checklist-filter-field-users {
+    order: 2;
+    width: 50%;
+    padding-left: 10px;
+  }
+
+  .admin-checklist-filter-field-created {
+    order: 3;
+  }
+
+  .admin-checklist-filter-field-geo-points {
+    order: 4;
+  }
+
+  .admin-checklist-filter-field-public {
+    order: 5;
+  }
+
+  .admin-checklist-filter-field-button {
+    order: 6;
+  }
+
+  /****************************************************************************************************************/
+  /*.check-list-map {*/
+  /*!*height: 500px;*!*/
+  /*}*/
+  /**/
 }
 
-.wrapper-content{
-    grid-column: 3 / 5;
-    grid-row: 2 / 3;
-    align-self: center;
-    justify-self: center;
-}
-
-.wrapper-content div{
-    width: 400px;
-}
-
-.input-field{
-    margin: 10px 0px 10px 0px;
-}
-
-.div-inlain{
-    display: inline;
-}
-
-.wrapper-footer{
-    grid-column: col / span 7;
-    grid-row: 3;
-}
-
-.loggin-button{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.footer2{
-    background-color: rgb(204, 204, 161);
-}
-
-.footer-content2{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    margin: 0px;
-}
+/**/

@@ -1,0 +1,571 @@
+FORMAT: 1A
+HOST: https://api.dev.geoping.info/
+
+# GeoPing
+
+In common, general posibility of this service is using of browser geopositioning and Google services (for PC and devices) 
+for getting locations, adresses and determination of distance.
+
+Service enables create checklists of point, where you (or any other person you want) may check in. Also you can make this list public
+for everyone and watch, how many people go through that list and what is their opinion about it.
+
+## Geolist collection [/api/geolist]
+
+### List all geolists [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "The first list",
+                "description": "It is the first list",
+                "isPublic": false,
+                "rating": 0.0,
+                "periodFrom": "0001-01-01T00:00:00",
+                "periodTo": "0001-01-01T00:00:00",
+                "ownerId": null,
+                "owner": null,
+                "reviews": null,
+                "geoPoints": null,
+                "usersLists": null
+            },
+            {
+                "id": 2,
+                "name": "The second list",
+                "description": "It is still the second list, but edited",
+                "isPublic": true,
+                "rating": 0.0,
+                "periodFrom": "0001-01-01T00:00:00",
+                "periodTo": "0001-01-01T00:00:00",
+                "ownerId": null,
+                "owner": null,
+                "reviews": null,
+                "geoPoints": null,
+                "usersLists": null
+            }
+        ]
+
+### Get an certain geolist [GET /api/geolist/{Id}]
+
++ Parameters
+    + Id (number) - Id of the list
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "The first list",
+          "description": "It is the first list",
+          "isPublic": false,
+          "rating": 0,
+          "periodFrom": "0001-01-01T00:00:00",
+          "periodTo": "0001-01-01T00:00:00",
+          "ownerId": null,
+          "owner": null,
+          "reviews": null,
+          "geoPoints": null,
+          "usersLists": null
+        }
+
+### Create a new geolist [POST]
+
++ Attributes
+    + Name (string, required) - Name of list. Max length is 100 chars. 
+    + Description (string) - Description of list. Max length is 240 chars. 
+    + IsPublic (boolean) - "False" by default. State of liss that specifices if it is public.
+    + PeriodFrom (string) - Start date of list period
+    + PeriodTo (string) - End date of list period
+    
++ Request Create new geolist (application/json)
+
+        {
+            "Name": "The third list",
+            "Description": "It is the third list"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geolist was successfully added."
+            ],
+            "data": {
+                "id": 3,
+                "name": "The third list",
+                "description": "It is the third list",
+                "isPublic": false,
+                "rating": 0.0,
+                "periodFrom": "0001-01-01T00:00:00",
+                "periodTo": "0001-01-01T00:00:00",
+                "ownerId": null,
+                "owner": null,
+                "reviews": null,
+                "geoPoints": null,
+                "usersLists": null
+            }
+        }
+
+### Edit an geolist [PUT /api/geolist/{Id}]
+
++ Parameters 
+    + Id (number) ... Id of the list
+
++ Request Edit an existing geolist (application/json)
+
+        {
+            "Id": 2,
+            "Name": "The second list",
+            "Description": "It is still the second list, but edited",
+            "IsPublic": true,
+            "PeriodFrom": "0001-01-01T00:00:00",
+            "PeriodTo": "0001-01-01T00:00:00",
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geolist was successfully edited."
+            ],
+            "data": {
+                "id": 2,
+                "name": "The second list",
+                "description": "It is still the second list, but edited",
+                "isPublic": true,
+                "rating": 0.0,
+                "periodFrom": "0001-01-01T00:00:00",
+                "periodTo": "0001-01-01T00:00:00",
+                "ownerId": null,
+                "owner": null,
+                "reviews": null,
+                "geoPoints": null,
+                "usersLists": null
+            }
+        }
+
+### Remove a collection of geolists [DELETE /api/geolist/?{Ids}]
+
++ Parameters 
+    + Ids (string) - Id-s of the lists to be deleted
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geolists with Id-s = [3,4] was removed"
+            ],
+            "data": "3,4"
+        }
+
+### Remove an certain geolist [DELETE /api/geolist/{Id}]
+
++ Parameter
+    + Id (number) - Id of the list 
+    
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geolist was successfully removed."
+            ],
+            "data": {
+                "id": 3,
+                "name": "The third list",
+                "description": "It is the third list",
+                "isPublic": false,
+                "rating": 0.0,
+                "periodFrom": "0001-01-01T00:00:00",
+                "periodTo": "0001-01-01T00:00:00",
+                "ownerId": null,
+                "owner": null,
+                "reviews": null,
+                "geoPoints": null,
+                "usersLists": null
+            }
+        }
+        
+## Geopoints collection [/api/geolist/{ListId}/geopoint]
+
+### List all geopoints of geolist [GET]
++ Parameters 
+    + ListId (number) - Id of list with geopoints
+    
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "The first point",
+                "description": "It is the first point",
+                "latitude": 73.370371,
+                "longitude": 54.991512,
+                "radius": 5.0,
+                "geoListId": 4,
+                "geoList": null,
+                "userPoints": null
+            }
+        ]
+
+### Get an certain geopoint of geolist [GET /api/geolist/{ListId}/geopoint/{Id}]
+
++ Parameters
+    + ListId (number) - Id of list with geopoints
+    + Id (number) - Id of the point
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "The first point",
+                "description": "It is the first point",
+                "latitude": 73.370371,
+                "longitude": 54.991512,
+                "radius": 5.0,
+                "geoListId": 4,
+                "geoList": null,
+                "userPoints": null
+            }
+        ]
+
+### Create a new geopoint [POST]
++ Parameters
+    + ListId (number) - Id of list with geopoints
+
++ Attributes
+    + Name (string, required) - Name of list. Max length is 100 chars. 
+    + Description (string) - Description of list. Max length is 240 chars.
+    + Longitude (number, required) - Longitude of point`s coordinates.
+    + Latitude (number, required) - Latitude of point`s coordinates.
+    + Radius (number, required) - Accessible radius of point in meters to check in.
+    
++ Request Create new geolist (application/json)
+
+        {
+            "Name": "The  point",
+            "Description": "It is the first point",
+            "Longitude": 54.991512,
+            "Latitude": 73.370371,
+            "Radius": 5
+        }
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geopoint was successfully added."
+            ],
+            "data": {
+                "id": 2,
+                "name": "The second point",
+                "description": "It is the second point",
+                "latitude": 73.370371,
+                "longitude": 54.991512,
+                "radius": 5.0,
+                "geoListId": 1,
+                "geoList": null,
+                "userPoints": null
+            }
+        }
+
+### Edit an geopoint [PUT /api/geolist/{ListId}/geopoint/{Id}]
+
++ Parameters
+    + ListId (number) - Id of list with geopoints
+    + Id (number) - Id of the point
+
++ Request Edit an existing geolist (application/json)
+
+        {
+            "id": 1,
+            "Name": "The first point",
+            "Description": "It is the first point, but it`s edited",
+            "Longitude": 60.991512,
+            "Latitude": 73.370371,
+            "Radius": 10
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geopoint was successfully edited."
+            ],
+            "data": {
+                "id": 1,
+                "name": "The first point",
+                "description": "It is the first point, but it`s edited",
+                "latitude": 73.370371,
+                "longitude": 60.991512,
+                "radius": 10.0,
+                "geoListId": 1,
+                "geoList": null,
+                "userPoints": null
+            }
+        }
+
+### Remove a collection of geopoints [DELETE /api/geolist/{ListId}/geopoint/?{Ids}]
+
++ Parameters
+    + ListId (number) - Id of list with geopoints
+    + Ids (string) - Id-s of the geopoints to be deleted
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geopoints with Id-s = [1,2] was removed"
+            ],
+            "data": "1,2"
+        }
+
+### Remove an certain geopoint [DELETE /api/geolist/{ListId}/geopoint/{Id}]
+
++ Parameters
+    + ListId (number) - Id of list with geopoints
+    + Id (number) - Id of the point
+    
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geopoint was successfully removed."
+            ],
+            "data": {
+                "id": 1,
+                "name": "The first point",
+                "description": "It is the first point, but it`s edited",
+                "latitude": 73.370371,
+                "longitude": 60.991512,
+                "radius": 10.0,
+                "geoListId": 1,
+                "geoList": null,
+                "userPoints": null
+            }
+        }
+        
+### Check in at given geopoint [PUT /api/geolist/{ListId}/geopoint/{Id}/check]
+
++ Parameters
+    + ListId (number) - Id of list with geopoints
+    + Id (number) - Id of the point
+
++ Request (application/json)
+
+        {
+            "id": 1,
+            "Name": "The first point",
+            "Description": "It is the first point, but it`s edited",
+            "Longitude": 60.991512,
+            "Latitude": 73.370371,
+            "Radius": 10
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Geopoint with Id = [1] was successfully checked in by user with Id = [xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]"
+            ],
+            "data": {
+                "pointId": 1,
+                "point": null,
+                "userId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "user": null,
+                "checkTime": "2018-10-09T15:39:34.4816628+06:00"
+            }
+        }
+        
+## User and identity [/account]
+
+### GeoPingUser class fields [GET]
+
++ Attributes 
+    + Id (string) - User`s ID
+    + FirstName (string) - User`s first name
+    + LastName (string) - User`s last name
+    + Email (string) - User`s email
+    + Login (string) - User`s name
+    + Birthday (string) - User`s birthday
+    + PhoneNumber (string) - User`s phone number
+    + AccountType (string) - User`s account type. It`s not specified now, but by default new user have "regular" type
+    + LastPaid (string) - User`s date of last pay
+    + IsActivated  - User`s account status. It`s useless now.
+    + IdentityId (string) - Id of user`s identity
+    
+    
++ Response 404
+
+### User registration [POST /account/register]
+
++ Request (application/json)
+
+        {
+            "UserName": "username",
+            "Email": "username@gmail.com",
+            "Password": "Password@123",
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "User was successfully registered, now he should validate his account according instructions were sent to provided email address"
+            ],
+            "data": []
+        }
+        
+### Change password [POST /account/change-password]
+
++ Request (application/json)
+
+        {
+            "OldPassword": "Password123",
+            "NewPassword": "123Password",
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "Password was changed successfully" 
+            ]
+        }
+
+### Password reset request[POST /account/reset-password?{LoginOrEmail}]
+
++ Parameters
+    + LoginOrEmail (string) - User`s login or email
+    
++ Response 200 (application/json)
+
+        {
+            "A password reset confirmation email has been sent to email address you specified"
+        }
+
+### Get profile [GET /account/profile]
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "The following user was found"
+            ],
+            "data": {
+                "id": "136B1014-7EE6-48F9-3645-08D63A3DE1B6",
+                "firstname": null,
+                "lastname": null,
+                "email": "username@gmail.com",
+                "login": "username",
+                "birthday": "0001-01-01 00:00:00.0000000",
+                "phonenumber": null,
+                "accounttype": "regular",
+                "lastpaid": "0001-01-01 00:00:00.0000000",
+                "isactivated": false,
+                "identityid": "b057c129-f266-40dd-94d3-aa558024c14d"
+            }
+        }
+
+### Edit profile[PUT /account/profile]
+
+
++ Request (application/json)
+
+        {
+                "id": "136B1014-7EE6-48F9-3645-08D63A3DE1B6",
+                "firstname": null,
+                "lastname": null,
+                "email": "username@gmail.com",
+                "login": "username",
+                "birthday": "0001-01-01 00:00:00.0000000",
+                "phonenumber": null,
+                "accounttype": "regular",
+                "lastpaid": "0001-01-01 00:00:00.0000000",
+                "isactivated": false,
+                "identityid": "b057c129-f266-40dd-94d3-aa558024c14d"
+        }
+        
++ Response 200 (application/json)
+
+        {
+                "id": "136B1014-7EE6-48F9-3645-08D63A3DE1B6",
+                "firstname": "user",
+                "lastname": "name",
+                "email": "username@gmail.com",
+                "login": "username",
+                "birthday": "0001-01-01 00:00:00.0000000",
+                "phonenumber": "+79001234567",
+                "accounttype": "premium",
+                "lastpaid": "2018-01-01 00:00:00.0000000",
+                "isactivated": false,
+                "identityid": "b057c129-f266-40dd-94d3-aa558024c14d"
+        }
+
+### Confirm email [GET /account/confirm-email?{UserId}&{Token}]
+
++ Parameters
+    + UserId (string) - Identity id of user
+    + Token (string) - Token got by user to confirm his email
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "User with Id = [{userId}] has been confirmed successfully"
+            ],
+            "data": []
+        }
+        
+### Confirm password reset [POST /account/confirm-reset?{UserId}&{Token}]
+
++ Parameters
+    + UserId (string) - Identity id of user
+    + Token (string) - Token got by user to confirm his email
+
++ Request
+
+            "newPassword"
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "User`s password with Id = [{userId}] has been reset successfully"
+            ],
+            "data": []
+        }
+
+### Getting JWT Bearer Token [POST /connect/token]
+
++ Attributes
+    + Client_id (string, required) - Client ID
+    + Client_secret (string) - Client secret
+    + Grant_type (string, required) - Grand type = password
+    + Username (string, required) - User name
+    + Password (string, required) -  User password
+    + Scope (string) -  Scope
+
++ Request (application/x-www-form-urlencoded)
+
++ Response 200 (application/json)
+
+        {
+            "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1ZGRiYTQwNjI1NmFjYzc3MjdhZWNiNTE2YTU4NjEwIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1MzkwNzc2NTMsImV4cCI6MTUzOTA4MTI1MywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC9yZXNvdXJjZXMiLCJhcGkiXSwiY2xpZW50X2lkIjoiM0JBNDdENjREN0RBNUVGNCIsInN1YiI6Ijg1ZTI5NjM5LTRhMmItNGUyOC05N2M0LTIyNWIzYjk2MGM0MyIsImF1dGhfdGltZSI6MTUzOTA3NzY1MywiaWRwIjoibG9jYWwiLCJzY29wZSI6WyJhcGkiXSwiYW1yIjpbInB3ZCJdfQ.Boyd-dlJAeWYIOOemHQ-fZBKL8xfXRcR31IZgMOVR8pi6bsbZ9-M9mbaKNT9Tuo5m7uc10d3r-M3VHKBXjOWCkerKrR-lN7ANT7MB126KpGHkUzXRDuz-WNCe7MqSSnccueTSTku4Ui9kJ7o1tT1Z7FQxKsyNZ2sUJXl5Mwi2p72j9Hzb0QU7f9CCbTb36Xt-9sKi7ABFVRxN52b-BlFuQrSo9VNmHti7mkfhxFTheXcpOjFNz5uNBNA9OUcErBj58Jo-IiMYZuqkrIaPlb5vNQUCgLiHfeQEbddtCwd8yoUMbmgmRo2PH_FbMTKS5Hcue1zAZLlTjhOUYo6CJ44Lw",
+            "expires_in": 3600,
+            "token_type": "Bearer"
+        }
