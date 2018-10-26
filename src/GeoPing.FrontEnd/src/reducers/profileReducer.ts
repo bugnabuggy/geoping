@@ -13,10 +13,9 @@ export default function profileReducer(state: IProfileStateType = profileState, 
 }
 
 function loadProfileData(state: IProfileStateType, action: any) {
-  state = Object.assign(profileState, action.profile);
-  // state.isLoaded = true;
   return {
     ...state,
+    ...action.profile,
     isLoaded: true
   };
 }

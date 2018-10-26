@@ -9,75 +9,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 
-const output = ( props: any ) => {
-  switch ( props.labelName ) {
-    case 'Login':
-      return (
-        <FormControl
-          {...props.input}
-          type="input"
-          disabled={true}
-        />
-      );
-    case 'Email':
-      return (
-        <FormControl
-          {...props.input}
-          type="email"
-          placeholder={props.placeholder}
-        />
-      );
-    case 'Mobile Phone':
-      return (
-        <FormControl
-          {...props.input}
-          placeholder={'xxx-xxx-xxxx'}
-          type="tel"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        />
-      );
-    case 'First Name':
-      return (
-        <FormControl
-          {...props.input}
-          type="text"
-          placeholder={props.placeholder}
-        />
-      );
-      case 'Last Name':
-      return (
-        <FormControl
-          {...props.input}
-          type="text"
-          placeholder={props.placeholder}
-        />
-      );
-      case 'Birthday':
-      return (
-        <FormControl
-          {...props.input}
-          type="text"
-          placeholder={props.placeholder}
-        />
-      );
-    case 'Account Type':
-      return (
-        <div className="form-control">{props.input.value}</div>
-      );
-    default:
-      return (
-        <FormControl
-          {...props.input}
-        />
-      );
-  }
-};
 const renderInput = ( props: any ) => {
   return (
     <FormGroup>
-      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{' '}
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
       <div className="form-input-container">
-        {output( props )}
+        <FormControl
+          {...props.input}
+          type={props.type}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+        />
         <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
@@ -105,36 +47,46 @@ function profileForm( props: any ): any {
         component={renderInput}
         name="login"
         labelName="Login"
+        type="input"
+        disabled={true}
       />
       <Field
         component={renderInput}
         name="firstName"
         labelName="First Name"
+        type="text"
       />
       <Field
         component={renderInput}
         name="lastName"
         labelName="Last Name"
+        type="text"
       />
       <Field
         component={renderInput}
         name="birthday"
         labelName="Birthday"
+        type="text"
       />
       <Field
         component={renderInput}
         name="email"
         labelName="Email"
+        type="email"
       />
       <Field
         component={renderInput}
         name="phone"
         labelName="Mobile Phone"
+        type="tel"
+        placeholder="xxx-xxx-xxxx"
       />
       <Field
         component={renderInput}
         name="accountType"
         labelName="Account Type"
+        type="input"
+        disabled={true}
       />
       <Button
         bsStyle="primary"

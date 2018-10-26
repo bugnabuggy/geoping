@@ -19,6 +19,8 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
 
   submit (e: any) {
     const newProfileData: IUserType = {
+      identityId: this.props.profileState.identityId,
+      isActivated: this.props.profileState.isActivated,
       id: this.props.profileState.id,
       email: e.email,
       login: e.login,
@@ -28,6 +30,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
       birthday: e.birthday,
       phone: e.phone,
       lastPaid: e.lastPaid,
+      avatar: this.props.profileState.avatar,
     };
     this.props.updateProfileData(newProfileData);
   }
