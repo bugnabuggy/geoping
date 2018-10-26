@@ -11,7 +11,7 @@ const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 const _window: any = window;
 const gapi: any = _window.gapi;
 
-function googleAuthorizeInit( authorizationUserFlag: ( isAuthorize: boolean ) => void ) {
+function googleAuthorizeInit( redirect: ( isRedirect: boolean ) => void ) {
   gapi.load( 'auth2', () => {
     const element: any = document.getElementById( 'customBtn' );
     gapi.auth2.init( {
@@ -26,8 +26,8 @@ function googleAuthorizeInit( authorizationUserFlag: ( isAuthorize: boolean ) =>
         ( googleUser: any ) => {
           console.info( 'googleUser', googleUser.Zi );
           localStorage.setItem( 'token', googleUser.Zi.access_token );
-          localStorage.setItem( 'type', googleUser.Zi.token_type );
-          authorizationUserFlag( true );
+          localStorage.setItem( 'token_type', googleUser.Zi.token_type );
+          redirect( true );
         },
         ( error: any ) => {
           console.info( 'error', error );

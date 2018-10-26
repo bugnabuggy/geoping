@@ -20,7 +20,7 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
     this.props.clearTableHistory();
   }
   componentDidUpdate(prevProps: ITableHistoryDashboardContainerProps) {
-    if ( !prevProps.user.redirectDashboard && this.props.user.redirectDashboard ) {
+    if ( this.props.user.redirectDashboard ) {
       this.props.redirectDaschboard(false);
     }
 
