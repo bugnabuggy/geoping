@@ -1,9 +1,15 @@
 export default interface IUserType {
   email: string;
   id: string;
-  phoneNumber: string;
+  identityId: string;
+  isActivated: boolean;
+  phone: string;
   login: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
   accountType: string;
   lastPaid: string;
+  avatar: string;
+
 }

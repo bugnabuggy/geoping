@@ -19,3 +19,10 @@ export const createGeoNewPoint: string = `${endpointBaseUrl}/api/geolist/%listid
 export const updateGeoPoint: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;
 export const removeCollectionGeoPoints: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;
 export const removeGeoPoint: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;
+
+/* endpoints for user profile */
+
+export const loadUserProfile: string = `${endpointBaseUrl}/account/profile`;
+export const updateUserProfile: string = `${endpointBaseUrl}/account/profile`;
+export const changeUserPassword: string = `${endpointBaseUrl}/account/change-password`;
+// export const upgradeAccount: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;

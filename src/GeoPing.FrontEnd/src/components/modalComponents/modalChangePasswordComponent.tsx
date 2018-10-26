@@ -26,7 +26,7 @@ export class ModalChangePasswordComponent extends React.Component<IModalChangePa
     // const psw = this.state.Password;
     const newPsw = this.state.newPassword;
     const confPsw = this.state.confirmNewPassword;
-    if (( newPsw.length && confPsw.length) > 7) {
+    if (( newPsw.length && confPsw.length) > 3) {
       if (newPsw === confPsw) {
         return 'success';
       } else {

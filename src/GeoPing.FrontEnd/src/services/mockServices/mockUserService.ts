@@ -3,16 +3,6 @@ import { users } from '../../mocks/checkinStatisticsMock';
 // import * as uuidV5 from 'uuid/v5';
 
 export default class MockUserService implements IUser {
-  getUserProfile( idUser: string ) {
-    return new Promise( ( resolve: any, reject: any ) => {
-      setTimeout(
-        () => {
-          resolve( 'profile' );
-        },
-        1000
-      );
-    } );
-  }
 
   loadUsersForSharedList( idCheckLists: string ) {
     return new Promise( ( resolve: any, reject: any ) => {
