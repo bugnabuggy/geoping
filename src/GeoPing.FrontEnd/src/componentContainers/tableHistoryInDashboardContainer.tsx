@@ -9,13 +9,21 @@ import { clearTableHistory, loadHistory } from '../actions/historyAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { filterHistory, closeFilterHistory } from '../actions/historyAction';
 import ModalFilterHistoryComponent from '../components/modalComponents/modalFilterHistoryComponent';
+import { redirectDaschboard } from '../actions/userAction';
 
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
   componentDidMount() {
     this.props.loadHistory();
+
   }
   componentWillUnmount() {
     this.props.clearTableHistory();
+  }
+  componentDidUpdate(prevProps: ITableHistoryDashboardContainerProps) {
+    if ( !prevProps.user.redirectDashboard && this.props.user.redirectDashboard ) {
+      this.props.redirectDaschboard(false);
+    }
+
   }
 
   render() {
@@ -45,6 +53,7 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     tableHistory: state.tableHistory,
+    user: state.user,
   };
 };
 
@@ -55,6 +64,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       loadHistory,
       closeFilterHistory,
       clearTableHistory,
+      redirectDaschboard,
   },
     dispatch );
 
