@@ -58,6 +58,6 @@ function closeModalChangePasswordAction(isShow: boolean): Object {
 function showModalChangePasswordAction(isShow: boolean): Object {
   return {type: SHOW_MODAL_WINDOW, isShow};
 }
-function loadProfileDataAction(profile: any[]): Object {
+function loadProfileDataAction(profile: any): Object {
   return {type: LOAD_INFO, profile};
 }

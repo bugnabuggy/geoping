@@ -123,7 +123,7 @@ function registerForms( props: any ): any {
         component={termsOfService}
         name="termsOfService"
         type="checkbox"
-        label="Aggre to the terms of service"
+        label="Agree to the terms of service"
       />
       <Field
         component={recaptcha}
