@@ -123,39 +123,25 @@ namespace Geoping.Services
             };
         }
 
-        private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
-        {
-            data = FilterListsByCommonFilter(data, filter);
-
-            var publicData = from a in data
-                         from b in _publicGeolistRepo.Data
-                         where a.Id == b.ListId
-                         select new PublicListDTO
-                         {
-                             Id = a.Id,
-                             Name = a.Name,
-                             Description = a.Description,
-                             OwnerId = a.OwnerId,
-                             OwnerName = _gpUserRepo.Data.FirstOrDefault(x => x.Id == a.OwnerId).Login,
-                             CreateDate = a.Created,
-                             EditDate = a.Edited,
-                             PublishDate = b.PublishDate,
-                             Rating = b.Rating,
-                             SubscribersNumber = b.SubscribersNumber,
-                             FinishersNumber = b.FinishersNumber,
-                             IsOfficial = b.IsOfficial
-                         };
-
-            publicData = FilterListsByPublicFilter(publicData, filter);
-
-            publicData = PaginationByPublicFilter(publicData, filter);
-
-            return publicData;
-        }
-
         public OperationResult<GeoList> Add(GeoList item)
         {
-            throw new NotImplementedException();
+            var result = _geolistRepo.Add(item);
+
+            if (item.IsPublic)
+            {
+                _publicGeolistRepo.Add(new PublicList()
+                {
+                    ListId = result.Id,
+                    PublishDate = DateTime.UtcNow
+                });
+            }
+
+            return new OperationResult<GeoList>()
+            {
+                Data = result,
+                Messages = new[] { "Geolist was successfully added." },
+                Success = true
+            };
         }
 
         public OperationResult<GeoList> Update(GeoList item)
@@ -166,6 +152,36 @@ namespace Geoping.Services
         public OperationResult<GeoList> Delete(GeoList item)
         {
             throw new NotImplementedException();
+        }
+
+        private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
+        {
+            data = FilterListsByCommonFilter(data, filter);
+
+            var publicData = from a in data
+                             from b in _publicGeolistRepo.Data
+                             where a.Id == b.ListId
+                             select new PublicListDTO
+                             {
+                                 Id = a.Id,
+                                 Name = a.Name,
+                                 Description = a.Description,
+                                 OwnerId = a.OwnerId,
+                                 OwnerName = _gpUserRepo.Data.FirstOrDefault(x => x.Id == a.OwnerId).Login,
+                                 CreateDate = a.Created,
+                                 EditDate = a.Edited,
+                                 PublishDate = b.PublishDate,
+                                 Rating = b.Rating,
+                                 SubscribersNumber = b.SubscribersNumber,
+                                 FinishersNumber = b.FinishersNumber,
+                                 IsOfficial = b.IsOfficial
+                             };
+
+            publicData = FilterListsByPublicFilter(publicData, filter);
+
+            publicData = PaginationByPublicFilter(publicData, filter);
+
+            return publicData;
         }
 
         private IQueryable<GeoList> FilterListsByCommonFilter
@@ -336,12 +352,7 @@ namespace Geoping.Services
 
         public OperationResult<GeoList> Add(GeoList item)
         {
-            return new OperationResult<GeoList>()
-            {
-                Data = _geolistRepo.Add(item),
-                Messages = new[] { "Geolist was successfully added." },
-                Success = true
-            };
+            
         }
 
         public OperationResult<GeoList> Update(GeoList item)
