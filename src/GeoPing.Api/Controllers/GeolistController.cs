@@ -65,7 +65,7 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
         {
             var isId = Guid.TryParse(userId, out Guid ownerId);
-            var result = new WebResult<IQueryable<PublicListDTO>>() { Messages = new[] { "Unvalid user identificator" } };
+            var result = new WebResult<IQueryable<PublicListDTO>>() { Messages = new[] { "Unvalid user identifier" } };
             if (isId)
             {
                 result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
@@ -110,13 +110,18 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult EditList(string Id, [FromBody]GeoList item)
         {
-            if (Guid.Parse(Id) != item.Id)
+            var isListId = Guid.TryParse(Id, out Guid listId);
+            if (!isListId)
+            {
+                return BadRequest("Invalid list identifier");
+            }
+
+            if (listId != item.Id)
             {
                 return BadRequest(new OperationResult
                 {
                     Data = item,
-                    Messages = new[] { "Request ID isn`t equal target object`s ID" },
-                    Success = false
+                    Messages = new[] { "Request ID isn`t equal target object`s ID" }
                 });
             }
 

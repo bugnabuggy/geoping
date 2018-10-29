@@ -61,7 +61,7 @@ namespace Geoping.Services
         }
 
         public WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems)
-        { 
+        {
             var data = _geolistRepo.Data.Where(x => x.OwnerId == userId);
 
             // Filtering by public status. There is no filtering if isPublic field in filter is null
@@ -107,7 +107,7 @@ namespace Geoping.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Data.Where(x => x.IsPublic == true );
+            var data = _geolistRepo.Data.Where(x => x.IsPublic == true);
 
             var result = GetPublicByFilter(data, filter);
 
@@ -146,7 +146,26 @@ namespace Geoping.Services
 
         public OperationResult<GeoList> Update(GeoList item)
         {
-            throw new NotImplementedException();
+            if (item.IsPublic)
+            {
+                var wasPublic = _publicGeolistRepo.Data.Any(x => x.ListId == item.Id);
+                if (!wasPublic)
+                {
+                    _publicGeolistRepo.Add(new PublicList()
+                    {
+                        ListId = item.Id,
+                        PublishDate = DateTime.UtcNow
+                    });
+                }
+            }
+            var result = _geolistRepo.Update(item);
+
+            return new OperationResult<GeoList>()
+            {
+                Data = result,
+                Messages = new[] { "Geolist was successfully edited." },
+                Success = true
+            };
         }
 
         public OperationResult<GeoList> Delete(GeoList item)
@@ -357,12 +376,6 @@ namespace Geoping.Services
 
         public OperationResult<GeoList> Update(GeoList item)
         {
-            return new OperationResult<GeoList>()
-            {
-                Data = _geolistRepo.Update(item),
-                Messages = new[] { "Geolist was successfully edited." },
-                Success = true
-            };
         }
 
         public OperationResult<GeoList> Delete(GeoList item)
