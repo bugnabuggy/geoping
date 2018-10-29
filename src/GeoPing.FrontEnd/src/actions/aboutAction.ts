@@ -14,15 +14,15 @@ export const useTestPeriod = ( email: string, password: string ) => ( dispatch: 
   StaticStorage.serviceLocator = environments.get( buildEnvironment );
 
   const authorizationService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
-  authorizationService.signin( email, password )
+  authorizationService.getVirtualDatabase()
+    .then( ( response: any ) => {
+      sessionStorage.setItem( 'localDB', response );
+      return authorizationService.signin( email, password );
+    } )
     .then( ( response: any ) => {
       localStorage.setItem( 'token', response );
       dispatch( useTestPeriodAction( true ) );
       dispatch( redirectDaschboardAction( true ) );
-      return authorizationService.getVirtualDatabase();
-    } )
-    .then( ( response: any ) => {
-      sessionStorage.setItem( 'localDB', response );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
