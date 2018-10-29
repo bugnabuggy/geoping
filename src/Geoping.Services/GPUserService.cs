@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class GPUserService : IGPUserService
     {

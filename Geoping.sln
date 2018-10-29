@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Infrastructure", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geoping.Services", "src\Geoping.Services\Geoping.Services.csproj", "{55A77FD3-C1E7-4346-B852-6244627982F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geoping.Services.Tests", "tests\Geoping.Services.Tests\Geoping.Services.Tests.csproj", "{5DC12290-7982-4F5D-8719-9E5D52313D4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Services.Tests", "tests\Geoping.Services.Tests\GeoPing.Services.Tests.csproj", "{5DC12290-7982-4F5D-8719-9E5D52313D4C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{55A77FD3-C1E7-4346-B852-6244627982F6} = {55A77FD3-C1E7-4346-B852-6244627982F6}
 		{D4A3D4E8-6530-41DF-A092-ABD44FD67CBF} = {D4A3D4E8-6530-41DF-A092-ABD44FD67CBF}

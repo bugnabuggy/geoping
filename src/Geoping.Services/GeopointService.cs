@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class GeopointService : IGeopointService
     {
