@@ -6,5 +6,4 @@ export default interface IAboutComponentContainerProps {
 
   useTestPeriod: ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => void;
   getVirtualDatabase: () => ( dispatch: IDispatchFunction ) => void;
-  redirectDaschboard: ( isRedirect: boolean ) => (dispatch: IDispatchFunction) => void;
 }

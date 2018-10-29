@@ -12,6 +12,7 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
   authorizeService.signin( email, password )
     .then( ( token: string ) => {
       dispatch( authorizationUserAction( true ) );
+      dispatch( redirectDaschboardAction( true ) );
       console.info( 'token', JSON.parse( atob( token.split( '.' )[ 1 ] ) ) );
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
@@ -55,7 +56,7 @@ export const authorizationUserFlag = ( isAuthorize: boolean ) => ( dispatch: IDi
 };
 
 export const redirectDaschboard = ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch(redirectDaschboardAction(isRedirect));
+  dispatch( redirectDaschboardAction( isRedirect ) );
 };
 
 /* Actions */
@@ -68,6 +69,6 @@ function signOutUserAction(): Object {
   return { type: USER_SIGN_OUT };
 }
 
-function redirectDaschboardAction( isRedirect: boolean ) {
+export function redirectDaschboardAction( isRedirect: boolean ) {
   return { type: REDIRECT_DASHBOARD_FOR_LOGIN, isRedirect };
 }

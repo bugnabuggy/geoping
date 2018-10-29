@@ -7,6 +7,7 @@ import { EBuildEnvironment } from '../enums/environment';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import { redirectDaschboardAction } from './userAction';
 
 export const useTestPeriod = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   getBuildEnvironment( EBuildEnvironment.Test );
@@ -17,6 +18,11 @@ export const useTestPeriod = ( email: string, password: string ) => ( dispatch: 
     .then( ( response: any ) => {
       localStorage.setItem( 'token', response );
       dispatch( useTestPeriodAction( true ) );
+      dispatch( redirectDaschboardAction( true ) );
+      return authorizationService.getVirtualDatabase();
+    } )
+    .then( ( response: any ) => {
+      sessionStorage.setItem( 'localDB', response );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
