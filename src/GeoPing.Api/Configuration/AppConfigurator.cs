@@ -1,4 +1,4 @@
-﻿using Geoping.Services;
+﻿using GeoPing.Services;
 using GeoPing.Api.Helpers;
 using GeoPing.Api.Interfaces;
 using GeoPing.Core.Entities;

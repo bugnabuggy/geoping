@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Geoping.Services.Tests
+namespace GeoPing.Services.Tests
 {
     [TestFixture]
     class AccountServiceTests
