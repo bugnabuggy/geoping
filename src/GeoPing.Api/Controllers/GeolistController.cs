@@ -82,21 +82,29 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult GetList(string Id)
         {
-            var result = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
+            var listStatus = SecListCheck(Id, out GeoList result);
 
-            if (result == null)
+            if (listStatus.Equals(Ok()))
             {
-                return NotFound();
+                return Ok(result);
             }
-            return Ok(result);
+            return listStatus;
         }
 
         // POST api/geolist/
         [HttpPost]
-        public IActionResult AddList([FromBody]GeoList item)
+        public IActionResult AddList([FromBody]GeolistToManipDTO item)
         {
-            item.OwnerId = _helper.GetAppUserIdByClaims(User.Claims);
-            var result = _geolistSrv.Add(item);
+            var list = new GeoList()
+            {
+                Name = item.Name,
+                Description = item.Description,
+                IsPublic = item.IsPublic,
+                OwnerId = _helper.GetAppUserIdByClaims(User.Claims),
+                Created = DateTime.UtcNow
+            };
+
+            var result = _geolistSrv.Add(list);
 
             if (result.Success)
             {
@@ -108,35 +116,21 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(string Id, [FromBody]GeoList item)
+        public IActionResult EditList(string Id, [FromBody]GeolistToManipDTO item)
         {
-            var isListId = Guid.TryParse(Id, out Guid listId);
-            if (!isListId)
+            var listStatus = SecListCheck(Id, out GeoList list);
+
+            if (!listStatus.Equals(Ok()))
             {
-                return BadRequest("Invalid list identifier");
+                return listStatus;
             }
 
-            if (listId != item.Id)
-            {
-                return BadRequest(new OperationResult
-                {
-                    Data = item,
-                    Messages = new[] { "Request ID isn`t equal target object`s ID" }
-                });
-            }
+            list.Name = item.Name;
+            list.Description = item.Description;
+            list.IsPublic = item.IsPublic;
+            list.Edited = DateTime.UtcNow;
 
-            if (!_geolistSrv.Get(x => x.Id == Guid.Parse(Id)).Any())
-            {
-                return NotFound(new OperationResult
-                {
-                    Messages = new[] { "Object with requested ID does`t exists" },
-                    Success = false
-                });
-            }
-
-            item.OwnerId = _helper.GetAppUserIdByClaims(User.Claims);
-
-            var result = _geolistSrv.Update(item);
+            var result = _geolistSrv.Update(list);
 
             if (result.Success)
             {
@@ -157,14 +151,14 @@ namespace GeoPing.Api.Controllers
             {
                 foreach (var Id in idList)
                 {
-                    var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
+                    var listStatus = SecListCheck(Id, out GeoList list);
 
-                    if (item == null)
+                    if (!listStatus.Equals(Ok()))
                     {
                         continue;
                     }
 
-                    var result = _geolistSrv.Delete(item);
+                    var result = _geolistSrv.Delete(list);
 
                     if (!result.Success)
                     {
@@ -186,20 +180,43 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult RemoveList(string Id)
         {
-            var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
+            var listStatus = SecListCheck(Id, out GeoList list);
 
-            if (item == null)
+            if (!listStatus.Equals(Ok()))
             {
-                return NotFound();
+                return listStatus;
             }
 
-            var result = _geolistSrv.Delete(item);
+            var result = _geolistSrv.Delete(list);
 
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+
+        private IActionResult SecListCheck(string Id, out GeoList list)
+        {
+            var isListId = Guid.TryParse(Id, out Guid listId);
+            list = null;
+            if (!isListId)
+            {
+                return BadRequest("Invalid list identifier");
+            }
+
+            list = _geolistSrv.Get(x => x.Id == listId).FirstOrDefault();
+            if (list == null)
+            {
+                return NotFound("There is no geolist with given Id");
+            }
+
+            if (list.OwnerId != _helper.GetAppUserIdByClaims(User.Claims))
+            {
+                return BadRequest("You have no rights to manipulate with this geolist");
+            }
+
+            return Ok();
         }
     }
 }
