@@ -3,6 +3,7 @@ using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
+using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +33,22 @@ namespace GeoPing.TestData.Helpers
             
             //return default principal back;
             httpContextAccessor.HttpContext.User = principal;
+
+            SeedTestList(services);
+        }
+
+        private void SeedTestList(IServiceProvider services)
+        {
+            var _geolistRepo = services.GetRequiredService<IRepository<GeoList>>();
+
+            _geolistRepo.Add(new GeoList
+            {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000005"),
+                Name = "TestList5",
+                OwnerId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
+                Created = DateTime.UtcNow,
+                IsPublic = true
+            });
         }
     }
 }
