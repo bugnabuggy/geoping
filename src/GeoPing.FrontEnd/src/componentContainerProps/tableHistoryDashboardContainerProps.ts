@@ -10,5 +10,5 @@ export default interface ITableHistoryDashboardContainerProps {
   closeFilterHistory: () => ( dispatch: IDispatchFunction ) => void;
   loadHistory: () => ( dispatch: IDispatchFunction ) => void;
   clearTableHistory: () => ( dispatch: IDispatchFunction ) => void;
-  redirectDaschboard: ( isRedirect: boolean ) => (dispatch: IDispatchFunction) => void;
+  redirectDashboard: ( isRedirect: boolean ) => (dispatch: IDispatchFunction) => void;
 }
