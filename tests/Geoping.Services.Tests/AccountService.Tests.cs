@@ -1,6 +1,4 @@
-﻿using Geoping.Services;
-using GeoPing.Api.Interfaces;
-using GeoPing.Core.Entities;
+﻿using GeoPing.Core.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
@@ -14,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GeoPing.Api.Tests
+namespace Geoping.Services.Tests
 {
     [TestFixture]
     class AccountServiceTests

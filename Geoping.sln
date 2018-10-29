@@ -21,9 +21,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.TestData", "tests\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Api.Tests", "tests\GeoPing.Api.Tests\GeoPing.Api.Tests.csproj", "{430EAD87-B85E-41BC-AB16-6794F6370927}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoPing.Infrastructure", "src\GeoPing.Infrastructure\GeoPing.Infrastructure.csproj", "{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Infrastructure", "src\GeoPing.Infrastructure\GeoPing.Infrastructure.csproj", "{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geoping.Services", "src\Geoping.Services\Geoping.Services.csproj", "{55A77FD3-C1E7-4346-B852-6244627982F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geoping.Services", "src\Geoping.Services\Geoping.Services.csproj", "{55A77FD3-C1E7-4346-B852-6244627982F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geoping.Services.Tests", "tests\Geoping.Services.Tests\Geoping.Services.Tests.csproj", "{5DC12290-7982-4F5D-8719-9E5D52313D4C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{55A77FD3-C1E7-4346-B852-6244627982F6} = {55A77FD3-C1E7-4346-B852-6244627982F6}
+		{D4A3D4E8-6530-41DF-A092-ABD44FD67CBF} = {D4A3D4E8-6530-41DF-A092-ABD44FD67CBF}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +65,10 @@ Global
 		{55A77FD3-C1E7-4346-B852-6244627982F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55A77FD3-C1E7-4346-B852-6244627982F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55A77FD3-C1E7-4346-B852-6244627982F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC12290-7982-4F5D-8719-9E5D52313D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DC12290-7982-4F5D-8719-9E5D52313D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DC12290-7982-4F5D-8719-9E5D52313D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DC12290-7982-4F5D-8719-9E5D52313D4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +81,7 @@ Global
 		{430EAD87-B85E-41BC-AB16-6794F6370927} = {FF4C6CBE-1A44-429D-A221-0FE1251B0608}
 		{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC} = {8D55F8D7-5BAB-46D2-93F8-A44B49D36EAE}
 		{55A77FD3-C1E7-4346-B852-6244627982F6} = {8D55F8D7-5BAB-46D2-93F8-A44B49D36EAE}
+		{5DC12290-7982-4F5D-8719-9E5D52313D4C} = {FF4C6CBE-1A44-429D-A221-0FE1251B0608}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C667CE7F-682B-4DDB-9CD5-D6C5CF5BAA8B}
