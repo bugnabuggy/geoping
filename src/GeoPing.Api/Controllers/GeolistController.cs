@@ -3,6 +3,7 @@ using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/geolist")]
+    [Authorize]
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
@@ -25,9 +27,27 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // GET api/Geolist
+        // Get lists where user is owner by filter
+        // GET api/geolist
         [HttpGet]
-        public IActionResult GetListsByFilter(GeolistFilterDTO filter)
+        public IActionResult GetListsByFilter(UsersGeolistFilterDTO filter)
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            var result = _geolistSrv.GetByFilter(userId, filter, out int totalItems);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // Get all public lists by filter
+        // GET api/geolist/public
+        [HttpGet]
+        [Route("public")]
+        [AllowAnonymous]
+        public IActionResult GetPublicListsByFilter(PublicGeolistFilterDTO filter)
         {
             var result = _geolistSrv.GetByFilter(filter, out int totalItems);
             if (result.Success)
@@ -37,16 +57,27 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        //// GET api/Geolist
-        //[HttpGet]
-        //public IActionResult GetListsByFilter()
-        //{
-        //    var result = _geolistSrv.Get();
+        // Get all public list of other user by filter
+        // GET api/geolist/public/{userId}
+        [HttpGet]
+        [Route("public/{userId}")]
+        [AllowAnonymous]
+        public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
+        {
+            var isId = Guid.TryParse(userId, out Guid ownerId);
+            var result = new WebResult<IQueryable<PublicListDTO>>() { Messages = new[] { "Unvalid user identificator" } };
+            if (isId)
+            {
+                result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
+                if (result.Success)
+                {
+                    return Ok(result);
+                }
+            }
+            return BadRequest(result);
+        }
 
-        //    return Ok(result);
-        //}
-
-        // GET api/Geolist/{Id}
+        // GET api/geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetList(string Id)
@@ -60,7 +91,7 @@ namespace GeoPing.Api.Controllers
             return Ok(result);
         }
 
-        // POST api/Geolist/
+        // POST api/geolist/
         [HttpPost]
         public IActionResult AddList([FromBody]GeoList item)
         {
@@ -74,7 +105,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // PUT api/Geolist/{Id}
+        // PUT api/geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
         public IActionResult EditList(string Id, [FromBody]GeoList item)
@@ -108,7 +139,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // DELETE api/Geolist/
+        // DELETE api/geolist/
         [HttpDelete]
         public IActionResult RemoveLists(string Ids)
         {
@@ -143,7 +174,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest($"Something is wrong in IDs string: [{Ids}]");
         }
 
-        // DELETE api/Geolist/{Id}
+        // DELETE api/geolist/{Id}
         [HttpDelete]
         [Route("{Id}")]
         public IActionResult RemoveList(string Id)
