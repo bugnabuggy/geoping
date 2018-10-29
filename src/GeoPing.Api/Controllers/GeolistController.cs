@@ -134,6 +134,8 @@ namespace GeoPing.Api.Controllers
                 });
             }
 
+            item.OwnerId = _helper.GetAppUserIdByClaims(User.Claims);
+
             var result = _geolistSrv.Update(item);
 
             if (result.Success)
@@ -150,9 +152,9 @@ namespace GeoPing.Api.Controllers
         {
             var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                             .ToArray();
+
             if (idList != null)
             {
-
                 foreach (var Id in idList)
                 {
                     var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();

@@ -170,7 +170,21 @@ namespace Geoping.Services
 
         public OperationResult<GeoList> Delete(GeoList item)
         {
-            throw new NotImplementedException();
+            var result = _geolistRepo.Delete(item);
+
+            var publicList = _publicGeolistRepo.Data.FirstOrDefault(x => x.ListId == item.Id);
+
+            if (publicList != null)
+            {
+                _publicGeolistRepo.Delete(publicList);
+            }
+
+            return new OperationResult<GeoList>()
+            {
+                Data = result,
+                Messages = new[] { "Geolist was successfully removed." },
+                Success = true
+            };
         }
 
         private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
@@ -347,46 +361,5 @@ namespace Geoping.Services
 
             return data;
         }
-
-
-
-
-
-
-        /*
-        public IQueryable<GeoList> Get()
-        {
-            
-        }
-
-        public IQueryable<GeoList> Get(Expression<Func<GeoList, bool>> func)
-        {
-            
-        }
-
-        public WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, GeolistFilterDTO filter, out int totalItems)
-        {
-            
-        }
-
-        public OperationResult<GeoList> Add(GeoList item)
-        {
-            
-        }
-
-        public OperationResult<GeoList> Update(GeoList item)
-        {
-        }
-
-        public OperationResult<GeoList> Delete(GeoList item)
-        {
-            return new OperationResult<GeoList>()
-            {
-                Data = _geolistRepo.Delete(item),
-                Messages = new[] { "Geolist was successfully removed." },
-                Success = true
-            };
-        }*/
-
     }
 }
