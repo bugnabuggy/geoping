@@ -1,9 +1,4 @@
-import {
-  buildEnvironment,
-  environments,
-  httpServiceLocator,
-  testServiceLocator
-} from './environmentsServiceLocator';
+import { buildEnvironment, environments, httpServiceLocator, testServiceLocator } from './environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import TableHistoryService from './httpServices/tableHistoryService';
 import HttpCommunicator from './httpService';
@@ -28,9 +23,7 @@ export function configurationDependencyInjerction() {
 
   StaticStorage.serviceLocator = environments.get( buildEnvironment );
 
-  const httpHeader: AxiosRequestConfig = {
-    headers: {}
-  };
+  const httpHeader: AxiosRequestConfig = {};
 
   /* http services */
   httpServiceLocator.set( 'IHttpCommunicator', new HttpCommunicator( httpHeader ) );

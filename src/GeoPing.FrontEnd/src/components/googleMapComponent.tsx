@@ -14,6 +14,7 @@ export default class GoogleMapComponent extends React.Component<IGoogleMapCompon
             checkList={this.props.checkList}
             selectedListId={this.props.selectedListId}
             googleMap={this.props.googleMap}
+            checkInStatistics={this.props.checkInStatistics}
 
             selectPoint={this.props.selectPoint}
             addNewPoint={this.props.addNewPoint}

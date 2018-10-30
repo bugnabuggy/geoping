@@ -15,4 +15,5 @@ export default interface ICheckinComponentContainerProps {
   selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   getMyAddress: () => (dispatch: IDispatchFunction) => void;
   saveHistory: (idUser: string, historyData: IHistoryDataDTO) => ( dispatch: IDispatchFunction ) => void;
+  checkInClear: () => ( dispatch: IDispatchFunction ) => void;
 }

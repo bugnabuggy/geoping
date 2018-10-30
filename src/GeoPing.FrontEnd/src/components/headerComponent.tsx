@@ -95,7 +95,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </Nav>
-                <img src="/assets/images/avatar.png" width="70px" className="rounded-circle"/>
+                <img src="/assets/images/avatar.png" width="50px" height="50px" className="rounded-circle"/>
               </Collapse>
             )
             :

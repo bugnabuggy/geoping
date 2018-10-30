@@ -1,6 +1,7 @@
 import ICheckinStateType from '../types/stateTypes/checkinStateType';
 import { checkinState } from '../state/checkinState';
 import {
+  CHECK_IN_CLEAR,
   CHECK_IN_FLAG_CHANGE,
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST,
@@ -18,6 +19,7 @@ export default function checkinReducer( state: ICheckinStateType = checkinState,
     [ SELECT_MARKER ]: selectMarker,
     [ LOADING_CHECK_LISTS ]: loadingCheckLIst,
     [ LOADING_GEO_POINTS ]: loadingGeoPoints,
+    [ CHECK_IN_CLEAR ]: clear,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -73,5 +75,11 @@ function loadingGeoPoints( state: ICheckinStateType, action: any ): ICheckinStat
   return {
     ...state,
     isPointLoading: action.isLoading
+  };
+}
+
+function clear( state: ICheckinStateType, action: any ): ICheckinStateType {
+  return {
+    ...checkinState,
   };
 }

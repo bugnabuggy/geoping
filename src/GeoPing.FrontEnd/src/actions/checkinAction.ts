@@ -1,5 +1,6 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
+  CHECK_IN_CLEAR,
   CHECK_IN_FLAG_CHANGE,
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST,
@@ -55,6 +56,10 @@ export const checkinFlag = ( isCheckin: boolean ) => ( dispatch: IDispatchFuncti
   dispatch( checkinFlagAction( isCheckin ) );
 };
 
+export const checkInClear = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( checkInClearAction() );
+};
+
 /* Actions */
 
 function loadListsAction( lists: Array<any> ): Object {
@@ -75,4 +80,8 @@ function loadingCheckLists( isLoading: boolean ): { type: string, isLoading: boo
 
 function loadingGeoPoints( isLoading: boolean ): { type: string, isLoading: boolean } {
   return { type: LOADING_GEO_POINTS, isLoading };
+}
+
+function checkInClearAction(): { type: string } {
+  return { type: CHECK_IN_CLEAR };
 }

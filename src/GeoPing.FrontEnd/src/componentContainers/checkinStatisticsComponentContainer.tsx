@@ -7,11 +7,15 @@ import ICheckinStatisticsComponentContainerProps
   from '../componentContainerProps/checkinStatisticsComponentContainerProps';
 import { CheckinStatisticsComponent } from '../components/checkinStatisticsComponent';
 import TableMarkerStatisticsComponentContainer from '../componentContainers/tableMarkerStatisticsComponentContainer';
-import { loadLists, loadPoints, loadUsers } from '../actions/checkinStatisticsActions';
+import { checkInStatisticsClear, loadLists, loadPoints, loadUsers } from '../actions/checkinStatisticsActions';
 
 class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatisticsComponentContainerProps, any> {
   componentDidMount() {
     this.props.loadLists();
+  }
+
+  componentWillUnmount() {
+    this.props.checkInStatisticsClear();
   }
 
   render() {
@@ -41,6 +45,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       loadLists,
       loadUsers,
       loadPoints,
+      checkInStatisticsClear,
     },
     dispath );
 
