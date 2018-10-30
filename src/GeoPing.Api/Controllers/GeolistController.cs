@@ -84,11 +84,11 @@ namespace GeoPing.Api.Controllers
         {
             var listStatus = SecListCheck(Id, out GeoList result);
 
-            if (listStatus.Equals(Ok()))
+            if (listStatus.StatusCode == 200)
             {
                 return Ok(result);
             }
-            return listStatus;
+            return StatusCode(listStatus.StatusCode, listStatus.Message);
         }
 
         // POST api/geolist/
@@ -120,9 +120,9 @@ namespace GeoPing.Api.Controllers
         {
             var listStatus = SecListCheck(Id, out GeoList list);
 
-            if (!listStatus.Equals(Ok()))
+            if (listStatus.StatusCode != 200)
             {
-                return listStatus;
+                return StatusCode(listStatus.StatusCode, listStatus.Message);
             }
 
             list.Name = item.Name;
@@ -153,7 +153,7 @@ namespace GeoPing.Api.Controllers
                 {
                     var listStatus = SecListCheck(Id, out GeoList list);
 
-                    if (!listStatus.Equals(Ok()))
+                    if (listStatus.StatusCode != 200)
                     {
                         continue;
                     }
@@ -182,9 +182,9 @@ namespace GeoPing.Api.Controllers
         {
             var listStatus = SecListCheck(Id, out GeoList list);
 
-            if (!listStatus.Equals(Ok()))
+            if (listStatus.StatusCode != 200)
             {
-                return listStatus;
+                return StatusCode(listStatus.StatusCode, listStatus.Message);
             }
 
             var result = _geolistSrv.Delete(list);
@@ -196,27 +196,27 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        private IActionResult SecListCheck(string Id, out GeoList list)
+        private GPStatusCodeResult SecListCheck(string Id, out GeoList list)
         {
             var isListId = Guid.TryParse(Id, out Guid listId);
             list = null;
             if (!isListId)
             {
-                return BadRequest("Invalid list identifier");
+                return new GPStatusCodeResult(400, "Invalid list identifier");
             }
 
             list = _geolistSrv.Get(x => x.Id == listId).FirstOrDefault();
             if (list == null)
             {
-                return NotFound("There is no geolist with given Id");
+                return new GPStatusCodeResult(404, "There is no geolist with given Id");
             }
 
             if (list.OwnerId != _helper.GetAppUserIdByClaims(User.Claims))
             {
-                return BadRequest("You have no rights to manipulate with this geolist");
+                return new GPStatusCodeResult(401, "You have no rights to manipulate with this geolist");
             }
 
-            return Ok();
+            return new GPStatusCodeResult(200);
         }
     }
 }
