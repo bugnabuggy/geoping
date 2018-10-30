@@ -225,6 +225,7 @@ namespace GeoPing.Services
                     if (!isListId)
                     {
                         messages.Add($"Given geolistId = [{id}] is not valid");
+                        continue;
                     }
 
                     var list = Get(x => x.Id == listId).FirstOrDefault();
@@ -232,6 +233,7 @@ namespace GeoPing.Services
                     if (list == null)
                     {
                         messages.Add($"There are no geolist with given geolistId = [{id}]");
+                        continue;
                     }
 
                     messages.AddRange(Delete(userId, list).Messages);
