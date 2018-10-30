@@ -31,8 +31,8 @@ namespace GeoPing.Api
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                //.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
             _configuration = builder.Build();
