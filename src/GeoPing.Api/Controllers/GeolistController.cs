@@ -83,8 +83,6 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult GetList(string id)
         {
-            //var listStatus = IsListExistWithThisId(Id, out GeoList result);
-
             if (IsListExistWithThisId(id, out GeoList result))
             {
                 return Ok(result);

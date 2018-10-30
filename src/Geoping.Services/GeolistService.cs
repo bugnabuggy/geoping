@@ -180,7 +180,7 @@ namespace GeoPing.Services
             };
         }
 
-        // dele
+        // Delete one of list
         public OperationResult<GeoList> Delete(Guid userId, GeoList item)
         {
             if (!_securitySrv.IsUserHaveAccessToList(userId, item))
@@ -207,7 +207,7 @@ namespace GeoPing.Services
             };
         }
 
-        // Delete several lists with array of id-s
+        // Delete several lists
         public OperationResult Delete(Guid userId, string Ids)
         {
             var ids = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
