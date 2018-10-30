@@ -14,7 +14,7 @@ namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/geolist")]
-    //[Authorize]
+    [Authorize]
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
