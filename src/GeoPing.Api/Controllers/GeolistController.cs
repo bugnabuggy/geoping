@@ -32,13 +32,12 @@ namespace GeoPing.Api.Controllers
         [HttpGet]
         public IActionResult GetListsByFilter(UsersGeolistFilterDTO filter)
         {
-            var userId = _helper.GetAppUserIdByClaims(User.Claims);
-
-            var result = _geolistSrv.GetByFilter(userId, filter, out int totalItems);
+            var result = _geolistSrv.GetByFilter(_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -54,6 +53,7 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -74,21 +74,23 @@ namespace GeoPing.Api.Controllers
                     return Ok(result);
                 }
             }
+
             return BadRequest(result);
         }
 
         // GET api/geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetList(string Id)
+        public IActionResult GetList(string id)
         {
-            var listStatus = SecListCheck(Id, out GeoList result);
+            //var listStatus = IsListExistWithThisId(Id, out GeoList result);
 
-            if (listStatus.StatusCode == 200)
+            if (IsListExistWithThisId(id, out GeoList result))
             {
                 return Ok(result);
             }
-            return StatusCode(listStatus.StatusCode, listStatus.Message);
+
+            return NotFound();
         }
 
         // POST api/geolist/
@@ -110,19 +112,20 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
         // PUT api/geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(string Id, [FromBody]GeolistToManipDTO item)
+        public IActionResult EditList(string id, [FromBody]GeolistToManipDTO item)
         {
-            var listStatus = SecListCheck(Id, out GeoList list);
+            var isListExist = IsListExistWithThisId(id, out GeoList list);
 
-            if (listStatus.StatusCode != 200)
+            if (!isListExist)
             {
-                return StatusCode(listStatus.StatusCode, listStatus.Message);
+                return NotFound();
             }
 
             list.Name = item.Name;
@@ -130,7 +133,7 @@ namespace GeoPing.Api.Controllers
             list.IsPublic = item.IsPublic;
             list.Edited = DateTime.UtcNow;
 
-            var result = _geolistSrv.Update(list);
+            var result = _geolistSrv.Update(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {
@@ -142,52 +145,32 @@ namespace GeoPing.Api.Controllers
 
         // DELETE api/geolist/
         [HttpDelete]
-        public IActionResult RemoveLists(string Ids)
+        public IActionResult RemoveLists(string ids)
         {
-            var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            .ToArray();
 
-            if (idList != null)
+            var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), ids);
+
+            if (result.Success)
             {
-                foreach (var Id in idList)
-                {
-                    var listStatus = SecListCheck(Id, out GeoList list);
-
-                    if (listStatus.StatusCode != 200)
-                    {
-                        continue;
-                    }
-
-                    var result = _geolistSrv.Delete(list);
-
-                    if (!result.Success)
-                    {
-                        return StatusCode(500);
-                    }
-                }
-                return Ok(new OperationResult
-                {
-                    Success = true,
-                    Messages = new[] { $"Geolists with Id-s = [{Ids}] were removed" },
-                    Data = Ids
-                });
+                return Ok(result);
             }
-            return BadRequest($"Something is wrong in IDs string: [{Ids}]");
+
+            return BadRequest(result);
         }
 
         // DELETE api/geolist/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemoveList(string Id)
+        public IActionResult RemoveList(string id)
         {
-            var listStatus = SecListCheck(Id, out GeoList list);
+            var isListExist = IsListExistWithThisId(id, out GeoList list);
 
-            if (listStatus.StatusCode != 200)
+            if (!isListExist)
             {
-                return StatusCode(listStatus.StatusCode, listStatus.Message);
+                return NotFound();
             }
 
-            var result = _geolistSrv.Delete(list);
+            var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {
@@ -196,27 +179,22 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        private GPStatusCodeResult SecListCheck(string Id, out GeoList list)
+        private bool IsListExistWithThisId(string Id, out GeoList list)
         {
             var isListId = Guid.TryParse(Id, out Guid listId);
             list = null;
             if (!isListId)
             {
-                return new GPStatusCodeResult(400, "Invalid list identifier");
+                return false;
             }
 
             list = _geolistSrv.Get(x => x.Id == listId).FirstOrDefault();
             if (list == null)
             {
-                return new GPStatusCodeResult(404, "There is no geolist with given Id");
+                return false;
             }
 
-            if (list.OwnerId != _helper.GetAppUserIdByClaims(User.Claims))
-            {
-                return new GPStatusCodeResult(401, "You have no rights to manipulate with this geolist");
-            }
-
-            return new GPStatusCodeResult(200);
+            return true;
         }
     }
 }
