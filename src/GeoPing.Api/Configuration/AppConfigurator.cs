@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Geoping.Services;
 
 namespace GeoPing.Api.Configuration
 {
@@ -33,6 +34,7 @@ namespace GeoPing.Api.Configuration
 
             services.AddTransient<IEmailService, EmailService>();
 
+            services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IClaimsHelper, ClaimsHelper>();
