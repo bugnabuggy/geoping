@@ -7,7 +7,8 @@ export default class MockAuthorizationService implements IAuthorization {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
-          resolve( JSON.stringify( testUser ) );
+          sessionStorage.setItem( 'localDB', JSON.stringify( testUser ) );
+          resolve( 'ok');
         },
         1000
       );
@@ -18,9 +19,15 @@ export default class MockAuthorizationService implements IAuthorization {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
-          const token: string = JSON.parse(sessionStorage.getItem('localDB')).token;
-          localStorage.setItem('token', token);
-          resolve( token );
+          this.getVirtualDatabase()
+            .then( ( response: any ) => {
+              const token: string = JSON.parse(sessionStorage.getItem('localDB')).token;
+              localStorage.setItem('token', token);
+              resolve( token );
+            })
+            .catch( ( error: any ) => {
+              reject(error);
+            });
         },
         1000
       );

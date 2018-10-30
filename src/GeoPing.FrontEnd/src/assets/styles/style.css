@@ -88,6 +88,17 @@ select.form-control:not([size]):not([multiple]) {
   content: url("/assets/images/google-button-hover.png");
 }
 
+.window-container {
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #121312b8;
+}
+
 /* Header ******************************************************************/
 /*.header-container {*/
 /*height: 100%;*/
@@ -415,10 +426,12 @@ header nav {
   grid-column-end: col3;
   grid-row-start: row3;
   grid-row-end: row4;
+  display: flex;
+  flex-direction: column;
 }
 
 .block-accepted, .block-new {
-  height: 50%;
+  flex: 1;
 }
 
 .block-accepted span, .block-new span {

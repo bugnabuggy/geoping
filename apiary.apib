@@ -11,40 +11,155 @@ for everyone and watch, how many people go through that list and what is their o
 
 ## Geolist collection [/api/geolist]
 
-### List all geolists [GET]
+### Get all owned geolists [GET]
 
 + Response 200 (application/json)
 
-        [
-            {
-                "id": 1,
-                "name": "The first list",
-                "description": "It is the first list",
-                "isPublic": false,
-                "rating": 0.0,
-                "periodFrom": "0001-01-01T00:00:00",
-                "periodTo": "0001-01-01T00:00:00",
-                "ownerId": null,
-                "owner": null,
-                "reviews": null,
-                "geoPoints": null,
-                "usersLists": null
-            },
-            {
-                "id": 2,
-                "name": "The second list",
-                "description": "It is still the second list, but edited",
-                "isPublic": true,
-                "rating": 0.0,
-                "periodFrom": "0001-01-01T00:00:00",
-                "periodTo": "0001-01-01T00:00:00",
-                "ownerId": null,
-                "owner": null,
-                "reviews": null,
-                "geoPoints": null,
-                "usersLists": null
-            }
-        ]
+        {
+            "totalItems": 4,
+            "pageNumber": 0,
+            "pageSize": null,
+            "success": true,
+            "messages": null,
+            "data": [
+                {
+                "id": "81fa0020-79b4-4eca-2cbb-08d63e41e787",
+                "name": "2323",
+                "description": "Something",
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T08:30:09.7331955",
+                "edited": "2018-10-30T11:49:05.2061244",
+                "isPublic": false
+                },
+                {
+                "id": "a64eeeb6-6ac0-4a90-d903-08d63e4a51e5",
+                "name": "The is onew more list",
+                "description": null,
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T09:30:24.1643948",
+                "edited": "0001-01-01T00:00:00",
+                "isPublic": false
+                },
+                {
+                "id": "3c536def-7b1c-4927-aa08-08d63e4cb799",
+                "name": "Test",
+                "description": null,
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T10:40:34.9106833",
+                "edited": "2018-10-30T11:26:57.4737233",
+                "isPublic": false
+                },
+                {
+                "id": "b4eced40-6768-4901-aa09-08d63e4cb799",
+                "name": null,
+                "description": "The list",
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T10:42:59.8369056",
+                "edited": "2018-10-30T11:48:15.284905",
+                "isPublic": false
+                }
+            ]
+        }
+
+### Get all public geolists [GET /api/geolist/public]
+
++ Response 200 (application/json)
+
+        {
+            "totalItems": 3,
+            "pageNumber": 0,
+            "pageSize": null,
+            "success": true,
+            "messages": null,
+            "data": [
+                {
+                    "id": "81fa0020-79b4-4eca-2cbb-08d63e41e787",
+                    "name": "2323",
+                    "description": "23423452",
+                    "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                    "ownerName": "testadmin",
+                    "createDate": "2018-10-30T08:30:09.7331955",
+                    "editDate": "2018-10-30T11:51:04.9346295",
+                    "publishDate": "2018-10-30T08:30:10.0183629",
+                    "rating": 0.0,
+                    "subscribersNumber": 0,
+                    "finishersNumber": 0,
+                    "isOfficial": false
+                },
+                {
+                    "id": "ac15cbab-2373-456b-aa05-08d63e4cb799",
+                    "name": "The is onew more list of user",
+                    "description": null,
+                    "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                    "ownerName": "testuser",
+                    "createDate": "2018-10-30T09:47:40.2970114",
+                    "editDate": "0001-01-01T00:00:00",
+                    "publishDate": "2018-10-30T09:47:40.3179059",
+                    "rating": 0.0,
+                    "subscribersNumber": 0,
+                    "finishersNumber": 0,
+                    "isOfficial": false
+                },
+                {
+                    "id": "29aada7e-e258-4931-aa06-08d63e4cb799",
+                    "name": "The is onew more list of user",
+                    "description": "NONE",
+                    "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                    "ownerName": "testuser",
+                    "createDate": "2018-10-30T09:48:08.7829466",
+                    "editDate": "0001-01-01T00:00:00",
+                    "publishDate": "2018-10-30T09:48:08.8037131",
+                    "rating": 0.0,
+                    "subscribersNumber": 0,
+                    "finishersNumber": 0,
+                    "isOfficial": false
+                }
+            ]
+        }
+
+### Get all user`s public geolists [GET /api/geolist/public/{UserId}]
++ Parameters 
+    + UserId (number) ... Id user-owner
+    
++ Response 200 (application/json)
+
+        {
+            "totalItems": 2,
+            "pageNumber": 0,
+            "pageSize": null,
+            "success": true,
+            "messages": null,
+            "data": [
+                {
+                    "id": "ac15cbab-2373-456b-aa05-08d63e4cb799",
+                    "name": "The is onew more list of user",
+                    "description": null,
+                    "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                    "ownerName": "testuser",
+                    "createDate": "2018-10-30T09:47:40.2970114",
+                    "editDate": "0001-01-01T00:00:00",
+                    "publishDate": "2018-10-30T09:47:40.3179059",
+                    "rating": 0.0,
+                    "subscribersNumber": 0,
+                    "finishersNumber": 0,
+                    "isOfficial": false
+                },
+                {
+                    "id": "29aada7e-e258-4931-aa06-08d63e4cb799",
+                    "name": "The is onew more list of user",
+                    "description": "NONE",
+                    "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                    "ownerName": "testuser",
+                    "createDate": "2018-10-30T09:48:08.7829466",
+                    "editDate": "0001-01-01T00:00:00",
+                    "publishDate": "2018-10-30T09:48:08.8037131",
+                    "rating": 0.0,
+                    "subscribersNumber": 0,
+                    "finishersNumber": 0,
+                    "isOfficial": false
+                }
+            ]
+        }
 
 ### Get an certain geolist [GET /api/geolist/{Id}]
 
@@ -54,34 +169,23 @@ for everyone and watch, how many people go through that list and what is their o
 + Response 200 (application/json)
 
         {
-          "id": 1,
-          "name": "The first list",
-          "description": "It is the first list",
-          "isPublic": false,
-          "rating": 0,
-          "periodFrom": "0001-01-01T00:00:00",
-          "periodTo": "0001-01-01T00:00:00",
-          "ownerId": null,
-          "owner": null,
-          "reviews": null,
-          "geoPoints": null,
-          "usersLists": null
+            "id": "81fa0020-79b4-4eca-2cbb-08d63e41e787",
+            "name": "2323",
+            "description": "Something",
+            "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+            "created": "2018-10-30T08:30:09.7331955",
+            "edited": "2018-10-30T11:49:05.2061244",
+            "isPublic": false
         }
 
 ### Create a new geolist [POST]
 
-+ Attributes
-    + Name (string, required) - Name of list. Max length is 100 chars. 
-    + Description (string) - Description of list. Max length is 240 chars. 
-    + IsPublic (boolean) - "False" by default. State of liss that specifices if it is public.
-    + PeriodFrom (string) - Start date of list period
-    + PeriodTo (string) - End date of list period
-    
 + Request Create new geolist (application/json)
 
         {
             "Name": "The third list",
             "Description": "It is the third list"
+            "IsPublic": true
         }
 
 + Response 200 (application/json)
@@ -92,18 +196,13 @@ for everyone and watch, how many people go through that list and what is their o
                 "Geolist was successfully added."
             ],
             "data": {
-                "id": 3,
+                "id": "29aada7e-e258-4931-aa06-08d63e4cb799",
                 "name": "The third list",
                 "description": "It is the third list",
-                "isPublic": false,
-                "rating": 0.0,
-                "periodFrom": "0001-01-01T00:00:00",
-                "periodTo": "0001-01-01T00:00:00",
-                "ownerId": null,
-                "owner": null,
-                "reviews": null,
-                "geoPoints": null,
-                "usersLists": null
+                "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                "created": "2018-10-30T09:48:08.7829466Z",
+                "edited": "0001-01-01T00:00:00",
+                "isPublic": true
             }
         }
 
@@ -115,12 +214,9 @@ for everyone and watch, how many people go through that list and what is their o
 + Request Edit an existing geolist (application/json)
 
         {
-            "Id": 2,
             "Name": "The second list",
             "Description": "It is still the second list, but edited",
-            "IsPublic": true,
-            "PeriodFrom": "0001-01-01T00:00:00",
-            "PeriodTo": "0001-01-01T00:00:00",
+            "IsPublic": true
         }
         
 + Response 200 (application/json)
@@ -131,18 +227,13 @@ for everyone and watch, how many people go through that list and what is their o
                 "Geolist was successfully edited."
             ],
             "data": {
-                "id": 2,
-                "name": "The second list",
-                "description": "It is still the second list, but edited",
-                "isPublic": true,
-                "rating": 0.0,
-                "periodFrom": "0001-01-01T00:00:00",
-                "periodTo": "0001-01-01T00:00:00",
-                "ownerId": null,
-                "owner": null,
-                "reviews": null,
-                "geoPoints": null,
-                "usersLists": null
+                "id": "81fa0020-79b4-4eca-2cbb-08d63e41e787",
+                "name": "2323",
+                "description": "23423452",
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T08:30:09.7331955",
+                "edited": "2018-10-30T11:51:04.9346295Z",
+                "isPublic": true
             }
         }
 
@@ -156,9 +247,13 @@ for everyone and watch, how many people go through that list and what is their o
         {
             "success": true,
             "messages": [
-                "Geolists with Id-s = [3,4] was removed"
+                "There are no geolist with given geolistId = [b4eced40-6768-4901-aa09-08d63e4cb799]",
+                "Given geolistId = [142352612362] is not valid",
+                "Given geolistId = [dfhe4524y] is not valid",
+                "There are no geolist with given geolistId = [81fa0020-79b4-4eca-2cbb-08d63e41e787]",
+                "Geolist with Id = [17c13605-e914-4d87-e5a9-08d63e636a9d] was successfully removed."
             ],
-            "data": "3,4"
+            "data": null
         }
 
 ### Remove an certain geolist [DELETE /api/geolist/{Id}]
@@ -171,22 +266,9 @@ for everyone and watch, how many people go through that list and what is their o
         {
             "success": true,
             "messages": [
-                "Geolist was successfully removed."
+                "Geolist with Id = [81fa0020-79b4-4eca-2cbb-08d63e41e787] was successfully removed."
             ],
-            "data": {
-                "id": 3,
-                "name": "The third list",
-                "description": "It is the third list",
-                "isPublic": false,
-                "rating": 0.0,
-                "periodFrom": "0001-01-01T00:00:00",
-                "periodTo": "0001-01-01T00:00:00",
-                "ownerId": null,
-                "owner": null,
-                "reviews": null,
-                "geoPoints": null,
-                "usersLists": null
-            }
+            "data": null
         }
         
 ## Geopoints collection [/api/geolist/{ListId}/geopoint]
@@ -476,8 +558,24 @@ for everyone and watch, how many people go through that list and what is their o
                 "lastpaid": "0001-01-01 00:00:00.0000000",
                 "isactivated": false,
                 "identityid": "b057c129-f266-40dd-94d3-aa558024c14d"
+                "avatar" : "veryverylongstringthatrepresentstheusersavatar"
             }
         }
+
+### Get username and avatar [GET /account/account/short]
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "messages": [
+                "The following user was found"
+            ],
+            "data": {
+                "username": "username",
+                "avatar": "veryverylongstringthatrepresentstheusersavatar"
+            }
+        }
+
 
 ### Edit profile[PUT /account/profile]
 
@@ -495,7 +593,9 @@ for everyone and watch, how many people go through that list and what is their o
                 "accounttype": "regular",
                 "lastpaid": "0001-01-01 00:00:00.0000000",
                 "isactivated": false,
-                "identityid": "b057c129-f266-40dd-94d3-aa558024c14d"
+                "identityid": "b057c129-f266-40dd-94d3-aa558024c14d", 
+                "avatar" : "veryverylongstringthatrepresentstheusersavatar"
+                
         }
         
 + Response 200 (application/json)
@@ -512,6 +612,7 @@ for everyone and watch, how many people go through that list and what is their o
                 "lastpaid": "2018-01-01 00:00:00.0000000",
                 "isactivated": false,
                 "identityid": "b057c129-f266-40dd-94d3-aa558024c14d"
+                "avatar" : "veryverylongstringthatrepresentstheusersavatar"
         }
 
 ### Confirm email [GET /account/confirm-email?{UserId}&{Token}]
@@ -530,15 +631,12 @@ for everyone and watch, how many people go through that list and what is their o
             "data": []
         }
         
-### Confirm password reset [POST /account/confirm-reset?{UserId}&{Token}]
+### Confirm password reset [POST /account/confirm-reset?{UserId}&{Token}&{NewPassword}]
 
 + Parameters
     + UserId (string) - Identity id of user
     + Token (string) - Token got by user to confirm his email
-
-+ Request
-
-            "newPassword"
+    + NewPassword (string) - New password
 
 + Response 200 (application/json)
 

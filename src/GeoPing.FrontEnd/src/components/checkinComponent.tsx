@@ -9,6 +9,7 @@ import { defaultMarker } from '../constants/defaultMarker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CongratulationsModalComponent } from './modalComponents/congratulationsModalComponent';
 import IHistoryDataDTO from '../DTO/historyDataDTO';
+import { Card } from 'reactstrap';
 
 export class CheckinComponent extends React.Component<ICheckinComponentProps, any> {
   openModal = () => {
@@ -152,7 +153,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         </FormGroup>
         <FormGroup>
           <ControlLabel>Select Point</ControlLabel>
-          <Panel
+          <Card
             className="check-in-select-point-container"
           >
             <Table>
@@ -189,7 +190,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
               }
               </tbody>
             </Table>
-          </Panel>
+          </Card>
         </FormGroup>
         <div
           className="check-in-buttons-container"
