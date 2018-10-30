@@ -426,10 +426,12 @@ header nav {
   grid-column-end: col3;
   grid-row-start: row3;
   grid-row-end: row4;
+  display: flex;
+  flex-direction: column;
 }
 
 .block-accepted, .block-new {
-  height: 50%;
+  flex: 1;
 }
 
 .block-accepted span, .block-new span {

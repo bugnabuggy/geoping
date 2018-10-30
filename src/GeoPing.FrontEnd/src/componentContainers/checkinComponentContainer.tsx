@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 import ICheckinComponentContainerProps from '../componentContainerProps/checkinComponentContainerProps';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckinComponent } from '../components/checkinComponent';
-import { checkinFlag, loadLists, loadPoints, selectList } from '../actions/checkinAction';
+import { checkInClear, checkinFlag, loadLists, loadPoints, selectList } from '../actions/checkinAction';
 import { ICheckinFunctions } from '../componentProps/checkinComponentProps';
 import { getMyAddress, selectPoint } from '../actions/googleMapAction';
 import { saveHistory } from '../actions/historyAction';
 
 class CheckinComponentContainer extends React.Component<ICheckinComponentContainerProps, any> {
   componentDidMount() {
-    // this.props.findLocationForCenterMap();
     this.props.loadLists( 'gggf5df-fj8y5dg-df54sdfg-f4d5' );
     if ( !this.props.checkin.isCheckIn ) {
       this.props.checkinFlag( true );
@@ -20,7 +19,8 @@ class CheckinComponentContainer extends React.Component<ICheckinComponentContain
   }
 
   componentWillUnmount() {
-    this.props.checkinFlag( false );
+    // this.props.checkinFlag( false );
+    this.props.checkInClear();
   }
 
   render() {
@@ -62,7 +62,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       selectPoint,
       getMyAddress,
       saveHistory,
-      // findLocationForCenterMap,
+      checkInClear,
     },
     dispath );
 

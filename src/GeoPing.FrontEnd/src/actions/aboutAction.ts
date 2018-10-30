@@ -14,11 +14,7 @@ export const useTestPeriod = ( email: string, password: string ) => ( dispatch: 
   StaticStorage.serviceLocator = environments.get( buildEnvironment );
 
   const authorizationService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
-  authorizationService.getVirtualDatabase()
-    .then( ( response: any ) => {
-      sessionStorage.setItem( 'localDB', response );
-      return authorizationService.signin( email, password );
-    } )
+  authorizationService.signin( email, password )
     .then( ( response: any ) => {
       localStorage.setItem( 'token', response );
       dispatch( useTestPeriodAction( true ) );
@@ -26,17 +22,6 @@ export const useTestPeriod = ( email: string, password: string ) => ( dispatch: 
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-    } );
-};
-
-export const getVirtualDatabase = () => ( dispatch: IDispatchFunction ) => {
-  const authorizationService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
-  authorizationService.getVirtualDatabase()
-    .then( ( response: any ) => {
-      sessionStorage.setItem( 'localDB', response );
-    } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
     } );
 };
 
