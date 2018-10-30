@@ -16,7 +16,7 @@ class LoginComponent extends React.Component<ILoginComponentProps, any> {
   }
 
   componentDidMount() {
-    this._callback(this.props.redirectDaschboard);
+    this._callback( this.props.redirectDashboard, this.props.windowBlocking );
   }
 
   render() {
@@ -25,6 +25,7 @@ class LoginComponent extends React.Component<ILoginComponentProps, any> {
         <LoginReduxForm
           onSubmit={this.submit}
           googleAuthInit={this.googleAuthInit}
+          windowBlocking={this.props.windowBlocking}
         />
       </div>
     );

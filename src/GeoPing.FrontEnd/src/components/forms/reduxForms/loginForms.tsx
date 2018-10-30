@@ -11,7 +11,7 @@ const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 const _window: any = window;
 const gapi: any = _window.gapi;
 
-function googleAuthorizeInit( redirect: ( isRedirect: boolean ) => void ) {
+function googleAuthorizeInit( redirect: ( isRedirect: boolean ) => void, blocking: ( isBlocking: boolean ) => void ) {
   gapi.load( 'auth2', () => {
     const element: any = document.getElementById( 'customBtn' );
     gapi.auth2.init( {
@@ -28,6 +28,7 @@ function googleAuthorizeInit( redirect: ( isRedirect: boolean ) => void ) {
           localStorage.setItem( 'token', googleUser.Zi.access_token );
           localStorage.setItem( 'token_type', googleUser.Zi.token_type );
           redirect( true );
+          blocking( false );
         },
         ( error: any ) => {
           console.info( 'error', error );
@@ -95,7 +96,13 @@ function LoginForms( props: any ): any {
           Submit
         </Button>
       </form>
-      <div id="customBtn" className="google-button cursor-pointer">
+      <div
+        id="customBtn"
+        className="google-button cursor-pointer"
+        onClick={() => {
+          props.windowBlocking( true );
+        }}
+      >
         <img className="google-button-img" src="/assets/images/google-button.png"/>
       </div>
     </div>
