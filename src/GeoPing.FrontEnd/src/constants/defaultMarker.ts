@@ -8,4 +8,5 @@ export const defaultMarker: IGeoPoint = {
   lng: 0,
   radius: 0,
   description: '',
+  idForMap: '',
 };
