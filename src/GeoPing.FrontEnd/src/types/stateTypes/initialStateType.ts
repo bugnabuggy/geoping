@@ -8,13 +8,13 @@ import ICheckListStateType from './checkListStateType';
 import ICheckinStatisticsStateType from './checkinStatisticsStateType';
 import ICheckinStateType from './checkinStateType';
 import IAllUsersStateType from './allUsersFilterStateType';
-import IModalStateType from './modalStateType';
 import IPublicCheckListType from './publicCheckListType';
 import INotificationStateType from './notificationStateType';
 import IAllUsersTableStateType from './allUsersTableStateType';
 import IinvitationsStateType from './invitationsStateType';
 import IMyCheckListsStateType from './myCheckListsStateType';
 import ISharedCheckListStateType from './sharedCheckListStateType';
+import IWindowStateType from './windowStateType';
 
 export default interface IinitialStateType {
   allUsersFilter: IAllUsersStateType;
@@ -30,9 +30,9 @@ export default interface IinitialStateType {
   header: IHeaderStateType;
   tableHistory: ITableHistoryStateType;
   googleMap: IGoogleMapStateType;
-  // modal: IModalStateType;
   publicCheckList: IPublicCheckListType;
   notifications: INotificationStateType;
   invitations: IinvitationsStateType;
   router: any;
+  window: IWindowStateType;
 }

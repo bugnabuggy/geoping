@@ -10,6 +10,7 @@ import IMyCheckListsContainerProps from '../componentContainerProps/myCheckLists
 import { filterCheckLists, openModalForCreateCheckList } from '../actions/checkListAction';
 import { clearStateMyCheckLists, deleteCheckList, loadCheckLists, showModalShare } from '../actions/myCheckListsAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
+import { Card, CardBody } from 'reactstrap';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {
 
@@ -56,9 +57,9 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
             <FontAwesomeIcon icon="filter"/>
           </div>
         </div>
-        <Panel>
+        <Card>
           <div className="dashboard-check-list-panel-body">
-            <Panel.Body>
+            <CardBody>
 
               {this.props.myCheckList.isLoading ?
                 (
@@ -82,9 +83,9 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
                     </React.Fragment>
                   )
               }
-            </Panel.Body>
+            </CardBody>
           </div>
-        </Panel>
+        </Card>
       </React.Fragment>
     );
   }

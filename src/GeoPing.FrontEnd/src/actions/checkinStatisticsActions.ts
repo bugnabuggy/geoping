@@ -1,5 +1,6 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
+  STATISTICS_CLEAR,
   STATISTICS_LOAD_LISTS,
   STATISTICS_LOAD_POINTS,
   STATISTICS_LOAD_USERS
@@ -51,6 +52,10 @@ export const loadPoints = ( idList: string, idUser: string ) => ( dispatch: IDis
     } );
 };
 
+export const checkInStatisticsClear = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( checkInStatisticsClearAction() );
+};
+
 /* Actions*/
 
 function loadListsAction( lists: any ): Object {
@@ -63,4 +68,8 @@ function loadUsersAction( users: any ): Object {
 
 function loadPointsAction( points: any ): Object {
   return { type: STATISTICS_LOAD_POINTS, points };
+}
+
+function checkInStatisticsClearAction(): { type: string } {
+  return { type: STATISTICS_CLEAR };
 }

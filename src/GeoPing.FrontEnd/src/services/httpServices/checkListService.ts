@@ -18,7 +18,7 @@ export default class CheckListService implements ICheckListServiceType {
   }
 
   createMyCheckList( nameCheckList: string ) {
-    return this.communicator.post( createNewGeoList, { nameCheckList } );
+    return this.communicator.post( createNewGeoList, { Name: nameCheckList } );
   }
 
   deleteMyCheckList( idCheckLIst: string ) {

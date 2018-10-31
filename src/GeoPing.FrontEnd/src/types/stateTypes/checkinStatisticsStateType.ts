@@ -10,4 +10,5 @@ export default interface ICheckinStatisticsStateType {
   selectList: Array<ICheckListStateType>;
   selectUser: Array<IUserStateType>;
   selectPeriod: ISelectPeriod;
+  isCheckInStatistics: boolean;
 }

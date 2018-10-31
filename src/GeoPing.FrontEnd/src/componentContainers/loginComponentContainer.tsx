@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux';
 
 import ILoginComponentContainerProps from '../componentContainerProps/loginComponentContainerProps';
 import LoginComponent from '../components/forms/login';
-import { authorizationUser, authorizationUserFlag, redirectDaschboard, signOutUser } from '../actions/userAction';
+import { authorizationUser, authorizationUserFlag, redirectDashboard, signOutUser } from '../actions/userAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
+import { windowBlocking } from '../actions/windowAction';
 
 class LoginComponentContainer extends React.Component<ILoginComponentContainerProps, any> {
 
@@ -20,9 +21,9 @@ class LoginComponentContainer extends React.Component<ILoginComponentContainerPr
           authorizationUser={this.props.authorizationUser}
           signOutUser={this.props.signOutUser}
           authorizationUserFlag={this.props.authorizationUserFlag}
-          redirectDaschboard={this.props.redirectDaschboard}
+          redirectDashboard={this.props.redirectDashboard}
+          windowBlocking={this.props.windowBlocking}
         />
-
       </React.Fragment>
     );
   }
@@ -41,7 +42,8 @@ const mapDispatchToProps = ( dispath: any ) =>
       authorizationUser,
       signOutUser,
       authorizationUserFlag,
-      redirectDaschboard,
+      redirectDashboard,
+      windowBlocking,
     },
     dispath );
 

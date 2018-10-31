@@ -3,12 +3,14 @@ import { IGoogleMapStateType } from '../../types/stateTypes/googleMapStateType';
 import IGeoPoint from '../../DTO/geoPointDTO';
 import { EnumStatusMarker } from '../../enums/statusMarker';
 import ICheckListStateType from '../../types/stateTypes/checkListStateType';
+import ICheckinStatisticsStateType from '../../types/stateTypes/checkinStatisticsStateType';
 
 export default interface IGoogleMapComponentContainerProps {
   isCheckIn: boolean;
   checkList: ICheckListStateType;
   selectedListId: string;
   googleMap: IGoogleMapStateType;
+  checkInStatistics: ICheckinStatisticsStateType;
 
   selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   addNewPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;

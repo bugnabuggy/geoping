@@ -9,13 +9,13 @@ import { userState } from './userState';
 import { headerState } from './headerState';
 import { googleMapState } from './googleMapState';
 import { tableHistoryState } from './tableHistoryState';
-// import { modalState } from './modalState';
 import { publicCheckListState } from './publickCheckListState';
 import { notificationState } from './notificationsState';
 import { allUsersTableState } from './allUsersTableState';
 import { myCheckList } from './myCheckListState';
 import { invitationsState } from './invitationsState';
 import { sharedCheckList } from './sharedCheckListState';
+import { windowState } from './windowState';
 
 const initialState: IinitialStateType = {
   allUsersFilter: allUsersFilterState,
@@ -31,11 +31,11 @@ const initialState: IinitialStateType = {
   header: headerState,
   tableHistory: tableHistoryState,
   googleMap: googleMapState,
-  // modal: modalState,
   publicCheckList: publicCheckListState,
   notifications: notificationState,
   invitations: invitationsState,
   router: {},
+  window: windowState,
 };
 
 export default initialState;

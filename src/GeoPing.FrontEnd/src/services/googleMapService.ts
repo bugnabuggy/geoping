@@ -74,12 +74,12 @@ export function getDistance() {
 export function setCoordinatesForUserMarker( coordinates: any ) {
   if ( idUserMarker ) {
     const marker: any = findGeoPoint( idUserMarker );
-    if (marker) {
+    if ( marker ) {
       const latLng: any = {
         lat: coordinates.lat,
         lng: coordinates.lng,
       };
-      setPosition(marker, latLng);
+      setPosition( marker, latLng );
     }
   }
 }
@@ -140,7 +140,11 @@ function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   const marker: any = findGeoPoint( geoPoint.id );
   if ( marker ) {
     marker.setIcon( createMarkerImage( iconSelectedGeoPointUrl ) );
-    marker.setDraggable( !_that.props.isCheckIn );
+    if ( !_that.props.isCheckIn && !_that.props.checkInStatistics.isCheckInStatistics ) {
+      marker.setDraggable( true );
+    } else {
+      marker.setDraggable( false );
+    }
   }
 }
 
@@ -189,7 +193,7 @@ function deleteGeoPoint( idGeoPoint: string ) {
 
 function deleteAllGeoPoint() {
   _markers = _markers.filter( ( marker: any ) => {
-    if (marker.id !== idUserMarker) {
+    if ( marker.id !== idUserMarker ) {
       marker.setMap( null );
     } else {
       return marker;
@@ -219,6 +223,9 @@ function handleMapListener( event: any ) {
 function handleGeoPointClick( e: any, geoPoint: IGeoPoint ) {
   if ( _that.props.googleMap.selectedGeoPoint.id !== geoPoint.id ) {
     _that.props.selectPoint( geoPoint );
+    // if ( _that.props.isCheckIn ) {
+    //   _that.props.editingPermission( false );
+    // }
   }
 }
 
@@ -258,7 +265,7 @@ export function settingPointsByCoordinates( geoPoints: Array<IGeoPoint> ) {
         lng: geoPoint.lng,
       };
       // marker.setPosition( latLng );
-      setPosition(marker, latLng);
+      setPosition( marker, latLng );
     }
   } );
 }
@@ -296,7 +303,7 @@ function findGeoPoint( idGeoPoint: string ) {
   return _markers.find( item => item.id === idGeoPoint );
 }
 
-function setPosition(marker: any, coordinates: { lat: string, lng: string }) {
+function setPosition( marker: any, coordinates: { lat: string, lng: string } ) {
   const latLng: any = {
     ...coordinates,
   };

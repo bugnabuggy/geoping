@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import Routes from './routesComponent';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
-import { authorizationUserFlag, redirectDaschboard } from '../actions/userAction';
+import { authorizationUserFlag, redirectDashboard } from '../actions/userAction';
 import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
 import { dashboardUrl } from '../constants/routes';
+import WindowBlockingComponent from '../components/windowBlockingComponent';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   authorized = () => {
@@ -41,6 +42,9 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   render() {
     return (
       <React.Fragment>
+        <WindowBlockingComponent
+          isBlocking={this.props.window.isBlockingWindow}
+        />
         <Routes
           authorized={!!localStorage.getItem( 'token' )}
           roleUser={this.props.user.roleUser}
@@ -58,6 +62,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     location: state.router.location.pathname,
     user: state.user,
+    window: state.window,
   };
 };
 
@@ -65,7 +70,7 @@ const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
       authorizationUserFlag,
-      redirectDaschboard,
+      redirectDashboard,
     },
     dispath );
 
