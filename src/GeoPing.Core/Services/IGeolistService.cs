@@ -23,5 +23,7 @@ namespace GeoPing.Core.Services
         WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems);
         WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems);
         WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems);
+
+        bool IsListExistWithThisId(string Id, out GeoList list);
     }
 }

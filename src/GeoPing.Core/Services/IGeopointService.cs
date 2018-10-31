@@ -12,7 +12,10 @@ namespace GeoPing.Core.Services
     public interface IGeopointService : IDataService<GeoPoint>
     {
         WebResult<IQueryable<GeoPoint>> GetByFilter(Guid listId, GeopointFilterDTO filter, out int totalItems);
+
         OperationResult Delete(string ids);
+
+        bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point);
 
         //OperationResult CheckPoint(GeoPoint point, string userId);
     }

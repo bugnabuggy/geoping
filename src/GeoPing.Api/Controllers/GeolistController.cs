@@ -83,7 +83,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult GetList(string id)
         {
-            if (IsListExistWithThisId(id, out GeoList result))
+            if (_geolistSrv.IsListExistWithThisId(id, out GeoList result))
             {
                 return Ok(result);
             }
@@ -119,7 +119,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult EditList(string id, [FromBody]GeolistDTO item)
         {
-            var isListExist = IsListExistWithThisId(id, out GeoList list);
+            var isListExist = _geolistSrv.IsListExistWithThisId(id, out GeoList list);
 
             if (!isListExist)
             {
@@ -161,7 +161,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult RemoveList(string id)
         {
-            var isListExist = IsListExistWithThisId(id, out GeoList list);
+            var isListExist = _geolistSrv.IsListExistWithThisId(id, out GeoList list);
 
             if (!isListExist)
             {
@@ -175,24 +175,6 @@ namespace GeoPing.Api.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
-        }
-
-        private bool IsListExistWithThisId(string Id, out GeoList list)
-        {
-            var isListId = Guid.TryParse(Id, out Guid listId);
-            list = null;
-            if (!isListId)
-            {
-                return false;
-            }
-
-            list = _geolistSrv.Get(x => x.Id == listId).FirstOrDefault();
-            if (list == null)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

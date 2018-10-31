@@ -167,5 +167,23 @@ namespace GeoPing.Services
                 Messages = messages.AsEnumerable()
             };
         }
+
+        public bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point)
+        {
+            var isPointId = Guid.TryParse(Id, out Guid pointId);
+            point = null;
+            if (!isPointId)
+            {
+                return false;
+            }
+
+            point = Get(x => x.ListId == ListId && x.Id == pointId).FirstOrDefault();
+            if (point == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

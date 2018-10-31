@@ -251,6 +251,24 @@ var messages = new List<string>();
             };
         }
 
+        public bool IsListExistWithThisId(string Id, out GeoList list)
+        {
+            var isListId = Guid.TryParse(Id, out Guid listId);
+            list = null;
+            if (!isListId)
+            {
+                return false;
+            }
+
+            list = Get(x => x.Id == listId).FirstOrDefault();
+            if (list == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
         {
             data = FilterListsByCommonFilter(data, filter);
