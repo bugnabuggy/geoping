@@ -130,7 +130,6 @@ namespace GeoPing.Services.Tests
             Assert.That(_editList.Name, Is.EqualTo(data.Name));
         }
         */
-        /*
         [Test]
         public void Should_remove_a_list()
         {
@@ -141,13 +140,13 @@ namespace GeoPing.Services.Tests
 
             var testList = sut.Get(x => x.Id == _listId1).FirstOrDefault();
 
-            var result = sut.Delete(testList);
+            var result = sut.Delete(_gpUserId1, testList);
 
             Assert.That(result.Success);
 
             var data = _geolistRepo.Data.Where(x => x.Id == _listId1).FirstOrDefault();
 
             Assert.That(data == null);
-        }*/
+        }
     }
 }
