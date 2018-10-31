@@ -1,15 +1,20 @@
+import IGeoListType, { IGeoListPublickDTO } from '../../DTO/geoListDTO';
+
 export default interface ICheckListStateType {
   isShowModal: boolean;
-  id: string;
-  name: string;
+  // id: string;
+  // name: string;
   isEditing: boolean;
   showFilterCheckList: boolean;
   isMyGeoPosition: boolean;
-  description: string;
-  isPublic: boolean;
-  rating: number;
-  periodFrom: string;
-  periodTo: string;
-  ownerId: string;
+  // description: string;
+  // isPublic: boolean;
+  // rating: number;
+  // periodFrom: string;
+  // periodTo: string;
+  // ownerId: string;
   isGeoPointLoading: boolean;
+  selectedGeoList: IGeoListType;
+  checkLists: Array<IGeoListType>;
+  checkListPublic: Array<IGeoListPublickDTO>;
 }

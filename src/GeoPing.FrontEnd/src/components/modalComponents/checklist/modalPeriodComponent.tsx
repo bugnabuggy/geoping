@@ -43,7 +43,7 @@ export class ModalPeriodComponent extends React.Component<IModalPeriodComponentP
       <React.Fragment>
         <ModalComponent
           title="Set up period"
-          show={this.props.isShowModal}
+          show={this.props.checkList.isShowModal}
           close={this.handleCloseModal}
         >
           <FormGroup>

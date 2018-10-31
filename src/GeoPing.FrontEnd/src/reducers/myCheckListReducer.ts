@@ -1,6 +1,7 @@
 import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
 import {
   CLEAR_STATE_MY_CHECK_LIST,
+  CREATE_CHECK_LIST,
   DELETE_MY_CHECK_LISTS,
   LOAD_MY_CHECK_LISTS,
   MY_CHECK_LIST_LOADING
@@ -14,10 +15,11 @@ export default function myCheckListReducer( state: IMyCheckListsStateType = myCh
     [ SHOW_MODAL_SHARE ]: showModalShare,
     [ CLOSE_MODAL_SHARE ]: closeModalShare,
     [ LOAD_MY_CHECK_LISTS ]: loadMyCheckLists,
-    [ DELETE_MY_CHECK_LISTS ]: deleteMyCheckList,
+    // [ DELETE_MY_CHECK_LISTS ]: deleteMyCheckList,
     [ CLEAR_STATE_MY_CHECK_LIST ]: clearStateMyCheckList,
     [ PROVIDE_PUBLIC_ACCESS ]: providePublicAccess,
     [ MY_CHECK_LIST_LOADING ]: loading,
+    [ CREATE_CHECK_LIST ]: createCheckList,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -46,12 +48,12 @@ function loadMyCheckLists( state: IMyCheckListsStateType, action: any ): IMyChec
   };
 }
 
-function deleteMyCheckList( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
-  return {
-    ...state,
-    checkLists: state.checkLists.filter( ( item: any ) => item.id !== action.checkListId )
-  };
-}
+// function deleteMyCheckList( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
+//   return {
+//     ...state,
+//     checkLists: state.checkLists.filter( ( item: any ) => item.id !== action.checkListId )
+//   };
+// }
 
 function clearStateMyCheckList( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
   return {
@@ -80,5 +82,12 @@ function loading( state: IMyCheckListsStateType, action: any ): IMyCheckListsSta
   return {
     ...state,
     isLoading: action.loading,
+  };
+}
+
+function createCheckList( state: IMyCheckListsStateType, action: any ): IMyCheckListsStateType {
+  return {
+    ...state,
+    isRedirect: true,
   };
 }

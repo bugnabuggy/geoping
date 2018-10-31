@@ -6,7 +6,7 @@ export function createNotification( message: string, notificationType: EnumNotif
   const newNotification: INotificationType = {
     message,
     type: notificationType,
-    id: uuidV4 (),
+    id: uuidV4(),
   };
   return newNotification;
 }
@@ -29,4 +29,17 @@ export function sortDesc( itemOne: any, itemTwo: any ) {
   }
 
   return 1;
+}
+
+export function getDataFromResponse( response: any ) {
+  if ( response.hasOwnProperty( 'data' ) ) {
+    const data: any = response.data;
+    if ( data.hasOwnProperty( 'data' ) ) {
+      return data.data;
+    } else {
+      return data;
+    }
+  } else {
+    return response;
+  }
 }

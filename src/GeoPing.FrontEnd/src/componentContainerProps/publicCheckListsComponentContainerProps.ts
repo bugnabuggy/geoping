@@ -1,8 +1,8 @@
-import IPublicCheckListItemProps from '../componentProps/publicCheckListItemProps';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import { IGeoListPublickDTO } from '../DTO/geoListDTO';
 
 export default interface IPublicCheckListsComponentContainerProps {
-  publicListItem: Array<IPublicCheckListItemProps>;
+  publicListItem: Array<IGeoListPublickDTO>;
   countPages: number;
   actionPage: number;
 

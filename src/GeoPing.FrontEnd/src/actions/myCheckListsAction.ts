@@ -11,12 +11,13 @@ import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import IGeoListType from '../DTO/geoListDTO';
 
-export const loadCheckLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
+export const loadCheckLists = () => ( dispatch: IDispatchFunction ) => {
   dispatch( loadingAction( true ) );
   const checkListService: any = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.loadAllMyCheckLists( idUser )
-    .then( ( checkLists: any ) => {
+  checkListService.loadAllMyCheckLists()
+    .then( ( checkLists: Array<IGeoListType> ) => {
       dispatch( loadCheckListsAction( checkLists ) );
       dispatch( loadingAction( false ) );
     } )
@@ -30,9 +31,11 @@ export const deleteCheckList = ( idCheckList: string ) => ( dispatch: IDispatchF
   const checkListService: any = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.deleteMyCheckList( idCheckList )
     .then( ( checkLists: any ) => {
-      if ( checkLists ) {
-        dispatch( deleteCheckListAction( idCheckList ) );
-      }
+      dispatch( addNotificationAction( createNotification(
+        'Geolist was successfully removed',
+        EnumNotificationType.Success
+      ) ) );
+      dispatch( deleteCheckListAction( idCheckList ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
@@ -60,7 +63,7 @@ function closeModalShareAction( isShow: boolean ): Object {
   return { type: CLOSE_MODAL_SHARE, isShow };
 }
 
-function loadCheckListsAction( checklists: Array<any> ): Object {
+function loadCheckListsAction( checklists: Array<IGeoListType> ): Object {
   return { type: LOAD_MY_CHECK_LISTS, checklists };
 }
 

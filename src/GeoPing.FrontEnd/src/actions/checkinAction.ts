@@ -24,10 +24,10 @@ export const checkin = () => ( dispatch: IDispatchFunction ) => {
 };
 
 /* load */
-export const loadLists = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
+export const loadLists = () => ( dispatch: IDispatchFunction ) => {
   dispatch( loadingCheckLists( true ) );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.loadAllMyCheckLists( idUser )
+  checkListService.loadAllMyCheckLists()
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
       dispatch( loadingCheckLists( false ) );
