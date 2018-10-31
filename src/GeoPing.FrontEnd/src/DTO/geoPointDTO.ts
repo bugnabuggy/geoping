@@ -6,4 +6,14 @@ export default interface IGeoPoint {
   lng: number;
   radius: number;
   description: string;
+  idForMap: string;
+}
+
+export interface IGeoPintForCreateDTO {
+  Name: string;
+  Description: string;
+  Longitude: number;
+  Latitude: number;
+  Radius: number;
+  Address: string;
 }

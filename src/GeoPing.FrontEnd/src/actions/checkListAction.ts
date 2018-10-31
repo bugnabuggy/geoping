@@ -34,13 +34,14 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
       getLocationAddress( location.coords.latitude, location.coords.longitude )
         .then( ( response: any ) => {
           const marker: IGeoPoint = {
-            id: uuidV4(),
+            id: '',
             idList: '',
             name: '',
             radius: 0,
             description: response.data.results[ 0 ].formatted_address,
             lat: Number( location.coords.latitude ),
             lng: Number( location.coords.longitude ),
+            idForMap: uuidV4(),
           };
 
           // dispatch( addPointAction( marker ) );
@@ -125,7 +126,7 @@ export const addNewPointForMyGeoPosition = ( isMyGeoPosition: boolean ) => ( dis
   dispatch( addNewPointForMyGeoPositionAction( isMyGeoPosition ) );
 };
 
-export const loadCheckListData = ( idUser: string, idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
+export const loadCheckListData = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
 

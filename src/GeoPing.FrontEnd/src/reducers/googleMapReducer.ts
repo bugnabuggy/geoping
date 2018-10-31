@@ -62,7 +62,7 @@ function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
 function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: state.geoPoints.filter( geoPoint => geoPoint.id !== action.idPoint ),
+    geoPoints: state.geoPoints.filter( geoPoint => geoPoint.idForMap !== action.idPoint ),
     idDeleteMarker: action.idPoint,
   };
 }
