@@ -8,5 +8,6 @@ namespace GeoPing.Core.Models.DTO
     public class GeopointFilterDTO : StandartFilterDTO
     {
         public string NameContains { get; set; }
+        public string OnAddress { get; set; }
     }
 }

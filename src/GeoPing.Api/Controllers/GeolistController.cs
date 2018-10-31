@@ -93,7 +93,7 @@ namespace GeoPing.Api.Controllers
 
         // POST api/geolist/
         [HttpPost]
-        public IActionResult AddList([FromBody]GeolistToManipDTO item)
+        public IActionResult AddList([FromBody]GeolistDTO item)
         {
             var list = new GeoList()
             {
@@ -117,7 +117,7 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(string id, [FromBody]GeolistToManipDTO item)
+        public IActionResult EditList(string id, [FromBody]GeolistDTO item)
         {
             var isListExist = IsListExistWithThisId(id, out GeoList list);
 

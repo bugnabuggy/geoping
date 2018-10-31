@@ -213,44 +213,42 @@ namespace GeoPing.Services
             var ids = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                             .ToArray();
 
-            var messages = new List<string>();
-
-            if (ids != null)
+            if (ids == null)
             {
-                var temp = new OperationResult();
-                foreach (var id in ids)
-                {
-                    var isListId = Guid.TryParse(id, out Guid listId);
-
-                    if (!isListId)
-                    {
-                        messages.Add($"Given geolistId = [{id}] is not valid");
-                        continue;
-                    }
-
-                    var list = Get(x => x.Id == listId).FirstOrDefault();
-
-                    if (list == null)
-                    {
-                        messages.Add($"There are no geolist with given geolistId = [{id}]");
-                        continue;
-                    }
-
-                    messages.AddRange(Delete(userId, list).Messages);
-                }
-
                 return new OperationResult()
                 {
-                    Success = true,
-                    Messages = messages.AsEnumerable()
+                    Messages = new[] { "There are no given valid geolist Id" }
                 };
+            }
+
+var messages = new List<string>();
+
+            foreach (var id in ids)
+            {
+                var isListId = Guid.TryParse(id, out Guid listId);
+
+                if (!isListId)
+                {
+                    messages.Add($"Given geolistId = [{id}] is not valid");
+                    continue;
+                }
+
+                var list = Get(x => x.Id == listId).FirstOrDefault();
+
+                if (list == null)
+                {
+                    messages.Add($"There are no geolist with given geolistId = [{id}]");
+                    continue;
+                }
+
+                messages.AddRange(Delete(userId, list).Messages);
             }
 
             return new OperationResult()
             {
-                Messages = new[] { "There are no given valid geolist Id" }
+                Success = true,
+                Messages = messages.AsEnumerable()
             };
-
         }
 
         private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
