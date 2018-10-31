@@ -28,7 +28,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
     e.stopPropagation();
     const newMarker: IGeoPoint = {
       ...this.props.googleMap.selectedGeoPoint,
-      idList: this.props.checkList.id,
+      idList: this.props.checkList.selectedGeoList.id,
     };
     this.props.saveGeoPoint( newMarker );
   };

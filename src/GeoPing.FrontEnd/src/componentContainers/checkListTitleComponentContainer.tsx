@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckListHeadComponent } from '../components/checkListHeadComponent';
 import ICheckListTitleComponentContainerProps from '../componentContainerProps/checkListTitleComponentContainerProps';
-import { modalPeriodOpenClose, updateNameCheckList } from '../actions/checkListAction';
+import { modalPeriodOpenClose, updateCheckList, updateNameCheckList } from '../actions/checkListAction';
 import { ModalPeriodComponent } from '../components/modalComponents/checklist/modalPeriodComponent';
 
 class CheckListTitleComponentContainer extends React.Component<ICheckListTitleComponentContainerProps, any> {
@@ -14,13 +14,14 @@ class CheckListTitleComponentContainer extends React.Component<ICheckListTitleCo
       <React.Fragment>
         <div className="check-list-head">
           <CheckListHeadComponent
-            nameChecklist={this.props.nameChecklist}
+            checkList={this.props.checkList}
 
             modalPeriodOpenClose={this.props.modalPeriodOpenClose}
             updateNameCheckList={this.props.updateNameCheckList}
+            updateCheckList={this.props.updateCheckList}
           />
           <ModalPeriodComponent
-            isShowModal={this.props.isShowModal}
+            checkList={this.props.checkList}
 
             modalPeriodOpenClose={this.props.modalPeriodOpenClose}
           />
@@ -32,8 +33,7 @@ class CheckListTitleComponentContainer extends React.Component<ICheckListTitleCo
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    nameChecklist: state.checkList.name,
-    isShowModal: state.checkList.isShowModal,
+    checkList: state.checkList,
   };
 };
 
@@ -42,6 +42,7 @@ const mapDispatchToProps = ( dispath: any ) =>
     {
       modalPeriodOpenClose,
       updateNameCheckList,
+      updateCheckList,
     },
     dispath );
 

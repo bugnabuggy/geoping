@@ -9,6 +9,8 @@ import { Card, CardBody } from 'reactstrap';
 export class CheckListComponent extends React.Component<ICheckListComponentProps, any> {
 
   handleShowModal = ( e: any ) => {
+    e.stopPropagation();
+    this.props.selectCheckList( this.props.checkList );
     this.props.showModalShare( this.props.checkList.id );
   };
 

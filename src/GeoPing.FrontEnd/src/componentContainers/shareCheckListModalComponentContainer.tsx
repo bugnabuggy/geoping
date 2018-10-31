@@ -8,9 +8,11 @@ import IShareCheckListModalComponentContainerProps
   from '../componentContainerProps/shareCheckListModalComponentContainerProps';
 import {
   clearSharedCheckList,
-  loadUsersForShared, providePublicAccess,
+  loadUsersForShared,
+  providePublicAccess,
   sendAccessUsersForCheckList
 } from '../actions/sharedCheckListAction';
+import { updateCheckList } from '../actions/checkListAction';
 
 class ShareCheckListModalComponentContainer extends React.Component<IShareCheckListModalComponentContainerProps, any> {
   render() {
@@ -19,12 +21,14 @@ class ShareCheckListModalComponentContainer extends React.Component<IShareCheckL
         <ShareCheckListModalComponent
           myCheckList={this.props.myCheckList}
           sharedCheckList={this.props.sharedCheckList}
+          checkList={this.props.checkList}
 
           closeModalShare={this.props.closeModalShare}
           loadUsersForShared={this.props.loadUsersForShared}
           clearSharedCheckList={this.props.clearSharedCheckList}
           sendAccessUsersForCheckList={this.props.sendAccessUsersForCheckList}
           providePublicAccess={this.props.providePublicAccess}
+          updateCheckList={this.props.updateCheckList}
         />
       )
       :
@@ -36,6 +40,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     myCheckList: state.myCheckList,
     sharedCheckList: state.sharedCheckList,
+    checkList: state.checkList,
   };
 };
 
@@ -47,6 +52,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       clearSharedCheckList,
       sendAccessUsersForCheckList,
       providePublicAccess,
+      updateCheckList,
     },
     dispath );
 

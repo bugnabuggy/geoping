@@ -22,16 +22,20 @@ export const loadPublicLists = () => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.loadPublicCheckLists()
     .then( ( response: any ) => {
-      dispatch( loadListsAction( [] ) );
+      dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      try {
+        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      } catch ( e ) {
+        dispatch( addNotificationAction( createNotification( 'Error loading lists', EnumNotificationType.Danger ) ) );
+      }
     } );
 };
 
 export const filterPublicCheckLists = ( filters: any ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.filterPublicCheckList(filters)
+  checkListService.filterPublicCheckList( filters )
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
     } )
@@ -49,6 +53,6 @@ function changePaginationAction( numberPage: string ): Object {
   return { type: PUBLIC_LIST_CHANGE_PAGINATION, numberPage };
 }
 
-function loadListsAction( list: any ): Object {
-  return { type: PUBLIC_LIST_LOAD_LISTS, list };
+function loadListsAction( lists: any ): Object {
+  return { type: PUBLIC_LIST_LOAD_LISTS, lists };
 }

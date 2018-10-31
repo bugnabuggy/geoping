@@ -20,7 +20,7 @@ export const selectList = () => ( dispatch: IDispatchFunction ) => {
 /* Load */
 export const loadLists = () => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.loadAllMyCheckLists( '' )
+  checkListService.loadAllMyCheckLists()
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
     } )

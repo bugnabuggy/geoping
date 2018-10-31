@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ICheckListHeadComponentProps from '../componentProps/checkListHeadComponentProps';
 import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { IGeoListForUpdateDTO } from '../DTO/geoListDTO';
 
 export class CheckListHeadComponent extends React.Component<ICheckListHeadComponentProps, any> {
   handleEdit = () => {
@@ -10,8 +11,14 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
     } );
   };
   blurEdit = ( e: any ) => {
-    if ( this.props.nameChecklist !== e.target.value ) {
-      this.props.updateNameCheckList( e.target.value );
+    if ( this.props.checkList.selectedGeoList.name !== e.target.value ) {
+      const checkList: IGeoListForUpdateDTO = {
+        Name: e.target.value,
+        Description: this.props.checkList.selectedGeoList.description,
+        IsPublic: true,
+      };
+
+      this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
     }
     this.setState( {
       isEdit: false,
@@ -44,11 +51,11 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
                 className="check-list-head-name-form-group"
               >
                 {!this.state.isEdit && <ControlLabel>
-                  <h3><p>{this.props.nameChecklist}</p></h3>
+                  <h3><p>{this.props.checkList.selectedGeoList.name}</p></h3>
                 </ControlLabel>}
                 {this.state.isEdit && <FormControl
                   name="name"
-                  defaultValue={this.props.nameChecklist}
+                  defaultValue={this.props.checkList.selectedGeoList.name}
                   onBlur={this.blurEdit}
                   autoFocus={this.state.isEdit}
                 />}

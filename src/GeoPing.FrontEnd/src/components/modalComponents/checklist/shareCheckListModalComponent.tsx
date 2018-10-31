@@ -5,30 +5,37 @@ import { ModalComponent } from './modalComponent';
 import { ShareUserToList } from '../../forms/shareUserToList';
 import { ModalShareCheckListTableComponent } from './modalShareCheckListTableComponent';
 import IShareCheckListModalComponentProps from '../../../componentProps/shareCheckListModalComponentProps';
+import { IGeoListForUpdateDTO } from '../../../DTO/geoListDTO';
 
 export class ShareCheckListModalComponent extends React.Component<IShareCheckListModalComponentProps, any> {
+  handleChange = ( e: any ) => {
+    // this.props.providePublicAccess(this.props.myCheckList.idCheckListShow, e.target.checked);
+    const checkList: IGeoListForUpdateDTO = {
+      IsPublic: e.target.checked,
+      Description: this.props.checkList.selectedGeoList.description,
+      Name: this.props.checkList.selectedGeoList.name,
+    };
+    this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
+  };
+  handleSubmit = ( e: any ) => {
+    this.props.sendAccessUsersForCheckList( this.props.myCheckList.idCheckListShow, e.users );
+  };
+
   constructor( props: any ) {
-    super ( props );
+    super( props );
   }
 
   componentDidMount() {
     this.props.loadUsersForShared( this.props.myCheckList.idCheckListShow );
   }
+
   componentWillUnmount() {
     this.props.clearSharedCheckList();
   }
 
-  handleChange = ( e: any ) => {
-    this.props.providePublicAccess(this.props.myCheckList.idCheckListShow, e.target.checked);
-  };
-
-  handleSubmit = ( e: any) => {
-    this.props.sendAccessUsersForCheckList( this.props.myCheckList.idCheckListShow, e.users );
-  };
-
   render() {
-    const checked: boolean = this.props.myCheckList.checkLists
-      .find( item => item.id === this.props.myCheckList.idCheckListShow).public;
+    const checked: boolean = this.props.checkList.selectedGeoList.isPublic;
+    // .find( item => item.id === this.props.myCheckList.idCheckListShow).public;
     return (
       <ModalComponent
         show={this.props.myCheckList.isShowModalShare}

@@ -16,7 +16,11 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
 
   handleDeletePoint = ( e: any ) => {
     e.stopPropagation();
-    this.props.deleteGeoPoint( this.props.geoPoint.id, this.props.googleMap.statusMarker, this.props.checkList.id );
+    this.props.deleteGeoPoint(
+      this.props.geoPoint.id,
+      this.props.googleMap.statusMarker,
+      this.props.checkList.selectedGeoList.id
+    );
   };
 
   render() {
