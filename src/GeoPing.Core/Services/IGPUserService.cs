@@ -15,5 +15,6 @@ namespace GeoPing.Core.Services
         ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func);
         void AddGPUserForIdentity(string identityUserId, string email, string username);
         OperationResult<GeoPingUser> EditUser(GeoPingUser user);
+        void ActivateUser(string id);
     }
 }

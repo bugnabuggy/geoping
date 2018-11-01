@@ -55,5 +55,12 @@ namespace GeoPing.Services
                 AccountType = "regular",
             });
         }
+
+        public void ActivateUser(string id)
+        {
+            var user = GetUser(x => x.IdentityId == id);
+            user.IsActivated = true;
+            EditUser(user);
+        }
     }
 }
