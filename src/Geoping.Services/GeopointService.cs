@@ -41,8 +41,8 @@ namespace GeoPing.Services
             var data = _pointRepo.Data.Where(x => x.ListId == listId);
 
             // Filtering by name
-            data = !string.IsNullOrEmpty(filter.NameContains)
-                 ? data.Where(x => x.Name.Contains(filter.NameContains))
+            data = !string.IsNullOrEmpty(filter.Name)
+                 ? data.Where(x => x.Name.Contains(filter.Name))
                  : data;
 
             // Filtering by address
@@ -166,6 +166,24 @@ namespace GeoPing.Services
                 Success = true,
                 Messages = messages.AsEnumerable()
             };
+        }
+
+        public bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point)
+        {
+            var isPointId = Guid.TryParse(Id, out Guid pointId);
+            point = null;
+            if (!isPointId)
+            {
+                return false;
+            }
+
+            point = Get(x => x.ListId == ListId && x.Id == pointId).FirstOrDefault();
+            if (point == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

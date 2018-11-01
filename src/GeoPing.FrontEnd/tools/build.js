@@ -37,6 +37,7 @@ webpack(webpackConfig).run(function (err, stats) {
       throw 'Error: build => fs.readdir';
     }
     files.forEach(file => {
+      console.info(`file name => ${file}`);
       fs.createReadStream(`src/assets/images/${file}`).pipe(fs.createWriteStream(`dist/assets/images/${file}`));
     });
   });

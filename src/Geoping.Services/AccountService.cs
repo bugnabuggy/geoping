@@ -59,6 +59,8 @@ namespace GeoPing.Services
                                        $"Email = [{user.Email}], " +
                                        $"Username = [{user.UserName}].");
 
+                _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+
                 return new OperationResult
                 {
                     Success = true,
@@ -113,7 +115,7 @@ namespace GeoPing.Services
 
             if (result.Succeeded)
             {
-                _gpUserSrv.AddGPUserForIdentity(userId, user.Email, user.UserName);
+                _gpUserSrv.ActivateUser(user.Id);
                 return new OperationResult()
                 {
                     Success = true,
@@ -163,7 +165,7 @@ namespace GeoPing.Services
 
             user.EmailConfirmed = true;
 
-            _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+            _gpUserSrv.ActivateUser(user.Id);
         }
 
         public OperationResult<GeoPingUser> GetProfile(Guid gpUserId)
