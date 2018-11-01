@@ -308,8 +308,8 @@ var messages = new List<string>();
             var isEditedTo = DateTime.TryParse(filter.DateEditedTo, out DateTime editedTo);
 
             // Filtering by name
-            data = !string.IsNullOrEmpty(filter.NameContains)
-                 ? data.Where(x => x.Name.Contains(filter.NameContains))
+            data = !string.IsNullOrEmpty(filter.Name)
+                 ? data.Where(x => x.Name.Contains(filter.Name))
                  : data;
 
             // Filtering by creation date

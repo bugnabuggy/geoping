@@ -7,7 +7,8 @@ namespace GeoPing.Core.Entities
     public class CheckIn
     {
         public Guid Id { get; set; }
-        public  Guid PointId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid PointId { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public double Distance{ get; set; }

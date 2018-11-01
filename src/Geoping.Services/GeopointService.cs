@@ -41,8 +41,8 @@ namespace GeoPing.Services
             var data = _pointRepo.Data.Where(x => x.ListId == listId);
 
             // Filtering by name
-            data = !string.IsNullOrEmpty(filter.NameContains)
-                 ? data.Where(x => x.Name.Contains(filter.NameContains))
+            data = !string.IsNullOrEmpty(filter.Name)
+                 ? data.Where(x => x.Name.Contains(filter.Name))
                  : data;
 
             // Filtering by address
