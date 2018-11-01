@@ -22,14 +22,78 @@ namespace Geoping.Services
             _pointSrv = pointSrv;
         }
 
-        public OperationResult<CheckIn> GetCheckIn(Guid pointId)
+        public OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId)
         {
-            throw new NotImplementedException();
+            var isPointExist = IsPointExistWithThisId(pointId, out var point);
+
+            if (!isPointExist)
+            {
+                return new OperationResult<CheckIn>()
+                {
+                    Messages = new[] { $"There is no point with Id = [{pointId}]" }
+                };
+            }
+
+            var result = _checkInRepo.Data.FirstOrDefault(x => x.PointId == point.Id &&
+                                                               x.UserId == userId);
+            if (result == null)
+            {
+                return new OperationResult<CheckIn>()
+                {
+                    Messages = new[] { $"User didn`t check in point with Id = [{point.Id}]" }
+                };
+            }
+
+            return new OperationResult<CheckIn>()
+            {
+                Data = result,
+                Messages = new[] { $"User checked in point with Id = [{point.Id}]" },
+                Success = true
+            };
         }
 
-        public OperationResult<CheckIn> GetChecksIn(Guid listId)
+        public OperationResult<IEnumerable<CheckIn>> GetChecksIn(string listId, Guid userId)
         {
-            throw new NotImplementedException();
+            var isListExist = IsListExistWithThisId(listId, out var list);
+
+            if (!isListExist)
+            {
+                return new OperationResult<IEnumerable<CheckIn>>
+                {
+                    Messages = new[] { $"There is no list with Id = [{listId}]" }
+                };
+            }
+
+            ICollection<CheckIn> result = new List<CheckIn>() { };
+
+            var points = _pointSrv.Get(x => x.ListId == list.Id);
+
+            foreach (var point in points)
+            {
+                var data = _checkInRepo.Data.FirstOrDefault(x => x.PointId == point.Id &&
+                                                                 x.UserId == userId);
+                if (data == null)
+                {
+                    continue;
+                }
+
+                result.Add(data);
+            }
+
+            if (result == null)
+            {
+                return new OperationResult<IEnumerable<CheckIn>>
+                {
+                    Messages = new[] { $"User didn`t check in points of list with Id = [{list.Id}]" }
+                };
+            }
+
+            return new OperationResult<IEnumerable<CheckIn>>
+            {
+                Data = result,
+                Messages = new[] { $"User checked in points of list with Id = [{list.Id}]" },
+                Success = true
+            };
         }
 
         public OperationResult<CheckIn> AddCheckIn(CheckIn item)
@@ -65,7 +129,7 @@ namespace Geoping.Services
                 return false;
             }
 
-            point = _pointSrv.Get(x =>x.Id == pointId).FirstOrDefault();
+            point = _pointSrv.Get(x => x.Id == pointId).FirstOrDefault();
             if (point == null)
             {
                 return false;

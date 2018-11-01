@@ -26,12 +26,34 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // GET
+        // GET api/geolist/{listId}/geopoint/check
         [HttpGet]
         [Route("check")]
-        public IActionResult GetCheckIns(string listId)
+        public IActionResult GetChecksIn(string listId)
         {
-            return Ok();
+            var result = _checkInSrv.GetChecksIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
+
+            if (result.Success)
+            {
+                return Ok(result); 
+            }
+
+            return BadRequest(result);
+        }
+
+        // GET api/geolist/{listId}/geopoint/{pointId}/check
+        [HttpGet]
+        [Route("{pointId}/check")]
+        public IActionResult GetCheckIn(string listId)
+        {
+            var result = _checkInSrv.GetCheckIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
         // POST api/geolist/{listId}/geopoint/{pointId}/check
@@ -57,10 +79,13 @@ namespace GeoPing.Api.Controllers
 
             var checkIn = new CheckIn()
             {
-                Date = DateTime.UtcNow,
                 Distance = item.Distance,
                 Latitude = item.Latitude,
                 Longitude = item.Longitude,
+                Ip = item.Ip,
+                DeviceId = item.DeviceId,
+                UserAgent = item.UserAgent,
+                Date = DateTime.UtcNow,
                 PointId = point.Id,
                 UserId = userId
             };
