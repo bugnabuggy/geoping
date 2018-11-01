@@ -96,7 +96,8 @@ namespace GeoPing.Api.Configuration
                         IdentityId = user.Id,
                         Email = user.Email,
                         Login = user.UserName,
-                        AccountType = "premium"
+                        AccountType = "premium",
+                        IsActivated = true
                     });
                     ctx.SaveChanges();
                 }
