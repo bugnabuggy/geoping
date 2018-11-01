@@ -57,14 +57,14 @@ namespace GeoPing.Services.Tests
                 Assert.That(data1 != null);
             }
 
-            var expectedListId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+            var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
             var data2 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(), out int totalItems1);
 
             Assert.That(data2.Data != null);
             Assert.That(3, Is.EqualTo(totalItems1));
 
-            var data3 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ NameContains = "Not" }, out int totalItems2);
+            var data3 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ Name = "Not" }, out int totalItems2);
 
             Assert.That(data2.Data != null);
             Assert.That(1, Is.EqualTo(totalItems2));

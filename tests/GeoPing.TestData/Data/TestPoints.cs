@@ -15,7 +15,7 @@ namespace GeoPing.TestData.Data
                 Name = "TestPoint1",
                 Longitude = "75",
                 Latitude = "55",
-                ListId = Guid.Parse("00000000-0000-0000-0000-000000000001")
+                ListId = Guid.Parse("10000000-0000-0000-0000-000000000001")
             },
             new GeoPoint
             {
@@ -23,7 +23,7 @@ namespace GeoPing.TestData.Data
                 Name = "TestPoint2",
                 Longitude = "75",
                 Latitude = "55",
-                ListId = Guid.Parse("00000000-0000-0000-0000-000000000001")
+                ListId = Guid.Parse("10000000-0000-0000-0000-000000000001")
             },
             new GeoPoint
             {
@@ -31,7 +31,7 @@ namespace GeoPing.TestData.Data
                 Name = "NotTestPoint3",
                 Longitude = "75",
                 Latitude = "55",
-                ListId = Guid.Parse("00000000-0000-0000-0000-000000000001")
+                ListId = Guid.Parse("10000000-0000-0000-0000-000000000001")
             },
             new GeoPoint
             {
@@ -39,7 +39,7 @@ namespace GeoPing.TestData.Data
                 Name = "TestPoint4",
                 Longitude = "75",
                 Latitude = "55",
-                ListId = Guid.Parse("00000000-0000-0000-0000-000000000002")
+                ListId = Guid.Parse("10000000-0000-0000-0000-000000000002")
             }
         };
 

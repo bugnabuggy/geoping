@@ -35,20 +35,41 @@ namespace GeoPing.TestData.Helpers
             httpContextAccessor.HttpContext.User = principal;
 
             SeedTestList(services);
+            SeedTestPoints(services);
+            SeedTestChecksIn(services);
+        }
+
+        private void SeedTestChecksIn(IServiceProvider services)
+        {
+            var _checkInRepo = services.GetRequiredService<IRepository<CheckIn>>();
+            var checksIn = new TestChecksIn();
+
+            foreach (var checkIn in checksIn.GetChecksIn())
+            {
+                _checkInRepo.Add(checkIn);
+            }
         }
 
         private void SeedTestList(IServiceProvider services)
         {
             var _geolistRepo = services.GetRequiredService<IRepository<GeoList>>();
+            var lists = new TestLists();
 
-            _geolistRepo.Add(new GeoList
+            foreach (var list in lists.GetGeolists())
             {
-                Id = Guid.Parse("10000000-0000-0000-0000-000000000005"),
-                Name = "TestList5",
-                OwnerId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
-                Created = DateTime.UtcNow,
-                IsPublic = true
-            });
+                _geolistRepo.Add(list);
+            }
+        }
+
+        private void SeedTestPoints(IServiceProvider services)
+        {
+            var _geopointRepo = services.GetRequiredService<IRepository<GeoPoint>>();
+            var points = new TestPoints();
+
+            foreach (var point in points.GetGeopoints())
+            {
+                _geopointRepo.Add(point);
+            }
         }
     }
 }
