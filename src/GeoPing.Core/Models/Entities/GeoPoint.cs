@@ -13,6 +13,11 @@ namespace GeoPing.Core.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
+
+        // Relational fields
         public Guid ListId { get; set; }
+        public GeoList Geolist { get; set; }
+
+        public ICollection<CheckIn> Checks { get; set; }
     }
 }

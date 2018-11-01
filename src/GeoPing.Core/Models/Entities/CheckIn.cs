@@ -7,7 +7,6 @@ namespace GeoPing.Core.Entities
     public class CheckIn
     {
         public Guid Id { get; set; }
-        public  Guid PointId { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public double Distance{ get; set; }
@@ -15,5 +14,9 @@ namespace GeoPing.Core.Entities
         public Guid DeviceId { get; set; }
         public string Ip { get; set; }
         public string UserAgent { get; set; }
+
+        // Relational fields
+        public Guid PointId { get; set; }
+        public GeoPoint Geopoint { get; set; }
     }
 }

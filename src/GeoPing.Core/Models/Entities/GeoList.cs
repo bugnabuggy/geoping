@@ -13,5 +13,9 @@ namespace GeoPing.Core.Entities
         public DateTime Created { get; set; }
         public DateTime Edited { get; set; }
         public bool IsPublic { get; set; }
+
+        // Relational fields
+        public PublicList Publiclist { get; set; }
+        public ICollection<GeoPoint> Geopoints { get; set; }
     }
 }
