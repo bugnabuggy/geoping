@@ -44,9 +44,9 @@ namespace GeoPing.Api.Controllers
         // GET api/geolist/{listId}/geopoint/{pointId}/check
         [HttpGet]
         [Route("{pointId}/check")]
-        public IActionResult GetCheckIn(string listId)
+        public IActionResult GetCheckIn(string pointId)
         {
-            var result = _checkInSrv.GetCheckIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
+            var result = _checkInSrv.GetCheckIn(pointId, _helper.GetAppUserIdByClaims(User.Claims));
 
             if (result.Success)
             {
