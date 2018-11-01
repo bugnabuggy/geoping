@@ -6,4 +6,5 @@ export const myCheckList: IMyCheckListsStateType = {
   idCheckListDelete: '',
   checkLists: [],
   isLoading: false,
+  isRedirect: false,
 };

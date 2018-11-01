@@ -1,5 +1,5 @@
-import IPublicCheckListItemProps from './publicCheckListItemProps';
+import { IGeoListPublickDTO } from '../DTO/geoListDTO';
 
 export default interface IPublicListsComponentProps {
-  publicListItem: Array<IPublicCheckListItemProps>;
+  publicListItem: Array<IGeoListPublickDTO>;
 }

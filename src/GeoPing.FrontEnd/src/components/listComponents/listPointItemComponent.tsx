@@ -5,7 +5,6 @@ import { defaultMarker } from '../../constants/defaultMarker';
 import { Card, CardBody } from 'reactstrap';
 
 export class ListPointItemComponent extends React.Component<IListPointItemComponentProps, any> {
-
   handleSelectPoint = () => {
     if ( this.props.geoPoint.id === this.props.googleMap.selectedGeoPoint.id ) {
       this.props.selectPoint( defaultMarker );
@@ -13,10 +12,13 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
       this.props.selectPoint( this.props.geoPoint );
     }
   };
-
   handleDeletePoint = ( e: any ) => {
     e.stopPropagation();
-    this.props.deleteGeoPoint( this.props.geoPoint.id, this.props.googleMap.statusMarker, this.props.checkList.id );
+    this.props.deleteGeoPoint(
+      this.props.geoPoint,
+      this.props.googleMap.statusMarker,
+      this.props.checkList.selectedGeoList.id
+    );
   };
 
   render() {
@@ -24,14 +26,15 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
       <React.Fragment>
         <Card
           className={`
-        ${ this.props.googleMap.selectedGeoPoint.id &&
-          this.props.googleMap.selectedGeoPoint.id !== this.props.geoPoint.id ?
+        ${ this.props.googleMap.selectedGeoPoint.idForMap &&
+          this.props.googleMap.selectedGeoPoint.idForMap !== this.props.geoPoint.idForMap ?
             ' check-list-point-item-disable ' : ''}`}
           onClick={this.handleSelectPoint}
         >
           <CardBody
             className={`check-list-point-item cursor-pointer
-          ${ this.props.googleMap.selectedGeoPoint.id === this.props.geoPoint.id && 'check-list-point-item-action'}
+          ${ this.props.googleMap.selectedGeoPoint.idForMap === this.props.geoPoint.idForMap &&
+            'check-list-point-item-action'}
           `}
           >
             <span>{this.props.geoPoint.name}</span>

@@ -119,10 +119,11 @@ function iconUserGeoPoint( timeout: number ) {
   idUserMarker = uuidV4();
   const userGeoPoint: IGeoPoint = {
     ...defaultMarker,
-    id: idUserMarker,
+    id: '',
     name: 'Me',
     lat: _that.props.googleMap.position.lat,
     lng: _that.props.googleMap.position.lng,
+    idForMap: idUserMarker,
   };
   setTimeout(
     () => {
@@ -137,7 +138,7 @@ function iconUserGeoPoint( timeout: number ) {
 }
 
 function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
-  const marker: any = findGeoPoint( geoPoint.id );
+  const marker: any = findGeoPoint( geoPoint.idForMap );
   if ( marker ) {
     marker.setIcon( createMarkerImage( iconSelectedGeoPointUrl ) );
     if ( !_that.props.isCheckIn && !_that.props.checkInStatistics.isCheckInStatistics ) {
@@ -149,7 +150,7 @@ function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
 }
 
 function clearIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
-  const marker: any = findGeoPoint( geoPoint.id );
+  const marker: any = findGeoPoint( geoPoint.idForMap );
   if ( marker ) {
     marker.setIcon( null );
     marker.setDraggable( false );
@@ -169,7 +170,7 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     map: _googleMap,
     icon: imageMarker,
     draggable: draggable,
-    id: geoPoint.id,
+    idForMap: geoPoint.idForMap,
     animation: _googleLib.maps.Animation.DROP,
   } );
   marker.addListener( 'click', ( e: any ) => {
@@ -186,14 +187,14 @@ function deleteGeoPoint( idGeoPoint: string ) {
   if ( marker ) {
     marker.setMap( null );
     _markers = _markers.filter( ( point: any ) => {
-      return point.id !== marker.id;
+      return point.idForMap !== marker.idForMap;
     } );
   }
 }
 
 function deleteAllGeoPoint() {
   _markers = _markers.filter( ( marker: any ) => {
-    if ( marker.id !== idUserMarker ) {
+    if ( marker.idForMap !== idUserMarker ) {
       marker.setMap( null );
     } else {
       return marker;
@@ -207,10 +208,11 @@ function handleMapListener( event: any ) {
       .then( ( geocode: string ) => {
         const newMarker: IGeoPoint = {
           ...defaultMarker,
-          id: uuidV4(),
+          id: '',
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
           description: geocode,
+          idForMap: uuidV4(),
         };
         iconSelectedGeoPoint( 400, newMarker );
         _that.props.addNewPoint( newMarker );
@@ -221,7 +223,7 @@ function handleMapListener( event: any ) {
 }
 
 function handleGeoPointClick( e: any, geoPoint: IGeoPoint ) {
-  if ( _that.props.googleMap.selectedGeoPoint.id !== geoPoint.id ) {
+  if ( _that.props.googleMap.selectedGeoPoint.idForMap !== geoPoint.idForMap ) {
     _that.props.selectPoint( geoPoint );
     // if ( _that.props.isCheckIn ) {
     //   _that.props.editingPermission( false );
@@ -258,7 +260,7 @@ export function getGeoCode( latLng: any ): Promise<string> {
 
 export function settingPointsByCoordinates( geoPoints: Array<IGeoPoint> ) {
   geoPoints.forEach( ( geoPoint: IGeoPoint ) => {
-    const marker: any = findGeoPoint( geoPoint.id );
+    const marker: any = findGeoPoint( geoPoint.idForMap );
     if ( marker ) {
       const latLng: any = {
         lat: geoPoint.lat,
@@ -271,7 +273,7 @@ export function settingPointsByCoordinates( geoPoints: Array<IGeoPoint> ) {
 }
 
 export function addMyPositionPoint( geoPoint: IGeoPoint ) {
-  const merker: any = findGeoPoint( geoPoint.id );
+  const merker: any = findGeoPoint( geoPoint.idForMap );
   if ( !merker ) {
     const latLng: any = {
       lat: geoPoint.lat,
@@ -281,8 +283,8 @@ export function addMyPositionPoint( geoPoint: IGeoPoint ) {
       .then( ( geocode: string ) => {
         const newGeoPoint: IGeoPoint = {
           ...geoPoint,
-          id: uuidV4(),
           description: geocode,
+          idForMap: uuidV4(),
         };
         iconSelectedGeoPoint( 200, newGeoPoint );
         _that.props.addNewPoint( newGeoPoint );
@@ -300,7 +302,7 @@ function createMarkerImage( iconUrl: string ) {
 }
 
 function findGeoPoint( idGeoPoint: string ) {
-  return _markers.find( item => item.id === idGeoPoint );
+  return _markers.find( item => item.idForMap === idGeoPoint );
 }
 
 function setPosition( marker: any, coordinates: { lat: string, lng: string } ) {

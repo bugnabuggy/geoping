@@ -30,7 +30,8 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         ]
       } );
     }
-    const list: any = this.props.checkin.selectList.find( item => item.id === this.props.checkin.selectedListId );
+    const list: any = this.props.checkin.selectList
+      .find( item => item.selectedGeoList.id === this.props.checkin.selectedListId );
     const historyData: IHistoryDataDTO = {
       apporxAddress: this.props.googleMap.position.address,
       checkList: list ? list.name : '',

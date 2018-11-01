@@ -6,6 +6,7 @@ export const registration: string = `${endpointBaseUrl}/account/register`;
 /* endpoints for geo lists */
 export const getAllGeoLists: string = `${endpointBaseUrl}/api/geolist`;
 export const getGeoListForId: string = `${endpointBaseUrl}/api/geolist/%id%`;
+export const getAllPublicGeoLosts: string = `${endpointBaseUrl}/api/geolist/public`;
 export const createNewGeoList: string = `${endpointBaseUrl}/api/geolist`;
 export const updateGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
 export const removeCollectionGeoLists: string = `${endpointBaseUrl}/api/geolist/%id%`;

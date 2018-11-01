@@ -41,20 +41,20 @@ class GoogleMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.googleMap.selectedGeoPoint.id &&
-      prevProps.googleMap.selectedGeoPoint.id !== this.props.googleMap.selectedGeoPoint.id) {
+    if (prevProps.googleMap.selectedGeoPoint.idForMap &&
+      prevProps.googleMap.selectedGeoPoint.idForMap !== this.props.googleMap.selectedGeoPoint.idForMap) {
       deselectMarkerAPI(prevProps.googleMap.selectedGeoPoint);
     }
 
-    if (this.props.googleMap.selectedGeoPoint.id &&
+    if (this.props.googleMap.selectedGeoPoint.idForMap &&
       this.props.googleMap.statusMarker === EnumStatusMarker.Edit) {
       selectMarkerAPI(this.props.googleMap.selectedGeoPoint);
     }
 
     if (this.props.googleMap.idDeleteMarker) {
       deleteMarkerAPI(this.props.googleMap.idDeleteMarker);
-      this.props.deleteGeoPoint('', prevProps.googleMap.statusMarker);
-      if (this.props.googleMap.idDeleteMarker === this.props.googleMap.selectedGeoPoint.id) {
+      this.props.deleteGeoPoint(defaultMarker, prevProps.googleMap.statusMarker);
+      if (this.props.googleMap.idDeleteMarker === this.props.googleMap.selectedGeoPoint.idForMap) {
         this.props.selectPoint(defaultMarker);
         this.props.editingPermission(false);
       }
@@ -74,7 +74,7 @@ class GoogleMap extends React.Component {
       addListMarkersAPI(this.props.googleMap.geoPoints);
       this.props.geoPointListIsCreate(true);
     }
-    if (this.props.googleMap.selectedGeoPoint.id && this.props.googleMap.position.isSuccess && this.props.isCheckIn) {
+    if (this.props.googleMap.selectedGeoPoint.idForMap && this.props.googleMap.position.isSuccess && this.props.isCheckIn) {
       getDistance();
     }
 

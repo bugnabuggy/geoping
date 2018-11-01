@@ -21,7 +21,7 @@ import {
 
 class CheckListComponentContainer extends React.Component<ICheckListComponentContainerProps, any> {
   componentDidMount() {
-    this.props.loadCheckListData( '', this.props.idCheckList );
+    this.props.loadCheckListData( this.props.idCheckList );
   }
 
   componentWillUnmount() {

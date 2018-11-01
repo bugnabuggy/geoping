@@ -9,6 +9,6 @@ export default interface IListPointsComponentProps {
   checkList: ICheckListStateType;
 
   selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
-  deleteGeoPoint: ( idPoint: string, statusMarker: EnumStatusMarker, idList?: string ) =>
+  deleteGeoPoint: ( geoPoint: IGeoPoint, statusMarker: EnumStatusMarker, idList?: string ) =>
     ( dispatch: IDispatchFunction ) => void;
 }
