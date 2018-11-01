@@ -16,10 +16,12 @@ namespace Geoping.Services
         private IRepository<CheckIn> _checkInRepo;
 
         public CheckInService(IGeolistService geolistSrv,
-                              IGeopointService pointSrv)
+                              IGeopointService pointSrv,
+                              IRepository<CheckIn> checkInRepo)
         {
             _geolistSrv = geolistSrv;
             _pointSrv = pointSrv;
+            _checkInRepo = checkInRepo;
         }
 
         public OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId)
