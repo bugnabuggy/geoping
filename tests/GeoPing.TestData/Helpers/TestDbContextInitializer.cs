@@ -34,9 +34,21 @@ namespace GeoPing.TestData.Helpers
             //return default principal back;
             httpContextAccessor.HttpContext.User = principal;
 
-            SeedTestList(services);
+            SeedTestLists(services);
+            SeedTestPublicLists(services);
             SeedTestPoints(services);
             SeedTestChecksIn(services);
+        }
+
+        private void SeedTestPublicLists(IServiceProvider services)
+        {
+            var _publicListsRepo = services.GetRequiredService<IRepository<PublicList>>();
+            var lists = new TestLists();
+
+            foreach (var list in lists.GetPublicGeolists())
+            {
+                _publicListsRepo.Add(list);
+            }
         }
 
         private void SeedTestChecksIn(IServiceProvider services)
@@ -50,7 +62,7 @@ namespace GeoPing.TestData.Helpers
             }
         }
 
-        private void SeedTestList(IServiceProvider services)
+        private void SeedTestLists(IServiceProvider services)
         {
             var _geolistRepo = services.GetRequiredService<IRepository<GeoList>>();
             var lists = new TestLists();

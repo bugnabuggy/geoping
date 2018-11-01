@@ -35,49 +35,48 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_add_new_points()
         {
-            foreach (var point in _testPoints.GetGeopoints())
-            {
-                var result = sut.Add(point);
+            var expectedPointId = Guid.Parse("10000000-0000-0000-0000-000000000005");
+            var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-                Assert.That(result.Success);
-                Assert.That(result.Data != null);
-                var data = _geopointRepo.Data.Where(x => x.Id == point.Id).FirstOrDefault();
-                Assert.That(data != null);
-            }
+            var testPoint = new GeoPoint()
+            {
+                Id = expectedPointId,
+                Name = "Test",
+                Latitude = "55",
+                Longitude = "55",
+                ListId = expectedListId
+            };
+
+            var result = sut.Add(testPoint);
+
+            Assert.That(result.Success);
+            Assert.That(result.Data != null);
+
+            var testData = _geopointRepo.Data.FirstOrDefault(x => x.Id == expectedPointId);
+
+            Assert.That(testData != null);
+            Assert.That(testData.ListId == expectedListId);
         }
 
         [Test]
         public void Should_get_points()
         {
-            foreach (var point in _testPoints.GetGeopoints())
-            {
-                sut.Add(point);
-
-                var data1 = sut.Get(x => x.Id == point.Id);
-                Assert.That(data1 != null);
-            }
-
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var data2 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(), out int totalItems1);
+            var testData1 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(), out int totalItems1);
 
-            Assert.That(data2.Data != null);
+            Assert.That(testData1.Data != null);
             Assert.That(3, Is.EqualTo(totalItems1));
 
-            var data3 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ Name = "Not" }, out int totalItems2);
+            var testData2 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ Name = "Not" }, out int totalItems2);
 
-            Assert.That(data2.Data != null);
+            Assert.That(testData2.Data != null);
             Assert.That(1, Is.EqualTo(totalItems2));
         }
 
         [Test]
         public void Should_remove_a_point()
         {
-            foreach (var point in _testPoints.GetGeopoints())
-            {
-                sut.Add(point);
-            }
-
             var expectedPointId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
             var testPoint = sut.Get(x => x.Id == expectedPointId).FirstOrDefault();
@@ -94,21 +93,16 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_remove_points()
         {
-            foreach (var point in _testPoints.GetGeopoints())
-            {
-                sut.Add(point);
-            }
+            var expectedPointId = "10000000-0000-0000-0000-000000000001";
 
-            var expectedPointId = Guid.Parse("10000000-0000-0000-0000-000000000001");
-
-            var pointIds = "&#," + "10000000-0000-0000-0000-000000000001," + "446131617979416," + 
+            var pointIds = "&#," + expectedPointId + "," + "446131617979416," + 
                            "10000000-0000-0000-0000-000000000005," + "10000000-0000-0000-0000-000000000004,";
 
             var result = sut.Delete(pointIds);
 
             Assert.That(result.Success);
 
-            var data = _geopointRepo.Data.Where(x => x.Id == expectedPointId).FirstOrDefault();
+            var data = _geopointRepo.Data.Where(x => x.Id == Guid.Parse(expectedPointId)).FirstOrDefault();
 
             Assert.That(data == null);
         }
