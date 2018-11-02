@@ -18,7 +18,7 @@ namespace GeoPing.Infrastructure.Repositories
         {
             _ctx = ctx;
             _table = _ctx.Set<T>();
-            Data = _table;
+            Data = _table.AsNoTracking();
         }
 
         public IEnumerable<T> Get(Expression<Func<T, bool>> filter = null,

@@ -4,14 +4,16 @@ using GeoPing.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeoPing.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181101104026_AddedRelationsGeolistToPublicListAndGeopointToCheckIn")]
+    partial class AddedRelationsGeolistToPublicListAndGeopointToCheckIn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,15 +34,13 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("Ip");
 
-                    b.Property<double>("Latitude");
+                    b.Property<string>("Latitude");
 
-                    b.Property<double>("Longitude");
+                    b.Property<string>("Longitude");
 
                     b.Property<Guid>("PointId");
 
                     b.Property<string>("UserAgent");
-
-                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
@@ -416,7 +416,7 @@ namespace GeoPing.Infrastructure.Data.Migrations
             modelBuilder.Entity("GeoPing.Core.Entities.CheckIn", b =>
                 {
                     b.HasOne("GeoPing.Core.Entities.GeoPoint", "Geopoint")
-                        .WithMany()
+                        .WithMany("Checks")
                         .HasForeignKey("PointId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -424,7 +424,7 @@ namespace GeoPing.Infrastructure.Data.Migrations
             modelBuilder.Entity("GeoPing.Core.Entities.GeoPoint", b =>
                 {
                     b.HasOne("GeoPing.Core.Entities.GeoList", "Geolist")
-                        .WithMany()
+                        .WithMany("Geopoints")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -432,7 +432,7 @@ namespace GeoPing.Infrastructure.Data.Migrations
             modelBuilder.Entity("GeoPing.Core.Entities.PublicList", b =>
                 {
                     b.HasOne("GeoPing.Core.Entities.GeoList", "Geolist")
-                        .WithOne()
+                        .WithOne("Publiclist")
                         .HasForeignKey("GeoPing.Core.Entities.PublicList", "ListId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

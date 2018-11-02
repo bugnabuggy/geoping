@@ -66,23 +66,14 @@ namespace Geoping.Services
                 };
             }
 
-            ICollection<CheckIn> result = new List<CheckIn>() { };
-
             var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            foreach (var point in points)
-            {
-                var data = _checkInRepo.Data.FirstOrDefault(x => x.PointId == point.Id &&
-                                                                 x.UserId == userId);
-                if (data == null)
-                {
-                    continue;
-                }
+            var data = from ch in _checkInRepo.Data
+                       from p in points
+                       where ch.PointId == p.Id && ch.UserId == userId
+                       select ch;
 
-                result.Add(data);
-            }
-
-            if (result == null)
+            if (!data.Any())
             {
                 return new OperationResult<IEnumerable<CheckIn>>
                 {
@@ -92,7 +83,7 @@ namespace Geoping.Services
 
             return new OperationResult<IEnumerable<CheckIn>>
             {
-                Data = result,
+                Data = data,
                 Messages = new[] { $"User checked in points of list with Id = [{list.Id}]" },
                 Success = true
             };
