@@ -7,13 +7,14 @@ using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/geolist/{listId}")]
-    //[Authorize]
+    [Authorize]
     public class CheckInController : Controller
     {
         private ICheckInService _checkInSrv;
