@@ -25,7 +25,7 @@ namespace GeoPing.Infrastructure.Repositories
                                   Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
                                   string includeProperties = "")
         {
-            IQueryable<T> query = this.Data;
+            IQueryable<T> query = this.Data.AsNoTracking();
 
             if (filter != null)
             {
