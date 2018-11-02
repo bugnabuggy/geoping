@@ -104,7 +104,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                 <Nav className="ml-auto" navbar={true}>
                   <NavItem>
                     <LinkContainer exact={true} to={publicCheckListUrl}>
-                      <NavLink>Public checklists</NavLink>
+                      <NavLink name="public">Public checklists</NavLink>
                     </LinkContainer>
                   </NavItem>
                   <NavItem>
