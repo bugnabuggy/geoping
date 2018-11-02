@@ -32,6 +32,7 @@ function googleAuthorizeInit( redirect: ( isRedirect: boolean ) => void, blockin
         },
         ( error: any ) => {
           console.info( 'error', error );
+          blocking( false );
         } );
   } );
 }
