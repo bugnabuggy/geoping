@@ -15,7 +15,7 @@ namespace GeoPing.Core.Entities
         public bool IsPublic { get; set; }
 
         // Relational fields
-        public PublicList Publiclist { get; set; }
-        public ICollection<GeoPoint> Geopoints { get; set; }
+        //public PublicList Publiclist { get; set; }
+        //public virtual ICollection<GeoPoint> Geopoints { get; set; }
     }
 }

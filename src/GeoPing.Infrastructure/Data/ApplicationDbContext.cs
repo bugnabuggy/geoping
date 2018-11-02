@@ -33,24 +33,24 @@ namespace GeoPing.Infrastructure.Data
             base.OnModelCreating(builder);
 
             // One-to-one relationship of GeoList and PublicList
-            builder.Entity<GeoList>()
-                .HasOne<PublicList>(g => g.Publiclist)
-                .WithOne(p => p.Geolist)
-                .HasForeignKey<PublicList>(p => p.ListId)
+            builder.Entity<PublicList>()
+                .HasOne<GeoList>(pl => pl.Geolist)
+                .WithOne()
+                .HasForeignKey<PublicList>(pl => pl.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-many relationship of Geolist and Geopoints
-            builder.Entity<GeoList>()
-                .HasMany<GeoPoint>(g => g.Geopoints)
-                .WithOne(gp => gp.Geolist)
+            builder.Entity<GeoPoint>()
+                .HasOne<GeoList>(gp => gp.Geolist)
+                .WithMany()
                 .HasForeignKey(gp => gp.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-many relationship of Geopoint and Checks In
-            builder.Entity<GeoPoint>()
-                .HasMany<CheckIn>(gp => gp.Checks)
-                .WithOne(c => c.Geopoint)
-                .HasForeignKey(c => c.PointId)
+            builder.Entity<CheckIn>()
+                .HasOne<GeoPoint>(ch => ch.Geopoint)
+                .WithMany()
+                .HasForeignKey(ch => ch.PointId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

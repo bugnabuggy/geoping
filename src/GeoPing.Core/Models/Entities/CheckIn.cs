@@ -18,6 +18,6 @@ namespace GeoPing.Core.Entities
 
         // Relational fields
         public Guid PointId { get; set; }
-        public GeoPoint Geopoint { get; set; }
+        public virtual GeoPoint Geopoint { get; set; }
     }
 }

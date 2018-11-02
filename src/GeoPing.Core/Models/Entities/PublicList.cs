@@ -15,6 +15,6 @@ namespace GeoPing.Core.Entities
 
         // Relational fields
         public Guid ListId { get; set; }
-        public GeoList Geolist { get; set; }
+        public virtual GeoList Geolist { get; set; }
     }
 }
