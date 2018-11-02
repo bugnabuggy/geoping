@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { Button, ControlLabel, FormGroup, Panel, Table } from 'react-bootstrap';
 import { v4 as uuidV4 } from 'uuid';
 import Select from 'react-select';
 import { PulseLoader } from 'react-spinners';
+import { Button, Card, FormGroup, Label, Table } from 'reactstrap';
 
 import ICheckinComponentProps from '../componentProps/checkinComponentProps';
 import { defaultMarker } from '../constants/defaultMarker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CongratulationsModalComponent } from './modalComponents/congratulationsModalComponent';
 import IHistoryDataDTO from '../DTO/historyDataDTO';
-import { Card } from 'reactstrap';
 
 export class CheckinComponent extends React.Component<ICheckinComponentProps, any> {
   openModal = () => {
@@ -31,7 +30,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
       } );
     }
     const list: any = this.props.checkin.selectList
-      .find( item => item.selectedGeoList.id === this.props.checkin.selectedListId );
+      .find( ( item: any ) => item.id === this.props.checkin.selectedListId );
     const historyData: IHistoryDataDTO = {
       apporxAddress: this.props.googleMap.position.address,
       checkList: list ? list.name : '',
@@ -57,23 +56,15 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
       );
     }
   };
-  handleValidationState = ( type: string ) => {
+  handleValidationState = () => {
     if ( this.props.googleMap.selectedGeoPoint.id ) {
-      return !this.props.checkin.difference ?
-        type === 'button' ?
-          'default'
-          :
-          null
+      return this.props.checkin.difference >= 0 &&
+      this.props.checkin.difference <= this.props.googleMap.selectedGeoPoint.radius ?
+        'success'
         :
-        this.props.checkin.difference < this.props.googleMap.selectedGeoPoint.radius ?
-          'success'
-          :
-          type === 'button' ?
-            'danger'
-            :
-            'error';
+        'danger';
     } else {
-      return type === 'button' ? 'default' : null;
+      return 'default';
     }
   };
   renderPointList = () => {
@@ -132,19 +123,18 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
   }
 
   render() {
-    const validationState: any = this.handleValidationState( 'label' );
-    const validationStateButton: any = this.handleValidationState( 'button' );
+    const validationState: any = this.handleValidationState();
     return (
       <React.Fragment>
         <h3>Check in</h3>
         <FormGroup
           className="check-in-select-list-container"
         >
-          <ControlLabel
+          <Label
             className="check-in-select-list-label"
           >
             Select List
-          </ControlLabel>
+          </Label>
           <Select
             options={this.renderListOption()}
             className="check-in-select"
@@ -153,7 +143,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Select Point</ControlLabel>
+          <Label>Select Point</Label>
           <Card
             className="check-in-select-point-container"
           >
@@ -197,7 +187,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           className="check-in-buttons-container"
         >
           <Button
-            bsStyle={validationStateButton}
+            color={validationState}
             onClick={this.handleCheckin}
             disabled={!!this.state.checkInPoints.find( ( il: any ) => il === this.props.googleMap.selectedGeoPoint.id )}
           >
@@ -205,27 +195,25 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           </Button>
 
           <Button
-            bsStyle="primary"
+            color="primary"
             onClick={this.handleCheckMyGeoPosition}
           >
             Check my geo position
           </Button>
         </div>
         <div>
-          <ControlLabel
+          <Label
             className="check-in-current-coordinates"
           >
             Current coordinates:
-          </ControlLabel>
-          <ControlLabel>
+          </Label>
+          <Label>
             lat: {this.props.googleMap.position.lat}; long: {this.props.googleMap.position.lng}
-          </ControlLabel>
-          <FormGroup
-            validationState={validationState}
-          >
-            <ControlLabel>
+          </Label>
+          <FormGroup>
+            <Label className={`text-${validationState}`}>
               Difference: {this.props.checkin.difference && `${this.props.checkin.difference}m`}
-            </ControlLabel>
+            </Label>
           </FormGroup>
         </div>
         <CongratulationsModalComponent

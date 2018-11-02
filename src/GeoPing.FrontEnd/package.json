@@ -10,7 +10,8 @@
     "test": "mocha tools/startTest.js --opts mocha.opts",
     "build": "npm-run-all test build:js",
     "build:js": "babel-node tools/build.js",
-    "e2e": "mocha e2e_tests/e2e.start.js --require ts-node/register ts,tsx --require babel-register \"./e2e_tests/**/*.?s*\""
+    "e2e": "mocha e2e_tests/e2e.start.js --require ts-node/register ts,tsx --require babel-register \"./e2e_tests/**/*.?s*\"",
+    "phantom": "mocha e2e_tests/e2e.start.js --require ts-node/register ts,tsx --require babel-register \"./e2e_tests/**/*.?s*\""
   },
   "author": "",
   "license": "ISC",
@@ -89,7 +90,6 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
-    "selenium-webdriver": "^4.0.0-alpha.1",
     "style-loader": "^0.23.0",
     "throttle-debounce": "^2.0.1",
     "ts-loader": "^5.2.2",
@@ -111,11 +111,15 @@
     "@fortawesome/free-regular-svg-icons": "^5.3.1",
     "@fortawesome/free-solid-svg-icons": "^5.3.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
+    "@types/phantom": "^3.2.5",
+    "@types/phantomjs": "^1.9.29",
     "@types/react-google-recaptcha": "^0.9.2",
     "@types/react-router-bootstrap": "^0.24.5",
     "axios": "^0.18.0",
     "dotenv": "^6.0.0",
     "history": "^4.7.2",
+    "phantom": "^6.0.3",
+    "phantomjs": "^2.1.7",
     "protractor": "^5.4.1",
     "rc-slider": "^8.6.2",
     "react": "^16.4.1",
@@ -131,6 +135,7 @@
     "react-yandex-maps": "^3.0.1",
     "reactstrap": "^6.5.0",
     "redux-thunk": "^2.3.0",
+    "selenium-webdriver": "^3.6.0",
     "toastr": "^2.1.4"
   }
 }
