@@ -70,7 +70,7 @@ namespace Geoping.Services
 
             var data = from ch in _checkInRepo.Data
                        from p in points
-                       where ch.PointId == p.Id
+                       where ch.PointId == p.Id && ch.UserId == userId
                        select ch;
 
             if (!data.Any())
