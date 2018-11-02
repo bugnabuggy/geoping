@@ -22,6 +22,7 @@ class AboutComponentContainer extends React.Component<IAboutComponentContainerPr
       <React.Fragment>
         <div style={this.tempStyle}>
           <button
+            name={'testUser'}
             onClick={this.handleClick}
           >
             Test User
