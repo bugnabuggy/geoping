@@ -4,6 +4,7 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { useTestPeriod } from '../actions/aboutAction';
+import { Button } from 'reactstrap';
 
 class AboutComponentContainer extends React.Component<IAboutComponentContainerProps, any> {
   tempStyle = {
@@ -21,12 +22,13 @@ class AboutComponentContainer extends React.Component<IAboutComponentContainerPr
     return (
       <React.Fragment>
         <div style={this.tempStyle}>
-          <button
+          <Button
+            color="primary"
             name={'testUser'}
             onClick={this.handleClick}
           >
             Test User
-          </button>
+          </Button>
         </div>
       </React.Fragment>
     );
