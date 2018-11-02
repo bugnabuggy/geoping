@@ -31,7 +31,7 @@ main {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 70px minmax(min-content, 1fr) minmax(100px, 120px);
+  grid-template-rows: 70px minmax(min-content, 1fr) 70px;
   grid-template-columns: 100%;
   grid-gap: 5px;
 }
@@ -56,6 +56,13 @@ li {
 
 header {
   width: 100%;
+}
+
+footer {
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .table-sort-icon {
@@ -1359,7 +1366,7 @@ select.form-control:not([size]):not([multiple]) {
   #app {
     height: 100vh;
     display: grid;
-    grid-template-rows: 70px minmax(min-content, 1fr) minmax(100px, 120px);
+    grid-template-rows: 70px minmax(min-content, 1fr) 70px;
     grid-template-columns: 100%;
     grid-gap: 5px;
   }
