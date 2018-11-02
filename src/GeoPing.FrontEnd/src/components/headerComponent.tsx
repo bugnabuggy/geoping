@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 
 import IHeaderComponentProps from '../componentProps/headerComponentProps/headerComponentProps';
 import {
@@ -71,25 +72,19 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     <DropdownMenu right={true}>
                       <ul>
                         <NavItem>
-                          <LinkContainer exact={true} to={profileUrl}>
-                            <NavLink>Profile</NavLink>
-                          </LinkContainer>
+                          <Link to={profileUrl} className="nav-link">Profile</Link>
                         </NavItem>
                         {this.props.roleUser === ERoleUser.Admin ?
                           (
                             <NavItem>
-                              <LinkContainer exact={true} to={adminDashboardUrl}>
-                                <NavLink>Admin Dashboard</NavLink>
-                              </LinkContainer>
+                              <Link to={adminDashboardUrl} className="nav-link">Admin Dashboard</Link>
                             </NavItem>
                           )
                           :
                           null}
                         <DropdownItem divider={true}/>
                         <NavItem>
-                          <LinkContainer exact={true} to={logOutUrl}>
-                            <NavLink>Sign out</NavLink>
-                          </LinkContainer>
+                          <Link to={logOutUrl} className="nav-link">Sign out</Link>
                         </NavItem>
                       </ul>
                     </DropdownMenu>

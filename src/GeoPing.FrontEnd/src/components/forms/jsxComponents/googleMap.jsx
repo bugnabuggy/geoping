@@ -60,6 +60,10 @@ class GoogleMap extends React.Component {
       }
     }
 
+    if ( this.props.googleMap.geoPoints.length === 0) {
+      deleteAllMarkersAPI();
+    }
+
     if (!this.props.checkList.isEditing) {
       settingPointsByCoordinates(this.props.googleMap.geoPoints);
     }
