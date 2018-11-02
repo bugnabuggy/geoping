@@ -73,23 +73,6 @@ namespace Geoping.Services
                        where ch.PointId == p.Id
                        select ch;
 
-
-
-
-
-
-            //foreach (var point in points)
-            //{
-            //    var data = _checkInRepo.Data.FirstOrDefault(x => x.UserId == userId);
-
-            //    if (data == null)
-            //    {
-            //        continue;
-            //    }
-
-            //    result.Add(data);
-            //}
-
             if (!data.Any())
             {
                 return new OperationResult<IEnumerable<CheckIn>>
