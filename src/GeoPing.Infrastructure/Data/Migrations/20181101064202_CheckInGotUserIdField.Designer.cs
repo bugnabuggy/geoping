@@ -4,14 +4,16 @@ using GeoPing.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeoPing.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181101064202_CheckInGotUserIdField")]
+    partial class CheckInGotUserIdField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +34,9 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("Ip");
 
-                    b.Property<double>("Latitude");
+                    b.Property<string>("Latitude");
 
-                    b.Property<double>("Longitude");
+                    b.Property<string>("Longitude");
 
                     b.Property<Guid>("PointId");
 
@@ -43,8 +45,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PointId");
 
                     b.ToTable("CheckIns");
                 });
@@ -142,8 +142,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ListId");
-
                     b.ToTable("GeoPoints");
                 });
 
@@ -202,9 +200,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.Property<int>("SubscribersNumber");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ListId")
-                        .IsUnique();
 
                     b.ToTable("PublicLists");
                 });
@@ -411,30 +406,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("GeoPing.Core.Entities.CheckIn", b =>
-                {
-                    b.HasOne("GeoPing.Core.Entities.GeoPoint", "Geopoint")
-                        .WithMany()
-                        .HasForeignKey("PointId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GeoPing.Core.Entities.GeoPoint", b =>
-                {
-                    b.HasOne("GeoPing.Core.Entities.GeoList", "Geolist")
-                        .WithMany()
-                        .HasForeignKey("ListId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GeoPing.Core.Entities.PublicList", b =>
-                {
-                    b.HasOne("GeoPing.Core.Entities.GeoList", "Geolist")
-                        .WithOne()
-                        .HasForeignKey("GeoPing.Core.Entities.PublicList", "ListId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

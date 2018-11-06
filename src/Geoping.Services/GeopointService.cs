@@ -1,5 +1,6 @@
 ﻿using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
@@ -12,11 +13,11 @@ namespace GeoPing.Services
 {
     public class GeopointService : IGeopointService
     {
-        //private Dictionary<string, Expression<Func<GeoPoint, object>>> orderBys =
-        //    new Dictionary<string, Expression<Func<GeoPoint, object>>>()
-        //    {
-        //        { "name", x => x.Name }
-        //    };
+        private Dictionary<string, Expression<Func<GeoPoint, object>>> orderBys =
+            new Dictionary<string, Expression<Func<GeoPoint, object>>>()
+            {
+                { "name", x => x.Name }
+            };
 
         private IRepository<GeoPoint> _pointRepo;
 
@@ -35,48 +36,53 @@ namespace GeoPing.Services
             return _pointRepo.Data.Where(func);
         }
 
-        //public WebResult<IQueryable<GeoPoint>> GetByFilter(string listId, GeopointFilterDTO filter, out int totalItems)
-        //{
-        //    var data = _pointRepo.Data.Where(x => x.GeoListId == Guid.Parse(listId));
+        public WebResult<IQueryable<GeoPoint>> GetByFilter(Guid listId, GeopointFilterDTO filter, out int totalItems)
+        {
+            var data = _pointRepo.Data.Where(x => x.ListId == listId);
 
-        //    // Filtering by name
-        //    data = !string.IsNullOrEmpty(filter.NameContains)
-        //         ? data.Where(x => x.Name.Contains(filter.NameContains))
-        //         : data;
+            // Filtering by name
+            data = !string.IsNullOrEmpty(filter.Name)
+                 ? data.Where(x => x.Name.Contains(filter.Name))
+                 : data;
 
-        //    totalItems = data.Count();
+            // Filtering by address
+            data = !string.IsNullOrEmpty(filter.OnAddress)
+                 ? data.Where(x => x.Address.Contains(filter.OnAddress))
+                 : data;
 
-        //    if(!string.IsNullOrWhiteSpace(filter.OrderBy) && orderBys.ContainsKey(filter.OrderBy))
-        //    {
-        //        var orderExpression = orderBys[filter.OrderBy];
+            totalItems = data.Count();
 
-        //        if(filter.IsDesc)
-        //        {
-        //            data = data.OrderByDescending(orderExpression);
-        //        }
-        //        else
-        //        {
-        //            data = data.OrderBy(orderExpression);
-        //        }
-        //    }
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && orderBys.ContainsKey(filter.OrderBy))
+            {
+                var orderExpression = orderBys[filter.OrderBy];
 
-        //    filter.PageNumber = filter.PageNumber ?? 0;
+                if (filter.IsDesc)
+                {
+                    data = data.OrderByDescending(orderExpression);
+                }
+                else
+                {
+                    data = data.OrderBy(orderExpression);
+                }
+            }
 
-        //    if(filter.PageSize != null)
-        //    {
-        //        data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
-        //                   .Take((int)filter.PageSize);
-        //    }
+            filter.PageNumber = filter.PageNumber ?? 0;
 
-        //    return new WebResult<IQueryable<GeoPoint>>()
-        //    {
-        //        Data = data,
-        //        Success = true,
-        //        PageNumber = filter.PageNumber,
-        //        PageSize = filter.PageSize,
-        //        TotalItems = totalItems
-        //    };
-        //}
+            if (filter.PageSize != null)
+            {
+                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
+                           .Take((int)filter.PageSize);
+            }
+
+            return new WebResult<IQueryable<GeoPoint>>()
+            {
+                Data = data,
+                Success = true,
+                PageNumber = filter.PageNumber,
+                PageSize = filter.PageSize,
+                TotalItems = totalItems
+            };
+        }
 
         public OperationResult<GeoPoint> Add(GeoPoint item)
         {
@@ -100,12 +106,84 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Delete(GeoPoint item)
         {
+            try
+            {
+                _pointRepo.Delete(item);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<GeoPoint>()
+                {
+                    Messages = new[] { ex.Message }
+                };
+            }
+
             return new OperationResult<GeoPoint>()
             {
-                Data = _pointRepo.Delete(item),
-                Messages = new[] { "Geopoint was successfully removed." },
+                Messages = new[] { $"Geopoint with Id = [{item.Id}] was successfully removed." },
                 Success = true
             };
+        }
+
+        public OperationResult Delete(string ids)
+        {
+            var pointIds = ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                             .ToArray();
+
+            if (pointIds == null)
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { "There are no given valid geolist Id" }
+                };
+            }
+
+            var messages = new List<string>();
+
+            foreach (var id in pointIds)
+            {
+                var isPointId = Guid.TryParse(id, out Guid pointId);
+
+                if (!isPointId)
+                {
+                    messages.Add($"Given geopointId = [{id}] is not valid");
+                    continue;
+                }
+
+                var point = Get(x => x.Id == pointId).FirstOrDefault();
+
+                if (point == null)
+                {
+                    messages.Add($"There are no geopoint with given geopointId = [{id}]");
+                    continue;
+                }
+
+                messages.AddRange(Delete(point).Messages);
+            }
+
+            return new OperationResult()
+            {
+                Success = true,
+                Messages = messages.AsEnumerable()
+            };
+        }
+
+        public bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point)
+        {
+            var isPointId = Guid.TryParse(Id, out Guid pointId);
+            point = null;
+            if (!isPointId)
+            {
+                return false;
+            }
+
+            point = Get(x => x.ListId == ListId && x.Id == pointId).FirstOrDefault();
+            if (point == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

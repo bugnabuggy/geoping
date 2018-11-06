@@ -43,6 +43,7 @@ namespace GeoPing.Api
         {
             services.AddSingleton<IConfiguration>(_configuration);
             services.AddSingleton<IEmailConfiguration>(_configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddSingleton(_configuration.GetSection("IdentityServerSettings").Get<IdentityServerSettings>());
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));

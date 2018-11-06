@@ -42,7 +42,7 @@ namespace GeoPing.Api.Controllers
             _configuration = configuration;
             _helper = helper;
         }
-                
+
         // POST /account/register
         [HttpPost]
         [AllowAnonymous]
@@ -74,7 +74,7 @@ namespace GeoPing.Api.Controllers
                 {
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(appUser).Result;
 
-                    SendSecurityEmail(appUser, code, "confirm-email", "Email confirmation");
+                    SendSecurityEmail(appUser, code, "ConfirmEmail", "Email confirmation");
                 }
                 else
                 {
@@ -118,7 +118,7 @@ namespace GeoPing.Api.Controllers
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            SendSecurityEmail(user, code, "confirm-reset", "Password reset");
+            SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 
             return Ok("A password reset confirmation email has been sent to email address you specified");
         }
@@ -145,7 +145,7 @@ namespace GeoPing.Api.Controllers
 
             var result = _accountSrv.EditProfile(loggedUserId, user);
 
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result);
             }
@@ -234,7 +234,7 @@ namespace GeoPing.Api.Controllers
                 FromAddress = new EmailAddress()
                 {
                     Name = "GeopingTeam",
-                    Address = "noreply@geoping.info"
+                    Address = "test@geoping.info"
                 },
                 ToAddress = new EmailAddress()
                 {

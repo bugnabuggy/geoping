@@ -25,20 +25,14 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private ISecurityService _securitySrv;
+
+        private Guid _expectedUserId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
+        private Guid _expectedUserId2 = Guid.Parse("10000000-0000-0000-0000-000000000002");
 
         private Guid _listId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
         private Guid _listId2 = Guid.Parse("10000000-0000-0000-0000-000000000005");
-        private Guid _gpUserId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
-        private Guid _gpUserId2 = Guid.Parse("10000000-0000-0000-0000-000000000002");
-        private TestLists _testLists = new TestLists();
-        /*private GeoList _editList = new GeoList()
-        {
-            Id = Guid.Parse("10000000-0000-0000-0000-000000000005"),
-            Name = "edited",
-            OwnerId = Guid.Parse("10000000-0000-0000-0000-000000000002")
-        };*/
-
-
+        
         [SetUp]
         public void BeforeEach()
         {
@@ -47,100 +41,82 @@ namespace GeoPing.Services.Tests
             _geolistRepo = _services.GetRequiredService<IRepository<GeoList>>();
             _publicGeolistRepo = _services.GetRequiredService<IRepository<PublicList>>();
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
+            _securitySrv = _services.GetRequiredService<ISecurityService>();
 
-            sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo);
+            sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv);
         }
 
 
         [Test]
         public void Should_add_new_lists()
         {
-            foreach (var list in _testLists.GetGeolists())
+            var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000005");
+
+            var testList = new GeoList()
             {
-                var result = sut.Add(list);
+                Id = expectedListId,
+                Created = DateTime.UtcNow,
+                Name = "Test",
+                OwnerId = _expectedUserId1,
+                IsPublic = true
+            };
 
-                Assert.That(result.Success);
-                Assert.That(result.Data != null);
-            }
+            sut.Add(testList);
 
-            var data = _geolistRepo.Data.Where(x => x.Id == _listId1).FirstOrDefault();
+            var testData1 = _geolistRepo.Data.FirstOrDefault(x => x.Id == expectedListId);
 
-            Assert.That(data != null); 
-            Assert.That(data.OwnerId == _gpUserId1);
-            Assert.That(data.Created != null);
+            Assert.That(testData1 != null); 
+            Assert.That(testData1.OwnerId == _expectedUserId1);
+            Assert.That(testData1.Created != null);
+
+            var testData2 = _publicGeolistRepo.Data.FirstOrDefault(x => x.ListId == expectedListId);
+
+            Assert.That(testData2 != null);
         }
         
         [Test]
         public void Should_get_user_list()
         {
-            foreach (var list in _testLists.GetGeolists())
-            {
-                sut.Add(list);
-            }
+            var result = sut.GetByFilter(_expectedUserId1, new UsersGeolistFilterDTO(), out int totalItems);
 
-            var result = sut.GetByFilter(_gpUserId1, new UsersGeolistFilterDTO(), out int totalItems);
             Assert.That(result.Success);
             Assert.AreEqual(3, result.Data.Count());
             Assert.AreEqual(3, totalItems);
-            Assert.AreEqual(3, result.Data.Where(x => x.OwnerId == _gpUserId1).Count());
+            Assert.AreEqual(3, result.Data.Where(x => x.OwnerId == _expectedUserId1).Count());
         }
         
         [Test]
         public void Should_get_public_lists()
         {
-            foreach (var list in _testLists.GetGeolists())
-            {
-                sut.Add(list);
-            }
-
             var result = sut.GetByFilter(new PublicGeolistFilterDTO(), out int totalItems);
             Assert.That(result.Success);
             Assert.AreEqual(2, result.Data.Count());
             Assert.AreEqual(2, totalItems);
-            Assert.AreEqual(1, result.Data.Where(x => x.OwnerId == _gpUserId1).Count());
+            Assert.AreEqual(1, result.Data.Where(x => x.OwnerId == _expectedUserId1).Count());
         }
         
         [Test]
         public void Should_get_public_users_lists()
         {
-            foreach (var list in _testLists.GetGeolists())
-            {
-                sut.Add(list);
-            }
-
-            var result = sut.GetByFilter(_gpUserId1, new PublicGeolistFilterDTO(), out int totalItems);
+            var result = sut.GetByFilter(_expectedUserId1, new PublicGeolistFilterDTO(), out int totalItems);
             Assert.That(result.Success);
             Assert.AreEqual(1, result.Data.Count());
             Assert.AreEqual(1, totalItems);
-            Assert.AreEqual(0, result.Data.Where(x => x.OwnerId == _gpUserId2).Count());
+            Assert.AreEqual(0, result.Data.Where(x => x.OwnerId == _expectedUserId2).Count());
         }
-        /*
-        [Test]
-        public void Should_edit_a_list()
-        {
-            var result = sut.Update(_editList);
 
-            Assert.That(result.Success);
-
-            var data = _geolistRepo.Data.Where(x => x.Id == _listId2).FirstOrDefault();
-
-            Assert.That(data != null);
-            Assert.That(_editList.Name, Is.EqualTo(data.Name));
-        }
-        */
         [Test]
         public void Should_remove_a_list()
         {
-            foreach (var list in _testLists.GetGeolists())
-            {
-                sut.Add(list);
-            }
+            var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testList = sut.Get(x => x.Id == _listId1).FirstOrDefault();
+            var testList = sut.Get(x => x.Id == expectedListId).FirstOrDefault();
 
-            var result = sut.Delete(testList);
+            var testTry1 = sut.Delete(_expectedUserId2, testList);
+            Assert.That(!testTry1.Success);
 
-            Assert.That(result.Success);
+            var testTry2 = sut.Delete(_expectedUserId1, testList);
+            Assert.That(testTry2.Success);
 
             var data = _geolistRepo.Data.Where(x => x.Id == _listId1).FirstOrDefault();
 

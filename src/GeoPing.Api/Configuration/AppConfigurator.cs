@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Geoping.Services;
 
 namespace GeoPing.Api.Configuration
 {
@@ -33,11 +34,13 @@ namespace GeoPing.Api.Configuration
 
             services.AddTransient<IEmailService, EmailService>();
 
+            services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IClaimsHelper, ClaimsHelper>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IGPUserService, GPUserService>();
+            services.AddScoped<ICheckInService, CheckInService>();
         }
 
         public void Initialize(IServiceProvider services)
@@ -93,7 +96,8 @@ namespace GeoPing.Api.Configuration
                         IdentityId = user.Id,
                         Email = user.Email,
                         Login = user.UserName,
-                        AccountType = "premium"
+                        AccountType = "premium",
+                        IsActivated = true
                     });
                     ctx.SaveChanges();
                 }

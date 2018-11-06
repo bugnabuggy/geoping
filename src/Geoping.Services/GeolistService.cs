@@ -22,6 +22,7 @@ namespace GeoPing.Services
             {"dateEdited", x => x.Edited},
             {"isPublic", x => x.IsPublic}
         };
+
         private Dictionary<string, Expression<Func<PublicListDTO, object>>> orderPublicBys =
             new Dictionary<string, Expression<Func<PublicListDTO, object>>>()
         {
@@ -40,14 +41,17 @@ namespace GeoPing.Services
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private ISecurityService _securitySrv;
 
         public GeolistService(IRepository<GeoList> geolistRepo,
                               IRepository<PublicList> publicGeolistRepo,
-                              IRepository<GeoPingUser> gpUserRepo)
+                              IRepository<GeoPingUser> gpUserRepo,
+                              ISecurityService securitySrv)
         {
             _geolistRepo = geolistRepo;
             _publicGeolistRepo = publicGeolistRepo;
             _gpUserRepo = gpUserRepo;
+            _securitySrv = securitySrv;
         }
 
         public IQueryable<GeoList> Get()
@@ -144,8 +148,16 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoList> Update(GeoList item)
+        public OperationResult<GeoList> Update(Guid userId, GeoList item)
         {
+            if (!_securitySrv.IsUserHaveAccessToList(userId, item))
+            {
+                return new OperationResult<GeoList>()
+                {
+                    Messages = new[] { "You have no rights to maniputale this list" }
+                };
+            }
+
             if (item.IsPublic)
             {
                 var wasPublic = _publicGeolistRepo.Data.Any(x => x.ListId == item.Id);
@@ -168,8 +180,17 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoList> Delete(GeoList item)
+        // Delete one of list
+        public OperationResult<GeoList> Delete(Guid userId, GeoList item)
         {
+            if (!_securitySrv.IsUserHaveAccessToList(userId, item))
+            {
+                return new OperationResult<GeoList>()
+                {
+                    Messages = new[] { $"You have no rights to manipulate list with Id = [{item.Id}]." }
+                };
+            }
+
             var result = _geolistRepo.Delete(item);
 
             var publicList = _publicGeolistRepo.Data.FirstOrDefault(x => x.ListId == item.Id);
@@ -181,10 +202,71 @@ namespace GeoPing.Services
 
             return new OperationResult<GeoList>()
             {
-                Data = result,
-                Messages = new[] { "Geolist was successfully removed." },
+                Messages = new[] { $"Geolist with Id = [{item.Id}] was successfully removed." },
                 Success = true
             };
+        }
+
+        // Delete several lists
+        public OperationResult Delete(Guid userId, string Ids)
+        {
+            var ids = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .ToArray();
+
+            if (ids == null)
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { "There are no given valid geolist Id" }
+                };
+            }
+
+var messages = new List<string>();
+
+            foreach (var id in ids)
+            {
+                var isListId = Guid.TryParse(id, out Guid listId);
+
+                if (!isListId)
+                {
+                    messages.Add($"Given geolistId = [{id}] is not valid");
+                    continue;
+                }
+
+                var list = Get(x => x.Id == listId).FirstOrDefault();
+
+                if (list == null)
+                {
+                    messages.Add($"There are no geolist with given geolistId = [{id}]");
+                    continue;
+                }
+
+                messages.AddRange(Delete(userId, list).Messages);
+            }
+
+            return new OperationResult()
+            {
+                Success = true,
+                Messages = messages.AsEnumerable()
+            };
+        }
+
+        public bool IsListExistWithThisId(string Id, out GeoList list)
+        {
+            var isListId = Guid.TryParse(Id, out Guid listId);
+            list = null;
+            if (!isListId)
+            {
+                return false;
+            }
+
+            list = Get(x => x.Id == listId).FirstOrDefault();
+            if (list == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
@@ -226,8 +308,8 @@ namespace GeoPing.Services
             var isEditedTo = DateTime.TryParse(filter.DateEditedTo, out DateTime editedTo);
 
             // Filtering by name
-            data = !string.IsNullOrEmpty(filter.NameContains)
-                 ? data.Where(x => x.Name.Contains(filter.NameContains))
+            data = !string.IsNullOrEmpty(filter.Name)
+                 ? data.Where(x => x.Name.Contains(filter.Name))
                  : data;
 
             // Filtering by creation date
