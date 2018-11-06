@@ -152,7 +152,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // GET /account/account/short
+        // GET /account/profile/short
         [HttpGet]
         [Route("profile/short")]
         public IActionResult GetShortProfile()
