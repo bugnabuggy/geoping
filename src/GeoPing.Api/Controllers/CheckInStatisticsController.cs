@@ -1,5 +1,6 @@
 ﻿using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/check")]
+    [Route("api/geolist/{listId}/statistics")]
     [Authorize]
     public class CheckInStatisticsController : Controller
     {
@@ -25,11 +26,16 @@ namespace GeoPing.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCheckInStatistics(CheckInStatFilterDTO filter)
+        public IActionResult GetCheckInStatistics(string listId, CheckInStatFilterDTO filter)
         {
+            var result = _statSrv.GetStatOfUsersList(listId, filter);
 
+            if (result.Success)
+            {
+                return Ok(result);
+            }
 
-            return Ok();
+            return BadRequest(result);
         }
     }
 }
