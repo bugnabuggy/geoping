@@ -9,4 +9,5 @@ export default interface IGetRoutesProps {
 
   authorizationUserFlag: ( isAuthorize: boolean ) => ( dispatch: IDispatchFunction ) => void;
   redirectDashboard: ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  loadUserData: () => ( dispatch: IDispatchFunction ) => void;
 }

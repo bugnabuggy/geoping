@@ -38,7 +38,7 @@ export const updateProfileData = ( data: any ) => ( dispatch: IDispatchFunction 
         message, EnumNotificationType.Success)));
     })
     .catch((error: any) => {
-      dispatch(addNotificationAction(createNotification(error, EnumNotificationType.Danger)));
+      dispatch(addNotificationAction(createNotification(error.message, EnumNotificationType.Danger)));
     });
 };
 export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {

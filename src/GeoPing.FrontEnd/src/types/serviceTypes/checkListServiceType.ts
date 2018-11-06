@@ -1,4 +1,5 @@
 import IGeoListType, { IGeoListForUpdateDTO } from '../../DTO/geoListDTO';
+import { ICheckInDTO } from '../../DTO/checkInDTO';
 
 export default interface ICheckListServiceType {
   loadAllMyCheckLists: () => Promise<any>;
@@ -18,4 +19,8 @@ export default interface ICheckListServiceType {
   sharedCheckListForUser: ( idList: string, emails: Array<string> ) => Promise<any>;
   providePublicAccess: ( idList: string, isPublic: boolean ) => Promise<any>;
 
+  addCheckIn: ( idList: string, idPoint: string, data: ICheckInDTO ) => Promise<any>;
+  getAllChecksForUserAndList: ( idList: string ) => Promise<any>;
+
+  getAllCheckForList: ( idList: string ) => Promise<any>;
 }

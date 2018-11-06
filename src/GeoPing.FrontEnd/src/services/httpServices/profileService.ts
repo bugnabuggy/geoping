@@ -3,6 +3,7 @@ import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import IUserType from '../../DTO/userDTO';
 import { loadUserProfile, updateUserProfile } from '../../constants/endpoints';
+import { getDataFromResponse } from '../helper';
 
 export default class ProfileService implements IProfileServiceType {
   private communicator: IHttpCommunicator;
@@ -12,7 +13,15 @@ export default class ProfileService implements IProfileServiceType {
   }
 
   loadProfileData() {
-    return this.communicator.get( loadUserProfile );
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.get( loadUserProfile )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 
   upgradeAccount() {

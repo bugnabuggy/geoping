@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import ICheckListComponentProps from '../../componentProps/checkListComponentProps';
-import { checkListUrl } from '../../constants/routes';
+import { checkInStatistics, checkListUrl } from '../../constants/routes';
 import { Card, CardBody } from 'reactstrap';
 
 export class CheckListComponent extends React.Component<ICheckListComponentProps, any> {
@@ -22,7 +22,7 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
     return (
       <div className="check-list-panel-container">
         <Link
-          to={`${checkListUrl.replace( ':id', this.props.checkList.id ) }`}
+          to={checkListUrl.replace( ':id', this.props.checkList.id )}
         >
           <Card className="check-list-panel">
             <CardBody>
@@ -37,7 +37,7 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
         <div className="check-list-panel-link-container">
           <Link
             className="check-list-panel-item-icons cursor-pointer"
-            to={'/check_in_statistics'}
+            to={checkInStatistics.replace( ':listId', this.props.checkList.id )}
           >
             <FontAwesomeIcon icon="chart-bar" className=""/>
           </Link>

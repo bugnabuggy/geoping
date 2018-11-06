@@ -49,6 +49,7 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
           geoPointListIsCreate={this.props.geoPointListIsCreate}
           addDistance={this.props.addDistance}
           getMyAddress={this.props.getMyAddress}
+          findGeoPosition={this.props.findGeoPosition}
         />
       </React.Fragment>
     );

@@ -7,6 +7,7 @@ import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { windowBlockingAction } from './windowAction';
+import IUser from '../types/serviceTypes/userServiceType';
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
@@ -64,6 +65,21 @@ export const authorizationUserFlag = ( isAuthorize: boolean ) => ( dispatch: IDi
 
 export const redirectDashboard = ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => {
   dispatch( redirectDaschboardAction( isRedirect ) );
+};
+
+export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
+  const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
+  userService.loadUserData()
+    .then( ( userData: any ) => {
+      console.info( userData );
+    })
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction(
+        createNotification(
+          error.message,
+          EnumNotificationType.Danger
+        ) ) );
+    } );
 };
 
 /* Actions */
