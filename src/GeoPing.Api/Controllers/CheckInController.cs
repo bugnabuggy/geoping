@@ -36,7 +36,11 @@ namespace GeoPing.Api.Controllers
 
             if (result.Success)
             {
-                return Ok(result); 
+                if (result.Data.Any())
+                {
+                    return Ok(result);
+                }
+                return NotFound(result);
             }
 
             return BadRequest(result);
