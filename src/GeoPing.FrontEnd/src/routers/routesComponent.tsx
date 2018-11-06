@@ -45,7 +45,7 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
           {component}
         </main>
         <footer>
-          footer
+          <a href="https://github.com/bugnabuggy/geoping">project on git hub</a>
         </footer>
       </React.Fragment>
     );
