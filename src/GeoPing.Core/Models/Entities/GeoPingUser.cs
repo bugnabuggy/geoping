@@ -17,6 +17,6 @@ namespace GeoPing.Core.Entities
         public DateTime LastPaid { get; set; }
         public bool IsActivated { get; set; }
         public string IdentityId { get; set; }
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
     }
 }
