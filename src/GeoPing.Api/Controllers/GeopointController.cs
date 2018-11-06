@@ -13,7 +13,7 @@ namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/geolist/{ListId}/geopoint")]
-    //[Authorize]
+    [Authorize]
     public class GeopointController : Controller
     {
         private IGeopointService _geopointSrv;

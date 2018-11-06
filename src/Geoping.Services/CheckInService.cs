@@ -73,18 +73,10 @@ namespace Geoping.Services
                        where ch.PointId == p.Id && ch.UserId == userId
                        select ch;
 
-            if (!data.Any())
-            {
-                return new OperationResult<IEnumerable<CheckIn>>
-                {
-                    Messages = new[] { $"User didn`t check in points of list with Id = [{list.Id}]" }
-                };
-            }
-
             return new OperationResult<IEnumerable<CheckIn>>
             {
                 Data = data,
-                Messages = new[] { $"User checked in points of list with Id = [{list.Id}]" },
+                Messages = new[] { $"User checked in following points of list with Id = [{list.Id}]" },
                 Success = true
             };
         }
