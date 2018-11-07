@@ -26,6 +26,7 @@ const renderInput = ( props: any ) => {
               mask={props.mask}
               className="form-control"
               placeholder={props.placeholder}
+              guide={true}
             />
           )
           :

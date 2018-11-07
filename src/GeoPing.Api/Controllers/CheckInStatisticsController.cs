@@ -28,7 +28,8 @@ namespace GeoPing.Api.Controllers
         [HttpGet]
         public IActionResult GetCheckInStatistics(string listId, CheckInStatFilterDTO filter)
         {
-            var result = _statSrv.GetStatOfUsersList(listId, filter);
+            var result = _statSrv.GetStatOfUsersList
+                (_helper.GetAppUserIdByClaims(User.Claims), listId, filter, out int totalItems);
 
             if (result.Success)
             {

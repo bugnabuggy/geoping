@@ -47,11 +47,11 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
           // dispatch( addPointAction( marker ) );
         } )
         .catch( ( error: any ) => {
-          dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+          dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
         } );
     },
     ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -141,7 +141,7 @@ export const loadCheckListData = ( idCheckList: string ) => ( dispatch: IDispatc
       dispatch( loadMarkersForCheckListAction( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadMarkersForCheckListAction( false ) );
     } );
 };

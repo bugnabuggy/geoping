@@ -54,25 +54,25 @@ namespace GeoPing.Services.Tests
             Assert.AreEqual("premium", profile.AccountType);
         }
 
-        [Test]
-        public void Should_edit_profile_info_of_testadmin()
-        {
-            var editedProfile = (GeoPingUser)_accountSrv.GetProfile(_gpUserId).Data;
+        //[Test]
+        //public void Should_edit_profile_info_of_testadmin()
+        //{
+        //    var editedProfile = (GeoPingUser)_accountSrv.GetProfile(_gpUserId).Data;
 
-            editedProfile.FirstName = "Test";
-            editedProfile.LastName = "Admin";
-            editedProfile.Birthday = new DateTime(2018, 01, 15);
-            editedProfile.AccountType = "superpremium";
+        //    editedProfile.FirstName = "Test";
+        //    editedProfile.LastName = "Admin";
+        //    editedProfile.Birthday = new DateTime(2018, 01, 15);
+        //    editedProfile.AccountType = "superpremium";
 
-            var profile = (GeoPingUser)_accountSrv.EditProfile(_gpUserId, editedProfile).Data;
+        //    var profile = (GeoPingUser)_accountSrv.EditProfile(_gpUserId, editedProfile).Data;
 
-            Assert.IsTrue(profile != null);
-            Assert.AreEqual("testadmin", profile.Login);
-            Assert.AreEqual("testadmin@geoping.com", profile.Email);
-            Assert.AreEqual("superpremium", profile.AccountType);
-            Assert.AreEqual("Test", profile.FirstName);
-            Assert.AreEqual("Admin", profile.LastName);
-            Assert.AreEqual("15.01.2018", profile.Birthday.ToShortDateString());
-        }
+        //    Assert.IsTrue(profile != null);
+        //    Assert.AreEqual("testadmin", profile.Login);
+        //    Assert.AreEqual("testadmin@geoping.com", profile.Email);
+        //    Assert.AreEqual("superpremium", profile.AccountType);
+        //    Assert.AreEqual("Test", profile.FirstName);
+        //    Assert.AreEqual("Admin", profile.LastName);
+        //    Assert.AreEqual("15.01.2018", profile.Birthday.ToShortDateString());
+        //}
     }
 }
