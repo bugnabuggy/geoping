@@ -162,7 +162,7 @@ namespace GeoPing.Api.Controllers
 
             if (result.Success)
             {
-                Ok(result);
+                return Ok(result);
             }
             return BadRequest(result);
         }
