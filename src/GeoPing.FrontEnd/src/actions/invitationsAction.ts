@@ -12,7 +12,7 @@ export const filterInvitations = () => (dispatch: IDispatchFunction) => {
       dispatch( filterInvitationsAction(true ));
     })
     .catch(( error: any) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     });
 };
 export const closeFilterInvitations = () => (dispatch: IDispatchFunction) => {
