@@ -68,7 +68,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     </LinkContainer>
                   </NavItem>
                   <UncontrolledDropdown nav={true} inNavbar={true}>
-                    <DropdownToggle nav={true} caret={true}>{this.props.user.name}</DropdownToggle>
+                    <DropdownToggle nav={true} caret={true}>{this.props.user.userName}</DropdownToggle>
                     <DropdownMenu right={true}>
                       <ul>
                         <NavItem>
@@ -90,7 +90,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </Nav>
-                <img src="/assets/images/avatar.png" width="50px" height="50px" className="rounded-circle"/>
+                <img src={this.props.user.avatar} width="50px" height="50px" className="rounded-circle"/>
               </Collapse>
             )
             :

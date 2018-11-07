@@ -1,5 +1,5 @@
 export default interface IUserStateType {
-  name: string;
+  userName: string;
   avatar: string;
   authorized: boolean;
   roleUser: ERoleUser;

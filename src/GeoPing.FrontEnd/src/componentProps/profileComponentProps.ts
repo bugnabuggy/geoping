@@ -11,4 +11,5 @@ export  interface IProfileComponentProps {
   closeModalChangePassword: () => (dispatch: IDispatchFunction ) => void;
   changePassword: (password: string, newPassword: string ) => (dispatch: IDispatchFunction ) => void;
   upgradeAccount?: () => (dispatch: IDispatchFunction ) => void;
+  saveAvatar: ( ) => void;
 }

@@ -56,7 +56,7 @@ export function getDataFromResponse( response: any ) {
 }
 
 export function checkLocation( location: string, callbackRedirect: any ) {
-  const authorizedPath: Array<string> = [
+  const authorizedPath: Array<string | RegExp> = [
     dashboardUrl,
     profileUrl,
     checkListUrl,
