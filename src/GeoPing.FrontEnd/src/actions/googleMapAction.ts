@@ -32,7 +32,7 @@ export const addListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFun
       dispatch( addListPointsAction( geoPoints ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 

@@ -14,7 +14,7 @@ export const loadProfileData = (idUser: string) => ( dispatch: IDispatchFunction
       dispatch( loadProfileDataAction( profile ) );
     })
     .catch(( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -26,7 +26,7 @@ export const changePassword = ( password: string, newPassword: string ) => ( dis
         message, EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
