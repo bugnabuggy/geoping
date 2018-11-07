@@ -10,8 +10,10 @@ import { authorizationUserFlag, loadUserData, redirectDashboard } from '../actio
 import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
-import { dashboardUrl } from '../constants/routes';
+import { dashboardUrl, loginUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
+import { redirectOnSignInForm } from '../actions/windowAction';
+import { checkLocation } from '../services/helper';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   authorized = () => {
@@ -23,22 +25,32 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
       if ( !this.props.user.authorized ) {
         this.props.authorizationUserFlag( true );
       }
+      if ( !this.props.user.name ) {
+        this.props.loadUserData();
+      }
+      if ( sessionStorage.getItem( 'url_for_redirect' ) === this.props.location ) {
+        sessionStorage.removeItem( 'url_for_redirect' );
+        this.props.redirectDashboard( false );
+      }
     } else {
       if ( this.props.user.authorized ) {
         this.props.authorizationUserFlag( false );
+      } else {
+        if ( !sessionStorage.getItem( 'url_for_redirect' ) ) {
+          checkLocation( this.props.location, this.props.redirectOnSignInForm );
+        }
       }
     }
   };
 
   constructor( props: IGetRoutesProps ) {
     super( props );
+    console.info('GetRoutes constructor', props );
     this.authorized();
-    this.props.loadUserData();
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
     this.authorized();
-    console.info( this.props );
   }
 
   render() {
@@ -54,7 +66,10 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         {this.props.user.authorized &&
         this.props.user.redirectDashboard &&
         this.props.location !== dashboardUrl &&
-        <Redirect to={dashboardUrl}/>}
+        this.props.location !== sessionStorage.getItem( 'url_for_redirect' ) &&
+        <Redirect to={sessionStorage.getItem( 'url_for_redirect' ) || dashboardUrl}/>}
+        {this.props.window.redirectOnSignInForm && this.props.location !== loginUrl &&
+        <Redirect to={loginUrl}/>}
       </React.Fragment>
     );
   }
@@ -74,6 +89,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       authorizationUserFlag,
       redirectDashboard,
       loadUserData,
+      redirectOnSignInForm,
     },
     dispath );
 

@@ -52,6 +52,7 @@ export const closeModalChangePassword = () => (dispatch: IDispatchFunction ) => 
   dispatch(closeModalChangePasswordAction( false ));
 };
 
+/* Action */
 function closeModalChangePasswordAction(isShow: boolean): Object {
   return {type: CLOSE_MODAL_WINDOW, isShow};
 }
