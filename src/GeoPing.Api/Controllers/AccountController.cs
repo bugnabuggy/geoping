@@ -141,9 +141,7 @@ namespace GeoPing.Api.Controllers
         [Route("profile")]
         public IActionResult EditProfile([FromBody]GeoPingUserDTO user)
         {
-            var loggedUserId = _helper.GetAppUserIdByClaims(User.Claims);
-
-            var result = _accountSrv.EditProfile(loggedUserId, user);
+            var result = _accountSrv.EditProfile(_helper.GetAppUserIdByClaims(User.Claims), user);
 
             if (result.Success)
             {
@@ -151,6 +149,21 @@ namespace GeoPing.Api.Controllers
             }
             return BadRequest(result);
         }
+
+        // PUT /account/profile/avatar
+        [HttpPut]
+        [Route("profile/avatar")]
+        public IActionResult EditAvatarImage([FromBody]string avatar)
+        {
+            var result = _accountSrv.EditProfileAvatar(_helper.GetAppUserIdByClaims(User.Claims), avatar);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
 
         // GET /account/profile/short
         [HttpGet]
