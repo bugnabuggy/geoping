@@ -150,7 +150,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoList> Update(Guid userId, GeoList item)
         {
-            if (!_securitySrv.IsUserHaveAccessToList(userId, item))
+            if (!_securitySrv.IsUserHasAccessToList(userId, item))
             {
                 return new OperationResult<GeoList>()
                 {
@@ -183,7 +183,7 @@ namespace GeoPing.Services
         // Delete one of list
         public OperationResult<GeoList> Delete(Guid userId, GeoList item)
         {
-            if (!_securitySrv.IsUserHaveAccessToList(userId, item))
+            if (!_securitySrv.IsUserHasAccessToList(userId, item))
             {
                 return new OperationResult<GeoList>()
                 {
