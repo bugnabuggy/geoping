@@ -40,7 +40,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with id = [{listId}]");
             }
 
-            var isUserAllowed = _securitySrv.IsUserHasAccessToList(_helper.GetAppUserIdByClaims(User.Claims), list);
+            var isUserAllowed = _securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list);
             if (!isUserAllowed)
             {
                 return StatusCode(401, "You are not allowed to do this");
