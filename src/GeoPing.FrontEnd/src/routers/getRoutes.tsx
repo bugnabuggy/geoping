@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Routes from './routesComponent';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
-import { authorizationUserFlag, redirectDashboard } from '../actions/userAction';
+import { authorizationUserFlag, loadUserData, redirectDashboard } from '../actions/userAction';
 import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
@@ -33,10 +33,12 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   constructor( props: IGetRoutesProps ) {
     super( props );
     this.authorized();
+    this.props.loadUserData();
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
     this.authorized();
+    console.info( this.props );
   }
 
   render() {
@@ -71,6 +73,7 @@ const mapDispatchToProps = ( dispath: any ) =>
     {
       authorizationUserFlag,
       redirectDashboard,
+      loadUserData,
     },
     dispath );
 

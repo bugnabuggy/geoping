@@ -1,44 +1,47 @@
 import * as React from 'react';
 import ProfileReduxForm from './reduxForms/profileReduxForm';
 import { Button } from 'react-bootstrap';
+
 import { IProfileComponentProps } from '../../componentProps/profileComponentProps';
-import { ModalChangePasswordComponent } from  '../modalComponents/modalChangePasswordComponent';
-import IUserType from '../../DTO/userDTO';
+import { ModalChangePasswordComponent } from '../modalComponents/modalChangePasswordComponent';
+import moment = require('moment');
 
 class ProfileComponent extends React.Component<IProfileComponentProps, any> {
 
-  constructor(props: any) {
-    super(props);
-    this.submit = this.submit.bind(this);
+  constructor( props: any ) {
+    super( props );
+    this.submit = this.submit.bind( this );
   }
 
-  componentDidMount () {
-    this.props.loadProfileData('id');
+  componentDidMount() {
+    this.props.loadProfileData( 'id' );
 
   }
 
-  submit (e: any) {
-    const newProfileData: IUserType = {
-      identityId: this.props.profileState.identityId,
-      isActivated: this.props.profileState.isActivated,
+  submit( e: any ) {
+    const newProfileData: any /*IUserType*/ = {
+      identityid: this.props.profileState.identityId,
+      isactivated: this.props.profileState.isActivated,
       id: this.props.profileState.id,
       email: e.email,
       login: e.login,
-      accountType: e.accountType,
-      firstName: e.firstName,
-      lastName: e.lastName,
+      accounttype: e.accountType,
+      firstname: e.firstName,
+      lastname: e.lastName,
       birthday: e.birthday,
-      phone: e.phone,
-      lastPaid: e.lastPaid,
-      avatar: this.props.profileState.avatar,
+      phonenumber: e.phone,
+      lastpaid: e.lastPaid,
+      avatar: e.avatar ? e.avatar : this.props.profileState.avatar,
     };
-    this.props.updateProfileData(newProfileData);
+    this.props.updateProfileData( newProfileData );
   }
 
   render() {
+    const date: any = moment( this.props.profileState.lastPaid );
+    date.locale( 'ru' );
     return (
       <div className="profile-page">
-         <div className="flex-box-col">
+        <div className="flex-box-col">
           <label htmlFor="profile-form">Profile</label>
           {this.props.profileState.isLoaded ?
             <ProfileReduxForm
@@ -56,7 +59,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
           <label htmlFor="payment-info">Payment info</label>
           <div className="payment-info">
             <div className="last-paid-flex">
-              Last paid <em>{this.props.profileState.lastPaid}</em>
+              Last paid <em>{date.format( 'L' )}</em>
             </div>
             <Button
               bsStyle="primary"

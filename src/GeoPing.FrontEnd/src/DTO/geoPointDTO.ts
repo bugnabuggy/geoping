@@ -17,3 +17,17 @@ export interface IGeoPintForCreateDTO {
   Radius: number;
   Address: string;
 }
+
+export interface ICheckInGeoPointDTO {
+  date: string;
+  deviceId: string;
+  distance: number;
+  geopoint: any;
+  id: string;
+  ip: any;
+  latitude: number;
+  longitude: number;
+  pointId: string;
+  userAgent: any;
+  userId: string;
+}

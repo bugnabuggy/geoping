@@ -3,15 +3,18 @@ import { IGeoListForUpdateDTO } from '../../DTO/geoListDTO';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import {
+  addCheckIn,
   createNewGeoList,
   endpointBaseUrl,
+  getAllChecksInForUserAndGivenList,
   getAllGeoLists,
   getAllPublicGeoLosts,
-  getGeoListForId,
+  getGeoListForId, getGeoListStatistics,
   removeGeoList,
   updateGeoList
 } from '../../constants/endpoints';
 import { getDataFromResponse } from '../helper';
+import { ICheckInDTO } from '../../DTO/checkInDTO';
 
 export default class CheckListService implements ICheckListServiceType {
   private communicator: IHttpCommunicator;
@@ -88,6 +91,18 @@ export default class CheckListService implements ICheckListServiceType {
     // return this.communicator.put( updateGeoList.replace( '%id%', idCheckList ), checkList );
   }
 
+  addCheckIn( idList: string, idPoint: string, data: ICheckInDTO ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.post( addCheckIn.replace( '%listid%', idList ).replace( '%id%', idPoint ), data )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
   updateNameMyCheckList( newNameCheckList: string ) {
     // return this.communicator.put( '', { newNameCheckList } );
     return new Promise( resolve => '' );
@@ -107,6 +122,30 @@ export default class CheckListService implements ICheckListServiceType {
 
   providePublicAccess( idList: string, isPublic: boolean ) {
     return new Promise( resolve => '' );
+  }
+
+  getAllChecksForUserAndList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getAllChecksInForUserAndGivenList.replace( '%listid%', idList ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        })
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  getAllCheckForList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getGeoListStatistics.replace( '%listid%', idList ))
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        })
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    });
   }
 
 }

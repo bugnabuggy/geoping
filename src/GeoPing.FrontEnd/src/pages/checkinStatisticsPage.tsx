@@ -9,7 +9,9 @@ export default class CheckinStatisticsPage extends React.Component<ICheckinStati
     return (
       <div className="check-in-statistics">
         <div className="check-in-statistics-container">
-          <CheckinStatisticsComponentContainer />
+          <CheckinStatisticsComponentContainer
+            listId={this.props.match.params.listId}
+          />
         </div>
         <div className="">
           <GoogleMapComponentContainer />

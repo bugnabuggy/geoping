@@ -10,6 +10,7 @@ import {
   deselectMarkerAPI,
   getDistance,
   selectMarkerAPI,
+  setRadiusMarker,
   setCoordinatesForUserMarker,
   settingPointsByCoordinates,
 } from '../../../services/googleMapService';
@@ -60,7 +61,7 @@ class GoogleMap extends React.Component {
       }
     }
 
-    if ( this.props.googleMap.geoPoints.length === 0) {
+    if (this.props.googleMap.geoPoints.length === 0) {
       deleteAllMarkersAPI();
     }
 
@@ -83,10 +84,12 @@ class GoogleMap extends React.Component {
     }
 
     if (prevProps.googleMap.position.lat !== this.props.googleMap.position.lat ||
-        prevProps.googleMap.position.lng !== this.props.googleMap.position.lng) {
-      console.log('prevProps.googleMap.position', prevProps.googleMap.position);
-      console.log('this.props.googleMap.position', this.props.googleMap.position);
+      prevProps.googleMap.position.lng !== this.props.googleMap.position.lng) {
       setCoordinatesForUserMarker(this.props.googleMap.position);
+    }
+
+    if (this.props.googleMap.selectedGeoPoint.radius !== prevProps.googleMap.selectedGeoPoint.radius) {
+      setRadiusMarker(this.props.googleMap.selectedGeoPoint);
     }
   }
 

@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import MaskedInput from 'react-text-mask';
+
 import { validate } from '../../../validations/userProfileValidate';
 import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { IconLookup } from '@fortawesome/fontawesome-svg-core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Avatar from 'react-avatar-edit';
+import DatePicker from 'react-datepicker';
+import * as moment from 'moment';
 
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
@@ -14,12 +19,24 @@ const renderInput = ( props: any ) => {
     <FormGroup>
       <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
       <div className="form-input-container">
-        <FormControl
-          {...props.input}
-          type={props.type}
-          placeholder={props.placeholder}
-          disabled={props.disabled}
-        />
+        {props.mask ?
+          (
+            <MaskedInput
+              {...props.input}
+              mask={props.mask}
+              className="form-control"
+              placeholder={props.placeholder}
+            />
+          )
+          :
+          (
+            <FormControl
+              {...props.input}
+              type={props.type}
+              placeholder={props.placeholder}
+              disabled={props.disabled}
+            />
+          )}
         <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
@@ -39,10 +56,40 @@ const renderInput = ( props: any ) => {
   );
 };
 
+const renderAvatar = ( props: any ) => {
+  return (
+    <div className="flex-box-col-avatar">
+      <Avatar
+        width={290}
+        height={195}
+        onCrop={props.input.onChange}
+        onClose={props.input.onChange}
+      />
+    </div>
+  );
+};
+
+const renderDate = ( props: any ) => {
+  const date: moment.Moment = moment( props.input.value );
+  return (
+    <DatePicker
+      selected={date}
+      locale="ru"
+      onChange={props.input.onChange}
+      className="form-control"
+    />
+  );
+};
+
 function profileForm( props: any ): any {
-  const { handleSubmit,  } = props;
+  const { handleSubmit, } = props;
   return (
     <form className="profile-form">
+      <Field
+        component={renderAvatar}
+        name="avatar"
+        disabled={true}
+      />
       <Field
         component={renderInput}
         name="login"
@@ -63,7 +110,7 @@ function profileForm( props: any ): any {
         type="text"
       />
       <Field
-        component={renderInput}
+        component={renderDate}
         name="birthday"
         labelName="Birthday"
         type="text"
@@ -80,6 +127,7 @@ function profileForm( props: any ): any {
         labelName="Mobile Phone"
         type="tel"
         placeholder="xxx-xxx-xxxx"
+        mask={[ /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/ ]}
       />
       <Field
         component={renderInput}

@@ -6,28 +6,27 @@ import { IProfileComponentContainerProps } from '../componentContainerProps/prof
 import ProfileComponent from '../components/forms/profile';
 import {
   changePassword,
+  closeModalChangePassword,
   loadProfileData,
-  upgradeAccount,
-  updateProfileData,
   showModalChangePassword,
-  closeModalChangePassword
+  updateProfileData
 } from '../actions/profileAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class ProfileComponentContainer extends React.Component<IProfileComponentContainerProps, any> {
   render() {
     return (
-        <ProfileComponent
-          profileState={this.props.profileState}
-          isShowModal={this.props.isShowModal}
+      <ProfileComponent
+        profileState={this.props.profileState}
+        isShowModal={this.props.isShowModal}
 
-          loadProfileData={this.props.loadProfileData}
-          updateProfileData={this.props.updateProfileData}
-          changePassword={this.props.changePassword}
-          showModalChangePassword={this.props.showModalChangePassword}
-          closeModalChangePassword={this.props.closeModalChangePassword}
-          // upgradeAccount={this.props.upgradeAccount}
-        />
+        loadProfileData={this.props.loadProfileData}
+        updateProfileData={this.props.updateProfileData}
+        changePassword={this.props.changePassword}
+        showModalChangePassword={this.props.showModalChangePassword}
+        closeModalChangePassword={this.props.closeModalChangePassword}
+        // upgradeAccount={this.props.upgradeAccount}
+      />
     );
   }
 }
@@ -49,4 +48,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
     },
     dispatch );
 
-export default connect(mapStateToProps, mapDispatchToProps)( ProfileComponentContainer ) ;
+export default connect( mapStateToProps, mapDispatchToProps )( ProfileComponentContainer );

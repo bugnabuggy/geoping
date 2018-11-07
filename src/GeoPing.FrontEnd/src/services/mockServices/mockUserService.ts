@@ -40,4 +40,15 @@ export default class MockUserService implements IUser {
     });
   }
 
+  loadUserData() {
+    return new Promise(( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          resolve ( JSON.parse(sessionStorage.getItem('localDB')).userData );
+        },
+        1000
+      );
+    });
+  }
+
 }
