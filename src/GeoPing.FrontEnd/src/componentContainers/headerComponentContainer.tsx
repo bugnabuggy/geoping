@@ -21,8 +21,7 @@ class HeaderComponentContainer extends React.Component<IHeaderComponentContainer
         <HeaderComponent
           path={this.props.location.pathname}
           routeKey={this.props.routeKey}
-          userAuthorization={this.props.userAuthorization}
-          roleUser={this.props.roleUser}
+          user={this.props.user}
 
           editRouteAction={this.props.editRoute}
           authorizationUser={this.props.authorizationUser}
@@ -37,8 +36,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     location: state.router.location,
     routeKey: state.header.routeKey,
-    userAuthorization: state.user.authorized,
-    roleUser: state.user.roleUser,
+    user: state.user,
   };
 };
 

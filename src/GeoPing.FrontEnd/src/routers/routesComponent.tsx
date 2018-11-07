@@ -31,7 +31,7 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
       <Switch>
         {this.renderRouters( this.props.authorized, this.props.roleUser )}
 
-        <Redirect push={true} from="*" to={baseUrl}/>
+        {/*<Redirect push={true} from="*" to={baseUrl}/>*/}
       </Switch>
     );
 

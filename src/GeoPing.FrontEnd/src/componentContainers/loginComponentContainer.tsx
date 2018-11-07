@@ -6,10 +6,16 @@ import ILoginComponentContainerProps from '../componentContainerProps/loginCompo
 import LoginComponent from '../components/forms/login';
 import { authorizationUser, authorizationUserFlag, redirectDashboard, signOutUser } from '../actions/userAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
-import { windowBlocking } from '../actions/windowAction';
+import { redirectOnSignInForm, windowBlocking } from '../actions/windowAction';
 
 class LoginComponentContainer extends React.Component<ILoginComponentContainerProps, any> {
-
+  constructor(props: ILoginComponentContainerProps) {
+    super(props);
+    props.redirectOnSignInForm( false );
+  }
+  // componentDidMount() {
+    // this.props.redirectOnSignInForm( false );
+  // }
   render() {
     return (
       <React.Fragment>
@@ -44,6 +50,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       authorizationUserFlag,
       redirectDashboard,
       windowBlocking,
+      redirectOnSignInForm,
     },
     dispath );
 
