@@ -1,3 +1,4 @@
+using Geoping.Services.Configuration;
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
@@ -44,6 +45,7 @@ namespace GeoPing.Api
             services.AddSingleton<IConfiguration>(_configuration);
             services.AddSingleton<IEmailConfiguration>(_configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
             services.AddSingleton(_configuration.GetSection("IdentityServerSettings").Get<IdentityServerSettings>());
+            services.AddSingleton(_configuration.GetSection("DefaultUserSettings").Get<DefaultUserSettings>());
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));

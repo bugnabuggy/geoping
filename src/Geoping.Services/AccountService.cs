@@ -1,4 +1,5 @@
-﻿using GeoPing.Core.Entities;
+﻿using Geoping.Services.Configuration;
+using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
@@ -206,24 +207,31 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUser user)
+        public OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO userData)
         {
-            if (loggedUserId == user.Id)
+            var user = _gpUserSrv.GetUser(x => x.Id == loggedUserId);
+
+            user.FirstName = userData.FirstName;
+            user.LastName = userData.LastName;
+            user.Birthday = userData.Birthday;
+            user.PhoneNumber = userData.PhoneNumber;
+            user.Avatar = userData.Avatar ?? DefaultUserSettings.AvatarImage;
+
+            var result = _gpUserSrv.EditUser(user);
+
+            if (result.Success)
             {
-                var result = _gpUserSrv.EditUser(user);
-                if (result.Success)
+                return new OperationResult<GeoPingUser>()
                 {
-                    return new OperationResult<GeoPingUser>()
-                    {
-                        Data = user,
-                        Success = true,
-                        Messages = new[] { "Profile tou are trying to edit is not yours or something went wrong while editing" }
-                    };
-                }
+                    Data = user,
+                    Success = true,
+                    Messages = new[] { "Your profile was edited successfully" }
+                };
             }
+
             return new OperationResult<GeoPingUser>()
             {
-                Messages = new[] { "Profile tou are trying to edit is not yours or something went wrong while editing" }
+                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
             };
         }
 

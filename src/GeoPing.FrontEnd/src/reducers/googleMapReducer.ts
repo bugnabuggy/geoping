@@ -6,6 +6,7 @@ import {
   CANCEL_GEO_POINT,
   CHANGE_DATA_GEO_POINT,
   CHANGE_MOVING_GEO_POINT,
+  CLEAR_GEO_POINT,
   CLEAR_STATE_GOOGLE_MAP,
   DELETE_GEO_POINT,
   FIND_GEO_POSITION,
@@ -17,7 +18,7 @@ import {
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
 import { defaultMarker } from '../constants/defaultMarker';
-import { CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
+import { CHECK_IN_GEO_POINTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/checkList';
 import { STATISTICS_LOAD_POINTS } from '../constantsForReducer/checkinStatistics';
 
@@ -38,6 +39,8 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ CHECK_IN_SELECT_LIST ]: checkInSelectList,
     [ CLEAR_STATE_GOOGLE_MAP ]: clearStateGoogleMap,
     [ STATISTICS_LOAD_POINTS ]: statisticsLoadPoints,
+    [ CLEAR_GEO_POINT ]: clearGeoPoint,
+    [CHECK_IN_GEO_POINTS]: checkInGeoPoint,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -223,5 +226,24 @@ function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogl
     ...state,
     geoPoints: action.points,
     isGeoPointListIsCreated: false,
+  };
+}
+
+function clearGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    geoPoints: [],
+    selectedGeoPoint: googleMapState.selectedGeoPoint,
+    statusMarker: googleMapState.statusMarker,
+    isGeoPointListIsCreated: googleMapState.isGeoPointListIsCreated,
+  };
+}
+
+function checkInGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    checkInGeoPoint: [
+      ...action.checkInGeoPoint
+    ],
   };
 }

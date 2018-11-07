@@ -1,23 +1,34 @@
 import { v4 as uuidV4 } from 'uuid';
 
 import { defaultMarker } from '../constants/defaultMarker';
-import IGeoPoint from '../DTO/geoPointDTO';
+import IGeoPoint, { ICheckInGeoPointDTO } from '../DTO/geoPointDTO';
 
 let _googleLib: any;
 let _googleMap: any;
 let _geoCoder: any;
 let _markers: Array<any> = [];
+let _circles: Array<any> = [];
 
 let _options: any;
 let _that: any;
 
 let idUserMarker: any = '';
 
+const redColor: string = 'AA0000';
+const blueColor: string = '70aae9';
 const pinColor: string = '26b430';
-const iconSelectedGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
-  `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
+const pinColorCheckInSelected: string = 'fbd661';
+// const iconSelectedGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
+//   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
+// const iconSelectedCheckInGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
+//   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColorCheckInSelected}|0000FF`;
 const iconUserGeoPointUrl: string = '/assets/images/card-pin.png';
 const defaultTimeForAnimateMarkers: number = 300;
+
+function getIconGeoPointUrl( color: string ) {
+  return 'http://chart.apis.google.com/chart' +
+    `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${color}|0000FF`;
+}
 
 export function constructorMapService( google: any, options: any, that: any ) {
   _googleLib = google;
@@ -48,6 +59,7 @@ export function deleteMarkerAPI( idGeoPoint: string ) {
 
 export function deleteAllMarkersAPI() {
   deleteAllGeoPoint();
+  deleteAllCircles();
 }
 
 export function deselectMarkerAPI( geoPoint: IGeoPoint ) {
@@ -94,7 +106,7 @@ function iconSelectedGeoPoint( timeout: number, geoPoint?: IGeoPoint ) {
     () => {
       createGeoPoint(
         geoPoint,
-        createMarkerImage( iconSelectedGeoPointUrl ),
+        createMarkerImage( getIconGeoPointUrl( pinColor ) ),
         true
       );
     },
@@ -139,8 +151,15 @@ function iconUserGeoPoint( timeout: number ) {
 
 function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   const marker: any = findGeoPoint( geoPoint.idForMap );
+  // const circle: any = findCircles( geoPoint.idForMap );
   if ( marker ) {
-    marker.setIcon( createMarkerImage( iconSelectedGeoPointUrl ) );
+    marker.setIcon( createMarkerImage(
+      getIconGeoPointUrl( _that.props.isCheckIn ? pinColorCheckInSelected : pinColor )
+    ) );
+    // circle.setOptions( {
+    //   fillColor: _that.props.isCheckIn ? `#${pinColorCheckInSelected}` : `#${pinColor}`,
+    //   strokeColor: _that.props.isCheckIn ? `#${pinColorCheckInSelected}` : `#${pinColor}`
+    // } );
     if ( !_that.props.isCheckIn && !_that.props.checkInStatistics.isCheckInStatistics ) {
       marker.setDraggable( true );
     } else {
@@ -149,22 +168,47 @@ function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   }
 }
 
+export function setRadiusMarker( geoPoint: IGeoPoint ) {
+  const circle: any = findCircles( geoPoint.idForMap );
+  if ( circle ) {
+    circle.setOptions( {
+      radius: geoPoint.radius,
+    } );
+  }
+}
+
 function clearIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   const marker: any = findGeoPoint( geoPoint.idForMap );
+  // const circle: any = findCircles( geoPoint.idForMap );
   if ( marker ) {
     marker.setIcon( null );
     marker.setDraggable( false );
+    // circle.setOptions( {
+    //   fillColor: `#${redColor}`,
+    //   strokeColor: `#${redColor}`
+    // } );
   }
 }
 
 function createListMarkers( geoPoints: Array<IGeoPoint> ) {
   geoPoints.forEach( ( item: IGeoPoint ) => {
-    createGeoPoint( item, null, false );
+    if ( !_that.props.isCheckIn ) {
+      createGeoPoint( item, null, false );
+    } else {
+      const checkIn: boolean = !!_that.props.googleMap.checkInGeoPoint.find(
+        ( il: ICheckInGeoPointDTO ) => il.pointId === item.id
+      );
+      if ( checkIn ) {
+        iconSelectedGeoPoint( 100, item );
+      } else {
+        createGeoPoint( item, null, false );
+      }
+    }
   } );
 }
 
 function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any ) {
-  const marker = new _googleLib.maps.Marker( {
+  const marker: any = new _googleLib.maps.Marker( {
     position: geoPoint,
     title: geoPoint.name || '',
     map: _googleMap,
@@ -173,6 +217,20 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     idForMap: geoPoint.idForMap,
     animation: _googleLib.maps.Animation.DROP,
   } );
+  if ( geoPoint.idForMap !== idUserMarker ) {
+    const circle: any = new _googleLib.maps.Circle( {
+      map: _googleMap,
+      radius: geoPoint.radius,
+      idForMap: geoPoint.idForMap,
+      fillColor: `#${blueColor}`,
+      fillOpacity: 0.35,
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      strokeColor: `#${blueColor}`,
+    } );
+    circle.bindTo( 'center', marker, 'position' );
+    _circles.push( circle );
+  }
   marker.addListener( 'click', ( e: any ) => {
     handleGeoPointClick( e, geoPoint );
   } );
@@ -184,10 +242,15 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
 
 function deleteGeoPoint( idGeoPoint: string ) {
   const marker: any = findGeoPoint( idGeoPoint );
+  const circle: any = findCircles( idGeoPoint );
   if ( marker ) {
     marker.setMap( null );
+    circle.setMap( null );
     _markers = _markers.filter( ( point: any ) => {
       return point.idForMap !== marker.idForMap;
+    } );
+    _circles = _circles.filter( ( cir: any ) => {
+      return cir.idForMap !== circle.idForMap;
     } );
   }
 }
@@ -198,6 +261,16 @@ function deleteAllGeoPoint() {
       marker.setMap( null );
     } else {
       return marker;
+    }
+  } );
+}
+
+function deleteAllCircles() {
+  _circles = _circles.filter( ( circle: any ) => {
+    if ( circle.idForMap !== idUserMarker ) {
+      circle.setMap( null );
+    } else {
+      return circle;
     }
   } );
 }
@@ -303,6 +376,10 @@ function createMarkerImage( iconUrl: string ) {
 
 function findGeoPoint( idGeoPoint: string ) {
   return _markers.find( item => item.idForMap === idGeoPoint );
+}
+
+function findCircles( idGeoPoint: string ) {
+  return _circles.find( item => item.idForMap === idGeoPoint );
 }
 
 function setPosition( marker: any, coordinates: { lat: string, lng: string } ) {

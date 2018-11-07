@@ -1,4 +1,5 @@
-﻿using GeoPing.Core.Entities;
+﻿using Geoping.Services.Configuration;
+using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
@@ -31,8 +32,8 @@ namespace GeoPing.Services
             return new ShortUserInfoDTO()
             {
                 UserName = data.Login,
-                Avatar = Convert.ToBase64String(data.Avatar)
-            };
+                Avatar = data.Avatar
+            }; 
         }
 
         public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
@@ -53,6 +54,7 @@ namespace GeoPing.Services
                 Email = email,
                 Login = username,
                 AccountType = "regular",
+                Avatar =   DefaultUserSettings.AvatarImage
             });
         }
 

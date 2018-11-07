@@ -5,6 +5,7 @@ import {
   CANCEL_GEO_POINT,
   CHANGE_DATA_GEO_POINT,
   CHANGE_MOVING_GEO_POINT,
+  CLEAR_GEO_POINT,
   CLEAR_STATE_GOOGLE_MAP,
   DELETE_GEO_POINT,
   FIND_GEO_POSITION,
@@ -31,7 +32,7 @@ export const addListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFun
       dispatch( addListPointsAction( geoPoints ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -78,7 +79,13 @@ export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
       dispatch( findGeoPositionAction( position ) );
     },
     ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      if ( error.code === 1 ) {
+        dispatch( addNotificationAction( createNotification(
+          'Please allow access to browser geo location',
+          EnumNotificationType.Danger ) ) );
+      } else {
+        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      }
     } );
 };
 
@@ -166,6 +173,10 @@ export const clearStateGoogleMap = () => ( dispatch: IDispatchFunction ) => {
   dispatch( clearStateGoogleMapAction() );
 };
 
+export const clearGeoPoint = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearGeoPointAction() );
+};
+
 /* Actions */
 
 export function addListPointsAction( geoPoints: Array<IGeoPoint> ): { type: string, geoPoints: Array<IGeoPoint> } {
@@ -220,4 +231,8 @@ function addDistanceAction( distance: number ): { type: string, distance: number
 
 function clearStateGoogleMapAction(): { type: string } {
   return { type: CLEAR_STATE_GOOGLE_MAP };
+}
+
+function clearGeoPointAction(): { type: any } {
+  return { type: CLEAR_GEO_POINT };
 }

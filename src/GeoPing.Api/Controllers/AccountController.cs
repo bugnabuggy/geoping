@@ -139,7 +139,7 @@ namespace GeoPing.Api.Controllers
         // PUT /account/profile
         [HttpPut]
         [Route("profile")]
-        public IActionResult EditProfile(GeoPingUser user)
+        public IActionResult EditProfile([FromBody]GeoPingUserDTO user)
         {
             var loggedUserId = _helper.GetAppUserIdByClaims(User.Claims);
 

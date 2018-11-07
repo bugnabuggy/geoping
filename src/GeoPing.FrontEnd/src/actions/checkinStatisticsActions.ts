@@ -12,6 +12,7 @@ import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import StaticStorage from '../services/staticStorage';
 import IUser from '../types/serviceTypes/userServiceType';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
+import { LOAD_MY_CHECK_LISTS } from '../constantsForReducer/checkList';
 
 export const selectList = () => ( dispatch: IDispatchFunction ) => {
   return '';
@@ -25,7 +26,7 @@ export const loadLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 
 };
@@ -37,7 +38,7 @@ export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) =
       dispatch( loadUsersAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -48,7 +49,7 @@ export const loadPoints = ( idList: string, idUser: string ) => ( dispatch: IDis
       dispatch( loadPointsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
@@ -56,10 +57,21 @@ export const checkInStatisticsClear = () => ( dispatch: IDispatchFunction ) => {
   dispatch( checkInStatisticsClearAction() );
 };
 
+export const getAllCheckForList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.getAllCheckForList( idList )
+    .then( ( response: any ) => {
+      console.info( response );
+    })
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    } );
+};
+
 /* Actions*/
 
-function loadListsAction( lists: any ): Object {
-  return { type: STATISTICS_LOAD_LISTS, lists };
+function loadListsAction( checklists: any ): Object {
+  return { type: LOAD_MY_CHECK_LISTS, checklists };
 }
 
 function loadUsersAction( users: any ): Object {

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Geoping.Services;
+using Geoping.Services.Configuration;
 
 namespace GeoPing.Api.Configuration
 {
@@ -98,7 +99,8 @@ namespace GeoPing.Api.Configuration
                         Email = user.Email,
                         Login = user.UserName,
                         AccountType = "premium",
-                        IsActivated = true
+                        IsActivated = true,
+                        Avatar = DefaultUserSettings.AvatarImage
                     });
                     ctx.SaveChanges();
                 }

@@ -46,4 +46,5 @@ export const googleMapState: IGoogleMapStateType = {
   statusMarker: EnumStatusMarker.None,
   idDeleteMarker: '',
   isGeoPointListIsCreated: false,
+  checkInGeoPoint: [],
 };

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import GoogleMap from './forms/jsxComponents/googleMap';
 import IGoogleMapComponentProps from '../componentProps/googleMapComponentProps/googleMapComponentProps';
+import { Button } from 'reactstrap';
 
 export default class GoogleMapComponent extends React.Component<IGoogleMapComponentProps, any> {
 
@@ -28,7 +29,15 @@ export default class GoogleMapComponent extends React.Component<IGoogleMapCompon
             getMyAddress={this.props.getMyAddress}
           /> )
           :
-          ( <div>Please allow the browser to determine your location.</div> )}
+          ( <div className="denied_geo_location">
+            Please allow the browser to determine your location.
+            <Button
+              color="primary"
+              onClick={this.props.findGeoPosition}
+            >
+              Allow
+            </Button>
+          </div> )}
       </React.Fragment>
     );
   }

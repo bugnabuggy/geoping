@@ -20,6 +20,6 @@ namespace GeoPing.Core.Services
         Task ConfirmAccountWithoutEmailAsync(string userEmail);
         OperationResult<GeoPingUser> GetProfile(Guid gpUserId);
         OperationResult<ShortUserInfoDTO> GetShortProfile(Guid userId);
-        OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUser user);
+        OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);
     }
 }

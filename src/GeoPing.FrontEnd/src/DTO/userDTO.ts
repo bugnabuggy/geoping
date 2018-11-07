@@ -11,5 +11,4 @@ export default interface IUserType {
   accountType: string;
   lastPaid: string;
   avatar: string;
-
 }

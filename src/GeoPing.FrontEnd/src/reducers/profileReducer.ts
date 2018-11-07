@@ -16,6 +16,7 @@ function loadProfileData(state: IProfileStateType, action: any) {
   return {
     ...state,
     ...action.profile,
+    // birthday: new Date(action.profile.birthday),
     isLoaded: true
   };
 }

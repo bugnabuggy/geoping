@@ -11,14 +11,14 @@ import ICheckinStatisticsComponentProps from '../componentProps/checkinStatistic
 
 export class CheckinStatisticsComponent extends React.Component<ICheckinStatisticsComponentProps, any> {
   handleSelectUser = ( e: any ) => {
-    if (e) {
+    if ( e ) {
       this.props.loadPoints( this.state.selectList, e.value );
     } else {
       this.props.loadPoints( this.state.selectList, '' );
     }
   };
   handleSelectList = ( e: any ) => {
-    if (e) {
+    if ( e ) {
       this.props.loadUsers( e.value );
       this.setState( { selectList: e.value } );
     } else {
@@ -54,6 +54,15 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     } );
     return options;
   };
+  selectOptionList = (): any => {
+    const checkList: any = this.props.checkList.checkLists.find(
+      ( item: any ) => item.id === this.props.listId
+    );
+    return {
+      value: checkList ? checkList.id : '',
+      label: checkList ? checkList.name : '',
+    };
+  };
 
   constructor( props: any ) {
     super( props );
@@ -64,6 +73,10 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     };
   }
 
+  componentDidMount() {
+    this.props.getAllCheckForList( this.props.listId );
+  }
+
   render() {
     return (
       <div className="check-in-statistics-form-container">
@@ -71,10 +84,11 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
         <FormGroup className="check-in-statistics-form-select">
           <ControlLabel className="check-in-statistics-form-label">Select List</ControlLabel>
           <Select
-            options={this.renderOptionLists( this.props.checkinStatistics.selectList )}
+            options={this.renderOptionLists( this.props.checkList.checkLists )}
             className="check-in-statistics-form-input"
             onChange={this.handleSelectList}
             isClearable={true}
+            value={this.selectOptionList()}
           />
         </FormGroup>
         <FormGroup className="check-in-statistics-form-select">

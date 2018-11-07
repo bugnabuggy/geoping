@@ -1,18 +1,26 @@
 import ICheckListServiceType from '../../types/serviceTypes/checkListServiceType';
 import IGeoListType, { IGeoListForUpdateDTO } from '../../DTO/geoListDTO';
 import { v4 as uuidV4 } from 'uuid';
+import { ICheckInDTO } from '../../DTO/checkInDTO';
 
 export default class MockCheckListService implements ICheckListServiceType {
   createMyCheckList( nameCheckList: string ) {
     return new Promise( ( resolve: any, reject: any ) => {
+      const newCheckList: IGeoListType = {
+        name: nameCheckList,
+        description: '',
+        isPublic: false,
+        edited: '',
+        created: new Date().toString(),
+        id: uuidV4(),
+        ownerId: JSON.parse(sessionStorage.getItem('localDB')).ownerId,
+        periodFrom: '',
+        periodTo: '',
+        rating: null,
+      };
       setTimeout(
         () => {
-          resolve(
-            {
-              id: uuidV4(),
-              name: nameCheckList,
-            }
-          );
+          resolve( newCheckList );
         },
         1000
       );
@@ -145,6 +153,24 @@ export default class MockCheckListService implements ICheckListServiceType {
         1000
       );
     } );
+  }
+
+  addCheckIn( idList: string, idPoint: string, data: ICheckInDTO ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  getAllChecksForUserAndList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  getAllCheckForList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
   }
 
 }
