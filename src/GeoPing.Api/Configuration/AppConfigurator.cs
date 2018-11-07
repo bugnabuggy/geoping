@@ -42,6 +42,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IGPUserService, GPUserService>();
             services.AddScoped<ICheckInService, CheckInService>();
+            services.AddScoped<ICheckInStatisticsService, CheckInStatisticsService>();
         }
 
         public void Initialize(IServiceProvider services)
