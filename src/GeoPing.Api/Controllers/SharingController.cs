@@ -53,6 +53,13 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet]
+        [Route("invite/accept")]
+        public IActionResult AcceptInvite(string listId)
+        {
+            return Ok();
+        }
+
         [HttpPost]
         [Route("invite")]
         public IActionResult InviteUser(string listId, string email)

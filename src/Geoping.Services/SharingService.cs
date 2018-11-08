@@ -126,8 +126,8 @@ namespace Geoping.Services
                     UserId = _gpUserSrv.GetUser(x => x.IdentityId == invitedUser.Id).Id,
                     Status = "invited"
                 }),
-                Messages = new[] { "You have been invited to list. " +
-                "Accept invitation to be able to watch it and check in its points" },
+                Messages = new[] { "You confirmed invite to list. " +
+                "Now accept invitation to be able to watch list and check in its points" },
                 Success = true
             };
         }
