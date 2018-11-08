@@ -10,11 +10,10 @@ import { authorizationUserFlag, loadUserData, redirectDashboard } from '../actio
 import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
-import { dashboardUrl, loginUrl, notFoundUrl } from '../constants/routes';
+import { dashboardUrl, loginUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
 import { redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
-import { NotFoundPage } from '../pages/404Page';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   authorized = () => {
@@ -62,29 +61,26 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   }
 
   render() {
-    return this.props.location !== notFoundUrl ?
-      (
-        <React.Fragment>
-          <WindowBlockingComponent
-            isBlocking={this.props.window.isBlockingWindow}
-          />
-          < Routes
-            authorized={!!localStorage.getItem( 'token' )}
-            roleUser={this.props.user.roleUser}
-          />
-          {this.props.user.authorized &&
-          this.props.user.redirectDashboard &&
-          this.props.location !== dashboardUrl &&
-          this.props.location !== sessionStorage.getItem( 'url_for_redirect' ) &&
-          <Redirect to={sessionStorage.getItem( 'url_for_redirect' ) || dashboardUrl}/>}
-          {this.props.window.redirectOnSignInForm && this.props.location !== loginUrl &&
-          <Redirect to={loginUrl}/>}
-        </React.Fragment>
-      )
-      :
-      (
-        <NotFoundPage/>
-      );
+
+    return (
+      <React.Fragment>
+        <WindowBlockingComponent
+          isBlocking={this.props.window.isBlockingWindow}
+        />
+        <Routes
+          authorized={!!localStorage.getItem( 'token' )}
+          roleUser={this.props.user.roleUser}
+          path={this.props.location}
+        />
+        {this.props.user.authorized &&
+        this.props.user.redirectDashboard &&
+        this.props.location !== dashboardUrl &&
+        this.props.location !== sessionStorage.getItem( 'url_for_redirect' ) &&
+        <Redirect to={sessionStorage.getItem( 'url_for_redirect' ) || dashboardUrl}/>}
+        {this.props.window.redirectOnSignInForm && this.props.location !== loginUrl &&
+        <Redirect to={loginUrl}/>}
+      </React.Fragment>
+    );
   }
 }
 
