@@ -153,7 +153,7 @@ namespace GeoPing.Api.Controllers
         // PUT /account/profile/avatar
         [HttpPut]
         [Route("profile/avatar")]
-        public IActionResult EditAvatarImage([FromBody]string avatar)
+        public IActionResult EditAvatarImage([FromBody]ProfileAvatarDTO avatar)
         {
             var result = _accountSrv.EditProfileAvatar(_helper.GetAppUserIdByClaims(User.Claims), avatar);
 
