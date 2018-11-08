@@ -24,12 +24,12 @@ namespace GeoPing.Core.Models.DTO
 
     public class CheckInStatCheckDTO
     {
-        public Guid UserId { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public double Distance { get; set; }
-        public DateTime Date { get; set; }
-        public Guid DeviceId { get; set; }
+        public Guid? UserId { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Distance { get; set; }
+        public DateTime? Date { get; set; }
+        public Guid? DeviceId { get; set; }
         public string Ip { get; set; }
         public string UserAgent { get; set; }
     }
