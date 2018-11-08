@@ -18,6 +18,9 @@ import {
 class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatisticsComponentContainerProps, any> {
   componentDidMount() {
     this.props.loadLists();
+    if ( this.props.listId ) {
+      this.props.loadUsers( this.props.listId );
+    }
   }
 
   componentWillUnmount() {

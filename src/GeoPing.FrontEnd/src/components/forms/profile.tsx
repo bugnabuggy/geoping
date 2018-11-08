@@ -29,7 +29,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
       firstname: e.firstName,
       lastname: e.lastName,
       birthday: e.birthday,
-      phonenumber: e.phone,
+      phonenumber: e.phoneNumber,
       lastpaid: e.lastPaid,
       // avatar: e.avatar ? e.avatar : this.props.profileState.avatar,
     };

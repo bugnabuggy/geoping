@@ -8,6 +8,7 @@ import {
   CREATE_CHECK_LIST,
   DELETE_MY_CHECK_LISTS,
   EDITING_PERMISSION_POINT,
+  IS_CHECK_LIST_PAGE,
   LOAD_CHECK_LIST_DATA,
   LOAD_MARKERS_FOR_CHECK_LIST,
   LOAD_MY_CHECK_LISTS,
@@ -46,6 +47,7 @@ export default function checkListReducer( state: ICheckListStateType = checkList
     [ UPDATE_CHECK_LIST ]: updateCheckList,
     [ CLOSE_MODAL_SHARE ]: clearSelectedGeoList,
     [ PUBLIC_LIST_LOAD_LISTS ]: loadPublicCheckLists,
+    [ IS_CHECK_LIST_PAGE ]: checkListFlag,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -218,5 +220,12 @@ function loadPublicCheckLists( state: ICheckListStateType, action: any ): ICheck
   return {
     ...state,
     checkListPublic: action.lists,
+  };
+}
+
+function checkListFlag( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    isCheckList: action.isCheckList,
   };
 }

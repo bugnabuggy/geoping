@@ -9,4 +9,6 @@ export default interface IMarkerServiceType {
   deleteMarker: ( idCheckList: string, markerId: string ) => Promise<any>;
 
   updateMarker: ( marker: IGeoPoint ) => Promise<any>;
+
+  getChecksStatisticsForList: ( listId: string, userId: string, dateFrom: string, dateTo: string ) => Promise<any>;
 }

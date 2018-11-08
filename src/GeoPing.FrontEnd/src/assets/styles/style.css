@@ -117,6 +117,10 @@ select.form-control:not([size]):not([multiple]) {
   align-items: center;
 }
 
+.table td {
+  border-top: 0px;
+}
+
 /* Header ******************************************************************/
 /*.header-container {*/
 /*height: 100%;*/
@@ -299,6 +303,12 @@ header nav {
   display: flex;
   padding: 6px 19px;
   margin-top: 15px;
+}
+
+.change-password-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 /**/
@@ -998,8 +1008,8 @@ header nav {
 }
 
 .check-list-head-name {
-  min-width: 170px;
-  width: 270px;
+  min-width: 200px;
+  width: 200px;
   font-size: 1.3em;
 }
 
@@ -1007,6 +1017,7 @@ header nav {
   display: flex;
   width: 60px;
   justify-content: space-between;
+  font-size: 1.3em;
 }
 
 .check-list-head-period {
@@ -1126,11 +1137,16 @@ header nav {
   align-items: center;
   width: 100%;
 }
+.check-list-head-name-form-group label {
+  margin-top: 15px;
+  font-size: 30px;
+}
 
 .check-list-head-name p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 300px;
 }
 
 .check-list-modal-period-item {

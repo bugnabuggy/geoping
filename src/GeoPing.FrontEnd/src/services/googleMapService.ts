@@ -41,6 +41,10 @@ export function createMapAPI() {
   createMap( document.getElementById( 'map' ) );
 }
 
+export function setCenterMap( lat: number, lng: number ) {
+  _googleMap.setCenter( { lat, lng } );
+}
+
 export function createUserMarkerAPI() {
   iconUserGeoPoint( defaultTimeForAnimateMarkers );
 }
@@ -149,6 +153,21 @@ function iconUserGeoPoint( timeout: number ) {
   );
 }
 
+export function setIconCheckInGeoPoint() {
+  _that.props.googleMap.checkInGeoPoint.forEach( ( checkInPoint: any ) => {
+    _that.props.googleMap.geoPoints.forEach( ( point: IGeoPoint ) => {
+      if ( point.id === checkInPoint.pointId ) {
+        const marker: any = findGeoPoint( point.idForMap );
+        if ( marker ) {
+          marker.setIcon( createMarkerImage(
+            getIconGeoPointUrl( pinColor )
+          ) );
+        }
+      }
+    } );
+  } );
+}
+
 function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   const marker: any = findGeoPoint( geoPoint.idForMap );
   // const circle: any = findCircles( geoPoint.idForMap );
@@ -180,6 +199,7 @@ export function setRadiusMarker( geoPoint: IGeoPoint ) {
 function clearIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   const marker: any = findGeoPoint( geoPoint.idForMap );
   // const circle: any = findCircles( geoPoint.idForMap );
+
   if ( marker ) {
     marker.setIcon( null );
     marker.setDraggable( false );

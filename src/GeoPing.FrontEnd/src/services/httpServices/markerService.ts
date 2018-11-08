@@ -1,7 +1,13 @@
 import IMarkerServiceType from '../../types/serviceTypes/markerServiceType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
-import { createGeoNewPoint, getGeoPointsForList, removeGeoPoint, updateGeoPoint } from '../../constants/endpoints';
+import {
+  createGeoNewPoint,
+  getChecksStatisticsForList,
+  getGeoPointsForList,
+  removeGeoPoint,
+  updateGeoPoint
+} from '../../constants/endpoints';
 import IGeoPoint, { IGeoPintForCreateDTO } from '../../DTO/geoPointDTO';
 import { getDataFromResponse } from '../helper';
 import { v4 as uuidV4 } from 'uuid';
@@ -126,6 +132,21 @@ export default class MarkerService implements IMarkerServiceType {
   getMarkersForListAndUser( idList: string, idUser: string ) {
     // return this.communicator.get( '' );
     return new Promise( resolve => '' );
+  }
+
+  getChecksStatisticsForList( listId: string, userId: string, dateFrom: string, dateTo: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get(
+        getChecksStatisticsForList.replace( '%listid%', listId ) +
+        `/?UserId=${userId}&DatePeriodFrom=${dateFrom}&DatePeriodTo=${dateTo}`
+      )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 
 }

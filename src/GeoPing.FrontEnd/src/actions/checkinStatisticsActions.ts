@@ -1,7 +1,6 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   STATISTICS_CLEAR,
-  STATISTICS_LOAD_LISTS,
   STATISTICS_LOAD_POINTS,
   STATISTICS_LOAD_USERS
 } from '../constantsForReducer/checkinStatistics';
@@ -42,11 +41,13 @@ export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) =
     } );
 };
 
-export const loadPoints = ( idList: string, idUser: string ) => ( dispatch: IDispatchFunction ) => {
+export const loadPoints = ( listId: string, userId: string, dateFrom: string, dateTo: string ) =>
+  ( dispatch: IDispatchFunction ) => {
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  markerService.getMarkersForListAndUser( idList, idUser )
+  markerService.getChecksStatisticsForList( listId, userId, dateFrom, dateTo )
     .then( ( response: any ) => {
-      dispatch( loadPointsAction( response ) );
+      console.info('response', response);
+      // dispatch( loadPointsAction( response ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );

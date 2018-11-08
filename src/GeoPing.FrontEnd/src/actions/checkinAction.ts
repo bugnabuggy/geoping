@@ -21,7 +21,8 @@ export const checkIn = ( idList: string, idPoint: string, data: ICheckInDTO ) =>
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.addCheckIn( idList, idPoint, data )
     .then( ( response: any ) => {
-      console.info( 'response', response );
+      const geoPoint: Array<any> = [ response ];
+      dispatch( getAllChecksForUserAndListAction( geoPoint ) );
       dispatch( addNotificationAction( createNotification( 'Point marked', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {

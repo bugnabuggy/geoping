@@ -7,6 +7,7 @@ import {
   USER_AUTHORIZATION_TEST_PERIOD,
   USER_SIGN_OUT
 } from '../constantsForReducer/user';
+import { SAVE_AVATAR } from '../constantsForReducer/profile';
 
 export default function userReducer( state: IUserStateType = userState, action: any ) {
 
@@ -15,7 +16,8 @@ export default function userReducer( state: IUserStateType = userState, action: 
     [ USER_SIGN_OUT ]: sigOutUser,
     [ USER_AUTHORIZATION_TEST_PERIOD ]: userAuthorizationTestPeriod,
     [ REDIRECT_DASHBOARD_FOR_LOGIN ]: redirect,
-    [LOAD_USER_NAME]: loadUserData,
+    [ LOAD_USER_NAME ]: loadUserData,
+    [ SAVE_AVATAR ]: saveAvatar,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -53,5 +55,12 @@ function loadUserData( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     ...action.userData,
+  };
+}
+
+function saveAvatar( state: IUserStateType, action: any ): IUserStateType {
+  return {
+    ...state,
+    avatar: action.avatar,
   };
 }

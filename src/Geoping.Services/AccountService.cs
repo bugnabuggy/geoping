@@ -234,6 +234,30 @@ namespace GeoPing.Services
             };
         }
 
+        public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, string avatar)
+        {
+            var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+            user.Avatar = avatar ?? DefaultUserSettings.AvatarImage;
+
+            var result = _gpUserSrv.EditUser(user);
+
+            if (result.Success)
+            {
+                return new OperationResult<GeoPingUser>()
+                {
+                    Data = user,
+                    Success = true,
+                    Messages = new[] { "Your profile was edited successfully" }
+                };
+            }
+
+            return new OperationResult<GeoPingUser>()
+            {
+                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
+            };
+        }
+
         public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
         {
             var user = _gpUserSrv.GetUser(x => x.Id == userId);
