@@ -7,6 +7,7 @@ namespace GeoPing.Core.Services
 {
     public interface ISecurityService
     {
-        bool IsUserHaveAccessToList(Guid userId, GeoList list);
+        IEnumerable<object> GetUsersHaveAccessToList(GeoList list);
+        bool IsUserHasAccessToList(Guid userId, GeoList list);
     }
 }

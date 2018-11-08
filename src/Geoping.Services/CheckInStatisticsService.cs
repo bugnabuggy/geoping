@@ -54,7 +54,7 @@ namespace Geoping.Services
                 };
             }
 
-            if (!_securitySrv.IsUserHaveAccessToList(userId, list))
+            if (!_securitySrv.IsUserHasAccessToList(userId, list))
             {
                 return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
                 {
