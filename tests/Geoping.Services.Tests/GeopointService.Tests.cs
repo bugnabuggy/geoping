@@ -42,8 +42,8 @@ namespace GeoPing.Services.Tests
             {
                 Id = expectedPointId,
                 Name = "Test",
-                Latitude = "55",
-                Longitude = "55",
+                Latitude = 55,
+                Longitude = 55,
                 ListId = expectedListId
             };
 
