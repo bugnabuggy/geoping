@@ -85,7 +85,7 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       {
         path: checkListUrl,
         component: ChecklistPage,
-        exact: false,
+        exact: true,
       },
       {
         path: checkInUrl,

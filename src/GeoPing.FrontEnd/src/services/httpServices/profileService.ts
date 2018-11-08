@@ -43,7 +43,7 @@ export default class ProfileService implements IProfileServiceType {
 
   saveAvatar( avatar: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.put( updateAvatar, { body: avatar } )
+      this.communicator.put( updateAvatar, { Avatar: avatar } )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )

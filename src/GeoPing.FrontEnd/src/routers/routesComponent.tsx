@@ -19,8 +19,8 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
         return (
           <Route
             key={index}
-            // exact={item.exact}
-            exact={true}
+            exact={item.exact}
+            // exact={true}
             path={item.path}
             component={Component}
           />
@@ -33,14 +33,17 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
       <Switch>
         {this.renderRouters( this.props.authorized, this.props.roleUser )}
 
-        <Redirect push={true} from="*" to={notFoundUrl}/>
+        <Redirect from="*" to={notFoundUrl}/>
       </Switch>
     );
     return (
       <React.Fragment>
-        <header>
-          <HeaderComponentContainer/>
-        </header>
+        {this.props.path !== notFoundUrl ?
+          <header>
+            <HeaderComponentContainer/>
+          </header>
+          :
+          <div/>}
         <main>
           <NotificationComponentContainer/>
           {component}
