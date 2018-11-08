@@ -174,11 +174,6 @@ namespace GeoPing.Api.Controllers
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            if (userId == null || token == null)
-            {
-                return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
-            }
-
             var result = await _accountSrv.ConfirmEmailAsync(userId, token);
 
             if (result.Success)

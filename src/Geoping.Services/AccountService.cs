@@ -102,6 +102,14 @@ namespace GeoPing.Services
 
         public async Task<OperationResult> ConfirmEmailAsync(string userId, string token)
         {
+            if (userId == null || token == null)
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { "There is no given validation data" }
+                };
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -115,6 +123,7 @@ namespace GeoPing.Services
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
             if (result.Succeeded)
+
             {
                 _gpUserSrv.ActivateUser(user.Id);
                 return new OperationResult()
