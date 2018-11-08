@@ -11,7 +11,8 @@ export default interface ICheckinStatisticsComponentContainerProps {
 
   loadLists: () => ( dispatch: IDispatchFunction ) => void;
   loadUsers: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
-  loadPoints: ( idList: string, idUser: string ) => ( dispatch: IDispatchFunction ) => void;
+  loadPoints: ( listId: string, userId: string, dateFrom: string, dateTo: string ) =>
+    ( dispatch: IDispatchFunction ) => void;
   checkInStatisticsClear: () => ( dispatch: IDispatchFunction ) => void;
   getAllCheckForList: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
 }

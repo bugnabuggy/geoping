@@ -10,9 +10,11 @@ import {
   deselectMarkerAPI,
   getDistance,
   selectMarkerAPI,
-  setRadiusMarker,
+  setCenterMap,
   setCoordinatesForUserMarker,
+  setRadiusMarker,
   settingPointsByCoordinates,
+  setIconCheckInGeoPoint,
 } from '../../../services/googleMapService';
 import {EnumStatusMarker} from "../../../enums/statusMarker";
 import {defaultMarker} from '../../../constants/defaultMarker';
@@ -42,6 +44,12 @@ class GoogleMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props.googleMap.position.isSuccess &&
+      prevProps.googleMap.position.lat !== this.props.googleMap.position.lat &&
+      prevProps.googleMap.position.lng !== this.props.googleMap.position.lng
+    ) {
+      setCenterMap(this.props.googleMap.position.lat, this.props.googleMap.position.lng);
+    }
     if (prevProps.googleMap.selectedGeoPoint.idForMap &&
       prevProps.googleMap.selectedGeoPoint.idForMap !== this.props.googleMap.selectedGeoPoint.idForMap) {
       deselectMarkerAPI(prevProps.googleMap.selectedGeoPoint);
@@ -61,8 +69,15 @@ class GoogleMap extends React.Component {
       }
     }
 
-    if (this.props.googleMap.geoPoints.length === 0) {
+    if (this.props.googleMap.geoPoints.length === 0 && !this.props.googleMap.selectedGeoPoint.idForMap) {
       deleteAllMarkersAPI();
+    }
+    if (this.props.googleMap.geoPoints.length > 0 &&
+      prevProps.googleMap.selectedGeoPoint.idForMap !== this.props.googleMap.selectedGeoPoint.idForMap) {
+      const marker = this.props.googleMap.geoPoints.find(item => item.idForMap === prevProps.googleMap.selectedGeoPoint.idForMap);
+      if (!marker) {
+        deleteMarkerAPI(prevProps.googleMap.selectedGeoPoint.idForMap);
+      }
     }
 
     if (!this.props.checkList.isEditing) {
@@ -90,6 +105,10 @@ class GoogleMap extends React.Component {
 
     if (this.props.googleMap.selectedGeoPoint.radius !== prevProps.googleMap.selectedGeoPoint.radius) {
       setRadiusMarker(this.props.googleMap.selectedGeoPoint);
+    }
+
+    if (this.props.googleMap.checkInGeoPoint.length > 0) {
+      setIconCheckInGeoPoint();
     }
   }
 

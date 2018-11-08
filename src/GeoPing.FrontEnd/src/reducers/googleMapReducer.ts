@@ -40,7 +40,7 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ CLEAR_STATE_GOOGLE_MAP ]: clearStateGoogleMap,
     [ STATISTICS_LOAD_POINTS ]: statisticsLoadPoints,
     [ CLEAR_GEO_POINT ]: clearGeoPoint,
-    [CHECK_IN_GEO_POINTS]: checkInGeoPoint,
+    [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -73,7 +73,10 @@ function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
 function addNewGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    selectedGeoPoint: action.geoPoint,
+    selectedGeoPoint: {
+      ...action.geoPoint,
+      radius: 50,
+    },
     statusMarker: EnumStatusMarker.New,
   };
 }
@@ -196,6 +199,7 @@ function addGeoPointFromMyPosition( state: IGoogleMapStateType, action: any ): I
       ...defaultMarker,
       lat: state.position.lat,
       lng: state.position.lng,
+      radius: 50,
     },
     statusMarker: EnumStatusMarker.New,
   };

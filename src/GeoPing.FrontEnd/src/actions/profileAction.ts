@@ -56,9 +56,9 @@ export const saveAvatar = ( avatar: string ) => ( dispatch: IDispatchFunction ) 
   const profileService: IProfileServiceType = StaticStorage.serviceLocator.get( 'IProfileServiceType' );
   profileService.saveAvatar( avatar )
     .then( ( response: any ) => {
-      console.info( 'response', response );
-      // dispatch(addNotificationAction(createNotification(
-      //   message, EnumNotificationType.Success)));
+      dispatch( saveAvatarAction( response.avatar ) );
+      dispatch( addNotificationAction( createNotification(
+        'Avatar saved', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );

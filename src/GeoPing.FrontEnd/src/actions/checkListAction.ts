@@ -8,6 +8,7 @@ import {
   CLOSE_MODAL_FOR_CREATE_CHECK_LIST,
   CREATE_CHECK_LIST,
   EDITING_PERMISSION_POINT,
+  IS_CHECK_LIST_PAGE,
   LOAD_CHECK_LIST_DATA,
   LOAD_MARKERS_FOR_CHECK_LIST,
   MODAL_PERIOD_OPEN_CLOSE,
@@ -95,7 +96,7 @@ export const updateCheckList = ( idCheckList: string, checkList: IGeoListForUpda
     const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
     checkListService.updateMyCheckList( idCheckList, checkList )
       .then( ( response: any ) => {
-        dispatch(updateCheckListAction(response));
+        dispatch( updateCheckListAction( response ) );
       } )
       .catch( ( error: any ) => {
         dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
@@ -154,6 +155,10 @@ export const selectCheckList = ( checkList: IGeoListType ) => ( dispatch: IDispa
   dispatch( selectCheckListAction( checkList ) );
 };
 
+export const isCheckListPage = ( isCheckList: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( isCheckListPageAction( isCheckList ) );
+};
+
 /* Actions */
 
 function createCheckListAction( checklist: any ): Object {
@@ -209,6 +214,10 @@ function selectCheckListAction( checkList: IGeoListType ): { type: string, check
   return { type: SELECT_CHECK_LIST, checkList };
 }
 
-function updateCheckListAction( checkList: any ): { type: string, checkList: any  } {
+function updateCheckListAction( checkList: any ): { type: string, checkList: any } {
   return { type: UPDATE_CHECK_LIST, checkList };
+}
+
+function isCheckListPageAction( isCheckList: boolean ): { type: string, isCheckList: boolean } {
+  return { type: IS_CHECK_LIST_PAGE, isCheckList };
 }

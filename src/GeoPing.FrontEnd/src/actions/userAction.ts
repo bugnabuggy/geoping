@@ -26,7 +26,9 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
     } )
     .catch( ( error: any ) => {
       dispatch( windowBlockingAction( false ) );
-      dispatch( addNotificationAction( createNotification( 'Invalid client', EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( 'Invalid user name or password', EnumNotificationType.Danger )
+      ) );
     } );
 };
 

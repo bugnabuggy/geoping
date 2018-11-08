@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import MaskedInput from 'react-text-mask';
 
 import { validate } from '../../../validations/userProfileValidate';
 import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
@@ -19,25 +18,12 @@ const renderInput = ( props: any ) => {
     <FormGroup>
       <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
       <div className="form-input-container">
-        {props.mask ?
-          (
-            <MaskedInput
-              {...props.input}
-              mask={props.mask}
-              className="form-control"
-              placeholder={props.placeholder}
-              guide={true}
-            />
-          )
-          :
-          (
-            <FormControl
-              {...props.input}
-              type={props.type}
-              placeholder={props.placeholder}
-              disabled={props.disabled}
-            />
-          )}
+        <FormControl
+          {...props.input}
+          type={props.type}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+        />
         <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
@@ -138,7 +124,6 @@ function profileForm( props: any ): any {
         labelName="Mobile Phone"
         type="tel"
         placeholder="xxx-xxx-xxxx"
-        mask={[ /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/ ]}
       />
       <Field
         component={renderInput}
