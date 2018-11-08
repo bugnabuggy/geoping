@@ -13,11 +13,10 @@ namespace Geoping.Services
 {
     public class CheckInStatisticsService : ICheckInStatisticsService
     {
-        private Dictionary<string, Expression<Func<CheckInWithUserNameDTO, object>>> orderBys =
-            new Dictionary<string, Expression<Func<CheckInWithUserNameDTO, object>>>()
+        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> orderBys =
+            new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>()
             {
-                {"date", x => x.Date},
-                {"userName", x => x.Username}
+                {"date", x => x.CheckDate}
             };
 
         private IRepository<CheckIn> _checksRepo;
@@ -39,7 +38,7 @@ namespace Geoping.Services
             _gpUserRepo = gpUserRepo;
         }
 
-        public WebResult<IQueryable<CheckInWithUserNameDTO>> GetStatOfUsersList
+        public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersList
             (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
         {
             totalItems = 0;
@@ -48,7 +47,7 @@ namespace Geoping.Services
 
             if (!isListExist)
             {
-                return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
+                return new WebResult<IQueryable<CheckInStatsDTO>>()
                 {
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
                 };
@@ -56,32 +55,39 @@ namespace Geoping.Services
 
             if (!_securitySrv.IsUserHasAccessToList(userId, list))
             {
-                return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
+                return new WebResult<IQueryable<CheckInStatsDTO>>()
                 {
                     Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]" }
                 };
             }
 
-            var points = _pointSrv.GetByFilter(list.Id, new GeopointFilterDTO(), out int totalPoints).Data;
+            var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            var data = from ch in _checksRepo.Data
-                       from gp in points
-                       where ch.PointId == gp.Id
-                       select new CheckInWithUserNameDTO()
-                       {
-                           UserId = ch.UserId,
-                           Username = _gpUserRepo.Data.FirstOrDefault(x => x.Id == ch.UserId).Login,
-                           PointId = ch.PointId,
-                           Latitude = ch.Latitude,
-                           Longitude = ch.Longitude,
-                           Distance = ch.Distance,
-                           Date = ch.Date,
-                           DeviceId = ch.DeviceId,
-                           Ip = ch.Ip,
-                           UserAgent = ch.UserAgent
-                       };
-
-            data = GetFilteredData(data, filter);
+            var checks = GetFilteredData(_checksRepo.Data, filter).OrderByDescending(x => x.Date)
+                                                                  .GroupBy(x => x.PointId)         
+                                                                  .Select(x => x.FirstOrDefault());
+            var data = points.Join
+                (checks,
+                p => p.Id,
+                ch => ch.PointId,
+                (p, ch) => new CheckInStatsDTO()
+                {
+                    PointId = p.Id,
+                    PointName = p.Name,
+                    PointDescription = p.Description,
+                    PointLatitude = p.Latitude,
+                    PointLongitude = p.Longitude,
+                    PointRadius = p.Radius,
+                    PointAddress = p.Address,
+                    UserId = ch.UserId,
+                    CheckLatitude = ch.Latitude,
+                    CheckLongitude = ch.Longitude,
+                    CheckDistance = ch.Distance,
+                    CheckDate = ch.Date,
+                    Ip = ch.Ip,
+                    DeviceId = ch.DeviceId,
+                    UserAgent = ch.UserAgent
+                });
 
             totalItems = data.Count();
 
@@ -107,7 +113,7 @@ namespace Geoping.Services
                     .Take((int)filter.PageSize);
             }
 
-            return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
+            return new WebResult<IQueryable<CheckInStatsDTO>>()
             {
                 Data = data,
                 Success = true,
@@ -118,12 +124,17 @@ namespace Geoping.Services
             };
         }
 
-        private IQueryable<CheckInWithUserNameDTO> GetFilteredData
-            (IQueryable<CheckInWithUserNameDTO> data, CheckInStatFilterDTO filter)
+        private IQueryable<CheckIn> GetFilteredData
+            (IQueryable<CheckIn> data, CheckInStatFilterDTO filter)
         {
+            var isUserId = Guid.TryParse(filter.UserId, out var userId);
+
+            data = isUserId
+                ? data.Where(x => x.UserId == userId)
+                : data;
+
             var isDatePeriodFrom = DateTime.TryParse(filter.DatePeriodFrom, out var periodFrom);
             var isDatePeriodTo = DateTime.TryParse(filter.DatePeriodTo, out var periodTo);
-            var isUserId = Guid.TryParse(filter.UserId, out var userId);
 
             data = isDatePeriodFrom
                 ? data.Where(x => x.Date >= periodFrom)
@@ -131,10 +142,6 @@ namespace Geoping.Services
 
             data = isDatePeriodTo
                 ? data.Where(x => x.Date <= periodTo)
-                : data;
-
-            data = isUserId
-                ? data.Where(x => x.UserId == userId)
                 : data;
 
             return data;
