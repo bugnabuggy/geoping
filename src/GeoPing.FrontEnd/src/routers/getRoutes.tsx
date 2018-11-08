@@ -10,8 +10,11 @@ import { authorizationUserFlag, loadUserData, redirectDashboard } from '../actio
 import { buildEnvironment, environments, getBuildEnvironment } from '../services/environmentsServiceLocator';
 import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
-import { dashboardUrl } from '../constants/routes';
+import { dashboardUrl, loginUrl, notFoundUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
+import { redirectOnSignInForm } from '../actions/windowAction';
+import { checkLocation } from '../services/helper';
+import { NotFoundPage } from '../pages/404Page';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   authorized = () => {
@@ -23,40 +26,65 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
       if ( !this.props.user.authorized ) {
         this.props.authorizationUserFlag( true );
       }
+      if ( !this.props.user.userName && !this.state.isGetUserData ) {
+        this.props.loadUserData();
+        this.setState( { isGetUserData: true } );
+      }
+      if ( sessionStorage.getItem( 'url_for_redirect' ) === this.props.location ) {
+        sessionStorage.removeItem( 'url_for_redirect' );
+        this.props.redirectDashboard( false );
+      }
     } else {
       if ( this.props.user.authorized ) {
         this.props.authorizationUserFlag( false );
+      } else {
+        if ( !sessionStorage.getItem( 'url_for_redirect' ) ) {
+          checkLocation( this.props.location, this.props.redirectOnSignInForm );
+        }
       }
     }
   };
 
   constructor( props: IGetRoutesProps ) {
     super( props );
+    console.info( 'GetRoutes constructor', props );
+    this.state = {
+      isGetUserData: false,
+    };
+  }
+
+  componentDidMount() {
     this.authorized();
-    this.props.loadUserData();
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
     this.authorized();
-    console.info( this.props );
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <WindowBlockingComponent
-          isBlocking={this.props.window.isBlockingWindow}
-        />
-        <Routes
-          authorized={!!localStorage.getItem( 'token' )}
-          roleUser={this.props.user.roleUser}
-        />
-        {this.props.user.authorized &&
-        this.props.user.redirectDashboard &&
-        this.props.location !== dashboardUrl &&
-        <Redirect to={dashboardUrl}/>}
-      </React.Fragment>
-    );
+    return this.props.location !== notFoundUrl ?
+      (
+        <React.Fragment>
+          <WindowBlockingComponent
+            isBlocking={this.props.window.isBlockingWindow}
+          />
+          < Routes
+            authorized={!!localStorage.getItem( 'token' )}
+            roleUser={this.props.user.roleUser}
+          />
+          {this.props.user.authorized &&
+          this.props.user.redirectDashboard &&
+          this.props.location !== dashboardUrl &&
+          this.props.location !== sessionStorage.getItem( 'url_for_redirect' ) &&
+          <Redirect to={sessionStorage.getItem( 'url_for_redirect' ) || dashboardUrl}/>}
+          {this.props.window.redirectOnSignInForm && this.props.location !== loginUrl &&
+          <Redirect to={loginUrl}/>}
+        </React.Fragment>
+      )
+      :
+      (
+        <NotFoundPage/>
+      );
   }
 }
 
@@ -74,6 +102,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       authorizationUserFlag,
       redirectDashboard,
       loadUserData,
+      redirectOnSignInForm,
     },
     dispath );
 

@@ -11,17 +11,21 @@ import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
 
 class LogOutComponentContainer extends React.Component<ILogOutComponentContainerProps, any> {
+  constructor( props: any ) {
+    super( props );
+  }
 
   componentDidMount() {
     getBuildEnvironment( EBuildEnvironment.HTTP );
     StaticStorage.serviceLocator = environments.get( buildEnvironment );
     this.props.signOutUser();
+
   }
 
   render() {
     return (
       <div>
-        {!this.props.user.authorized ? (
+        {this.props.user.authorized ? (
             <Redirect to={baseUrl}/>
           )
           :

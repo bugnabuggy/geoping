@@ -73,12 +73,15 @@ const renderAvatar = ( props: any ) => {
 const renderDate = ( props: any ) => {
   const date: moment.Moment = moment( props.input.value );
   return (
-    <DatePicker
-      selected={date}
-      locale="ru"
-      onChange={props.input.onChange}
-      className="form-control"
-    />
+    <FormGroup>
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
+      <DatePicker
+        selected={date}
+        locale="ru"
+        onChange={props.input.onChange}
+        className="form-control"
+      />
+    </FormGroup>
   );
 };
 
@@ -91,6 +94,13 @@ function profileForm( props: any ): any {
         name="avatar"
         disabled={true}
       />
+      <Button
+        bsStyle="primary"
+        className="profile-flex-btn"
+        onClick={props.saveAvatar}
+      >
+        Save image
+      </Button>
       <Field
         component={renderInput}
         name="login"
@@ -124,7 +134,7 @@ function profileForm( props: any ): any {
       />
       <Field
         component={renderInput}
-        name="phone"
+        name="phoneNumber"
         labelName="Mobile Phone"
         type="tel"
         placeholder="xxx-xxx-xxxx"

@@ -12,4 +12,5 @@ export default interface ILoginComponentContainerProps {
   authorizationUserFlag: ( isAuthorize: boolean ) => ( dispatch: IDispatchFunction ) => void;
   redirectDashboard: ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => void;
   windowBlocking: ( isBlocking: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  redirectOnSignInForm: ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => void;
 }

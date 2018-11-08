@@ -10,7 +10,7 @@ export default class WindowBlockingComponent extends React.Component<IWindowBloc
       <div className="window-container">
         <CircleLoader
           sizeUnit="px"
-          size={150}
+          size={300}
           color="#1daf799e"
           loading={true}
         />

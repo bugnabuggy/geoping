@@ -1,6 +1,7 @@
 import { userState } from '../state/userState';
 import IUserStateType from '../types/stateTypes/userStateType';
 import {
+  LOAD_USER_NAME,
   REDIRECT_DASHBOARD_FOR_LOGIN,
   USER_AUTHORIZATION,
   USER_AUTHORIZATION_TEST_PERIOD,
@@ -14,35 +15,43 @@ export default function userReducer( state: IUserStateType = userState, action: 
     [ USER_SIGN_OUT ]: sigOutUser,
     [ USER_AUTHORIZATION_TEST_PERIOD ]: userAuthorizationTestPeriod,
     [ REDIRECT_DASHBOARD_FOR_LOGIN ]: redirect,
+    [LOAD_USER_NAME]: loadUserData,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
-function userAuthorization( state: IUserStateType, action: any ) {
+function userAuthorization( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     authorized: action.authorization,
   };
 }
 
-function sigOutUser( state: IUserStateType, action: any ) {
+function sigOutUser( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     authorized: false,
   };
 }
 
-function userAuthorizationTestPeriod( state: IUserStateType, action: any ) {
+function userAuthorizationTestPeriod( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     authorized: action.authorization,
   };
 }
 
-function redirect( state: IUserStateType, action: any ) {
+function redirect( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     redirectDashboard: action.isRedirect,
+  };
+}
+
+function loadUserData( state: IUserStateType, action: any ): IUserStateType {
+  return {
+    ...state,
+    ...action.userData,
   };
 }

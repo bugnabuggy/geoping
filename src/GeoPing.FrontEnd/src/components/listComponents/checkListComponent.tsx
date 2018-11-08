@@ -22,7 +22,7 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
     return (
       <div className="check-list-panel-container">
         <Link
-          to={checkListUrl.replace( ':id', this.props.checkList.id )}
+          to={checkListUrl.replace( '([a-z0-9-]+)', this.props.checkList.id )}
         >
           <Card className="check-list-panel">
             <CardBody>

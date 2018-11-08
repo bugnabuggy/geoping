@@ -10,7 +10,9 @@ import {
   checkInUrl,
   checkListUrl,
   dashboardUrl,
-  loginUrl, logOutUrl,
+  loginUrl,
+  logOutUrl,
+  notFoundUrl,
   profileUrl,
   publicCheckListUrl,
   registerUrl,
@@ -28,17 +30,25 @@ import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import LogOutComponentContainer from '../componentContainers/logOutComponentContainer';
+import { NotFoundPage } from '../pages/404Page';
 
 export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
 
-  const routes: Array<{ path: string, component: ReactNode }> = [
+  const routes: Array<{ path: string | RegExp, component: ReactNode, exact: boolean }> = [
     {
       path: baseUrl,
       component: AboutComponent,
+      exact: true,
     },
     {
       path: publicCheckListUrl,
       component: PublicGEOCheckListsPage,
+      exact: false,
+    },
+    {
+      path: notFoundUrl,
+      component: NotFoundPage,
+      exact: false,
     }
   ];
 
@@ -47,14 +57,17 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       {
         path: loginUrl,
         component: LoginPage,
+        exact: false,
       },
       {
         path: registerUrl,
         component: LoginPage,
+        exact: false,
       },
       {
         path: resetPassword,
         component: LoginPage,
+        exact: false,
       }
     ] );
   } else {
@@ -62,26 +75,32 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       {
         path: dashboardUrl,
         component: DashboardPage,
+        exact: false,
       },
       {
         path: profileUrl,
         component: ProfilePage,
+        exact: false,
       },
       {
         path: checkListUrl,
         component: ChecklistPage,
+        exact: false,
       },
       {
         path: checkInUrl,
         component: CheckinPage,
+        exact: false,
       },
       {
         path: checkInStatistics,
         component: CheckinStatisticsPage,
+        exact: false,
       },
       {
         path: logOutUrl,
         component: LogOutComponentContainer,
+        exact: false,
       }
     ] );
     if ( userRole === ERoleUser.Admin ) {
@@ -89,14 +108,17 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
         {
           path: adminDashboardUrl,
           component: AdminDashboardPage,
+          exact: false,
         },
         {
           path: adminAllUsersUrl,
           component: AdminAllUsersPage,
+          exact: false,
         },
         {
           path: adminAllCheckLists,
           component: AdminAllChecklistPage,
+          exact: false,
         }
       ] );
     }

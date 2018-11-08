@@ -1,12 +1,17 @@
 import IRegistrationUserType from '../types/actionsType/registrationUserDataType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { REDIRECT_DASHBOARD_FOR_LOGIN, USER_AUTHORIZATION, USER_SIGN_OUT } from '../constantsForReducer/user';
+import {
+  LOAD_USER_NAME,
+  REDIRECT_DASHBOARD_FOR_LOGIN,
+  USER_AUTHORIZATION,
+  USER_SIGN_OUT
+} from '../constantsForReducer/user';
 import IAuthorization from '../types/serviceTypes/authorizationServiceType';
 import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { windowBlockingAction } from './windowAction';
+import { redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
 import IUser from '../types/serviceTypes/userServiceType';
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
@@ -17,7 +22,6 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
       dispatch( windowBlockingAction( false ) );
       dispatch( authorizationUserAction( true ) );
       dispatch( redirectDaschboardAction( true ) );
-      console.info( 'token', JSON.parse( atob( token.split( '.' )[ 1 ] ) ) );
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
@@ -68,17 +72,24 @@ export const redirectDashboard = ( isRedirect: boolean ) => ( dispatch: IDispatc
 };
 
 export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
   userService.loadUserData()
     .then( ( userData: any ) => {
-      console.info( userData );
-    })
+      windowBlocking( false )( dispatch );
+      dispatch( loadUserDataAction( userData ) );
+    } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction(
-        createNotification(
-          error.message,
-          EnumNotificationType.Danger
-        ) ) );
+      windowBlocking( false )( dispatch );
+      if ( error.response.status === 401 ) {
+        redirectOnSignInForm( true )( dispatch );
+      } else {
+        dispatch( addNotificationAction(
+          createNotification(
+            error.message,
+            EnumNotificationType.Danger
+          ) ) );
+      }
     } );
 };
 
@@ -94,4 +105,8 @@ function signOutUserAction(): Object {
 
 export function redirectDaschboardAction( isRedirect: boolean ) {
   return { type: REDIRECT_DASHBOARD_FOR_LOGIN, isRedirect };
+}
+
+export function loadUserDataAction( userData: any ) {
+  return { type: LOAD_USER_NAME, userData };
 }

@@ -7,13 +7,16 @@ import ProfileComponent from '../components/forms/profile';
 import {
   changePassword,
   closeModalChangePassword,
-  loadProfileData,
+  loadProfileData, saveAvatar,
   showModalChangePassword,
   updateProfileData
 } from '../actions/profileAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 
 class ProfileComponentContainer extends React.Component<IProfileComponentContainerProps, any> {
+  saveAvatar = () => {
+  this.props.saveAvatar(this.props.avatar);
+  };
   render() {
     return (
       <ProfileComponent
@@ -26,6 +29,7 @@ class ProfileComponentContainer extends React.Component<IProfileComponentContain
         showModalChangePassword={this.props.showModalChangePassword}
         closeModalChangePassword={this.props.closeModalChangePassword}
         // upgradeAccount={this.props.upgradeAccount}
+        saveAvatar={this.saveAvatar}
       />
     );
   }
@@ -34,7 +38,8 @@ class ProfileComponentContainer extends React.Component<IProfileComponentContain
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     profileState: state.profile,
-    isShowModal: state.profile.isShowModal
+    isShowModal: state.profile.isShowModal,
+    avatar: state.form.profile && state.form.profile.values && state.form.profile.values.avatar,
   };
 };
 const mapDispatchToProps = ( dispatch: any ) =>
@@ -44,7 +49,8 @@ const mapDispatchToProps = ( dispatch: any ) =>
       changePassword,
       updateProfileData,
       showModalChangePassword,
-      closeModalChangePassword
+      closeModalChangePassword,
+      saveAvatar,
     },
     dispatch );
 

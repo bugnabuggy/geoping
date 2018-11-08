@@ -28,6 +28,7 @@ export const updateUserProfile: string = `${endpointBaseUrl}/account/profile`;
 export const changeUserPassword: string = `${endpointBaseUrl}/account/change-password`;
 // export const upgradeAccount: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;
 export const loadUserData: string = `${endpointBaseUrl}/account/profile/short`;
+export const updateAvatar: string = `${endpointBaseUrl}/account/profile/avatar`;
 
 /* endpoints for check in */
 export const addCheckIn: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%/check`;

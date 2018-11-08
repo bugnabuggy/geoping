@@ -49,7 +49,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
         <Navbar color="light" light={true} expand="md">
           <NavbarBrand><h3>Geo Ping</h3></NavbarBrand>
           <NavbarToggler onClick={this.handleToggle}/>
-          {this.props.userAuthorization ? (
+          {this.props.user.authorized ? (
               <Collapse navbar={true} isOpen={this.state.showMenu}>
                 <Nav className="ml-auto" navbar={true}>
                   <NavItem>
@@ -68,13 +68,13 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     </LinkContainer>
                   </NavItem>
                   <UncontrolledDropdown nav={true} inNavbar={true}>
-                    <DropdownToggle nav={true} caret={true}>%username%</DropdownToggle>
+                    <DropdownToggle nav={true} caret={true}>{this.props.user.userName}</DropdownToggle>
                     <DropdownMenu right={true}>
                       <ul>
                         <NavItem>
                           <Link to={profileUrl} className="nav-link">Profile</Link>
                         </NavItem>
-                        {this.props.roleUser === ERoleUser.Admin ?
+                        {this.props.user.roleUser === ERoleUser.Admin ?
                           (
                             <NavItem>
                               <Link to={adminDashboardUrl} className="nav-link">Admin Dashboard</Link>
@@ -90,7 +90,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </Nav>
-                <img src="/assets/images/avatar.png" width="50px" height="50px" className="rounded-circle"/>
+                <img src={this.props.user.avatar} width="50px" height="50px" className="rounded-circle"/>
               </Collapse>
             )
             :
