@@ -21,32 +21,34 @@ namespace GeoPing.Api.Controllers
         private ISharingService _shareSrv;
         private IClaimsHelper _helper;
         private IEmailService _emailSvc;
-        private UserManager<AppIdentityUser> _userManager;
 
         public SharingController(ISharingService shareSrv,
                                  IClaimsHelper helper,
-                                 IEmailService emailSvc,
-                                 UserManager<AppIdentityUser> userManager)
+                                 IEmailService emailSvc)
         {
             _shareSrv = shareSrv;
             _helper = helper;
             _emailSvc = emailSvc;
-            _userManager = userManager;
         }
 
         [HttpGet]
         [Route("invite")]
+        [AllowAnonymous]
         public async Task<IActionResult> ConfirmInvitationAsync(string token)
         {
-            var result = await _shareSrv.ConfirmInvitationAsync(token);
+            var result = await _shareSrv.ConfirmInvitationAsync(_helper.GetIdentityUserIdByClaims(User.Claims), token);
 
             if (result.Success)
             {
                 return Ok(result);
             }
-            else if ((int)result.Data == 302)
+            else if (result.Data.Equals("302-1"))
             {
                 return Redirect("~/account/register");
+            }
+            else if (result.Data.Equals("302-2"))
+            {
+                return Redirect("~/connect/token");
             }
             return BadRequest(result);
         }

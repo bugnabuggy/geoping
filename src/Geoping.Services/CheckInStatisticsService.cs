@@ -62,7 +62,7 @@ namespace Geoping.Services
                 };
             }
 
-            var points = _pointSrv.GetByFilter(list.Id, new GeopointFilterDTO(), out int totalPoints).Data;
+            var points = _pointSrv.Get(x => x.ListId == list.Id);
 
             var data = from ch in _checksRepo.Data
                        from gp in points

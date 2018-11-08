@@ -1,8 +1,10 @@
 ﻿using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.Utilities.EmailSender;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +19,22 @@ namespace Geoping.Services
         private ISecurityService _securitySrv;
         private IGeolistService _listSrv;
         private IGeopingTokenService _tokenSrv;
+        private IGPUserService _gpUserSrv;
+        private UserManager<AppIdentityUser> _userManager;
 
         public SharingService(IRepository<ListSharing> shareRepo,
                               ISecurityService securitySrv,
                               IGeolistService listSrv,
-                              IGeopingTokenService tokenSrv)
+                              IGeopingTokenService tokenSrv,
+                              IGPUserService gpUserSrv,
+                              UserManager<AppIdentityUser> userManager)
         {
             _shareRepo = shareRepo;
             _securitySrv = securitySrv;
             _listSrv = listSrv;
             _tokenSrv = tokenSrv;
+            _gpUserSrv = gpUserSrv;
+            _userManager = userManager;
         }
 
         public OperationResult InviteByEmail(Guid userId, string listId, string email)
@@ -54,32 +62,74 @@ namespace Geoping.Services
             {
                 return new OperationResult()
                 {
-                    Messages = new[] { $"User with this email = [{email}] had been invited." }
+                    Messages = new[] { $"User with this email = [{email}] was invited some time ago." }
                 };
             }
 
             return new OperationResult()
             {
-                Data = _tokenSrv.GetSharingToken(email),
+                //Data = _tokenSrv.GetSharingToken(email),
                 Success = true,
                 Messages = new[] { $"Invite for user with email = [{email}] has been sent." }
             };
         }
 
-        public Task<OperationResult> ConfirmInvitationAsync(string token)
+        public async Task<OperationResult> ConfirmInvitationAsync(string invitedUserId, string token)
         {
-            var email = _tokenSrv.DecodeToken(token);
+            var data = /*_tokenSrv.DecodeToken(token)*/new[] { "" };
+
+            var email = (string)data[0];
+            var listId = (string)data[1];
+
+            if (!_listSrv.IsListExistWithThisId(listId, out var list))
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { $"There is no list with id = [{listId}]" }
+                };
+            }
 
             var invitedUser = await _userManager.FindByEmailAsync(email);
 
             if (invitedUser == null)
             {
-
+                return new OperationResult()
+                {
+                    Data = "302-1",
+                    Messages = new[] { "You should register in our service to continue using it" }
+                };
             }
 
-            _shareSrv.ConfirmInvitation()
+            if (invitedUserId == null)
+            {
+                return new OperationResult()
+                {
+                    Data = "302-2",
+                    Messages = new[] { "You should sign in our service to continue using it" }
+                };
+            }
 
-            return Ok();
+            if (invitedUserId != invitedUser.Id)
+            {
+                return new OperationResult()
+                {
+                    Messages = new[] { "You have no rights to do this" }
+                };
+            }
+
+            return new OperationResult()
+            {
+                Data = _shareRepo.Add(new ListSharing()
+                {
+                    InvitationDate = DateTime.UtcNow,
+                    ListId = list.Id,
+                    UserId = _gpUserSrv.GetUser(x => x.IdentityId == invitedUser.Id).Id,
+                    Status = "invited"
+                }),
+                Messages = new[] { "You have been invited to list. " +
+                "Accept invitation to be able to watch it and check in its points" },
+                Success = true
+            };
         }
 
         public OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId)
