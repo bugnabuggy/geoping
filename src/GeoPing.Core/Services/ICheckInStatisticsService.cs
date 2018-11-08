@@ -9,7 +9,7 @@ namespace GeoPing.Core.Services
 {
     public interface ICheckInStatisticsService
     {
-        WebResult<IQueryable<CheckInWithUserNameDTO>> GetStatOfUsersList
+        WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersList
             (Guid guid, string listId, CheckInStatFilterDTO filter, out int totalItems);
     }
 }
