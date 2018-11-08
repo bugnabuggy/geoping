@@ -11,7 +11,7 @@ import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { redirectOnSignInForm, windowBlockingAction } from './windowAction';
+import { redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
 import IUser from '../types/serviceTypes/userServiceType';
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
@@ -72,13 +72,15 @@ export const redirectDashboard = ( isRedirect: boolean ) => ( dispatch: IDispatc
 };
 
 export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
   userService.loadUserData()
     .then( ( userData: any ) => {
-      console.info( 'userData', userData );
+      windowBlocking( false )( dispatch );
       dispatch( loadUserDataAction( userData ) );
     } )
     .catch( ( error: any ) => {
+      windowBlocking( false )( dispatch );
       if ( error.response.status === 401 ) {
         redirectOnSignInForm( true )( dispatch );
       } else {

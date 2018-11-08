@@ -2,7 +2,7 @@ import IProfileServiceType from '../../types/serviceTypes/profileServiceType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import IUserType from '../../DTO/userDTO';
-import { loadUserProfile, updateUserProfile } from '../../constants/endpoints';
+import { loadUserProfile, updateAvatar, updateUserProfile } from '../../constants/endpoints';
 import { getDataFromResponse } from '../helper';
 
 export default class ProfileService implements IProfileServiceType {
@@ -29,6 +29,27 @@ export default class ProfileService implements IProfileServiceType {
   }
 
   updateProfileData( data: IUserType ) {
-    return this.communicator.put( updateUserProfile, data );
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.put( updateUserProfile, data )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+    // return this.communicator.put( updateUserProfile, data );
+  }
+
+  saveAvatar( avatar: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.put( updateAvatar, { body: avatar } )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 }

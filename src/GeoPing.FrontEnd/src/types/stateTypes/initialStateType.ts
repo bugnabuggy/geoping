@@ -17,6 +17,7 @@ import ISharedCheckListStateType from './sharedCheckListStateType';
 import IWindowStateType from './windowStateType';
 
 export default interface IinitialStateType {
+  form: any;
   allUsersFilter: IAllUsersStateType;
   allUsersTable: IAllUsersTableStateType;
   checkin: ICheckinStateType;
