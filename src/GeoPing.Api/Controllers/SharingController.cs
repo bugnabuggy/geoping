@@ -57,7 +57,13 @@ namespace GeoPing.Api.Controllers
         [Route("invite/accept")]
         public IActionResult AcceptInvite(string listId)
         {
-            return Ok();
+            var result = _shareSrv.AcceptInvite(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpPost]

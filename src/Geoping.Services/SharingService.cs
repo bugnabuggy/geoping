@@ -68,7 +68,7 @@ namespace Geoping.Services
 
             return new OperationResult()
             {
-                //Data = _tokenSrv.GetSharingToken(email),
+                Data = _tokenSrv.GetSharingToken(email, listId),
                 Success = true,
                 Messages = new[] { $"Invite for user with email = [{email}] has been sent." }
             };
@@ -76,7 +76,7 @@ namespace Geoping.Services
 
         public async Task<OperationResult> ConfirmInvitationAsync(string invitedUserId, string token)
         {
-            var data = /*_tokenSrv.DecodeToken(token)*/new[] { "" };
+            var data = (string[])_tokenSrv.DecodeToken(token);
 
             var email = (string)data[0];
             var listId = (string)data[1];
@@ -130,6 +130,11 @@ namespace Geoping.Services
                 "Now accept invitation to be able to watch list and check in its points" },
                 Success = true
             };
+        }
+
+        public OperationResult AcceptInvite(Guid guid, string listId)
+        {
+            throw new NotImplementedException();
         }
 
         public OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId)
