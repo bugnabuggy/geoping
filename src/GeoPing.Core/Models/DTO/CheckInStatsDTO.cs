@@ -25,6 +25,7 @@ namespace GeoPing.Core.Models.DTO
     public class CheckInStatCheckDTO
     {
         public Guid? UserId { get; set; }
+        public Guid? PointId { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public double? Distance { get; set; }

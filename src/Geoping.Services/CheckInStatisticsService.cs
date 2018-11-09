@@ -88,6 +88,7 @@ namespace Geoping.Services
                            ? new CheckInStatCheckDTO()
                            {
                                UserId = x.UserId,
+                               PointId = x.PointId,
                                Latitude = x.Latitude,
                                Longitude = x.Longitude,
                                Distance = x.Distance,
