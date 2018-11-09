@@ -60,4 +60,28 @@ export default class UserService implements IUser {
         } );
     } );
   }
+
+  sendLoginOrEmail( loginOrEmail: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.post('', loginOrEmail )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    });
+  }
+
+  sendNewPassword( newPassword: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.post('', newPassword )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    });
+  }
 }
