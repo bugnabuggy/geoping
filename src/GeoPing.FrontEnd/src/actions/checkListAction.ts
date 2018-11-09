@@ -28,6 +28,7 @@ import IGeoPoint from '../DTO/geoPointDTO';
 import IGeoListType, { IGeoListForUpdateDTO } from '../DTO/geoListDTO';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import { addListPointsAction } from './googleMapAction';
+import { windowBlockingAction } from './windowAction';
 
 export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
   window.navigator.geolocation.getCurrentPosition(
@@ -93,12 +94,15 @@ export const updateNameCheckList = ( newNameCheckList: string ) => ( dispatch: I
 
 export const updateCheckList = ( idCheckList: string, checkList: IGeoListForUpdateDTO ) =>
   ( dispatch: IDispatchFunction ) => {
+    dispatch( windowBlockingAction( true ) );
     const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
     checkListService.updateMyCheckList( idCheckList, checkList )
       .then( ( response: any ) => {
+        dispatch( windowBlockingAction( false ) );
         dispatch( updateCheckListAction( response ) );
       } )
       .catch( ( error: any ) => {
+        dispatch( windowBlockingAction( false ) );
         dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       } );
   };
