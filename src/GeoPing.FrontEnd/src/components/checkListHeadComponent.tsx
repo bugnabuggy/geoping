@@ -2,20 +2,44 @@ import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ICheckListHeadComponentProps from '../componentProps/checkListHeadComponentProps';
 import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { IGeoListForUpdateDTO } from '../DTO/geoListDTO';
 
 export class CheckListHeadComponent extends React.Component<ICheckListHeadComponentProps, any> {
   handleEdit = () => {
     this.setState( {
-      isEdit: true,
+      isEdit: !this.state.isEdit,
     } );
-  };
-  blurEdit = ( e: any ) => {
-    if ( this.props.nameChecklist !== e.target.value ) {
-      this.props.updateNameCheckList( e.target.value );
+    if ( !this.state.isEdit &&
+      this.props.checkList.selectedGeoList.name !== this.state.name &&
+      this.state.name
+    ) {
+      const checkList: IGeoListForUpdateDTO = {
+        Name: this.state.name,
+        Description: this.props.checkList.selectedGeoList.description,
+        IsPublic: true,
+      };
+
+      this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
     }
-    this.setState( {
-      isEdit: false,
-    } );
+  };
+  keyUp = ( e: any ) => {
+    if ( e.keyCode === 13 ) {
+      if ( this.props.checkList.selectedGeoList.name !== e.target.value ) {
+        const checkList: IGeoListForUpdateDTO = {
+          Name: e.target.value,
+          Description: this.props.checkList.selectedGeoList.description,
+          IsPublic: true,
+        };
+
+        this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
+      }
+      this.setState( {
+        isEdit: false,
+      } );
+    }
+  };
+  handleChangeName = ( e: any ) => {
+    this.setState( { name: e.target.value } );
   };
 
   handleShare = () => {
@@ -31,6 +55,7 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
     super( props );
     this.state = {
       isEdit: false,
+      name: '',
     };
   }
 
@@ -44,28 +69,30 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
                 className="check-list-head-name-form-group"
               >
                 {!this.state.isEdit && <ControlLabel>
-                  <h3><p>{this.props.nameChecklist}</p></h3>
+                  <p>{this.props.checkList.selectedGeoList.name}</p>
                 </ControlLabel>}
                 {this.state.isEdit && <FormControl
                   name="name"
-                  defaultValue={this.props.nameChecklist}
-                  onBlur={this.blurEdit}
+                  defaultValue={this.props.checkList.selectedGeoList.name}
+                  // onBlur={this.blurEdit}
+                  onChange={this.handleChangeName}
                   autoFocus={this.state.isEdit}
+                  onKeyUp={this.keyUp}
                 />}
               </FormGroup>
-              <div className="check-list-head-name-icons-container">
-                <div
-                  className=" icon-hover-color cursor-pointer"
-                  onClick={this.handleEdit}
-                >
-                  <FontAwesomeIcon icon="pencil-alt"/>
-                </div>
-                <div
-                  className="icon-hover-color cursor-pointer"
-                  onClick={this.handleShare}
-                >
-                  <FontAwesomeIcon icon="share-square"/>
-                </div>
+            </div>
+            <div className="check-list-head-name-icons-container">
+              <div
+                className=" icon-hover-color cursor-pointer"
+                onClick={this.handleEdit}
+              >
+                <FontAwesomeIcon icon="pencil-alt"/>
+              </div>
+              <div
+                className="icon-hover-color cursor-pointer"
+                onClick={this.handleShare}
+              >
+                <FontAwesomeIcon icon="share-square"/>
               </div>
             </div>
             <div

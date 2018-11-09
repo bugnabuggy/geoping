@@ -30,6 +30,7 @@ export const googleMapState: IGoogleMapStateType = {
     lng: 0,
     radius: 0,
     description: '',
+    idForMap: '',
   },
   isAddMarker: false,
   moveStartMarker: {
@@ -45,4 +46,5 @@ export const googleMapState: IGoogleMapStateType = {
   statusMarker: EnumStatusMarker.None,
   idDeleteMarker: '',
   isGeoPointListIsCreated: false,
+  checkInGeoPoint: [],
 };

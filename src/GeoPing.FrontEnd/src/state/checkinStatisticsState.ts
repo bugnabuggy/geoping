@@ -7,4 +7,5 @@ export const checkinStatisticsState: ICheckinStatisticsStateType = {
     from: '',
     to: '',
   },
+  isCheckInStatistics: false,
 };

@@ -1,3 +1,4 @@
+using Geoping.Services.Configuration;
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
@@ -31,8 +32,8 @@ namespace GeoPing.Api
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                //.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
             _configuration = builder.Build();
@@ -43,6 +44,8 @@ namespace GeoPing.Api
         {
             services.AddSingleton<IConfiguration>(_configuration);
             services.AddSingleton<IEmailConfiguration>(_configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddSingleton(_configuration.GetSection("IdentityServerSettings").Get<IdentityServerSettings>());
+            services.AddSingleton(_configuration.GetSection("DefaultUserSettings").Get<DefaultUserSettings>());
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
@@ -58,8 +61,12 @@ namespace GeoPing.Api
 
             // Setting password requirements 
             services.AddIdentity<AppIdentityUser, IdentityRole>(options => {
-                options.Password.RequiredLength = 8;
+                options.Password.RequiredLength = 4;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

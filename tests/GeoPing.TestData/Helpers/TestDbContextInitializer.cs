@@ -1,7 +1,10 @@
 ﻿using GeoPing.Api.Configuration;
+using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
+using GeoPing.Infrastructure.Repositories;
+using GeoPing.TestData.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,10 +20,7 @@ namespace GeoPing.TestData.Helpers
 {
     public class TestDbContextInitializer
     {
-        private ApplicationDbContext _ctx;
-        private AppIdentityUser[] _users;
-
-        public async Task SeedData(IServiceProvider services)
+        public void SeedData(IServiceProvider services)
         {
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
             var principal = new ClaimsPrincipal(httpContextAccessor.HttpContext.User);
@@ -30,33 +30,58 @@ namespace GeoPing.TestData.Helpers
 
             var appConfigurator = new AppConfigurator();
             appConfigurator.Initialize(services);
-
-            _ctx = services.GetService<ApplicationDbContext>();
-
-            var _userManager = services.GetService<UserManager<AppIdentityUser>>();
-            await _userManager.CreateAsync(AppUsersList.GetIdentityUser(), TestConfig.DefaultPassword);
-
-            _users = AppUsersList.GetList().ToArray();
-
-            foreach (var user in _users)
-            {
-                var result = await _userManager.CreateAsync(user, TestConfig.DefaultPassword);
-                if (!result.Succeeded)
-                {
-                    throw new Exception(string.Concat(result.Errors));
-                }
-            }
-
-            //to avoid foreing keys insert conflicts
-            foreach (var user in _users)
-            {
-                //AddPromises(user, _ctx);
-                //AddPostcards(user, _ctx);
-                //AddAddressess(user, _ctx);
-            }
-
+            
             //return default principal back;
             httpContextAccessor.HttpContext.User = principal;
+
+            SeedTestLists(services);
+            SeedTestPublicLists(services);
+            SeedTestPoints(services);
+            SeedTestChecksIn(services);
+        }
+
+        private void SeedTestPublicLists(IServiceProvider services)
+        {
+            var _publicListsRepo = services.GetRequiredService<IRepository<PublicList>>();
+            var lists = new TestLists();
+
+            foreach (var list in lists.GetPublicGeolists())
+            {
+                _publicListsRepo.Add(list);
+            }
+        }
+
+        private void SeedTestChecksIn(IServiceProvider services)
+        {
+            var _checkInRepo = services.GetRequiredService<IRepository<CheckIn>>();
+            var checksIn = new TestChecksIn();
+
+            foreach (var checkIn in checksIn.GetChecksIn())
+            {
+                _checkInRepo.Add(checkIn);
+            }
+        }
+
+        private void SeedTestLists(IServiceProvider services)
+        {
+            var _geolistRepo = services.GetRequiredService<IRepository<GeoList>>();
+            var lists = new TestLists();
+
+            foreach (var list in lists.GetGeolists())
+            {
+                _geolistRepo.Add(list);
+            }
+        }
+
+        private void SeedTestPoints(IServiceProvider services)
+        {
+            var _geopointRepo = services.GetRequiredService<IRepository<GeoPoint>>();
+            var points = new TestPoints();
+
+            foreach (var point in points.GetGeopoints())
+            {
+                _geopointRepo.Add(point);
+            }
         }
     }
 }

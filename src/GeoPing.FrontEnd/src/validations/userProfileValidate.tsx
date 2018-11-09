@@ -2,8 +2,15 @@ import { validationEmail, validationPhone } from '../constants/regExpConstants';
 
 export const validate = ( values: any) => {
   const errors: any = {};
-  if (!values.fullName) {
-    errors.fullName = 'required to be filled out';
+  if (!values.firstName) {
+    errors.firstName = 'required to be filled out';
+  }
+
+  if (!values.lastName) {
+    errors.lastName = 'required to be filled out';
+  }
+  if (!values.birthday) {
+    errors.birthday = 'required to be filled out';
   }
 
   if (!values.email) {

@@ -1,67 +1,29 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
+
 import { validate } from '../../../validations/userProfileValidate';
 import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { IconLookup } from '@fortawesome/fontawesome-svg-core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Avatar from 'react-avatar-edit';
+import DatePicker from 'react-datepicker';
+import * as moment from 'moment';
 
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 
-const output = ( props: any ) => {
-  switch ( props.labelName ) {
-    case 'Login':
-      return (
-        <FormControl
-          {...props.input}
-          type="input"
-          disabled={true}
-        />
-      );
-    case 'Email':
-      return (
-        <FormControl
-          {...props.input}
-          type="email"
-          placeholder={props.placeholder}
-        />
-      );
-    case 'Mobile Phone':
-      return (
-        <FormControl
-          {...props.input}
-          placeholder={'xxx-xxx-xxxx'}
-          type="tel"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        />
-      );
-    case 'Full Name':
-      return (
-        <FormControl
-          {...props.input}
-          type="text"
-          placeholder={props.placeholder}
-        />
-      );
-    case 'Account Type':
-      return (
-        <div className="form-control">{props.input.value}</div>
-      );
-    default:
-      return (
-        <FormControl
-          {...props.input}
-        />
-      );
-  }
-};
 const renderInput = ( props: any ) => {
   return (
     <FormGroup>
-      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{' '}
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
       <div className="form-input-container">
-        {output( props )}
+        <FormControl
+          {...props.input}
+          type={props.type}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+        />
         <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
@@ -81,38 +43,99 @@ const renderInput = ( props: any ) => {
   );
 };
 
+const renderAvatar = ( props: any ) => {
+  return (
+    <div className="flex-box-col-avatar">
+      <Avatar
+        width={290}
+        height={195}
+        onCrop={props.input.onChange}
+        onClose={props.input.onChange}
+      />
+    </div>
+  );
+};
+
+const renderDate = ( props: any ) => {
+  const date: moment.Moment = moment( props.input.value );
+  return (
+    <FormGroup>
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
+      <DatePicker
+        selected={date}
+        locale="ru"
+        onChange={props.input.onChange}
+        className="form-control"
+      />
+    </FormGroup>
+  );
+};
+
 function profileForm( props: any ): any {
-  const { handleSubmit } = props;
+  const { handleSubmit, } = props;
   return (
     <form className="profile-form">
+      <Field
+        component={renderAvatar}
+        name="avatar"
+        disabled={true}
+      />
+      <Button
+        bsStyle="primary"
+        className="profile-flex-btn"
+        onClick={props.saveAvatar}
+      >
+        Save image
+      </Button>
       <Field
         component={renderInput}
         name="login"
         labelName="Login"
+        type="input"
+        disabled={true}
       />
       <Field
         component={renderInput}
-        name="fullName"
-        labelName="Full Name"
+        name="firstName"
+        labelName="First Name"
+        type="text"
+      />
+      <Field
+        component={renderInput}
+        name="lastName"
+        labelName="Last Name"
+        type="text"
+      />
+      <Field
+        component={renderDate}
+        name="birthday"
+        labelName="Birthday"
+        type="text"
       />
       <Field
         component={renderInput}
         name="email"
         labelName="Email"
+        type="email"
       />
       <Field
         component={renderInput}
-        name="phone"
+        name="phoneNumber"
         labelName="Mobile Phone"
+        type="tel"
+        placeholder="xxx-xxx-xxxx"
       />
       <Field
         component={renderInput}
         name="accountType"
         labelName="Account Type"
+        type="input"
+        disabled={true}
       />
       <Button
         bsStyle="primary"
         type="button"
+        onClick={props.showModalChangePassword}
       >
         Change Password
       </Button>

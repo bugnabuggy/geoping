@@ -1,11 +1,16 @@
-﻿using GeoPing.Core.Entities;
+﻿using Geoping.Services.Configuration;
+using GeoPing.Core.Entities;
+using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class GPUserService : IGPUserService
     {
@@ -16,6 +21,31 @@ namespace Geoping.Services
             _gpUserRepo = gpUserRepo;
         }
 
+        public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
+        {
+            return _gpUserRepo.Data.FirstOrDefault(func);
+        }
+
+        public ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
+        {
+            var data = GetUser(func);
+            return new ShortUserInfoDTO()
+            {
+                UserName = data.Login,
+                Avatar = data.Avatar
+            }; 
+        }
+
+        public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
+        {
+            return new OperationResult<GeoPingUser>()
+            {
+                Data = _gpUserRepo.Update(user),
+                Messages = new[] { "Profile was successfully edited." },
+                Success = true
+            };
+        }
+
         public void AddGPUserForIdentity(string identityUserId, string email, string username)
         {
             _gpUserRepo.Add(new GeoPingUser
@@ -24,7 +54,15 @@ namespace Geoping.Services
                 Email = email,
                 Login = username,
                 AccountType = "regular",
+                Avatar =   DefaultUserSettings.AvatarImage
             });
+        }
+
+        public void ActivateUser(string id)
+        {
+            var user = GetUser(x => x.IdentityId == id);
+            user.IsActivated = true;
+            EditUser(user);
         }
     }
 }

@@ -1,16 +1,23 @@
 import * as React from 'react';
-import { Button, ControlLabel, FormGroup, Panel, Table } from 'react-bootstrap';
 import { v4 as uuidV4 } from 'uuid';
 import Select from 'react-select';
 import { PulseLoader } from 'react-spinners';
+import { Button, Card, FormGroup, Label, Table } from 'reactstrap';
 
 import ICheckinComponentProps from '../componentProps/checkinComponentProps';
 import { defaultMarker } from '../constants/defaultMarker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CongratulationsModalComponent } from './modalComponents/congratulationsModalComponent';
-import IHistoryDataDTO from '../DTO/historyDataDTO';
+import { ICheckInDTO } from '../DTO/checkInDTO';
+import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import { ICheckInGeoPointDTO } from '../DTO/geoPointDTO';
 
 export class CheckinComponent extends React.Component<ICheckinComponentProps, any> {
+  disableButtonCheckIn = () => {
+    return !!this.props.googleMap.checkInGeoPoint.find(
+      ( il: ICheckInGeoPointDTO ) => il.pointId === this.props.googleMap.selectedGeoPoint.id
+    );
+  };
   openModal = () => {
     this.setState( { showModal: true } );
   };
@@ -28,22 +35,41 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           this.props.googleMap.selectedGeoPoint.id,
         ]
       } );
+      const idList: string = this.props.googleMap.selectedGeoPoint.idList;
+      const idPoint: string = this.props.googleMap.selectedGeoPoint.id;
+      const data: ICheckInDTO = {
+        Latitude: this.props.googleMap.position.lat.toString(),
+        Longitude: this.props.googleMap.position.lng.toString(),
+        Distance: this.props.checkin.difference,
+        // Ip: '',
+        // DeviceId: '',
+        // UserAgent: '',
+      };
+      this.props.functions.checkIn( idList, idPoint, data );
+    } else {
+      this.props.functions.messagesForUser( 'Need to get closer to the point', EnumNotificationType.Warning );
     }
-    const list: any = this.props.checkin.selectList.find( item => item.id === this.props.checkin.selectedListId );
-    const historyData: IHistoryDataDTO = {
-      apporxAddress: this.props.googleMap.position.address,
-      checkList: list ? list.name : '',
-      dateTime: `${new Date().toLocaleDateString( 'ru' )} ${new Date().toLocaleTimeString( 'ru' )}`,
-      id: uuidV4(),
-      latLng: `${this.props.googleMap.position.lat} / ${this.props.googleMap.position.lng}`,
-    };
 
-    // console.log( 'historyData', historyData );
-    this.props.functions.saveHistory( '', historyData );
+    // const list: any = this.props.checkin.selectList
+    //   .find( ( item: any ) => item.id === this.props.checkin.selectedListId );
+    // const historyData: IHistoryDataDTO = {
+    //   apporxAddress: this.props.googleMap.position.address,
+    //   checkList: list ? list.name : '',
+    //   dateTime: `${new Date().toLocaleDateString( 'ru' )} ${new Date().toLocaleTimeString( 'ru' )}`,
+    //   id: uuidV4(),
+    //   latLng: `${this.props.googleMap.position.lat} / ${this.props.googleMap.position.lng}`,
+    // };
+    //
+    // // console.log( 'historyData', historyData );
+    // this.props.functions.saveHistory( '', historyData );
   };
   handleSelectList = ( e: any ) => {
-    this.props.functions.selectList( e.value );
-    this.props.functions.loadPoints( e.value );
+    if ( e ) {
+      this.props.functions.selectList( e.value );
+      this.props.functions.loadPoints( e.value );
+    } else {
+      this.props.functions.clearGeoPoint();
+    }
   };
   handleSelectPoint = ( e: any ) => {
     if ( e.target.id === this.props.googleMap.selectedGeoPoint.id ) {
@@ -55,28 +81,23 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
       );
     }
   };
-  handleValidationState = ( type: string ) => {
+  handleValidationState = () => {
     if ( this.props.googleMap.selectedGeoPoint.id ) {
-      return !this.props.checkin.difference ?
-        type === 'button' ?
-          'default'
-          :
-          null
+      return this.props.checkin.difference >= 0 &&
+      this.props.checkin.difference <= this.props.googleMap.selectedGeoPoint.radius ?
+        'success'
         :
-        this.props.checkin.difference < this.props.googleMap.selectedGeoPoint.radius ?
-          'success'
-          :
-          type === 'button' ?
-            'danger'
-            :
-            'error';
+        'danger';
     } else {
-      return type === 'button' ? 'default' : null;
+      return 'default';
     }
   };
   renderPointList = () => {
     return this.props.googleMap.geoPoints.map( ( item: any, index: number ) => {
-      const checkedPoint: boolean = !!this.state.checkInPoints.find( ( il: any ) => il === item.id );
+      // const checkedPoint: boolean = !!this.state.checkInPoints.find( ( il: any ) => il === item.id );
+      const checkedPoint: boolean = !!this.props.googleMap.checkInGeoPoint.find(
+        ( il: ICheckInGeoPointDTO ) => il.pointId === item.id
+      );
       return (
         <React.Fragment
           key={uuidV4()}
@@ -90,12 +111,13 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
             <td
               id={item.id}
             >
-              <p id={item.id} className="check-in-select-point-paragraph">
-                {item.name}
-              </p>
+              {/*<p id={item.id} className="check-in-select-point-paragraph">*/}
+              {item.name}
+              {/*</p>*/}
             </td>
             <td
               id={item.id}
+              className="check-in-select-point-paragraph-icon"
             >
               {checkedPoint &&
               <FontAwesomeIcon icon="check" className="check-in-select-point-icon"/>}
@@ -107,12 +129,12 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
   };
   renderListOption = () => {
     const options: Array<{ value: string, label: string }> = [
-      {
-        value: '',
-        label: '- None -'
-      }
+      // {
+      //   value: '',
+      //   label: '- None -'
+      // }
     ];
-    this.props.checkin.selectList.forEach( ( item: any ) => {
+    this.props.checkList.checkLists.forEach( ( item: any ) => {
       options.push( {
         value: item.id,
         label: item.name,
@@ -130,29 +152,29 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
   }
 
   render() {
-    const validationState: any = this.handleValidationState( 'label' );
-    const validationStateButton: any = this.handleValidationState( 'button' );
+    const validationState: any = this.handleValidationState();
     return (
       <React.Fragment>
         <h3>Check in</h3>
         <FormGroup
           className="check-in-select-list-container"
         >
-          <ControlLabel
+          <Label
             className="check-in-select-list-label"
           >
             Select List
-          </ControlLabel>
+          </Label>
           <Select
             options={this.renderListOption()}
             className="check-in-select"
             onChange={this.handleSelectList}
             isLoading={this.props.checkin.isListLoading}
+            isClearable={true}
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Select Point</ControlLabel>
-          <Panel
+          <Label>Select Point</Label>
+          <Card
             className="check-in-select-point-container"
           >
             <Table>
@@ -189,41 +211,39 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
               }
               </tbody>
             </Table>
-          </Panel>
+          </Card>
         </FormGroup>
         <div
           className="check-in-buttons-container"
         >
           <Button
-            bsStyle={validationStateButton}
+            color={validationState}
             onClick={this.handleCheckin}
-            disabled={!!this.state.checkInPoints.find( ( il: any ) => il === this.props.googleMap.selectedGeoPoint.id )}
+            disabled={validationState === 'default' || this.disableButtonCheckIn()}
           >
             Check In
           </Button>
 
           <Button
-            bsStyle="primary"
+            color="primary"
             onClick={this.handleCheckMyGeoPosition}
           >
             Check my geo position
           </Button>
         </div>
         <div>
-          <ControlLabel
+          <Label
             className="check-in-current-coordinates"
           >
             Current coordinates:
-          </ControlLabel>
-          <ControlLabel>
+          </Label>
+          <Label>
             lat: {this.props.googleMap.position.lat}; long: {this.props.googleMap.position.lng}
-          </ControlLabel>
-          <FormGroup
-            validationState={validationState}
-          >
-            <ControlLabel>
+          </Label>
+          <FormGroup>
+            <Label className={`text-${validationState}`}>
               Difference: {this.props.checkin.difference && `${this.props.checkin.difference}m`}
-            </ControlLabel>
+            </Label>
           </FormGroup>
         </div>
         <CongratulationsModalComponent

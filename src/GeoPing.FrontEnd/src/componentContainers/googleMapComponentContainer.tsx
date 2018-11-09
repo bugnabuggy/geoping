@@ -37,6 +37,7 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
           checkList={this.props.checkList}
           selectedListId={this.props.selectedListId}
           isCheckIn={this.props.isCheckIn}
+          checkInStatistics={this.props.checkInStatistics}
 
           selectPoint={this.props.selectPoint}
           addNewPoint={this.props.addNewPoint}
@@ -48,6 +49,7 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
           geoPointListIsCreate={this.props.geoPointListIsCreate}
           addDistance={this.props.addDistance}
           getMyAddress={this.props.getMyAddress}
+          findGeoPosition={this.props.findGeoPosition}
         />
       </React.Fragment>
     );
@@ -60,6 +62,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
     checkList: state.checkList,
     selectedListId: state.checkin.selectedListId,
     googleMap: state.googleMap,
+    checkInStatistics: state.checkinStatistics,
   };
 };
 

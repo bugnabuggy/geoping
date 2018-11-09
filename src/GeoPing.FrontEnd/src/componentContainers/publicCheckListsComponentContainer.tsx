@@ -37,7 +37,7 @@ class PublicCheckListsComponentContainer extends React.Component<IPublicCheckLis
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    publicListItem: state.publicCheckList.checkLists,
+    publicListItem: state.checkList.checkListPublic,
     countPages: state.publicCheckList.contPages,
     actionPage: state.publicCheckList.pageNumber,
   };

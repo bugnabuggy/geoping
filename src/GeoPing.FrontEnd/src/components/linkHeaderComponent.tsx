@@ -69,8 +69,8 @@ export class LinkHeaderComponent extends React.Component<ILinkHeaderComponentPro
                 className={`nav-link dropdown-toggle ${this.state.isDropdownAction && 'action'}`}
                 data-toggle="dropdown"
                 role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
+                aria-haspopup="false"
+                aria-expanded="true"
               >
                 {this.props.text}
               </Link>

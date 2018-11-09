@@ -1,4 +1,6 @@
-﻿using GeoPing.Core.Models;
+﻿using Geoping.Services.Configuration;
+using GeoPing.Core.Entities;
+using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Data;
@@ -13,7 +15,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class AccountService : IAccountService
     {
@@ -58,9 +60,10 @@ namespace Geoping.Services
                                        $"Email = [{user.Email}], " +
                                        $"Username = [{user.UserName}].");
 
+                _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+
                 return new OperationResult
                 {
-                    Data = registerUser,
                     Success = true,
                     Messages = new[] { "User was successfully registered, now he should validate his " +
                                        "account according instructions were sent to provided email address" }
@@ -113,7 +116,7 @@ namespace Geoping.Services
 
             if (result.Succeeded)
             {
-                _gpUserSrv.AddGPUserForIdentity(userId, user.Email, user.UserName);
+                _gpUserSrv.ActivateUser(user.Id);
                 return new OperationResult()
                 {
                     Success = true,
@@ -163,8 +166,122 @@ namespace Geoping.Services
 
             user.EmailConfirmed = true;
 
-            _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+            _gpUserSrv.ActivateUser(user.Id);
         }
+
+        public OperationResult<GeoPingUser> GetProfile(Guid gpUserId)
+        {
+            var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
+
+            if (result == null)
+            {
+                return new OperationResult<GeoPingUser>()
+                {
+                    Messages = new[] { "User was not found" }
+                };
+            }
+            return new OperationResult<GeoPingUser>()
+            {
+                Data = result,
+                Messages = new[] { "The following user was found" },
+                Success = true
+            };
+        }
+
+        public OperationResult<ShortUserInfoDTO> GetShortProfile(Guid gpUserId)
+        {
+            var result = _gpUserSrv.GetUserNameAndAvatar(x => x.Id == gpUserId);
+
+            if (result == null)
+            {
+                return new OperationResult<ShortUserInfoDTO>()
+                {
+                    Messages = new[] { "User was not found" }
+                };
+            }
+            return new OperationResult<ShortUserInfoDTO>()
+            {
+                Data = result,
+                Messages = new[] { "The following user was found" },
+                Success = true
+            };
+        }
+
+        public OperationResult<GeoPingUser> EditProfile(Guid userId, GeoPingUserDTO userData)
+        {
+            var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+            user.FirstName = userData.FirstName;
+            user.LastName = userData.LastName;
+            user.Birthday = userData.Birthday;
+            user.PhoneNumber = userData.PhoneNumber;
+
+            var result = _gpUserSrv.EditUser(user);
+
+            if (result.Success)
+            {
+                return new OperationResult<GeoPingUser>()
+                {
+                    Data = user,
+                    Success = true,
+                    Messages = new[] { "Your profile was edited successfully" }
+                };
+            }
+
+            return new OperationResult<GeoPingUser>()
+            {
+                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
+            };
+        }
+
+        public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, string avatar)
+        {
+            var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+            user.Avatar = avatar ?? DefaultUserSettings.AvatarImage;
+
+            var result = _gpUserSrv.EditUser(user);
+
+            if (result.Success)
+            {
+                return new OperationResult<GeoPingUser>()
+                {
+                    Data = user,
+                    Success = true,
+                    Messages = new[] { "Your profile was edited successfully" }
+                };
+            }
+
+            return new OperationResult<GeoPingUser>()
+            {
+                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
+            };
+        }
+
+        public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
+        {
+            var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+            user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
+
+            var result = _gpUserSrv.EditUser(user);
+
+            if (result.Success)
+            {
+                return new OperationResult<GeoPingUser>()
+                {
+                    Data = user,
+                    Success = true,
+                    Messages = new[] { "Your profile avatar was edited successfully" }
+                };
+            }
+
+            return new OperationResult<GeoPingUser>()
+            {
+                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
+            };
+        }
+
         public bool IsUserExists(RegisterUserDTO user, out string item)
         {
             if (_userManager.FindByEmailAsync(user.Email).Result != null)

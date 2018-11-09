@@ -1,6 +1,7 @@
 /* url for all users */
 export const baseUrl: string = '/';
 export const publicCheckListUrl: string = `${baseUrl}public_check_list`;
+export const notFoundUrl: string = `${baseUrl}not_found`;
 
 /* url for not authorize user */
 export const loginUrl: string = `${baseUrl}login`;
@@ -10,9 +11,9 @@ export const resetPassword: string = `${baseUrl}reset_password`;
 /* url for authorize user */
 export const dashboardUrl: string = `${baseUrl}dashboard`;
 export const profileUrl: string = `${baseUrl}profile`;
-export const checkListUrl: string = `${baseUrl}check_list/:id`;
+export const checkListUrl: string = `${baseUrl}check_list/([a-z0-9-]+)`;
 export const checkInUrl: string = `${baseUrl}check_in`;
-export const checkInStatistics: string = `${baseUrl}check_in_statistics`;
+export const checkInStatistics: string = `${baseUrl}check_in_statistics/:listId`;
 export const logOutUrl: string = `${baseUrl}log_out`;
 
 /* url for admin role user */

@@ -5,14 +5,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import ITableHistoryDashboardContainerProps from '../componentContainerProps/tableHistoryDashboardContainerProps';
 import { TableHistoryDashboard } from '../components/tableComponents/tableHistoryDashboard';
-import { loadHistory } from '../actions/historyAction';
+import { clearTableHistory, loadHistory } from '../actions/historyAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { filterHistory, closeFilterHistory } from '../actions/historyAction';
 import ModalFilterHistoryComponent from '../components/modalComponents/modalFilterHistoryComponent';
+import { redirectDashboard } from '../actions/userAction';
 
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
   componentDidMount() {
     this.props.loadHistory();
+
+  }
+  componentWillUnmount() {
+    this.props.clearTableHistory();
+  }
+  componentDidUpdate(prevProps: ITableHistoryDashboardContainerProps) {
+    if ( this.props.user.redirectDashboard ) {
+      this.props.redirectDashboard(false);
+    }
+
   }
 
   render() {
@@ -42,6 +53,7 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     tableHistory: state.tableHistory,
+    user: state.user,
   };
 };
 
@@ -50,7 +62,9 @@ const mapDispatchToProps = ( dispatch: any ) =>
     {
       filterHistory,
       loadHistory,
-      closeFilterHistory
+      closeFilterHistory,
+      clearTableHistory,
+      redirectDashboard,
   },
     dispatch );
 

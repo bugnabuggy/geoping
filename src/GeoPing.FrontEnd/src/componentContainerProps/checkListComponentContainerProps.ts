@@ -20,8 +20,9 @@ export default interface ICheckListComponentContainerProps {
   deleteNotification: ( idNotification: string ) => ( dispatch: IDispatchFunction ) => void;
   addNewPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   addNewPointForMyGeoPosition: ( isMyGeoPosition: boolean ) => ( dispatch: IDispatchFunction ) => void;
-  deleteGeoPoint: ( idPoint: string, statusMarker: EnumStatusMarker, idList?: string ) =>
+  deleteGeoPoint: ( geoPoint: IGeoPoint, statusMarker: EnumStatusMarker, idList?: string ) =>
     ( dispatch: IDispatchFunction ) => void;
-  loadCheckListData: ( idUser: string, idCheckList: string ) => ( dispatch: IDispatchFunction ) => void;
+  loadCheckListData: ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => void;
   clearStateCheckList: () => ( dispatch: IDispatchFunction ) => void;
+  isCheckListPage: ( isCheckList: boolean ) => ( dispatch: IDispatchFunction ) => void;
 }

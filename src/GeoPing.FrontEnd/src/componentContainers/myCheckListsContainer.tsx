@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Panel } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PulseLoader } from 'react-spinners';
 
 import { CheckListComponent } from '../components/listComponents/checkListComponent';
 import IMyCheckListsContainerProps from '../componentContainerProps/myCheckListsContsinerProps';
-import { filterCheckLists, openModalForCreateCheckList } from '../actions/checkListAction';
+import { filterCheckLists, openModalForCreateCheckList, selectCheckList } from '../actions/checkListAction';
 import { clearStateMyCheckLists, deleteCheckList, loadCheckLists, showModalShare } from '../actions/myCheckListsAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
+import { Card, CardBody } from 'reactstrap';
 
 class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps, any> {
 
   renderComponentCheckLists = () => {
-    const components: Array<any> = this.props.myCheckList.checkLists.map( ( item: any, index: number ) => {
+    const components: Array<any> = this.props.checkLists.map( ( item: any, index: number ) => {
       const key: string = `${index}_checkLists`;
       return (
         <CheckListComponent
@@ -22,6 +22,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
           checkList={item}
           showModalShare={this.props.showModalShare}
           deleteCheckList={this.props.deleteCheckList}
+          selectCheckList={this.props.selectCheckList}
         />
       );
     } );
@@ -30,7 +31,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
   };
 
   componentDidMount() {
-    this.props.loadCheckLists( 'ffdf' );
+    this.props.loadCheckLists();
   }
 
   componentWillUnmount() {
@@ -56,9 +57,9 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
             <FontAwesomeIcon icon="filter"/>
           </div>
         </div>
-        <Panel>
+        <Card>
           <div className="dashboard-check-list-panel-body">
-            <Panel.Body>
+            <CardBody>
 
               {this.props.myCheckList.isLoading ?
                 (
@@ -73,7 +74,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
                   </div>
                 )
                 :
-                this.props.myCheckList.checkLists.length > 0 ?
+                this.props.checkLists.length > 0 ?
                   this.renderComponentCheckLists()
                   :
                   (
@@ -82,9 +83,9 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
                     </React.Fragment>
                   )
               }
-            </Panel.Body>
+            </CardBody>
           </div>
-        </Panel>
+        </Card>
       </React.Fragment>
     );
   }
@@ -93,6 +94,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     myCheckList: state.myCheckList,
+    checkLists: state.checkList.checkLists,
   };
 };
 const mapDispatchToProps = ( dispatch: any ) =>
@@ -104,6 +106,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       loadCheckLists,
       deleteCheckList,
       clearStateMyCheckLists,
+      selectCheckList,
     },
     dispatch );
 

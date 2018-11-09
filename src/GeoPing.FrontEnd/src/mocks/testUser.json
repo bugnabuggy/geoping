@@ -1,4 +1,5 @@
 {
+  "token": "4be0643f-1d98-573b-97cd-ca98a65347dd",
   "dashboard_history_table": [
     {
       "dateTime": "10.09.2017 15:20",
@@ -425,8 +426,84 @@
       "invitationDate": "date"
     }
   ],
+  "check_in_statistics_users": [
+    {
+      "id": "6b5534b4-7ace-49c4-bffe-a713f7f122c7",
+      "idList": "mn6vu7zdkiexbps4myvxafhmptubt1nngpontz8b3g",
+      "name": "Jon"
+    },
+    {
+      "id": "821c0418-5761-443c-bba9-a1a16779dc53",
+      "idList": "mn6vu7zdkiexbps4myvxafhmptubt1nngpontz8b3g",
+      "name": "Sara"
+    },
+    {
+      "id": "017ce7bc-41ae-4442-a658-b90b22962352",
+      "idList": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
+      "name": "Bob"
+    },
+    {
+      "id": "d70b7087-1f19-40c0-b94b-45078846646e",
+      "idList": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
+      "name": "Tod"
+    }
+  ],
+  "check_in_statistics_point": [
+    {
+      "id": "b4a833e0-6be5-4820-aee4-2c5a0c94c164",
+      "idList": "mn6vu7zdkiexbps4myvxafhmptubt1nngpontz8b3g",
+      "idUser": "6b5534b4-7ace-49c4-bffe-a713f7f122c7",
+      "date": "",
+      "name": "Test 1 Point",
+      "lat": 54.9788,
+      "lng": 73.367,
+      "radius": 30,
+      "check": true
+    },
+    {
+      "id": "e1615fd7-94fe-4a83-b0e9-ecae2c22a6fc",
+      "name": "Pointtttsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+      "idList": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
+      "idUser": "017ce7bc-41ae-4442-a658-b90b22962352",
+      "date": "",
+      "lat": 54.98865,
+      "lng": 73.36755,
+      "radius": 30,
+      "check": true
+    },
+    {
+      "id": "b5d43cbf-8907-47da-993a-bce29c14a982",
+      "name": "Tipa",
+      "idList": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
+      "idUser": "017ce7bc-41ae-4442-a658-b90b22962352",
+      "date": "",
+      "lat": 54.9888,
+      "lng": 73.35799,
+      "radius": 30,
+      "check": false
+    },
+    {
+      "id": "21051201-1c27-4c96-a6cf-8feb84cb93c2",
+      "name": "Magaz",
+      "idList": "uznuxvqkzmu8rn039kaw63fo3jlmj0uvnpg3pgbjjp",
+      "idUser": "d70b7087-1f19-40c0-b94b-45078846646e",
+      "date": "",
+      "lat": 54.9887,
+      "lng": 73.36755,
+      "radius": 30,
+      "check": true
+    }
+  ],
   "check_list": {
     "name": "",
     "id": ""
+  },
+  "user_profile": {
+    "email": "ares@gmail.com",
+    "login": "asdsad",
+    "accountType": "basic",
+    "fullName": "asdsadd",
+    "phone": "800-555-3535",
+    "lastPaid": "never"
   }
 }

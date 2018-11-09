@@ -22,7 +22,7 @@ export const loadUsersForShared = ( idList: string ) => ( dispatch: IDispatchFun
       dispatch( loadingUsersWhoHasAccess( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadingUsersWhoHasAccess( false ) );
     } );
 };
@@ -39,7 +39,7 @@ export const sendAccessUsersForCheckList = ( idCheckList: string, emails: Array<
         dispatch( sendAccessUsersForCheckListAction( users ) );
       } )
       .catch( ( error: any ) => {
-        dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       } );
   };
 
@@ -50,7 +50,7 @@ export const providePublicAccess = ( idList: string, isPublic: boolean ) => ( di
       dispatch( providePublicAccessAction( idList, isPublic ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 

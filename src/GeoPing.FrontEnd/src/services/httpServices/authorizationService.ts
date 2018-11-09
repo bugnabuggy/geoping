@@ -38,11 +38,11 @@ export default class AuthorizationService implements IAuthorization {
   }
 
   registrationUser( registrationUserData: IRegistrationUserType ) {
-    const user: FormData = new FormData();
-
-    user.append( 'UserName', registrationUserData.login );
-    user.append( 'Email', registrationUserData.email );
-    user.append( 'Password', registrationUserData.password );
+    const user: any = {
+      UserName: registrationUserData.login,
+      Email: registrationUserData.email,
+      Password: registrationUserData.password,
+    };
 
     return this.communicator.post( registration, user );
   }

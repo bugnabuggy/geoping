@@ -3,7 +3,8 @@ import IAboutComponentContainerProps from '../componentContainerProps/aboutCompo
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getVirtualDatabase, useTestPeriod } from '../actions/aboutAction';
+import { useTestPeriod } from '../actions/aboutAction';
+import { Button } from 'reactstrap';
 
 class AboutComponentContainer extends React.Component<IAboutComponentContainerProps, any> {
   tempStyle = {
@@ -15,18 +16,19 @@ class AboutComponentContainer extends React.Component<IAboutComponentContainerPr
   };
   handleClick = ( e: any ) => {
     this.props.useTestPeriod( 'test', 'Password@123' );
-    this.props.getVirtualDatabase();
   };
 
   render() {
     return (
       <React.Fragment>
         <div style={this.tempStyle}>
-          <button
+          <Button
+            color="primary"
+            name={'testUser'}
             onClick={this.handleClick}
           >
             Test User
-          </button>
+          </Button>
         </div>
       </React.Fragment>
     );
@@ -34,14 +36,15 @@ class AboutComponentContainer extends React.Component<IAboutComponentContainerPr
 }
 
 const mapStateToProps = ( state: IinitialStateType ) => {
-  return {};
+  return {
+    user: state.user,
+  };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
       useTestPeriod,
-      getVirtualDatabase,
     },
     dispath );
 

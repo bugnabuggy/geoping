@@ -7,11 +7,24 @@ import ICheckinStatisticsComponentContainerProps
   from '../componentContainerProps/checkinStatisticsComponentContainerProps';
 import { CheckinStatisticsComponent } from '../components/checkinStatisticsComponent';
 import TableMarkerStatisticsComponentContainer from '../componentContainers/tableMarkerStatisticsComponentContainer';
-import { loadLists, loadPoints, loadUsers } from '../actions/checkinStatisticsActions';
+import {
+  checkInStatisticsClear,
+  getAllCheckForList,
+  loadLists,
+  loadPoints,
+  loadUsers
+} from '../actions/checkinStatisticsActions';
 
 class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatisticsComponentContainerProps, any> {
   componentDidMount() {
     this.props.loadLists();
+    if ( this.props.listId ) {
+      this.props.loadUsers( this.props.listId );
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.checkInStatisticsClear();
   }
 
   render() {
@@ -19,9 +32,12 @@ class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatis
       <React.Fragment>
         <CheckinStatisticsComponent
           checkinStatistics={this.props.checkinStatistics}
+          checkList={this.props.checkList}
+          listId={this.props.listId}
 
           loadUsers={this.props.loadUsers}
           loadPoints={this.props.loadPoints}
+          getAllCheckForList={this.props.getAllCheckForList}
         />
         <TableMarkerStatisticsComponentContainer/>
       </React.Fragment>
@@ -32,6 +48,8 @@ class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatis
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     checkinStatistics: state.checkinStatistics,
+    checkList: state.checkList,
+    googleMap: state.googleMap,
   };
 };
 
@@ -41,6 +59,8 @@ const mapDispatchToProps = ( dispath: any ) =>
       loadLists,
       loadUsers,
       loadPoints,
+      checkInStatisticsClear,
+      getAllCheckForList,
     },
     dispath );
 

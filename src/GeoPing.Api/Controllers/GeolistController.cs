@@ -1,7 +1,9 @@
 ﻿using GeoPing.Api.Interfaces;
 using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/geolist")]
+    [Authorize]
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
@@ -24,80 +27,111 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // GET api/Geolist
-        //[HttpGet]
-        //public IActionResult GetListsByFilter(GeolistFilterDTO filter)
-        //{
-        //    var result = _geolistSrv.GetByFilter(filter, out int totalItems);
-        //    if(result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        // GET api/Geolist
+        // Get lists where user is owner by filter
+        // GET api/geolist
         [HttpGet]
-        public IActionResult GetListsByFilter()
+        public IActionResult GetListsByFilter(UsersGeolistFilterDTO filter)
         {
-            var result = _geolistSrv.Get();
+            var result = _geolistSrv.GetByFilter(_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
 
-            return Ok(result);
+            return BadRequest(result);
         }
 
-        // GET api/Geolist/{Id}
+        // Get all public lists by filter
+        // GET api/geolist/public
+        [HttpGet]
+        [Route("public")]
+        [AllowAnonymous]
+        public IActionResult GetPublicListsByFilter(PublicGeolistFilterDTO filter)
+        {
+            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // Get all public list of other user by filter
+        // GET api/geolist/public/{userId}
+        [HttpGet]
+        [Route("public/{userId}")]
+        [AllowAnonymous]
+        public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
+        {
+            var isId = Guid.TryParse(userId, out Guid ownerId);
+            var result = new WebResult<IQueryable<PublicListDTO>>() { Messages = new[] { "Unvalid user identifier" } };
+            if (isId)
+            {
+                result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
+                if (result.Success)
+                {
+                    return Ok(result);
+                }
+            }
+
+            return BadRequest(result);
+        }
+
+        // GET api/geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetList(string Id)
+        public IActionResult GetList(string id)
         {
-            var result = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
-
-            if (result == null)
+            if (_geolistSrv.IsListExistWithThisId(id, out GeoList result))
             {
-                return NotFound();
+                return Ok(result);
             }
-            return Ok(result);
+
+            return NotFound();
         }
 
-        // POST api/Geolist/
+        // POST api/geolist/
         [HttpPost]
-        public IActionResult AddList([FromBody]GeoList item)
+        public IActionResult AddList([FromBody]GeolistDTO item)
         {
-            item.OwnerId = _helper.GetAppUserIdByClaims(User.Claims);
-            var result = _geolistSrv.Add(item);
+            var list = new GeoList()
+            {
+                Name = item.Name,
+                Description = item.Description,
+                IsPublic = item.IsPublic,
+                OwnerId = _helper.GetAppUserIdByClaims(User.Claims),
+                Created = DateTime.UtcNow
+            };
+
+            var result = _geolistSrv.Add(list);
 
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
-        // PUT api/Geolist/{Id}
+        // PUT api/geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(string Id, [FromBody]GeoList item)
+        public IActionResult EditList(string id, [FromBody]GeolistDTO item)
         {
-            if (Guid.Parse(Id) != item.Id)
+            var isListExist = _geolistSrv.IsListExistWithThisId(id, out GeoList list);
+
+            if (!isListExist)
             {
-                return BadRequest(new OperationResult
-                {
-                    Data = item,
-                    Messages = new[] { "Request ID isn`t equal target object`s ID" },
-                    Success = false
-                });
+                return NotFound();
             }
 
-            if (!_geolistSrv.Get(x => x.Id == Guid.Parse(Id)).Any())
-            {
-                return NotFound(new OperationResult
-                {
-                    Messages = new[] { "Object with requested ID does`t exists" },
-                    Success = false
-                });
-            }
+            list.Name = item.Name;
+            list.Description = item.Description;
+            list.IsPublic = item.IsPublic;
+            list.Edited = DateTime.UtcNow;
 
-            var result = _geolistSrv.Update(item);
+            var result = _geolistSrv.Update(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {
@@ -107,54 +141,34 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // DELETE api/Geolist/
+        // DELETE api/geolist/
         [HttpDelete]
-        public IActionResult RemoveLists(string Ids)
+        public IActionResult RemoveLists(string ids)
         {
-            var idList = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            .ToArray();
-            if (idList != null)
+
+            var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), ids);
+
+            if (result.Success)
             {
-
-                foreach (var Id in idList)
-                {
-                    var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
-
-                    if (item == null)
-                    {
-                        continue;
-                    }
-
-                    var result = _geolistSrv.Delete(item);
-
-                    if (!result.Success)
-                    {
-                        return StatusCode(500);
-                    }
-                }
-                return Ok(new OperationResult
-                {
-                    Success = true,
-                    Messages = new[] { $"Geolists with Id-s = [{Ids}] were removed" },
-                    Data = Ids
-                });
+                return Ok(result);
             }
-            return BadRequest($"Something is wrong in IDs string: [{Ids}]");
+
+            return BadRequest(result);
         }
 
-        // DELETE api/Geolist/{Id}
+        // DELETE api/geolist/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemoveList(string Id)
+        public IActionResult RemoveList(string id)
         {
-            var item = _geolistSrv.Get(x => x.Id == Guid.Parse(Id)).FirstOrDefault();
+            var isListExist = _geolistSrv.IsListExistWithThisId(id, out GeoList list);
 
-            if (item == null)
+            if (!isListExist)
             {
                 return NotFound();
             }
 
-            var result = _geolistSrv.Delete(item);
+            var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {

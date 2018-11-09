@@ -6,7 +6,12 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import { CheckListGeoPointComponent } from '../components/checkListGeoPointComponent';
 import { ListPointsComponent } from '../components/listPointsComponent';
 import ICheckListComponentContainerProps from '../componentContainerProps/checkListComponentContainerProps';
-import { addNewPointForMyGeoPosition, clearStateCheckList, loadCheckListData } from '../actions/checkListAction';
+import {
+  addNewPointForMyGeoPosition,
+  clearStateCheckList,
+  isCheckListPage,
+  loadCheckListData
+} from '../actions/checkListAction';
 import { CheckListLinkComponent } from '../components/checkListLinkComponent';
 import { addNotification, deleteNotification } from '../actions/notificationsAction';
 import {
@@ -21,7 +26,8 @@ import {
 
 class CheckListComponentContainer extends React.Component<ICheckListComponentContainerProps, any> {
   componentDidMount() {
-    this.props.loadCheckListData( '', this.props.idCheckList );
+    this.props.loadCheckListData( this.props.idCheckList );
+    this.props.isCheckListPage( true );
   }
 
   componentWillUnmount() {
@@ -52,9 +58,7 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
         </div>
         <div className="check-list-points-list">
           <ListPointsComponent
-            geoPoints={this.props.googleMap.geoPoints}
-            selectedGeoPointId={this.props.googleMap.selectedGeoPoint.id}
-            statusGeoPoint={this.props.googleMap.statusMarker}
+            googleMap={this.props.googleMap}
             checkList={this.props.checkList}
 
             selectPoint={this.props.selectPoint}
@@ -88,6 +92,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       deleteGeoPoint,
       loadCheckListData,
       clearStateCheckList,
+      isCheckListPage,
     },
     dispath );
 

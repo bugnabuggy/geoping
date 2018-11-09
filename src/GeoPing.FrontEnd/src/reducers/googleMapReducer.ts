@@ -6,6 +6,7 @@ import {
   CANCEL_GEO_POINT,
   CHANGE_DATA_GEO_POINT,
   CHANGE_MOVING_GEO_POINT,
+  CLEAR_GEO_POINT,
   CLEAR_STATE_GOOGLE_MAP,
   DELETE_GEO_POINT,
   FIND_GEO_POSITION,
@@ -16,9 +17,10 @@ import {
 } from '../constantsForReducer/googleMap';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
-import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/filters';
 import { defaultMarker } from '../constants/defaultMarker';
-import { CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
+import { CHECK_IN_GEO_POINTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
+import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/checkList';
+import { STATISTICS_LOAD_POINTS } from '../constantsForReducer/checkinStatistics';
 
 export default function googleMapReducer( state: IGoogleMapStateType = googleMapState, action: any ) {
   const reduceObject: any = {
@@ -36,6 +38,9 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ GEO_POINT_LIST_IS_CREATED ]: geoPointListCreate,
     [ CHECK_IN_SELECT_LIST ]: checkInSelectList,
     [ CLEAR_STATE_GOOGLE_MAP ]: clearStateGoogleMap,
+    [ STATISTICS_LOAD_POINTS ]: statisticsLoadPoints,
+    [ CLEAR_GEO_POINT ]: clearGeoPoint,
+    [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -60,7 +65,7 @@ function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
 function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: state.geoPoints.filter( geoPoint => geoPoint.id !== action.idPoint ),
+    geoPoints: state.geoPoints.filter( geoPoint => geoPoint.idForMap !== action.idPoint ),
     idDeleteMarker: action.idPoint,
   };
 }
@@ -68,7 +73,10 @@ function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
 function addNewGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    selectedGeoPoint: action.geoPoint,
+    selectedGeoPoint: {
+      ...action.geoPoint,
+      radius: 50,
+    },
     statusMarker: EnumStatusMarker.New,
   };
 }
@@ -187,12 +195,11 @@ function changeDataGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleM
 function addGeoPointFromMyPosition( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    // idDeleteMarker: state.selectedGeoPoint.id ? state.selectedGeoPoint.id : '',
     selectedGeoPoint: {
       ...defaultMarker,
-      // id: !!state.selectedGeoPoint.id ? state.selectedGeoPoint.id : uuidV4(),
       lat: state.position.lat,
       lng: state.position.lng,
+      radius: 50,
     },
     statusMarker: EnumStatusMarker.New,
   };
@@ -215,5 +222,32 @@ function checkInSelectList( state: IGoogleMapStateType, action: any ): IGoogleMa
 function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...googleMapState,
+  };
+}
+
+function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    geoPoints: action.points,
+    isGeoPointListIsCreated: false,
+  };
+}
+
+function clearGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    geoPoints: [],
+    selectedGeoPoint: googleMapState.selectedGeoPoint,
+    statusMarker: googleMapState.statusMarker,
+    isGeoPointListIsCreated: googleMapState.isGeoPointListIsCreated,
+  };
+}
+
+function checkInGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    checkInGeoPoint: [
+      ...action.checkInGeoPoint
+    ],
   };
 }

@@ -44,7 +44,8 @@ export class CheckListLinkComponent extends React.Component<ICheckListLinkCompon
     const disableCheckGEOPosition: boolean =
       this.props.googleMap.isAddMarker ||
       ( this.props.googleMap.statusMarker === EnumStatusMarker.Edit ||
-        this.props.googleMap.statusMarker === EnumStatusMarker.New );
+        this.props.googleMap.statusMarker === EnumStatusMarker.New ) ||
+      !this.props.googleMap.position.isSuccess;
 
     return (
       <React.Fragment>

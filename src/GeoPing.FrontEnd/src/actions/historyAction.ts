@@ -8,7 +8,12 @@ import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import IHistoryDataDTO from '../DTO/historyDataDTO';
-import { LOAD_LIST_HISTORY, SAVE_RECORD_HISTORY, TABLE_HISTORY_LOADING } from '../constantsForReducer/historyTable';
+import {
+  CLEAR_TABLE_HISTORY,
+  LOAD_LIST_HISTORY,
+  SAVE_RECORD_HISTORY,
+  TABLE_HISTORY_LOADING
+} from '../constantsForReducer/historyTable';
 
 export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
   dispatch( loadingAction( true ) );
@@ -19,7 +24,7 @@ export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadingAction( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadingAction( false ) );
     } );
 };
@@ -29,7 +34,7 @@ export const filterHistory = () => ( dispatch: IDispatchFunction ) => {
       dispatch( filterHistoryAction( true ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 
 };
@@ -43,8 +48,12 @@ export const saveHistory = ( idUser: string, historyData: IHistoryDataDTO ) => (
       dispatch( saveHistoryAction( historyData ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
+};
+
+export const clearTableHistory = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearTableHistoryAction() );
 };
 
 /* Actions */
@@ -67,4 +76,8 @@ function saveHistoryAction( historyData: IHistoryDataDTO ): { type: string, hist
 
 function loadingAction( isLoading: boolean ): { type: string, isLoading: boolean } {
   return { type: TABLE_HISTORY_LOADING, isLoading };
+}
+
+function clearTableHistoryAction(): { type: string } {
+  return { type: CLEAR_TABLE_HISTORY };
 }

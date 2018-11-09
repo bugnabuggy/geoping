@@ -1,8 +1,9 @@
-﻿using Geoping.Services;
+﻿using GeoPing.Services;
 using GeoPing.Api.Helpers;
 using GeoPing.Api.Interfaces;
 using GeoPing.Core.Entities;
 using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.Utilities.EmailSender;
@@ -12,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Geoping.Services;
+using Geoping.Services.Configuration;
 
 namespace GeoPing.Api.Configuration
 {
@@ -32,11 +35,15 @@ namespace GeoPing.Api.Configuration
 
             services.AddTransient<IEmailService, EmailService>();
 
+            services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IGeopointService, GeopointService>();
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IClaimsHelper, ClaimsHelper>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IGPUserService, GPUserService>();
+            services.AddScoped<ICheckInService, CheckInService>();
+            services.AddScoped<ICheckInStatisticsService, CheckInStatisticsService>();
+            services.AddScoped<ISharingService, SharingService>();
         }
 
         public void Initialize(IServiceProvider services)
@@ -46,6 +53,7 @@ namespace GeoPing.Api.Configuration
             var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
             var appUserRoles = new UserRoles();
             var appUsers = new Users();
+            var ctx = services.GetRequiredService<ApplicationDbContext>();
             //var logger = services.GetRequiredService<ILogger>();
 
             var roles = appUserRoles.ToList();
@@ -85,6 +93,17 @@ namespace GeoPing.Api.Configuration
                     {
                         //logger.LogError("Something went wrong while addition roles for test users");
                     }
+
+                    ctx.GPUsers.Add(new GeoPingUser()
+                    {
+                        IdentityId = user.Id,
+                        Email = user.Email,
+                        Login = user.UserName,
+                        AccountType = "premium",
+                        IsActivated = true,
+                        Avatar = DefaultUserSettings.AvatarImage
+                    });
+                    ctx.SaveChanges();
                 }
             }
         }

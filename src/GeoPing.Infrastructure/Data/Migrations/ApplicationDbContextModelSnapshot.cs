@@ -32,15 +32,19 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("Ip");
 
-                    b.Property<string>("Latitude");
+                    b.Property<double>("Latitude");
 
-                    b.Property<string>("Longitude");
+                    b.Property<double>("Longitude");
 
                     b.Property<Guid>("PointId");
 
                     b.Property<string>("UserAgent");
 
+                    b.Property<Guid>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PointId");
 
                     b.ToTable("CheckIns");
                 });
@@ -92,6 +96,8 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("AccountType");
 
+                    b.Property<string>("Avatar");
+
                     b.Property<DateTime>("Birthday");
 
                     b.Property<string>("Email");
@@ -104,7 +110,11 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("LastName");
 
+                    b.Property<DateTime>("LastPaid");
+
                     b.Property<string>("Login");
+
+                    b.Property<string>("PhoneNumber");
 
                     b.HasKey("Id");
 
@@ -120,17 +130,19 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Latitude");
+                    b.Property<double>("Latitude");
 
                     b.Property<Guid>("ListId");
 
-                    b.Property<string>("Longitude");
+                    b.Property<double>("Longitude");
 
                     b.Property<string>("Name");
 
                     b.Property<double>("Radius");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListId");
 
                     b.ToTable("GeoPoints");
                 });
@@ -183,13 +195,16 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<Guid>("ListId");
 
-                    b.Property<DateTime>("PublisDate");
+                    b.Property<DateTime>("PublishDate");
 
                     b.Property<double>("Rating");
 
                     b.Property<int>("SubscribersNumber");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListId")
+                        .IsUnique();
 
                     b.ToTable("PublicLists");
                 });
@@ -396,6 +411,30 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("GeoPing.Core.Entities.CheckIn", b =>
+                {
+                    b.HasOne("GeoPing.Core.Entities.GeoPoint", "Geopoint")
+                        .WithMany()
+                        .HasForeignKey("PointId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GeoPing.Core.Entities.GeoPoint", b =>
+                {
+                    b.HasOne("GeoPing.Core.Entities.GeoList", "Geolist")
+                        .WithMany()
+                        .HasForeignKey("ListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GeoPing.Core.Entities.PublicList", b =>
+                {
+                    b.HasOne("GeoPing.Core.Entities.GeoList", "Geolist")
+                        .WithOne()
+                        .HasForeignKey("GeoPing.Core.Entities.PublicList", "ListId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

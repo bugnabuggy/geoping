@@ -1,4 +1,4 @@
-import IGeoPoint from '../../DTO/geoPointDTO';
+import IGeoPoint, { ICheckInGeoPointDTO } from '../../DTO/geoPointDTO';
 import { EnumStatusMarker } from '../../enums/statusMarker';
 
 export interface IPosition {
@@ -17,4 +17,5 @@ export interface IGoogleMapStateType {
   idDeleteMarker: string;
   moveStartMarker: { lat: number, lng: number };
   isGeoPointListIsCreated: boolean;
+  checkInGeoPoint: Array<ICheckInGeoPointDTO>;
 }
