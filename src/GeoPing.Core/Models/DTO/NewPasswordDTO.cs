@@ -4,8 +4,8 @@ using System.Text;
 
 namespace GeoPing.Core.Models.DTO
 {
-    public class ChangePasswordDTO : NewPasswordDTO 
+    public class NewPasswordDTO
     {
-        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }
