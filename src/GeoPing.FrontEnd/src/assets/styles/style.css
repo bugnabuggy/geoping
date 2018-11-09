@@ -1402,8 +1402,21 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 /**/
-
 /*************************************************************************************/
+
+/* reset password*/
+.reset-password-page-container, .reset-password-form1-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.reset-password-page-container {
+  height: 250px;
+}
+
+/*****************************************************************************************/
+
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
