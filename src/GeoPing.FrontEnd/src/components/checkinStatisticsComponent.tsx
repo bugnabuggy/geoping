@@ -12,13 +12,14 @@ import ICheckinStatisticsComponentProps from '../componentProps/checkinStatistic
 import { checkInStatistics } from '../constants/routes';
 
 export class CheckinStatisticsComponent extends React.Component<ICheckinStatisticsComponentProps, any> {
+  formatDate = 'MM/DD/YYYY';
   handleSelectUser = ( e: any ) => {
     if ( e ) {
       this.props.loadPoints(
         this.props.listId,
         e.value,
-        this.state.startDate,
-        this.state.endDate
+        this.state.startDate.format( this.formatDate ),
+        this.state.endDate.format( this.formatDate )
       );
       this.setState( { selectUser: e.value } );
     } else {
@@ -34,13 +35,26 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       this.props.loadUsers( '' );
       this.setState( { selectList: '' } );
     }
+    this.props.clearGeoPoint();
   };
   handleSelectStart = ( date: any ) => {
+    this.props.loadPoints(
+      this.props.listId,
+      this.state.selectUser,
+      date.format( this.formatDate ),
+      this.state.endDate.format( this.formatDate )
+    );
     this.setState( {
       startDate: date,
     } );
   };
   handleSelectEnd = ( date: any ) => {
+    this.props.loadPoints(
+      this.props.listId,
+      this.state.selectUser,
+      this.state.startDate.format( this.formatDate ),
+      date.format( this.formatDate )
+    );
     this.setState( {
       endDate: date,
     } );
@@ -92,9 +106,9 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     };
   }
 
-  componentDidMount() {
-    this.props.getAllCheckForList( this.props.listId );
-  }
+  // componentDidMount() {
+  //   this.props.getAllCheckForList( this.props.listId );
+  // }
 
   componentDidUpdate( prevProps: ICheckinStatisticsComponentProps, prevState: any ) {
     if ( prevProps.listId !== this.props.listId ) {
