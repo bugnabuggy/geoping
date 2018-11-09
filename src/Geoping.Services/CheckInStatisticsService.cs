@@ -16,7 +16,8 @@ namespace Geoping.Services
         private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> orderBys =
             new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>()
             {
-                {"date", x => x.CheckDate}
+                {"pointName", x => x.Point.Name},
+                {"date", x => x.Check.Date}
             };
 
         private IRepository<CheckIn> _checksRepo;
@@ -63,32 +64,40 @@ namespace Geoping.Services
 
             var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            var checks = GetFilteredData(_checksRepo.Data, filter).OrderByDescending(x => x.Date)
-                                                                  .GroupBy(x => x.PointId)         
-                                                                  .Select(x => x.FirstOrDefault());
-            var data = points.Join
-                (checks,
-                p => p.Id,
-                ch => ch.PointId,
-                (p, ch) => new CheckInStatsDTO()
-                {
-                    PointId = p.Id,
-                    PointName = p.Name,
-                    PointDescription = p.Description,
-                    PointLatitude = p.Latitude,
-                    PointLongitude = p.Longitude,
-                    PointRadius = p.Radius,
-                    PointAddress = p.Address,
-                    UserId = ch.UserId,
-                    CheckLatitude = ch.Latitude,
-                    CheckLongitude = ch.Longitude,
-                    CheckDistance = ch.Distance,
-                    CheckDate = ch.Date,
-                    Ip = ch.Ip,
-                    DeviceId = ch.DeviceId,
-                    UserAgent = ch.UserAgent
-                });
+            var checks = GetFilteredData(_checksRepo.Data, filter)
+                .OrderByDescending(x => x.Date)
+                .GroupBy(x => x.PointId)
+                .Select(x => x.FirstOrDefault());
 
+            var data = from p in points
+                       join ch in checks on p.Id equals ch.PointId into stat
+                       from x in stat.DefaultIfEmpty()
+                       select new CheckInStatsDTO()
+                       {
+                           Point = new CheckInStatPointDTO()
+                           {
+                               Id = p.Id,
+                               Name = p.Name,
+                               Description = p.Description,
+                               Latitude = p.Latitude,
+                               Longitude = p.Longitude,
+                               Radius = p.Radius,
+                               Address = p.Address,
+                           },
+                           Check = x != null
+                           ? new CheckInStatCheckDTO()
+                           {
+                               UserId = x.UserId,
+                               Latitude = x.Latitude,
+                               Longitude = x.Longitude,
+                               Distance = x.Distance,
+                               Date = x.Date,
+                               Ip = x.Ip,
+                               DeviceId = x.DeviceId,
+                               UserAgent = x.UserAgent
+                           }
+                           : new CheckInStatCheckDTO()
+                       };
             totalItems = data.Count();
 
             filter.PageNumber = filter.PageNumber ?? 0;
