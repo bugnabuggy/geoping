@@ -15,4 +15,5 @@ export default interface ICheckinStatisticsComponentContainerProps {
     ( dispatch: IDispatchFunction ) => void;
   checkInStatisticsClear: () => ( dispatch: IDispatchFunction ) => void;
   getAllCheckForList: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
+  clearGeoPoint: () => ( dispatch: IDispatchFunction ) => void;
 }

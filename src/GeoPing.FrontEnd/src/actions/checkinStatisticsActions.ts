@@ -12,6 +12,7 @@ import StaticStorage from '../services/staticStorage';
 import IUser from '../types/serviceTypes/userServiceType';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import { LOAD_MY_CHECK_LISTS } from '../constantsForReducer/checkList';
+import { windowBlockingAction } from './windowAction';
 
 export const selectList = () => ( dispatch: IDispatchFunction ) => {
   return '';
@@ -43,16 +44,18 @@ export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) =
 
 export const loadPoints = ( listId: string, userId: string, dateFrom: string, dateTo: string ) =>
   ( dispatch: IDispatchFunction ) => {
-  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  markerService.getChecksStatisticsForList( listId, userId, dateFrom, dateTo )
-    .then( ( response: any ) => {
-      console.info('response', response);
-      // dispatch( loadPointsAction( response ) );
-    } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-    } );
-};
+    dispatch( windowBlockingAction( true ) );
+    const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+    markerService.getChecksStatisticsForList( listId, userId, dateFrom, dateTo )
+      .then( ( response: any ) => {
+        dispatch( windowBlockingAction( false ) );
+        dispatch( loadPointsAction( response ) );
+      } )
+      .catch( ( error: any ) => {
+        dispatch( windowBlockingAction( false ) );
+        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      } );
+  };
 
 export const checkInStatisticsClear = () => ( dispatch: IDispatchFunction ) => {
   dispatch( checkInStatisticsClearAction() );
@@ -63,7 +66,7 @@ export const getAllCheckForList = ( idList: string ) => ( dispatch: IDispatchFun
   checkListService.getAllCheckForList( idList )
     .then( ( response: any ) => {
       console.info( response );
-    })
+    } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );

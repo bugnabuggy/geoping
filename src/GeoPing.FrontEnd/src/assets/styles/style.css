@@ -1146,7 +1146,7 @@ header nav {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 300px;
+  width: 200px;
 }
 
 .check-list-modal-period-item {
@@ -1274,7 +1274,7 @@ header nav {
   height: 100%;
   display: grid;
   grid-template-rows: [row1] minmax(max-content, 1fr);
-  grid-template-columns: [col1] minmax(300px, 500px) [col2] minmax(max-content, 1fr);
+  grid-template-columns: [col1] minmax(300px, 600px) [col2] minmax(max-content, 1fr);
   grid-gap: 5px;
 }
 
@@ -1621,6 +1621,14 @@ select.form-control:not([size]):not([multiple]) {
 
   .admin-all-users-filter-container {
     border: black 1px solid;
+  }
+
+  .check-in-statistics {
+    height: 100%;
+    display: grid;
+    grid-template-rows: [row1] minmax(max-content, 1fr) [row2] 500px;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
   }
 
   /* Admin all checklist */

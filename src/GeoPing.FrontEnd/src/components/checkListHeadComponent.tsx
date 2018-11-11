@@ -9,7 +9,7 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
     this.setState( {
       isEdit: !this.state.isEdit,
     } );
-    if ( !this.state.isEdit &&
+    if ( this.state.isEdit &&
       this.props.checkList.selectedGeoList.name !== this.state.name &&
       this.state.name
     ) {
@@ -18,7 +18,6 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
         Description: this.props.checkList.selectedGeoList.description,
         IsPublic: true,
       };
-
       this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
     }
   };

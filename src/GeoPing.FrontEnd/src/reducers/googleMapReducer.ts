@@ -21,6 +21,7 @@ import { defaultMarker } from '../constants/defaultMarker';
 import { CHECK_IN_GEO_POINTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/checkList';
 import { STATISTICS_LOAD_POINTS } from '../constantsForReducer/checkinStatistics';
+import { v4 as uuidV4 } from 'uuid';
 
 export default function googleMapReducer( state: IGoogleMapStateType = googleMapState, action: any ) {
   const reduceObject: any = {
@@ -228,7 +229,20 @@ function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogle
 function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: action.points,
+    geoPoints: action.points.map( ( item: any ) => {
+      const point: IGeoPoint = {
+        id: item.point.id,
+        name: item.point.name,
+        radius: item.point.radius,
+        idList: '',
+        description: item.point.description,
+        lng: item.point.longitude,
+        lat: item.point.latitude,
+        idForMap: uuidV4(),
+      };
+      return point;
+    } ),
+    checkInGeoPoint: action.points.map( ( item: any ) => item.check ),
     isGeoPointListIsCreated: false,
   };
 }
@@ -236,7 +250,7 @@ function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogl
 function clearGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: [],
+    geoPoints: googleMapState.geoPoints,
     selectedGeoPoint: googleMapState.selectedGeoPoint,
     statusMarker: googleMapState.statusMarker,
     isGeoPointListIsCreated: googleMapState.isGeoPointListIsCreated,
