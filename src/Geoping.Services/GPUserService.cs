@@ -62,7 +62,7 @@ namespace GeoPing.Services
         {
             var user = GetUser(x => x.IdentityId == id);
             user.IsActivated = true;
-            EditUser(user);
+            _gpUserRepo.Update(user);
         }
     }
 }

@@ -238,7 +238,7 @@ namespace GeoPing.Api.Controllers
         {
             var callbackUrl = Url.Action(action,
                                          "Account",
-                                         new { userId = user.Id, code = code },
+                                         new { userId = user.Id, token = code },
                                          protocol: HttpContext.Request.Scheme);
 
             _emailSvc.Send(new EmailMessage()

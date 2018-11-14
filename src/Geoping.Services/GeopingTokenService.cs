@@ -3,35 +3,48 @@ using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Geoping.Services
 {
     public class GeopingTokenService : IGeopingTokenService
     {
-        private IRepository<GeopingTokenService> _tokenRepo;
+        private IRepository<GeoPingToken> _tokenRepo;
 
-        public GeopingTokenService(IRepository<GeopingTokenService> tokenRepo)
+        public GeopingTokenService(IRepository<GeoPingToken> tokenRepo)
         {
             _tokenRepo = tokenRepo;
         }
 
-        public object DecodeToken(string token)
+        public string[] DecodeSharingToken(string token)
         {
-            throw new NotImplementedException();
+            var result = token.Split(',');
+
+            MarkIsUsed(token);
+
+            return result;
         }
 
-        public object GetSharingToken(string email, string listId)
+        public GeoPingToken GetSharingToken(string email, string listId)
         {
             var token = new GeoPingToken()
             {
                 Created = DateTime.UtcNow,
                 Type = "sharing",
-                Token = 
+                Token = $"{email},{listId}",
             };
 
+            return _tokenRepo.Add(token);
+        }
 
-            throw new NotImplementedException();
+        private void MarkIsUsed(string token)
+        {
+            var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
+
+            gpToken.IsUsed = true;
+
+            _tokenRepo.Update(gpToken);
         }
     }
 }

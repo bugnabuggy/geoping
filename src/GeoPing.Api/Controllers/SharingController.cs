@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/geolist/{listId}/sharing")]
+    [Route("api/sharing")]
     [Authorize]
     public class SharingController : Controller
     {
@@ -34,7 +34,7 @@ namespace GeoPing.Api.Controllers
         [HttpGet]
         [Route("invite")]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmInvitationAsync(string token)
+        public async Task<IActionResult> ConfirmInvitation(string token)
         {
             var result = await _shareSrv.ConfirmInvitationAsync(_helper.GetIdentityUserIdByClaims(User.Claims), token);
 
@@ -44,7 +44,7 @@ namespace GeoPing.Api.Controllers
             }
             else if (result.Data.Equals("302-1"))
             {
-                return Redirect("~/account/register");
+                return Redirect("~/register");
             }
             else if (result.Data.Equals("302-2"))
             {
@@ -54,7 +54,7 @@ namespace GeoPing.Api.Controllers
         }
 
         [HttpGet]
-        [Route("invite/accept")]
+        [Route("invite/{listId}/accept")]
         public IActionResult AcceptInvite(string listId)
         {
             var result = _shareSrv.AcceptInvite(_helper.GetAppUserIdByClaims(User.Claims), listId);
@@ -67,7 +67,7 @@ namespace GeoPing.Api.Controllers
         }
 
         [HttpPost]
-        [Route("invite")]
+        [Route("invite/{listId}")]
         public IActionResult InviteUser(string listId, string email)
         {
             var user = _helper.GetAppUserByClaims(User.Claims);
@@ -76,7 +76,7 @@ namespace GeoPing.Api.Controllers
 
             if (result.Success)
             {
-                var code = (string)result.Data;
+                var code = ((GeoPingToken)result.Data).Token;
 
                 SendInvitationEmail(email,
                                     code,
@@ -110,7 +110,7 @@ namespace GeoPing.Api.Controllers
         {
             var callbackUrl = Url.Action(action,
                                          "Sharing",
-                                         code,
+                                         new { token = code },
                                          protocol: HttpContext.Request.Scheme);
 
             _emailSvc.Send(new EmailMessage()

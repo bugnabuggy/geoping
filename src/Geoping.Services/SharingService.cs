@@ -76,7 +76,7 @@ namespace Geoping.Services
 
         public async Task<OperationResult> ConfirmInvitationAsync(string invitedUserId, string token)
         {
-            var data = (string[])_tokenSrv.DecodeToken(token);
+            var data = _tokenSrv.DecodeSharingToken(token);
 
             var email = (string)data[0];
             var listId = (string)data[1];
