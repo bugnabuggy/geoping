@@ -188,14 +188,14 @@ namespace GeoPing.Api.Controllers
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         [Route("confirm-reset")]
-        public async Task<IActionResult> ConfirmReset(string userId, string token, string newPassword)
+        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]NewPasswordDTO password)
         {
             if (userId == null || token == null)
             {
                 return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
             }
 
-            var result = await _accountSrv.ConfirmResetAsync(userId, token, newPassword);
+            var result = await _accountSrv.ConfirmResetAsync(userId, token, password.NewPassword);
 
             if (result.Success)
             {
