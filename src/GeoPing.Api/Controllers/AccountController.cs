@@ -241,6 +241,26 @@ namespace GeoPing.Api.Controllers
                                          new { userId = user.Id, token = code },
                                          protocol: HttpContext.Request.Scheme);
 
+            // CRAP HARDCODE
+            //====================================================================================
+            var baseUrl = "https://dev.geoping.info";
+            var actionEndpoint = "";
+
+            switch (action)
+            {
+                case "ConfirmEmail":
+                    actionEndpoint = "email_confirm";
+                    break;
+                case "ConfirmReset":
+                    actionEndpoint = "reset_password";
+                    break;
+                default:
+                    break;
+            }
+
+            callbackUrl = $"{baseUrl}/{actionEndpoint}?UserId={user.Id}&Token={code}";
+            //====================================================================================
+            
             _emailSvc.Send(new EmailMessage()
             {
                 FromAddress = new EmailAddress()
