@@ -132,11 +132,11 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Latitude");
+                    b.Property<double>("Latitude");
 
                     b.Property<Guid>("ListId");
 
-                    b.Property<string>("Longitude");
+                    b.Property<double>("Longitude");
 
                     b.Property<string>("Name");
 

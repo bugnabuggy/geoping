@@ -24,4 +24,5 @@ export default interface ICheckListComponentContainerProps {
     ( dispatch: IDispatchFunction ) => void;
   loadCheckListData: ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => void;
   clearStateCheckList: () => ( dispatch: IDispatchFunction ) => void;
+  isCheckListPage: ( isCheckList: boolean ) => ( dispatch: IDispatchFunction ) => void;
 }

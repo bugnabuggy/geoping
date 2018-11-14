@@ -25,8 +25,9 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
       if ( !this.props.user.authorized ) {
         this.props.authorizationUserFlag( true );
       }
-      if ( !this.props.user.name ) {
+      if ( !this.props.user.userName && !this.state.isGetUserData ) {
         this.props.loadUserData();
+        this.setState( { isGetUserData: true } );
       }
       if ( sessionStorage.getItem( 'url_for_redirect' ) === this.props.location ) {
         sessionStorage.removeItem( 'url_for_redirect' );
@@ -45,7 +46,13 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
 
   constructor( props: IGetRoutesProps ) {
     super( props );
-    console.info('GetRoutes constructor', props );
+    console.info( 'GetRoutes constructor', props );
+    this.state = {
+      isGetUserData: false,
+    };
+  }
+
+  componentDidMount() {
     this.authorized();
   }
 
@@ -54,6 +61,7 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   }
 
   render() {
+
     return (
       <React.Fragment>
         <WindowBlockingComponent
@@ -62,6 +70,7 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         <Routes
           authorized={!!localStorage.getItem( 'token' )}
           roleUser={this.props.user.roleUser}
+          path={this.props.location}
         />
         {this.props.user.authorized &&
         this.props.user.redirectDashboard &&

@@ -27,4 +27,10 @@ export default class MockProfileService implements IProfileServiceType {
       resolve ('your credentials was updated');
     });
   }
+
+  saveAvatar( avatar: string ) {
+    return new Promise ((resolve: any, reject: any) => {
+      resolve ('your credentials was updated');
+    });
+  }
 }

@@ -13,11 +13,11 @@ namespace Geoping.Services
 {
     public class CheckInStatisticsService : ICheckInStatisticsService
     {
-        private Dictionary<string, Expression<Func<CheckInWithUserNameDTO, object>>> orderBys =
-            new Dictionary<string, Expression<Func<CheckInWithUserNameDTO, object>>>()
+        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> orderBys =
+            new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>()
             {
-                {"date", x => x.Date},
-                {"userName", x => x.Username}
+                {"pointName", x => x.Point.Name},
+                {"date", x => x.Check.Date}
             };
 
         private IRepository<CheckIn> _checksRepo;
@@ -39,7 +39,7 @@ namespace Geoping.Services
             _gpUserRepo = gpUserRepo;
         }
 
-        public WebResult<IQueryable<CheckInWithUserNameDTO>> GetStatOfUsersList
+        public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersList
             (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
         {
             totalItems = 0;
@@ -48,7 +48,7 @@ namespace Geoping.Services
 
             if (!isListExist)
             {
-                return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
+                return new WebResult<IQueryable<CheckInStatsDTO>>()
                 {
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
                 };
@@ -56,7 +56,7 @@ namespace Geoping.Services
 
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, list))
             {
-                return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
+                return new WebResult<IQueryable<CheckInStatsDTO>>()
                 {
                     Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]" }
                 };
@@ -64,25 +64,41 @@ namespace Geoping.Services
 
             var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            var data = from ch in _checksRepo.Data
-                       from gp in points
-                       where ch.PointId == gp.Id
-                       select new CheckInWithUserNameDTO()
+            var checks = GetFilteredData(_checksRepo.Data, filter)
+                .OrderByDescending(x => x.Date)
+                .GroupBy(x => x.PointId)
+                .Select(x => x.FirstOrDefault());
+
+            var data = from p in points
+                       join ch in checks on p.Id equals ch.PointId into stat
+                       from x in stat.DefaultIfEmpty()
+                       select new CheckInStatsDTO()
                        {
-                           UserId = ch.UserId,
-                           Username = _gpUserRepo.Data.FirstOrDefault(x => x.Id == ch.UserId).Login,
-                           PointId = ch.PointId,
-                           Latitude = ch.Latitude,
-                           Longitude = ch.Longitude,
-                           Distance = ch.Distance,
-                           Date = ch.Date,
-                           DeviceId = ch.DeviceId,
-                           Ip = ch.Ip,
-                           UserAgent = ch.UserAgent
+                           Point = new CheckInStatPointDTO()
+                           {
+                               Id = p.Id,
+                               Name = p.Name,
+                               Description = p.Description,
+                               Latitude = p.Latitude,
+                               Longitude = p.Longitude,
+                               Radius = p.Radius,
+                               Address = p.Address,
+                           },
+                           Check = x != null
+                           ? new CheckInStatCheckDTO()
+                           {
+                               UserId = x.UserId,
+                               PointId = x.PointId,
+                               Latitude = x.Latitude,
+                               Longitude = x.Longitude,
+                               Distance = x.Distance,
+                               Date = x.Date,
+                               Ip = x.Ip,
+                               DeviceId = x.DeviceId,
+                               UserAgent = x.UserAgent
+                           }
+                           : new CheckInStatCheckDTO()
                        };
-
-            data = GetFilteredData(data, filter);
-
             totalItems = data.Count();
 
             filter.PageNumber = filter.PageNumber ?? 0;
@@ -107,7 +123,7 @@ namespace Geoping.Services
                     .Take((int)filter.PageSize);
             }
 
-            return new WebResult<IQueryable<CheckInWithUserNameDTO>>()
+            return new WebResult<IQueryable<CheckInStatsDTO>>()
             {
                 Data = data,
                 Success = true,
@@ -118,12 +134,17 @@ namespace Geoping.Services
             };
         }
 
-        private IQueryable<CheckInWithUserNameDTO> GetFilteredData
-            (IQueryable<CheckInWithUserNameDTO> data, CheckInStatFilterDTO filter)
+        private IQueryable<CheckIn> GetFilteredData
+            (IQueryable<CheckIn> data, CheckInStatFilterDTO filter)
         {
+            var isUserId = Guid.TryParse(filter.UserId, out var userId);
+
+            data = isUserId
+                ? data.Where(x => x.UserId == userId)
+                : data;
+
             var isDatePeriodFrom = DateTime.TryParse(filter.DatePeriodFrom, out var periodFrom);
             var isDatePeriodTo = DateTime.TryParse(filter.DatePeriodTo, out var periodTo);
-            var isUserId = Guid.TryParse(filter.UserId, out var userId);
 
             data = isDatePeriodFrom
                 ? data.Where(x => x.Date >= periodFrom)
@@ -131,10 +152,6 @@ namespace Geoping.Services
 
             data = isDatePeriodTo
                 ? data.Where(x => x.Date <= periodTo)
-                : data;
-
-            data = isUserId
-                ? data.Where(x => x.UserId == userId)
                 : data;
 
             return data;

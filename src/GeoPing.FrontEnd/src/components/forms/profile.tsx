@@ -29,9 +29,9 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
       firstname: e.firstName,
       lastname: e.lastName,
       birthday: e.birthday,
-      phonenumber: e.phone,
+      phonenumber: e.phoneNumber,
       lastpaid: e.lastPaid,
-      avatar: e.avatar ? e.avatar : this.props.profileState.avatar,
+      // avatar: e.avatar ? e.avatar : this.props.profileState.avatar,
     };
     this.props.updateProfileData( newProfileData );
   }
@@ -48,6 +48,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
               onSubmit={this.submit}
               initialValues={this.props.profileState}
               showModalChangePassword={this.props.showModalChangePassword}
+              saveAvatar={this.props.saveAvatar}
             />
             : null
           }

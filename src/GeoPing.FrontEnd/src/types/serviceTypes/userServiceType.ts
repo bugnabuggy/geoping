@@ -3,4 +3,6 @@ export default interface IUser {
   loadUserForStatistic: ( idList: string ) => Promise<any>;
   changePassword: ( password: string, newPassword: string) => Promise<any>;
   loadUserData: () => Promise<any>;
+  sendLoginOrEmail: ( loginOrEmail: string ) => Promise<any>;
+  sendNewPassword: ( newPassword: string ) => Promise<any>;
 }

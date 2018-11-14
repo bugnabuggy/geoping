@@ -14,10 +14,14 @@ import {
   loadPoints,
   loadUsers
 } from '../actions/checkinStatisticsActions';
+import { clearGeoPoint } from '../actions/googleMapAction';
 
 class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatisticsComponentContainerProps, any> {
   componentDidMount() {
     this.props.loadLists();
+    if ( this.props.listId ) {
+      this.props.loadUsers( this.props.listId );
+    }
   }
 
   componentWillUnmount() {
@@ -35,6 +39,7 @@ class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatis
           loadUsers={this.props.loadUsers}
           loadPoints={this.props.loadPoints}
           getAllCheckForList={this.props.getAllCheckForList}
+          clearGeoPoint={this.props.clearGeoPoint}
         />
         <TableMarkerStatisticsComponentContainer/>
       </React.Fragment>
@@ -58,6 +63,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       loadPoints,
       checkInStatisticsClear,
       getAllCheckForList,
+      clearGeoPoint,
     },
     dispath );
 

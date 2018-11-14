@@ -21,5 +21,6 @@ namespace GeoPing.Core.Services
         OperationResult<GeoPingUser> GetProfile(Guid gpUserId);
         OperationResult<ShortUserInfoDTO> GetShortProfile(Guid userId);
         OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);
+        OperationResult<GeoPingUser> EditProfileAvatar(Guid guid, ProfileAvatarDTO avatar);
     }
 }

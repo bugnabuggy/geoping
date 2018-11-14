@@ -7,19 +7,20 @@ import GoogleMapComponentContainer from '../componentContainers/googleMapCompone
 
 export default class ChecklistPage extends React.Component<IChecklistPageProps, any> {
   render() {
+    const params: any = this.props.match.params;
     return (
       <React.Fragment>
         <div className="check-list-container">
           <div className="check-list-title">
-            <CheckListTitleComponentContainer />
+            <CheckListTitleComponentContainer/>
           </div>
           <div className="check-list">
             <CheckListComponentContainer
-              idCheckList={this.props.match.params.id}
+              idCheckList={params[ '0' ]}
             />
           </div>
           <div className="check-list-map">
-            <GoogleMapComponentContainer />
+            <GoogleMapComponentContainer/>
           </div>
         </div>
       </React.Fragment>

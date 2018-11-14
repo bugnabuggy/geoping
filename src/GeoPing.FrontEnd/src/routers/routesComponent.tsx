@@ -1,24 +1,26 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Route, Switch } from 'react-router';
 import { Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router';
+
 import HeaderComponentContainer from '../componentContainers/headerComponentContainer';
 import NotificationComponentContainer from '../componentContainers/notificationComponentContainer';
 import IRoutesComponentProps from '../componentProps/routerProps/routesComponentProps';
 import { ERoleUser } from '../types/stateTypes/userStateType';
-import { baseUrl } from '../constants/routes';
 import routersMap from '../mapForComponents/routersMap';
+import { notFoundUrl } from '../constants/routes';
 
 export default class Routes extends React.Component<IRoutesComponentProps, any> {
 
   renderRouters( authorize: boolean, userRole: ERoleUser ) {
     return routersMap( authorize, userRole ).map(
-      ( item: { path: string, component: ReactNode }, index: number ) => {
+      ( item: { path: string, component: ReactNode, exact: boolean }, index: number ) => {
         const Component: any = item.component;
         return (
           <Route
             key={index}
-            exact={true}
+            exact={item.exact}
+            // exact={true}
             path={item.path}
             component={Component}
           />
@@ -31,15 +33,17 @@ export default class Routes extends React.Component<IRoutesComponentProps, any> 
       <Switch>
         {this.renderRouters( this.props.authorized, this.props.roleUser )}
 
-        {/*<Redirect push={true} from="*" to={baseUrl}/>*/}
+        <Redirect from="*" to={notFoundUrl}/>
       </Switch>
     );
-
     return (
       <React.Fragment>
-        <header>
-          <HeaderComponentContainer/>
-        </header>
+        {this.props.path !== notFoundUrl ?
+          <header>
+            <HeaderComponentContainer/>
+          </header>
+          :
+          <div/>}
         <main>
           <NotificationComponentContainer/>
           {component}

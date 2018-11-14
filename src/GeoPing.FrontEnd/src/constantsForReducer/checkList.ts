@@ -15,3 +15,4 @@ export const CLEAR_STATE_CHECK_LIST: string = 'CLEAR_STATE_CHECK_LIST';
 export const LOAD_MARKERS_FOR_CHECK_LIST: string = 'LOAD_MARKERS_FOR_CHECK_LIST';
 export const SELECT_CHECK_LIST: string = 'SELECT_CHECK_LIST';
 export const UPDATE_CHECK_LIST: string = 'UPDATE_CHECK_LIST';
+export const IS_CHECK_LIST_PAGE: string = 'IS_CHECK_LIST_PAGE';

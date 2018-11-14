@@ -141,9 +141,21 @@ namespace GeoPing.Api.Controllers
         [Route("profile")]
         public IActionResult EditProfile([FromBody]GeoPingUserDTO user)
         {
-            var loggedUserId = _helper.GetAppUserIdByClaims(User.Claims);
+            var result = _accountSrv.EditProfile(_helper.GetAppUserIdByClaims(User.Claims), user);
 
-            var result = _accountSrv.EditProfile(loggedUserId, user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        // PUT /account/profile/avatar
+        [HttpPut]
+        [Route("profile/avatar")]
+        public IActionResult EditAvatarImage([FromBody]ProfileAvatarDTO avatar)
+        {
+            var result = _accountSrv.EditProfileAvatar(_helper.GetAppUserIdByClaims(User.Claims), avatar);
 
             if (result.Success)
             {
@@ -174,6 +186,11 @@ namespace GeoPing.Api.Controllers
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
+            if (userId == null || token == null)
+            {
+                return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
+            }
+
             var result = await _accountSrv.ConfirmEmailAsync(userId, token);
 
             if (result.Success)
@@ -184,18 +201,18 @@ namespace GeoPing.Api.Controllers
         }
 
         // POST /account/confirm-reset
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         [Route("confirm-reset")]
-        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]NewPasswordDTO password)
+        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]NewPasswordDTO item)
         {
             if (userId == null || token == null)
             {
                 return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
             }
 
-            var result = await _accountSrv.ConfirmResetAsync(userId, token, password.NewPassword);
+            var result = await _accountSrv.ConfirmResetAsync(userId, token, item.NewPassword);
 
             if (result.Success)
             {

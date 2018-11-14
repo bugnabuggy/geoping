@@ -14,6 +14,7 @@ export default interface ICheckListStateType {
   // periodTo: string;
   // ownerId: string;
   isGeoPointLoading: boolean;
+  isCheckList: boolean;
   selectedGeoList: IGeoListType;
   checkLists: Array<IGeoListType>;
   checkListPublic: Array<IGeoListPublickDTO>;

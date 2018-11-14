@@ -99,7 +99,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <Slider
                   value={this.props.googleMap.selectedGeoPoint.radius}
                   min={0}
-                  max={300}
+                  max={500}
                   onChange={this.handleChangeSlider}
                   disabled={!this.props.checkList.isEditing}
                 />

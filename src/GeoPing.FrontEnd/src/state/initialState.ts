@@ -18,6 +18,7 @@ import { sharedCheckList } from './sharedCheckListState';
 import { windowState } from './windowState';
 
 const initialState: IinitialStateType = {
+  form: {},
   allUsersFilter: allUsersFilterState,
   allUsersTable: allUsersTableState,
   checkin: checkinState,

@@ -19,14 +19,17 @@ main {
   width: 100%;
   position: relative;
 }
+
 [class="active nav-link"] {
   background-color: #c7c7c7;
   border-radius: 20px;
   text-align: center;
 }
+
 .card {
   margin-bottom: 10px;
 }
+
 #app {
   width: 100%;
   height: 100%;
@@ -68,6 +71,7 @@ footer {
 .table-sort-icon {
   margin-left: 10px;
 }
+
 select.form-control:not([size]):not([multiple]) {
   height: 34px;
 }
@@ -111,6 +115,10 @@ select.form-control:not([size]):not([multiple]) {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.table td {
+  border-top: 0px;
 }
 
 /* Header ******************************************************************/
@@ -245,9 +253,11 @@ header nav {
   bottom: 27px;
   float: right;
 }
+
 .register-btn {
   margin-top: 20px;
 }
+
 /*ProfilePage*/
 .profile-page {
   height: 100%;
@@ -256,37 +266,51 @@ header nav {
   align-items: center;
   flex-direction: column;
 }
+
 .flex-box-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
+
 .flex-box-col-avatar {
   width: 100%;
   display: flex;
   justify-content: center;
 }
+
 .profile-form {
   padding: 40px 160px;
   max-width: 1000px;
   border: 1px solid;
   margin-bottom: 40px;
 }
+
 .profile-label {
   font-size: 1.5em;
   float: left;
 }
+
 .payment-info {
   max-width: 500px;
 }
+
 .last-paid-flex {
   padding: 20px 0;
 }
+
 .profile-flex-btn {
   display: flex;
   padding: 6px 19px;
   margin-top: 15px;
 }
+
+.change-password-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 /**/
 
 /* Dashboard **************************************************************/
@@ -324,7 +348,7 @@ header nav {
 }
 
 /*.dashboard-table div:last-child {*/
-  /*height: calc(100% - 40px);*/
+/*height: calc(100% - 40px);*/
 /*}*/
 
 .dashboard-table div table {
@@ -519,10 +543,10 @@ header nav {
 }
 
 /*.check-in-select-point-paragraph {*/
-  /*overflow: hidden;*/
-  /*white-space: nowrap;*/
-  /*text-overflow: ellipsis;*/
-  /*width: 350px;*/
+/*overflow: hidden;*/
+/*white-space: nowrap;*/
+/*text-overflow: ellipsis;*/
+/*width: 350px;*/
 /*}*/
 .check-in-select-point-paragraph-icon {
   display: flex;
@@ -557,11 +581,12 @@ header nav {
   border-radius: 7px;
   background: #6992929e;
   color: white;
-  background: rgb(142,226,215); /* Old browsers */
-  background: -moz-linear-gradient(top, rgba(142,226,215,1) 14%, rgba(105,146,146,1) 84%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(142,226,215,1) 14%,rgba(105,146,146,1) 84%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: rgb(142, 226, 215); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(142, 226, 215, 1) 14%, rgba(105, 146, 146, 1) 84%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(142, 226, 215, 1) 14%, rgba(105, 146, 146, 1) 84%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(142, 226, 215, 1) 14%, rgba(105, 146, 146, 1) 84%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
+
 /**/
 
 /* Modal share check list **************************************************************************/
@@ -879,7 +904,7 @@ header nav {
   position: absolute;
   width: 100%;
 
-  z-index: 1000;
+  z-index: 999;
 }
 
 .notification-alert {
@@ -983,8 +1008,8 @@ header nav {
 }
 
 .check-list-head-name {
-  min-width: 170px;
-  width: 270px;
+  min-width: 200px;
+  width: 200px;
   font-size: 1.3em;
 }
 
@@ -992,6 +1017,7 @@ header nav {
   display: flex;
   width: 60px;
   justify-content: space-between;
+  font-size: 1.3em;
 }
 
 .check-list-head-period {
@@ -1111,11 +1137,16 @@ header nav {
   align-items: center;
   width: 100%;
 }
+.check-list-head-name-form-group label {
+  margin-top: 15px;
+  font-size: 30px;
+}
 
 .check-list-head-name p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 200px;
 }
 
 .check-list-modal-period-item {
@@ -1238,13 +1269,12 @@ header nav {
 
 /*************************************************************************************/
 
-
 /* Check in Statistics*/
 .check-in-statistics {
   height: 100%;
   display: grid;
   grid-template-rows: [row1] minmax(max-content, 1fr);
-  grid-template-columns: [col1] minmax(300px, 500px) [col2] minmax(max-content, 1fr);
+  grid-template-columns: [col1] minmax(300px, 600px) [col2] minmax(max-content, 1fr);
   grid-gap: 5px;
 }
 
@@ -1370,9 +1400,23 @@ header nav {
 select.form-control:not([size]):not([multiple]) {
   height: 34px;
 }
-/**/
 
+/**/
 /*************************************************************************************/
+
+/* reset password*/
+.reset-password-page-container, .reset-password-form1-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.reset-password-page-container {
+  height: 250px;
+}
+
+/*****************************************************************************************/
+
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
@@ -1579,6 +1623,14 @@ select.form-control:not([size]):not([multiple]) {
     border: black 1px solid;
   }
 
+  .check-in-statistics {
+    height: 100%;
+    display: grid;
+    grid-template-rows: [row1] minmax(max-content, 1fr) [row2] 500px;
+    grid-template-columns: [col1] 1fr;
+    grid-gap: 5px;
+  }
+
   /* Admin all checklist */
   .admin-checklist-container {
     display: grid;
@@ -1709,3 +1761,11 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 /**/
+.not-found {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20rem;
+}
