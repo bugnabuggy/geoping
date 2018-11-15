@@ -52,6 +52,13 @@ namespace GeoPing.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(ch => ch.PointId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // One-to-many relationship of GeoList and ListSharings
+            builder.Entity<ListSharing>()
+                .HasOne<GeoList>(ls => ls.List)
+                .WithMany()
+                .HasForeignKey(ls => ls.ListId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

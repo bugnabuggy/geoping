@@ -1,6 +1,10 @@
 ﻿using GeoPing.Api.Interfaces;
+using GeoPing.Core.Entities;
 using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
+using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,45 +14,120 @@ using System.Threading.Tasks;
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/geolist/{ListId}/sharing")]
+    [Route("api/sharing")]
     [Authorize]
     public class SharingController : Controller
     {
         private ISharingService _shareSrv;
-        private ISecurityService _securitySrv;
         private IClaimsHelper _helper;
-        private IGeolistService _listSrv;
+        private IEmailService _emailSvc;
 
         public SharingController(ISharingService shareSrv,
-                                 ISecurityService securitySrv,
                                  IClaimsHelper helper,
-                                 IGeolistService listSrv)
+                                 IEmailService emailSvc)
         {
             _shareSrv = shareSrv;
-            _securitySrv = securitySrv;
             _helper = helper;
-            _listSrv = listSrv;
+            _emailSvc = emailSvc;
         }
+
+        [HttpGet]
+        [Route("invite")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmInvitation(string token)
+        {
+            var result = await _shareSrv.ConfirmInvitationAsync(_helper.GetIdentityUserIdByClaims(User.Claims), token);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else if (result.Data.Equals("302-1"))
+            {
+                return Redirect("~/register");
+            }
+            else if (result.Data.Equals("302-2"))
+            {
+                return Redirect("~/connect/token");
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        [Route("invite/{listId}/accept")]
+        public IActionResult AcceptInvite(string listId)
+        {
+            var result = _shareSrv.AcceptInvite(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost]
+        [Route("invite/{listId}")]
+        public IActionResult InviteUser(string listId, string email)
+        {
+            var user = _helper.GetAppUserByClaims(User.Claims);
+
+            var result = _shareSrv.InviteByEmail(user.Id, listId, email);
+
+            if (result.Success)
+            {
+                var code = ((GeoPingToken)result.Data).Token;
+
+                SendInvitationEmail(email,
+                                    code,
+                                    "ConfirmInvitation",
+                                    $"{user.FirstName} {user.LastName} \"{user.Login}\" shared geolist with you");
+
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
+
 
         [HttpGet]
         [Route("allowed-users")]
         public IActionResult GetAllowedUsers(string listId)
         {
-            var isListExist = _listSrv.IsListExistWithThisId(listId, out var list);
-            if (!isListExist)
+            var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            if (result.Success)
             {
-                return BadRequest($"There is no list with id = [{listId}]");
+                return Ok(result);
             }
 
-            var isUserAllowed = _securitySrv.IsUserHasAccessToList(_helper.GetAppUserIdByClaims(User.Claims), list);
-            if (!isUserAllowed)
+            return BadRequest(result);
+        }
+
+        private void SendInvitationEmail(string email, string code, string action, string subject)
+        {
+            var callbackUrl = Url.Action(action,
+                                         "Sharing",
+                                         new { token = code },
+                                         protocol: HttpContext.Request.Scheme);
+
+            _emailSvc.Send(new EmailMessage()
             {
-                return StatusCode(401, "You are not allowed to do this");
-            }
-
-            var result = _securitySrv.GetUsersHaveAccessToList(list);
-
-            return Ok(result);
+                FromAddress = new EmailAddress()
+                {
+                    Name = "GeopingTeam",
+                    Address = "test@geoping.info"
+                },
+                ToAddress = new EmailAddress()
+                {
+                    Name = email,
+                    Address = email
+                },
+                Subject = subject,
+                Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
+            });
         }
     }
 }

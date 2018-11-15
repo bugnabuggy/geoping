@@ -39,7 +39,16 @@ namespace Geoping.Services
             return result;
         }
 
-        public bool IsUserHasAccessToList(Guid userId, GeoList list)
+        public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
+        {
+            if (list.OwnerId == userId)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsUserHasAccessToManipulateList(Guid userId, GeoList list)
         {
             if (list.OwnerId == userId)
             {

@@ -164,7 +164,6 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-
         // GET /account/profile/short
         [HttpGet]
         [Route("profile/short")]
@@ -202,18 +201,18 @@ namespace GeoPing.Api.Controllers
         }
 
         // POST /account/confirm-reset
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         [Route("confirm-reset")]
-        public async Task<IActionResult> ConfirmReset(string userId, string token, string newPassword)
+        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]NewPasswordDTO item)
         {
             if (userId == null || token == null)
             {
                 return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
             }
 
-            var result = await _accountSrv.ConfirmResetAsync(userId, token, newPassword);
+            var result = await _accountSrv.ConfirmResetAsync(userId, token, item.NewPassword);
 
             if (result.Success)
             {
@@ -239,9 +238,29 @@ namespace GeoPing.Api.Controllers
         {
             var callbackUrl = Url.Action(action,
                                          "Account",
-                                         new { userId = user.Id, code = code },
+                                         new { userId = user.Id, token = code },
                                          protocol: HttpContext.Request.Scheme);
 
+            // CRAP HARDCODE
+            //====================================================================================
+            var baseUrl = "https://dev.geoping.info";
+            var actionEndpoint = "";
+
+            switch (action)
+            {
+                case "ConfirmEmail":
+                    actionEndpoint = "email_confirm";
+                    break;
+                case "ConfirmReset":
+                    actionEndpoint = "reset_password";
+                    break;
+                default:
+                    break;
+            }
+
+            callbackUrl = $"{baseUrl}/{actionEndpoint}?UserId={user.Id}&Token={code}";
+            //====================================================================================
+            
             _emailSvc.Send(new EmailMessage()
             {
                 FromAddress = new EmailAddress()
