@@ -1438,6 +1438,15 @@ select.form-control:not([size]):not([multiple]) {
 
 /*****************************************************************************************/
 
+/* token page */
+.token-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+/*****************************************************************************************/
+
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
