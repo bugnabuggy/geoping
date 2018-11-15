@@ -34,7 +34,7 @@ export class EnterLoginOrEmail extends React.Component<IEnterLoginOrEmailProps, 
 
   render() {
     return (
-      <Card>
+      <Card className="reset-password-form-1">
         <CardBody>
           <FormGroup>
             <Label>Login or Email</Label>
@@ -42,7 +42,7 @@ export class EnterLoginOrEmail extends React.Component<IEnterLoginOrEmailProps, 
               onChange={this.handleLoginOrEmail}
             />
           </FormGroup>
-          <div className="form-input-container">
+          <div className="form-input-container form-input-container-captcha">
             <ReCAPTCHA
               onChange={this.handleRecaptcha}
               z-index="1"

@@ -1,7 +1,13 @@
 import IUser from '../../types/serviceTypes/userServiceType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
-import { changeUserPassword, getUserAccessedToList, loadUserData } from '../../constants/endpoints';
+import {
+  changeUserPassword, confirmEmail,
+  getUserAccessedToList,
+  loadUserData,
+  resetPassword,
+  sendLoginOrEmail
+} from '../../constants/endpoints';
 import { getDataFromResponse } from '../helper';
 
 export default class UserService implements IUser {
@@ -63,25 +69,40 @@ export default class UserService implements IUser {
 
   sendLoginOrEmail( loginOrEmail: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post('', loginOrEmail )
+      this.communicator.post( sendLoginOrEmail.replace( '%login%', loginOrEmail ), loginOrEmail )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
   }
 
-  sendNewPassword( newPassword: string ) {
+  sendNewPassword( userId: string, token: string, newPassword: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post('', newPassword )
+      this.communicator.post(
+        resetPassword.replace( '%id%', userId ).replace( '%token%', token ).replace( '%pass%', newPassword ),
+        ''
+      )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
+  }
+
+  confirmEmail( userId: string, token: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( confirmEmail.replace( '%userId%', userId ).replace( '%token%', token ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 }

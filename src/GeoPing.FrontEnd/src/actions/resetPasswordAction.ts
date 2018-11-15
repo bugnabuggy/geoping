@@ -1,19 +1,23 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { SEND_LOGIN_OR_EMAIL, SEND_NEW_PASSWORD } from '../constantsForReducer/resetPassword';
-import { windowBlockingAction } from './windowAction';
+import { isRedirect, windowBlockingAction } from './windowAction';
 import StaticStorage from '../services/staticStorage';
 import IUser from '../types/serviceTypes/userServiceType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import { loginUrl } from '../constants/routes';
 
 export const sendLoginOrEmail = ( loginOrEmail: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
   userService.sendLoginOrEmail( loginOrEmail )
     .then( ( response: any ) => {
-      dispatch( windowBlockingAction( true ) );
-      console.info( 'response', response );
+      dispatch( windowBlockingAction( false ) );
+      dispatch( addNotificationAction(
+        createNotification( response, EnumNotificationType.Success )
+      ) );
+      isRedirect(loginUrl)(dispatch);
     } )
     .catch( ( error: any ) => {
       dispatch( windowBlockingAction( false ) );
@@ -23,13 +27,15 @@ export const sendLoginOrEmail = ( loginOrEmail: string ) => ( dispatch: IDispatc
     } );
 };
 
-export const sendNewPassword = ( newPassword: string ) => ( dispatch: IDispatchFunction ) => {
+export const sendNewPassword = ( userId: string, token: string, newPassword: string ) =>
+  ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
-  userService.sendNewPassword( newPassword )
+  userService.sendNewPassword( userId, token, newPassword )
     .then( ( response: any ) => {
-      dispatch( windowBlockingAction( true ) );
+      dispatch( windowBlockingAction( false ) );
       console.info( 'response', response );
+      isRedirect(loginUrl)(dispatch);
     } )
     .catch( ( error: any ) => {
       dispatch( windowBlockingAction( false ) );

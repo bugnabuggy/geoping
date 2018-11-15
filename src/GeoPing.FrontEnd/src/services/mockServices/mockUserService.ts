@@ -62,11 +62,22 @@ export default class MockUserService implements IUser {
     });
   }
 
-  sendNewPassword( newPassword: string ) {
+  sendNewPassword(userId: string, token: string, newPassword: string ) {
     return new Promise(( resolve: any, reject: any ) => {
       setTimeout(
         () => {
           resolve ( newPassword );
+        },
+        1000
+      );
+    });
+  }
+
+  confirmEmail( userId: string, token: string ) {
+    return new Promise(( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          resolve ( 'ff' );
         },
         1000
       );
