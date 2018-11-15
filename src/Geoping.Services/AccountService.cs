@@ -115,6 +115,7 @@ namespace GeoPing.Services
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
             if (result.Succeeded)
+
             {
                 _gpUserSrv.ActivateUser(user.Id);
                 return new OperationResult()

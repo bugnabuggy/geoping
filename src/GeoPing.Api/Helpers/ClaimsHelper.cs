@@ -26,26 +26,30 @@ namespace GeoPing.Api.Helpers
         public string GetIdentityUserIdByClaims(IEnumerable<Claim> claims)
         {
             // TODO: solve nullreference exception
-            return claims != null 
+            return claims.Any()
                    ? claims.FirstOrDefault(c => c.Type.Equals("sub")).Value
                    : null;
         }
 
         public AppIdentityUser GetIdentityUserByClaims(IEnumerable<Claim> claims)
         {
-            return _userManager.FindByIdAsync(GetIdentityUserIdByClaims(claims)).Result;
+            return claims.Any()
+                   ? _userManager.FindByIdAsync(GetIdentityUserIdByClaims(claims)).Result
+                   : null;
         }
 
         public Guid GetAppUserIdByClaims(IEnumerable<Claim> claims)
         {
-            return claims != null
+            return claims.Any()
                    ? GetAppUserByClaims(claims).Id
                    : Guid.Empty;
         }
 
         public GeoPingUser GetAppUserByClaims(IEnumerable<Claim> claims)
         {
-            return _gpUserRepo.Data.FirstOrDefault(x => x.IdentityId == GetIdentityUserIdByClaims(claims));
+            return claims.Any()
+                   ? _gpUserRepo.Data.FirstOrDefault(x => x.IdentityId == GetIdentityUserIdByClaims(claims))
+                   : null;
         }
     }
 }
