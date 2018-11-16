@@ -16,5 +16,6 @@ namespace GeoPing.Core.Services
         void AddGPUserForIdentity(string identityUserId, string email, string username);
         OperationResult<GeoPingUser> EditUser(GeoPingUser user);
         void ActivateUser(string id);
+        IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string firstLetters);
     }
 }

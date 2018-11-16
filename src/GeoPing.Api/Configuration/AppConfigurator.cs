@@ -32,6 +32,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<ListSharing>, DbRepository<ListSharing>>();
             services.AddScoped<IRepository<SupportMessage>, DbRepository<SupportMessage>>();
             services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
+            services.AddScoped<IRepository<AppIdentityUser>, DbRepository<AppIdentityUser>>();
 
             services.AddTransient<IEmailService, EmailService>();
 
