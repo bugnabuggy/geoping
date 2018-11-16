@@ -11,32 +11,82 @@ namespace Geoping.Services
     public class GeopingTokenService : IGeopingTokenService
     {
         private IRepository<GeoPingToken> _tokenRepo;
+        private ISecurityService _secSrv;
 
-        public GeopingTokenService(IRepository<GeoPingToken> tokenRepo)
+        public GeopingTokenService(IRepository<GeoPingToken> tokenRepo,
+                                   ISecurityService secSrv)
         {
             _tokenRepo = tokenRepo;
+            _secSrv = secSrv;
         }
 
-        public string[] DecodeSharingToken(string token)
+        public GeoPingToken GetSharingInviteToken(string value)
         {
-            var result = token.Split(',');
-
-            MarkIsUsed(token);
+            var result = _tokenRepo.Add(new GeoPingToken()
+            {
+                Type = "SharingInvite",
+                Created = DateTime.UtcNow,
+                Value = value,
+                Token = _secSrv.GetSHA256HashString(value)
+            });
 
             return result;
         }
 
-        public GeoPingToken GetSharingToken(string email, string listId)
+        public GeoPingToken GetSharingToken(string value)
         {
-            var token = new GeoPingToken()
+            var result = _tokenRepo.Add(new GeoPingToken()
             {
+                Type = "Sharing",
                 Created = DateTime.UtcNow,
-                Type = "sharing",
-                Token = $"{email},{listId}",
-            };
+                Value = value,
+                Token = _secSrv.GetSHA256HashString(value)
+            });
 
-            return _tokenRepo.Add(token);
+            return result;
         }
+        
+        public string DecodeSharingToken(string token)
+        {
+            var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
+
+            if (gpToken != null)
+            {
+                return gpToken.Value;
+            }
+
+            return null;
+        }
+
+
+
+
+
+
+
+
+
+
+        //public string[] DecodeSharingToken(string token)
+        //{
+        //    var result = token.Split(',');
+
+        //    MarkIsUsed(token);
+
+        //    return result;
+        //}
+
+        //public GeoPingToken GetSharingToken(string email, string listId)
+        //{
+        //    var token = new GeoPingToken()
+        //    {
+        //        Created = DateTime.UtcNow,
+        //        Type = "sharing",
+        //        Token = $"{email},{listId}",
+        //    };
+
+        //    return _tokenRepo.Add(token);
+        //}
 
         private void MarkIsUsed(string token)
         {

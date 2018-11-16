@@ -8,22 +8,23 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GeoPing.Api.Controllers
 {
-    [Route("api/users")]
+    [Route("api/autocomplete")]
     [Authorize]
-    public class GPUserController : Controller
+    public class AutocompleteController : Controller
     {
         private IGPUserService _gpUserSrv;
 
-        public GPUserController(IGPUserService gpUserSrv)
+        public AutocompleteController(IGPUserService gpUserSrv)
         {
             _gpUserSrv = gpUserSrv;
         }
 
         // GET api/users
         [HttpGet]
-        public IActionResult GetUsers(string firstLetters)
+        [Route("users")]
+        public IActionResult GetUsers(string query)
         {
-            var result = _gpUserSrv.GetUsersNameAndEmail(firstLetters);
+            var result = _gpUserSrv.GetUsersNameAndEmail(query);
 
             return Ok(result);
         }

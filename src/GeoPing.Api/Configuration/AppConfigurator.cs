@@ -46,6 +46,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<ICheckInStatisticsService, CheckInStatisticsService>();
             services.AddScoped<ISharingService, SharingService>();
             services.AddScoped<IGeopingTokenService, GeopingTokenService>();
+            services.AddScoped<IValidationService, ValidationService>();
         }
 
         public void Initialize(IServiceProvider services)

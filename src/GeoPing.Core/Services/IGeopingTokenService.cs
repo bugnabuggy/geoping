@@ -8,7 +8,8 @@ namespace GeoPing.Core.Services
 {
     public interface IGeopingTokenService
     {
-        GeoPingToken GetSharingToken(string email, string listId);
-        string[] DecodeSharingToken(string token);
+        GeoPingToken GetSharingToken(string value);
+        GeoPingToken GetSharingInviteToken(string value);
+        string DecodeSharingToken(string token);
     }
 }

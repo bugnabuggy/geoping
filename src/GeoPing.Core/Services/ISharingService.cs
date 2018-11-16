@@ -9,9 +9,11 @@ namespace GeoPing.Core.Services
 {
     public interface ISharingService
     {
-        OperationResult InviteByEmail(Guid userId, string listId, string email);
-        Task<OperationResult> ConfirmInvitationAsync(string invitedUserId, string token);
+        //OperationResult InviteByEmail(Guid userId, string listId, string email);
+        //Task<OperationResult> ConfirmInvitationAsync(string invitedUserId, string token);
+        //OperationResult AcceptInvite(Guid guid, string listId);
+
         OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId);
-        OperationResult AcceptInvite(Guid guid, string listId);
+        Task<OperationResult> InviteUsersByList(Guid userId, string listId, string[] usersData);
     }
 }
