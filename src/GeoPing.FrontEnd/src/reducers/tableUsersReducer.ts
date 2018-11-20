@@ -1,5 +1,5 @@
-import { tableUserState } from '../state/tableUserState';
-import ITableDataStateType from '../types/stateTypes/tableDataStateType';
+import { tableUserState } from '../../GeoPing.FrontEnd/src/state/tableUserState';
+import ITableDataStateType from '../../GeoPing.FrontEnd/src/types/stateTypes/tableDataStateType';
 
 export default function tableUserReducer(state: ITableDataStateType = tableUserState, action: any) {
   const reduceObject: any = {

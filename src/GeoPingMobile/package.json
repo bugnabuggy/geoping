@@ -1,0 +1,41 @@
+{
+  "name": "GeoPingMobile",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "16.6.1",
+    "react-native": "0.57.5",
+    "react-navigation": "^2.17.0",
+    "react-redux": "^5.1.1",
+    "redux-axios-middleware": "^4.0.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/react": "^16.7.6",
+    "@types/react-native": "^0.57.10",
+    "@types/react-navigation": "^2.13.2",
+    "@types/react-redux": "^6.0.9",
+    "@types/redux": "^3.6.0",
+    "@types/redux-persist": "^4.3.1",
+    "@types/uuid": "^3.4.4",
+    "axios": "^0.18.0",
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.49.2",
+    "react-native-typescript-transformer": "^1.2.10",
+    "react-router-redux": "^4.0.8",
+    "react-test-renderer": "16.6.1",
+    "redux": "^4.0.1",
+    "redux-form": "^7.4.2",
+    "redux-persist": "^5.10.0",
+    "typescript": "^3.1.6"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

@@ -1,10 +1,10 @@
-import IPublicCheckListType from '../types/stateTypes/publicCheckListType';
-import { publicCheckListState } from '../state/publickCheckListState';
+import IPublicCheckListType from '../../GeoPing.FrontEnd/src/types/stateTypes/publicCheckListType';
+import { publicCheckListState } from '../../GeoPing.FrontEnd/src/state/publickCheckListState';
 import {
   PUBLIC_LIST_CHANGE_FILTER,
   PUBLIC_LIST_CHANGE_PAGINATION,
   PUBLIC_LIST_LOAD_LISTS
-} from '../constantsForReducer/publicCheckList';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/publicCheckList';
 
 export default function publicCheckListReducer( state: IPublicCheckListType = publicCheckListState, action: any ) {
   const reduceObject: any = {

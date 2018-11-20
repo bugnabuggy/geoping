@@ -1,0 +1,32 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.checkListState = {
+    // id: '',
+    isShowModal: false,
+    // name: '',
+    isEditing: false,
+    showFilterCheckList: false,
+    isMyGeoPosition: false,
+    // description: '',
+    // isPublic: false,
+    // ownerId: '',
+    // periodFrom: '',
+    // periodTo: '',
+    // rating: null,
+    isGeoPointLoading: false,
+    isCheckList: false,
+    selectedGeoList: {
+        id: '',
+        name: '',
+        description: '',
+        isPublic: false,
+        ownerId: '',
+        periodFrom: '',
+        periodTo: '',
+        rating: null,
+        created: '',
+        edited: '',
+    },
+    checkLists: [],
+    checkListPublic: [],
+};

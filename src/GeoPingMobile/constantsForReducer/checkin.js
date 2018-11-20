@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CHECK_IN_LOAD_LISTS = 'CHECK_IN_LOAD_LISTS';
+exports.CHECK_IN_SELECT_LIST = 'CHECK_IN_SELECT_LIST';
+exports.CHECK_IN_FLAG_CHANGE = 'CHECK_IN_FLAG_CHANGE';
+exports.LOADING_CHECK_LISTS = 'LOADING_CHECK_LISTS';
+exports.LOADING_GEO_POINTS = 'LOADING_GEO_POINTS';
+exports.CHECK_IN_CLEAR = 'CHECK_IN_CLEAR';
+exports.CHECK_IN_GEO_POINTS = 'CHECK_IN_GEO_POINTS';

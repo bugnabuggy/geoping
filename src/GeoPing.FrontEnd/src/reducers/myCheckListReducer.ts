@@ -1,14 +1,14 @@
-import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../constantsForReducer/modal';
+import { CLOSE_MODAL_SHARE, SHOW_MODAL_SHARE } from '../../GeoPing.FrontEnd/src/constantsForReducer/modal';
 import {
   CLEAR_STATE_MY_CHECK_LIST,
   CREATE_CHECK_LIST,
   DELETE_MY_CHECK_LISTS,
   LOAD_MY_CHECK_LISTS,
   MY_CHECK_LIST_LOADING
-} from '../constantsForReducer/checkList';
-import { myCheckList } from '../state/myCheckListState';
-import IMyCheckListsStateType from '../types/stateTypes/myCheckListsStateType';
-import { PROVIDE_PUBLIC_ACCESS } from '../constantsForReducer/sharedCheckList';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/checkList';
+import { myCheckList } from '../../GeoPing.FrontEnd/src/state/myCheckListState';
+import IMyCheckListsStateType from '../../GeoPing.FrontEnd/src/types/stateTypes/myCheckListsStateType';
+import { PROVIDE_PUBLIC_ACCESS } from '../../GeoPing.FrontEnd/src/constantsForReducer/sharedCheckList';
 
 export default function myCheckListReducer( state: IMyCheckListsStateType = myCheckList, action: any ) {
   const reduceObject: any = {

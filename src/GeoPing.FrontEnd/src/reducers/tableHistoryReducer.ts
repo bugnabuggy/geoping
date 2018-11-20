@@ -1,12 +1,12 @@
-import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
-import { tableHistoryState } from '../state/tableHistoryState';
-import { CLOSE_FILTER_HISTORY, FILTER_HISTORY_TABLE } from '../constantsForReducer/filters';
+import { ITableHistoryStateType } from '../../GeoPing.FrontEnd/src/types/stateTypes/tableHistoryStateType';
+import { tableHistoryState } from '../../GeoPing.FrontEnd/src/state/tableHistoryState';
+import { CLOSE_FILTER_HISTORY, FILTER_HISTORY_TABLE } from '../../GeoPing.FrontEnd/src/constantsForReducer/filters';
 import {
   CLEAR_TABLE_HISTORY,
   LOAD_LIST_HISTORY,
   SAVE_RECORD_HISTORY,
   TABLE_HISTORY_LOADING
-} from '../constantsForReducer/historyTable';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/historyTable';
 
 export default function tableHistoryReducer( state: ITableHistoryStateType = tableHistoryState, action: any ) {
   const reduceObject: any = {

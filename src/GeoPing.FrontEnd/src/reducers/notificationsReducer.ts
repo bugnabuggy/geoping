@@ -1,10 +1,10 @@
-import INotificationStateType from '../types/stateTypes/notificationStateType';
-import { notificationState } from '../state/notificationsState';
+import INotificationStateType from '../../GeoPing.FrontEnd/src/types/stateTypes/notificationStateType';
+import { notificationState } from '../../GeoPing.FrontEnd/src/state/notificationsState';
 import {
   ADD_NOTIFICATION,
   DELETE_ALL_NOTIFICATIONS,
   DELETE_NOTIFICATION
-} from '../constantsForReducer/notification';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/notification';
 
 export default function notificationsReducer( state: INotificationStateType = notificationState, action: any ) {
   const reduceObject: any = {

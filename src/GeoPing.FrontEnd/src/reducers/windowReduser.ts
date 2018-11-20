@@ -1,10 +1,10 @@
-import IWindowStateType from '../types/stateTypes/windowStateType';
-import { windowState } from '../state/windowState';
+import IWindowStateType from '../../GeoPing.FrontEnd/src/types/stateTypes/windowStateType';
+import { windowState } from '../../GeoPing.FrontEnd/src/state/windowState';
 import {
   BLOCKING_WINDOW_DURING_AN_ACTION,
   CONFIRM_EMAIL, REDIRECT,
   REDIRECT_ON_SIGN_IN_FORM
-} from '../constantsForReducer/window';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/window';
 
 export default function windowReducer( state: IWindowStateType = windowState, action: any ) {
   const reduceObject: any = {

@@ -1,0 +1,3 @@
+rootProject.name = 'GeoPingMobile'
+
+include ':app'

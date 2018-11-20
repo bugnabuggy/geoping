@@ -1,13 +1,13 @@
-import { userState } from '../state/userState';
-import IUserStateType from '../types/stateTypes/userStateType';
+import { userState } from '../../GeoPing.FrontEnd/src/state/userState';
+import IUserStateType from '../../GeoPing.FrontEnd/src/types/stateTypes/userStateType';
 import {
   LOAD_USER_NAME,
   REDIRECT_DASHBOARD_FOR_LOGIN,
   USER_AUTHORIZATION,
   USER_AUTHORIZATION_TEST_PERIOD,
   USER_SIGN_OUT
-} from '../constantsForReducer/user';
-import { SAVE_AVATAR } from '../constantsForReducer/profile';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/user';
+import { SAVE_AVATAR } from '../../GeoPing.FrontEnd/src/constantsForReducer/profile';
 
 export default function userReducer( state: IUserStateType = userState, action: any ) {
 

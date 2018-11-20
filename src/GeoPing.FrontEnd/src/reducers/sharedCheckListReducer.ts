@@ -1,11 +1,11 @@
-import ISharedCheckListStateType from '../types/stateTypes/sharedCheckListStateType';
-import { sharedCheckList } from '../state/sharedCheckListState';
+import ISharedCheckListStateType from '../../GeoPing.FrontEnd/src/types/stateTypes/sharedCheckListStateType';
+import { sharedCheckList } from '../../GeoPing.FrontEnd/src/state/sharedCheckListState';
 import {
   CLEAR_SHARED_CHECK_LIST,
   LOAD_USERS_LIST_WITCH_SHARED_ACCESS,
   LOADING_USERS_WHO_HAS_ACCESS,
   SEND_SHARE_CHECK_LIST_FOR_USERS
-} from '../constantsForReducer/sharedCheckList';
+} from '../../GeoPing.FrontEnd/src/constantsForReducer/sharedCheckList';
 
 export default function sharedCheckListReducer( state: ISharedCheckListStateType = sharedCheckList, action: any ) {
   const reduceObject: any = {
