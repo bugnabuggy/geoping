@@ -61,7 +61,9 @@ namespace Geoping.Services
         {
             ICollection<Guid?> allowedUsers =
                 _shareRepo.Data
-                    .Where(x => x.ListId == list.Id && x.UserId != null)
+                    .Where(x => x.ListId == list.Id && 
+                                x.UserId != null &&
+                                x.Status == "accepted")
                     .Select(x => x.UserId).ToList();
 
             allowedUsers.Add(list.OwnerId);

@@ -60,6 +60,21 @@ namespace GeoPing.Api.Controllers
                                                     x.Status == "accepted"));
         }
 
+        // DELETE api/sharing/{sharingId}
+        [HttpDelete]
+        [Route("{sharingId}")]
+        public IActionResult RefuseSharing(string sharingId)
+        {
+            var result = _shareSrv.DeleteSharing(sharingId);
+
+            if (result.Success)
+            {
+                return NoContent();
+            }
+
+            return NotFound(sharingId);
+        }
+
         // POST api/sharing/{listId}
         [HttpPost]
         [Route("{listId}")]

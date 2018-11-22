@@ -76,6 +76,29 @@ namespace Geoping.Services
             return result.AsEnumerable();
         }
 
+        public OperationResult DeleteSharing(string sharingId)
+        {
+            var isSharingId = Guid.TryParse(sharingId, out var id);
+
+            if (isSharingId)
+            {
+                var item = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+
+                _shareRepo.Delete(item);
+
+                return new OperationResult()
+                {
+                    Success = true,
+                    Messages = new []{"You successfully leave the shared list"}
+                };
+            }
+
+            return new OperationResult()
+            {
+                Messages = new[] { "Shared list wasn`t found or id is invalid" }
+            };
+        }
+
         // Send sharing invitations to users in list
         public async Task<OperationResult> InviteUsersByList(Guid userId, string listId, string[] usersData)
         {
@@ -211,7 +234,7 @@ namespace Geoping.Services
             SendSharingEmail(userId, sharing.Email, gpToken.Id.ToString());
         }
 
-        private bool IsUserHasBeenInvitedEarlier(string invitedUserEmail,Guid listId, out ListSharing sharing)
+        private bool IsUserHasBeenInvitedEarlier(string invitedUserEmail, Guid listId, out ListSharing sharing)
         {
             sharing = _shareRepo.Data.FirstOrDefault(x => x.Email == invitedUserEmail &&
                                                           x.ListId == listId);
