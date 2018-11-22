@@ -12,12 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using GeoPing.Core.Models.DTO;
+using System.Linq.Expressions;
 
 namespace Geoping.Services
 {
     public class SharingService : ISharingService
     {
         private IRepository<ListSharing> _shareRepo;
+        private IRepository<GeoList> _listRepo;
         private ISecurityService _securitySrv;
         private IGeolistService _listSrv;
         private IGeopingTokenService _tokenSrv;
@@ -27,7 +29,9 @@ namespace Geoping.Services
         private IEmailService _emailSvc;
         private IConfiguration _cfg;
 
-        public SharingService(IRepository<ListSharing> shareRepo,
+        public SharingService
+            (IRepository<ListSharing> shareRepo,
+            IRepository<GeoList> listRepo,
             ISecurityService securitySrv,
             IGeolistService listSrv,
             IGeopingTokenService tokenSrv,
@@ -39,6 +43,7 @@ namespace Geoping.Services
         {
             _shareRepo = shareRepo;
             _securitySrv = securitySrv;
+            _listRepo = listRepo;
             _listSrv = listSrv;
             _tokenSrv = tokenSrv;
             _gpUserSrv = gpUserSrv;
@@ -46,6 +51,29 @@ namespace Geoping.Services
             _validator = validator;
             _emailSvc = emailSvc;
             _cfg = cfg;
+        }
+
+        public IEnumerable<SharedListInfoDTO> GetSharedLists(Expression<Func<ListSharing, bool>> query)
+        {
+            var sharings = _shareRepo.Data.Where(query);
+
+            var result =
+                from s in sharings
+                join l in _listRepo.Data on s.ListId equals l.Id
+                select new SharedListInfoDTO()
+                {
+                    ListId = l.Id,
+                    ListName = l.Name,
+                    ListDescription = l.Description,
+                    ListOwnerId = l.OwnerId,
+                    ListCreated = l.Created,
+                    ListEdited = l.Edited,
+                    ListIsPublic = l.IsPublic,
+                    ShareStatus = s.Status,
+                    ShareInvitationDate = s.InvitationDate
+                };
+
+            return result.AsEnumerable();
         }
 
         // Send sharing invitations to users in list

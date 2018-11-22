@@ -59,20 +59,23 @@ namespace Geoping.Services
 
         public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
         {
-            if (list.OwnerId == userId)
-            {
-                return true;
-            }
-            return false;
+            ICollection<Guid?> allowedUsers =
+                _shareRepo.Data
+                    .Where(x => x.ListId == list.Id && x.UserId != null)
+                    .Select(x => x.UserId).ToList();
+
+            allowedUsers.Add(list.OwnerId);
+
+            return allowedUsers.Contains(userId);
         }
 
         public bool IsUserHasAccessToManipulateList(Guid userId, GeoList list)
         {
-            if (list.OwnerId == userId)
-            {
-                return true;
-            }
-            return false;
+            ICollection<Guid?> allowedUsers = new List<Guid?>();
+
+            allowedUsers.Add(list.OwnerId);
+
+            return allowedUsers.Contains(userId);
         }
 
         public string GetSHA256HashString(string value)

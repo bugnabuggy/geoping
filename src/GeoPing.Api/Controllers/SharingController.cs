@@ -29,6 +29,37 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
+        // GET api/sharng
+        [HttpGet]
+        public IActionResult GetAllSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId));
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        [Route("new")]
+        public IActionResult GetNewSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId && 
+                                                    x.Status == "pending"));
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        [Route("accepted")]
+        public IActionResult GetAcceptedSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId &&
+                                                    x.Status == "accepted"));
+        }
+
         // POST api/sharing/{listId}
         [HttpPost]
         [Route("{listId}")]
