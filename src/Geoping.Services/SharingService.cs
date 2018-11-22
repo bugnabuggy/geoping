@@ -69,6 +69,7 @@ namespace Geoping.Services
                     ListCreated = l.Created,
                     ListEdited = l.Edited,
                     ListIsPublic = l.IsPublic,
+                    ShareId = s.Id,
                     ShareStatus = s.Status,
                     ShareInvitationDate = s.InvitationDate
                 };
@@ -89,7 +90,7 @@ namespace Geoping.Services
                 return new OperationResult()
                 {
                     Success = true,
-                    Messages = new []{"You successfully leave the shared list"}
+                    Messages = new[] { "You successfully leave the shared list" }
                 };
             }
 
@@ -259,7 +260,7 @@ namespace Geoping.Services
                 FromAddress = new EmailAddress()
                 {
                     Name = "GeopingTeam",
-                    Address = "test@geoping.info"
+                    Address = _cfg.GetValue<string>("EmailConfiguration:SmtpUsername")
                 },
                 ToAddress = new EmailAddress()
                 {
@@ -269,6 +270,66 @@ namespace Geoping.Services
                 Subject = $"User {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} shared a geolist with you.",
                 Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
             });
+        }
+
+        public OperationResult AcceptSharingInvite(Guid userId, string sharingId)
+        {
+            var isExist = IsSharingExists(sharingId, out var sharing);
+
+            if (isExist && sharing.UserId == userId)
+            {
+                sharing.Status = "accepted";
+
+                _shareRepo.Update(sharing);
+
+                return new OperationResult()
+                {
+                    Messages = new[] { "The share invite was accepted" }
+                };
+            }
+
+            return new OperationResult()
+            {
+                Messages = new[] { "A shared list wasn`t found" }
+            };
+        }
+
+        public OperationResult DeclineSharingInvite(Guid userId, string sharingId)
+        {
+            var isExist = IsSharingExists(sharingId, out var sharing);
+
+            if (isExist && sharing.UserId == userId)
+            {
+                _shareRepo.Delete(sharing);
+
+                return new OperationResult()
+                {
+                    Messages = new[] { "The share invite was declined" }
+                };
+            }
+
+            return new OperationResult()
+            {
+                Messages = new[] { "A shared list wasn`t found" }
+            };
+        }
+
+        private bool IsSharingExists(string sharingId, out ListSharing sharing)
+        {
+            var isId = Guid.TryParse(sharingId, out var id);
+            sharing = null;
+
+            if (isId)
+            {
+                sharing = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+
+                if (sharing != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

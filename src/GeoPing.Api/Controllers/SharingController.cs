@@ -75,6 +75,36 @@ namespace GeoPing.Api.Controllers
             return NotFound(sharingId);
         }
 
+        // POST api/sharing/invite/{sharingId}
+        [HttpPost]
+        [Route("invite/{sharingId}")]
+        public IActionResult AcceptInvite(string sharingId)
+        {
+            var result = _shareSrv.AcceptSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // DELETE api/sharing/invite/{sharingId}
+        [HttpDelete]
+        [Route("invite/{sharingId}")]
+        public IActionResult RefuseInvite(string sharingId)
+        {
+            var result = _shareSrv.DeclineSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         // POST api/sharing/{listId}
         [HttpPost]
         [Route("{listId}")]
