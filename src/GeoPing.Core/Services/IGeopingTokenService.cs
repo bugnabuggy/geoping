@@ -3,6 +3,7 @@ using GeoPing.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GeoPing.Core.Models.DTO;
 
 namespace GeoPing.Core.Services
 {
@@ -10,6 +11,7 @@ namespace GeoPing.Core.Services
     {
         GeoPingToken GetSharingToken(string value);
         GeoPingToken GetSharingInviteToken(string value);
-        string DecodeSharingToken(string token);
+        OperationResult<TokenInfoDTO> ExamineToken(string token);
+        OperationResult MarkAsUsed(string token);
     }
 }
