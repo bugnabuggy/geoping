@@ -101,6 +101,8 @@ namespace Geoping.Services
                         break;
                 }
 
+                MarkAsUsed(token);
+
                 return new OperationResult<TokenInfoDTO>()
                 {
                     Success = true,
