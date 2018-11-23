@@ -315,6 +315,7 @@ namespace Geoping.Services
 
                 return new OperationResult()
                 {
+                    Success  = true,
                     Messages = new[] { "The share invite was declined" }
                 };
             }
