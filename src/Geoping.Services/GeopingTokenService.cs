@@ -31,7 +31,7 @@ namespace Geoping.Services
         }
 
         // Value = ListSharing`s ID
-        public GeoPingToken GetSharingInviteToken(string value)
+        public GeoPingToken CreateSharingInviteToken(string value)
         {
             var result = _tokenRepo.Add(new GeoPingToken()
             {
@@ -45,7 +45,7 @@ namespace Geoping.Services
         }
 
         // Value = ListSharing`s ID
-        public GeoPingToken GetSharingToken(string value)
+        public GeoPingToken CreateSharingToken(string value)
         {
             var result = _tokenRepo.Add(new GeoPingToken()
             {
@@ -141,36 +141,5 @@ namespace Geoping.Services
                 Messages = new[] { "Token is invalid" }
             };
         }
-
-        //public string[] DecodeSharingToken(string token)
-        //{
-        //    var result = token.Split(',');
-
-        //    MarkIsUsed(token);
-
-        //    return result;
-        //}
-
-        //public GeoPingToken GetSharingToken(string email, string listId)
-        //{
-        //    var token = new GeoPingToken()
-        //    {
-        //        Created = DateTime.UtcNow,
-        //        Type = "sharing",
-        //        Token = $"{email},{listId}",
-        //    };
-
-        //    return _tokenRepo.Add(token);
-        //}
-
-        private void MarkIsUsed(string token)
-        {
-            var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
-
-            gpToken.IsUsed = true;
-
-            _tokenRepo.Update(gpToken);
-        }
-
     }
 }

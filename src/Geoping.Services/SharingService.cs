@@ -202,7 +202,7 @@ namespace Geoping.Services
             // Check if user was invited. Send one more mail, if he was
             if (IsUserHasBeenInvitedEarlier(invitedUserEmail, listId, out var pastSharing))
             {
-                var newGPToken = _tokenSrv.GetSharingInviteToken(pastSharing.Id.ToString());
+                var newGPToken = _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString());
 
                 SendSharingEmail(userId, pastSharing.Email, newGPToken.Id.ToString());
 
@@ -229,8 +229,8 @@ namespace Geoping.Services
             });
 
             var gpToken = invitedUser != null
-                ? _tokenSrv.GetSharingToken(sharing.Id.ToString())
-                : _tokenSrv.GetSharingInviteToken(sharing.Id.ToString());
+                ? _tokenSrv.CreateSharingToken(sharing.Id.ToString())
+                : _tokenSrv.CreateSharingInviteToken(sharing.Id.ToString());
 
             SendSharingEmail(userId, sharing.Email, gpToken.Id.ToString());
         }
@@ -330,6 +330,22 @@ namespace Geoping.Services
             }
 
             return false;
+        }
+
+        public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
+        {
+            var sharing = _shareRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+
+            if (sharing != null)
+            {
+                if (sharing.Email == email)
+                {
+                    sharing.UserId = userId;
+                    sharing.Status = "pending";
+
+                    _shareRepo.Update(sharing);
+                }
+            }
         }
     }
 }

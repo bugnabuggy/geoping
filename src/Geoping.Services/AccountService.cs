@@ -19,17 +19,24 @@ namespace GeoPing.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<AppIdentityUser> _userManager;
-        private readonly ILogger<AccountService> _logger;
+        private UserManager<AppIdentityUser> _userManager;
+        private ILogger<AccountService> _logger;
         private IGPUserService _gpUserSrv;
+        private IGeopingTokenService _tokenSrv;
+        private ISharingService _sharingSrv;
 
-        public AccountService(UserManager<AppIdentityUser> userManager,
-                              ILogger<AccountService> logger,
-                              IGPUserService gpUserSrv)
+        public AccountService
+            (UserManager<AppIdentityUser> userManager,
+            ILogger<AccountService> logger,
+            IGPUserService gpUserSrv,
+            IGeopingTokenService tokenSrv,
+            ISharingService sharingSrv)
         {
             _userManager = userManager;
             _logger = logger;
             _gpUserSrv = gpUserSrv;
+            _tokenSrv = tokenSrv;
+            _sharingSrv = sharingSrv;
         }
 
         public async Task<OperationResult> RegisterAsync(RegisterUserDTO registerUser)
@@ -60,7 +67,27 @@ namespace GeoPing.Services
                                        $"Email = [{user.Email}], " +
                                        $"Username = [{user.UserName}].");
 
-                _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+                var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+
+                // TOKEN ACTIONS ==================================================================
+
+                var examinatedToken = _tokenSrv.ExamineToken(registerUser.Token);
+
+                if (examinatedToken.Success)
+                {
+                    switch (examinatedToken.Data.TokenType)
+                    {
+                        case "SharingInvite":
+                            _sharingSrv.ConfirmSharingWithRegistration
+                                (examinatedToken.Data.Value, gpUser.Id, user.Email);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                // ================================================================================
 
                 return new OperationResult
                 {

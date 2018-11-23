@@ -61,8 +61,7 @@ namespace GeoPing.Api.Controllers
                 result = new OperationResult()
                 {
                     Data = registerUser,
-                    Messages = new string[] { "Model is invalid" },
-                    Success = false
+                    Messages = new string[] { "Model is invalid" }
                 };
             }
 

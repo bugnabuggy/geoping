@@ -23,6 +23,8 @@ namespace GeoPing.Services.Tests
         private ILogger<AccountService> _logger;
         private IGPUserService _gpUserSrv;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private IGeopingTokenService _tokenSrv;
+        private ISharingService _sharingSrv;
 
         private string _identityId;
         private Guid _gpUserId;
@@ -35,9 +37,15 @@ namespace GeoPing.Services.Tests
             _logger = _services.GetRequiredService<ILogger<AccountService>>();
             _gpUserSrv = _services.GetRequiredService<IGPUserService>();
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
-            _accountSrv = new AccountService(_userManager,
-                                             _logger,
-                                             _gpUserSrv);
+            _tokenSrv = _services.GetRequiredService<IGeopingTokenService>();
+            _sharingSrv = _services.GetRequiredService<ISharingService>();
+
+            _accountSrv = new AccountService
+                (_userManager,
+                _logger,
+                _gpUserSrv,
+                _tokenSrv,
+                _sharingSrv);
 
             _identityId = _userManager.FindByNameAsync("testadmin").Result.Id;
             _gpUserId = _gpUserRepo.Data.FirstOrDefault(x => x.IdentityId == _identityId).Id;

@@ -81,9 +81,9 @@ namespace GeoPing.Services
             };
         }
 
-        public void AddGPUserForIdentity(string identityUserId, string email, string username)
+        public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username)
         {
-            _gpUserRepo.Add(new GeoPingUser
+            return _gpUserRepo.Add(new GeoPingUser
             {
                 IdentityId = identityUserId,
                 Email = email,

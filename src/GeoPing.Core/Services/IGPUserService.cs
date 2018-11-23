@@ -13,7 +13,7 @@ namespace GeoPing.Core.Services
     {
         GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func);
         ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func);
-        void AddGPUserForIdentity(string identityUserId, string email, string username);
+        GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username);
         OperationResult<GeoPingUser> EditUser(GeoPingUser user);
         void ActivateUser(string id);
         IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string firstLetters);
