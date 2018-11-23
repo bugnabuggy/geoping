@@ -71,15 +71,15 @@ namespace GeoPing.Services
 
                 // TOKEN ACTIONS ==================================================================
 
-                var examinatedToken = _tokenSrv.ExamineToken(registerUser.Token);
+                var token = _tokenSrv.GetToken(registerUser.Token);
 
-                if (examinatedToken.Success)
+                if (token != null)
                 {
-                    switch (examinatedToken.Data.TokenType)
+                    switch (token.Type)
                     {
                         case "SharingInvite":
                             _sharingSrv.ConfirmSharingWithRegistration
-                                (examinatedToken.Data.Value, gpUser.Id, user.Email);
+                                (token.Value, gpUser.Id, user.Email);
                             break;
 
                         default:
@@ -262,46 +262,25 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, string avatar)
-        {
-            var user = _gpUserSrv.GetUser(x => x.Id == userId);
-
-            user.Avatar = avatar ?? DefaultUserSettings.AvatarImage;
-
-            var result = _gpUserSrv.EditUser(user);
-
-            if (result.Success)
-            {
-                return new OperationResult<GeoPingUser>()
-                {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile was edited successfully" }
-                };
-            }
-
-            return new OperationResult<GeoPingUser>()
-            {
-                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
-            };
-        }
-
         public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
         {
-            var user = _gpUserSrv.GetUser(x => x.Id == userId);
-
-            user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
-
-            var result = _gpUserSrv.EditUser(user);
-
-            if (result.Success)
+            if (item != null)
             {
-                return new OperationResult<GeoPingUser>()
+                var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+                user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
+
+                var result = _gpUserSrv.EditUser(user);
+
+                if (result.Success)
                 {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile avatar was edited successfully" }
-                };
+                    return new OperationResult<GeoPingUser>()
+                    {
+                        Data = user,
+                        Success = true,
+                        Messages = new[] { "Your profile avatar was edited successfully" }
+                    };
+                }
             }
 
             return new OperationResult<GeoPingUser>()

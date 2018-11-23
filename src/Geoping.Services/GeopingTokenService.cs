@@ -58,26 +58,26 @@ namespace Geoping.Services
             return result;
         }
 
+        public void DeleteSharingTokens(string sharingId)
+        {
+            var tokens = _tokenRepo.Data.Where(x => x.Value == sharingId).AsEnumerable();
+
+            _tokenRepo.Delete(tokens);
+        }
+
         public OperationResult<TokenInfoDTO> ExamineToken(string token)
         {
             var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
 
             if (gpToken != null)
             {
-                if (gpToken.IsUsed)
-                {
-                    return new OperationResult<TokenInfoDTO>()
-                    {
-                        Messages = new[] { "Used" }
-                    };
-                }
+                var validationResult = ValidateGPToken(gpToken);
 
-                if ((DateTime.UtcNow - gpToken.Created).Seconds >
-                    _cfg.GetValue<int>($"GeoPingTokenSettings:{gpToken.Type}TokenLifetime"))
+                if (validationResult != null)
                 {
                     return new OperationResult<TokenInfoDTO>()
                     {
-                        Messages = new[] { "Expired" }
+                        Messages = new[] { validationResult }
                     };
                 }
 
@@ -119,6 +119,18 @@ namespace Geoping.Services
             };
         }
 
+        public GeoPingToken GetToken(string token)
+        {
+            var result = _tokenRepo.Get(x => x.Token == token).FirstOrDefault();
+
+            if (ValidateGPToken(result) == null)
+            {
+                return result;
+            }
+
+            return null;
+        }
+
         public OperationResult MarkAsUsed(string token)
         {
             var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
@@ -140,6 +152,22 @@ namespace Geoping.Services
             {
                 Messages = new[] { "Token is invalid" }
             };
+        }
+
+        private string ValidateGPToken(GeoPingToken gpToken)
+        {
+            if (gpToken.IsUsed)
+            {
+                return "Used";
+            }
+
+            if ((DateTime.UtcNow - gpToken.Created).Seconds >
+                _cfg.GetValue<int>($"GeoPingTokenSettings:{gpToken.Type}TokenLifetime"))
+            {
+                return "Expired";
+            }
+
+            return null;
         }
     }
 }

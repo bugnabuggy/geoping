@@ -202,9 +202,17 @@ namespace Geoping.Services
             // Check if user was invited. Send one more mail, if he was
             if (IsUserHasBeenInvitedEarlier(invitedUserEmail, listId, out var pastSharing))
             {
-                var newGPToken = _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString());
+                GeoPingToken newGPToken;
+                if (pastSharing.UserId == null)
+                {
+                    newGPToken = _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString());
+                }
+                else
+                {
+                    newGPToken = _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
+                }
 
-                SendSharingEmail(userId, pastSharing.Email, newGPToken.Id.ToString());
+                SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
 
                 return;
             }
@@ -232,7 +240,7 @@ namespace Geoping.Services
                 ? _tokenSrv.CreateSharingToken(sharing.Id.ToString())
                 : _tokenSrv.CreateSharingInviteToken(sharing.Id.ToString());
 
-            SendSharingEmail(userId, sharing.Email, gpToken.Id.ToString());
+            SendSharingEmail(userId, sharing.Email, gpToken.Token);
         }
 
         private bool IsUserHasBeenInvitedEarlier(string invitedUserEmail, Guid listId, out ListSharing sharing)
@@ -282,8 +290,11 @@ namespace Geoping.Services
 
                 _shareRepo.Update(sharing);
 
+                _tokenSrv.DeleteSharingTokens(sharingId);
+
                 return new OperationResult()
                 {
+                    Success = true,
                     Messages = new[] { "The share invite was accepted" }
                 };
             }
