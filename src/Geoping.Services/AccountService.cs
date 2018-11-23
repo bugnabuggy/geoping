@@ -78,9 +78,14 @@ namespace GeoPing.Services
                     switch (token.Type)
                     {
                         case "SharingInvite":
+                        {
                             _sharingSrv.ConfirmSharingWithRegistration
                                 (token.Value, gpUser.Id, user.Email);
+
+                            _tokenSrv.MarkAsUsed(token.Token);
+
                             break;
+                        }
 
                         default:
                             break;
