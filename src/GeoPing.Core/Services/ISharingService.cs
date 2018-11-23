@@ -19,5 +19,6 @@ namespace GeoPing.Core.Services
         OperationResult AcceptSharingInvite(Guid userId, string sharingId);
         OperationResult DeclineSharingInvite(Guid userId, string sharingId);
         void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);
+        IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string query);
     }
 }

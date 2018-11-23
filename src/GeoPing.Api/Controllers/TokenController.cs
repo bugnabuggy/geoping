@@ -46,8 +46,8 @@ namespace GeoPing.Api.Controllers
             return NotFound(result);
         }
 
-        // PUT api/token/{tokenId}
-        [HttpPost]
+        // DELETE api/token/{tokenId}
+        [HttpDelete]
         [Route("{token}")]
         public IActionResult UseToken(string token)
         {

@@ -29,6 +29,16 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
+        // GET api/users
+        [HttpGet]
+        [Route("autocomplete")]
+        public IActionResult GetUsers(string query)
+        {
+            var result = _shareSrv.GetUsersNameAndEmail(query);
+
+            return Ok(result);
+        }
+
         // GET api/sharng
         [HttpGet]
         public IActionResult GetAllSharedLists()
@@ -79,9 +89,9 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST api/sharing/invite/{sharingId}
+        // POST api/sharing/invitation/{sharingId}
         [HttpPost]
-        [Route("invite/{sharingId}")]
+        [Route("invitation/{sharingId}")]
         public IActionResult AcceptInvite(string sharingId)
         {
             var result = _shareSrv.AcceptSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
@@ -94,9 +104,9 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // DELETE api/sharing/invite/{sharingId}
+        // DELETE api/sharing/invitation/{sharingId}
         [HttpDelete]
-        [Route("invite/{sharingId}")]
+        [Route("invitation/{sharingId}")]
         public IActionResult RefuseInvite(string sharingId)
         {
             var result = _shareSrv.DeclineSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);

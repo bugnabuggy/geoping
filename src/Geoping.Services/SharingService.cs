@@ -372,5 +372,10 @@ namespace Geoping.Services
                 }
             }
         }
+
+        public IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string query)
+        {
+            return _gpUserSrv.GetUsersNameAndEmail(query);
+        }
     }
 }
