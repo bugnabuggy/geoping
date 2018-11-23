@@ -77,14 +77,27 @@ namespace Geoping.Services
             return result.AsEnumerable();
         }
 
-        public OperationResult DeleteSharing(string sharingId)
+        public OperationResult DeleteSharing(Guid userId, string sharingId)
         {
             var isSharingId = Guid.TryParse(sharingId, out var id);
 
-            if (isSharingId)
+            if (!isSharingId)
             {
-                var item = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+                return new OperationResult()
+                {
+                    Messages = new[] { $"Sharing record with id = [{sharingId}] is invalid" }
+                };
+            }
 
+            var item = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+
+            var isUserAllowed =
+                _securitySrv.IsUserHasAccessToManipulateList
+                (userId, _listRepo.Get(x => x.Id == item.ListId).FirstOrDefault()) || 
+                userId == item.UserId;
+
+            if (isUserAllowed)
+            {
                 _shareRepo.Delete(item);
 
                 return new OperationResult()
@@ -96,7 +109,7 @@ namespace Geoping.Services
 
             return new OperationResult()
             {
-                Messages = new[] { "Shared list wasn`t found or id is invalid" }
+                Messages = new[] { "Unauthorized", $"You are not allowed to do this." }
             };
         }
 
@@ -315,7 +328,7 @@ namespace Geoping.Services
 
                 return new OperationResult()
                 {
-                    Success  = true,
+                    Success = true,
                     Messages = new[] { "The share invite was declined" }
                 };
             }

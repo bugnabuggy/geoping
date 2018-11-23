@@ -15,7 +15,7 @@ namespace GeoPing.Core.Services
 
         OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId);
         Task<OperationResult> InviteUsersByList(Guid userId, string listId, string[] usersData);
-        OperationResult DeleteSharing(string sharingId);
+        OperationResult DeleteSharing(Guid userId, string sharingId);
         OperationResult AcceptSharingInvite(Guid userId, string sharingId);
         OperationResult DeclineSharingInvite(Guid userId, string sharingId);
         void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);

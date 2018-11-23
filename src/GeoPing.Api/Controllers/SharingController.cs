@@ -65,14 +65,18 @@ namespace GeoPing.Api.Controllers
         [Route("{sharingId}")]
         public IActionResult RefuseSharing(string sharingId)
         {
-            var result = _shareSrv.DeleteSharing(sharingId);
+            var result = _shareSrv.DeleteSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {
-                return NoContent();
+                return Ok(result);
+            }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
             }
 
-            return NotFound(sharingId);
+            return BadRequest(result);
         }
 
         // POST api/sharing/invite/{sharingId}
