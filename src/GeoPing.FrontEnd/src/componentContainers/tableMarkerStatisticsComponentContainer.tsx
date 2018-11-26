@@ -30,4 +30,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     {},
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( TableMarkerStatisticsComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( TableMarkerStatisticsComponentContainer );

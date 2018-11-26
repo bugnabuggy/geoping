@@ -96,4 +96,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( CheckListComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( CheckListComponentContainer );

@@ -28,8 +28,7 @@ export class EnterNewPassword extends React.Component<IEnterNewPasswordProps, an
     if ( !this.state.isNewPasswordEmpty && !this.state.isConfirmPasswordEmpty &&
       this.state.newPassword && this.state.confirmPassword &&
       this.state.newPassword === this.state.confirmPassword ) {
-      console.info( 'Ok' );
-      // this.props.sendNewPassword( this.state.newPassword );
+      this.props.sendNewPassword( this.state.newPassword );
     }
   };
 

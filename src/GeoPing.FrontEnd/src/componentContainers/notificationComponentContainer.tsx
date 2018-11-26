@@ -38,4 +38,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( NotificationComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( NotificationComponentContainer );

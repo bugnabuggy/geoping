@@ -188,6 +188,10 @@ header nav {
   position: relative;
 }
 
+.form-input-container-captcha {
+  height: 80px;
+}
+
 .form-icon-container {
   font-size: 1.5em;
   width: 25px;
@@ -588,7 +592,15 @@ header nav {
 }
 
 /**/
-
+/**/
+.confirm-email-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+/*******************************************************************************************************/
 /* Modal share check list **************************************************************************/
 /* toggle */
 .react-toggle {
@@ -770,9 +782,14 @@ header nav {
   right: 110px;
 }
 
+.field-to-share-list-icon-check {
+  color: green;
+}
+
 .field-to-share-list-icon-minus {
   right: 20px;
   z-index: 1;
+  color: red;
 }
 
 .modal-share-form-buttons {
@@ -861,7 +878,7 @@ header nav {
 .public-check-lists {
   display: grid;
   grid-gap: 5px;
-  grid-template-rows: [row1] 100% [row2] 40px;
+  grid-template-rows: [row1] 1fr [row2] 40px;
   grid-template-columns: [col1] 1fr;
 }
 
@@ -1413,6 +1430,10 @@ select.form-control:not([size]):not([multiple]) {
 }
 .reset-password-page-container {
   height: 250px;
+}
+
+.reset-password-form-1 {
+  width: 350px;
 }
 
 /*****************************************************************************************/

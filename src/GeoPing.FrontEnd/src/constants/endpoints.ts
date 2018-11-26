@@ -2,6 +2,10 @@ export const endpointBaseUrl: string = process.env.REACT_APP_API_BASE_URL;
 
 export const getToken: string = `${endpointBaseUrl}/connect/token`;
 export const registration: string = `${endpointBaseUrl}/account/register`;
+export const confirmEmail: string = `${endpointBaseUrl}/account/confirm-email?UserId=%userId%&Token=%token%`;
+export const sendLoginOrEmail: string = `${endpointBaseUrl}/account/reset-password?LoginOrEmail=%login%`;
+export const resetPassword: string =
+  `${endpointBaseUrl}/account/confirm-reset?UserId=%id%&Token=%token%&NewPassword=%pass%`;
 
 /* endpoints for geo lists */
 export const getAllGeoLists: string = `${endpointBaseUrl}/api/geolist`;
@@ -11,6 +15,7 @@ export const createNewGeoList: string = `${endpointBaseUrl}/api/geolist`;
 export const updateGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
 export const removeCollectionGeoLists: string = `${endpointBaseUrl}/api/geolist/%id%`;
 export const removeGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
+export const getUsersHasAccess: string = `${endpointBaseUrl}/api/sharing/user/%id%`;
 
 /* endpoints for geo points */
 
