@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GeoPing.Core.Entities
+namespace GeoPing.Core.Models.Entities
 {
     public class SupportMessage
     {

@@ -1,10 +1,10 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Services;
+﻿using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GeoPing.Core.Models.Entities;
 
 namespace Geoping.Services
 {

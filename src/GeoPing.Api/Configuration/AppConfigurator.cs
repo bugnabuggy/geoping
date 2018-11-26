@@ -1,7 +1,5 @@
-﻿using GeoPing.Services;
-using GeoPing.Api.Helpers;
+﻿using GeoPing.Api.Helpers;
 using GeoPing.Api.Interfaces;
-using GeoPing.Core.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
@@ -14,7 +12,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Geoping.Services;
-using Geoping.Services.Configuration;
+using GeoPing.Api.Configuration.SeededData;
+using GeoPing.Core;
+using GeoPing.Core.Models.Entities;
+using GeoPing.Utilities.EmailSender.Interfaces;
+using GeoPing.Utilities.EmailSender.Services;
 
 namespace GeoPing.Api.Configuration
 {

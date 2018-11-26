@@ -1,4 +1,3 @@
-using Geoping.Services.Configuration;
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
@@ -16,6 +15,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Geoping.Services;
+using GeoPing.Core;
+using GeoPing.Utilities.EmailSender.Interfaces;
+using GeoPing.Utilities.EmailSender.Services;
 
 namespace GeoPing.Api
 {
@@ -43,9 +46,8 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(_configuration);
-            services.AddSingleton<IEmailConfiguration>(_configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
-            services.AddSingleton(_configuration.GetSection("IdentityServerSettings").Get<IdentityServerSettings>());
-            services.AddSingleton(_configuration.GetSection("DefaultUserSettings").Get<DefaultUserSettings>());
+            services.AddOptions();
+            services.Configure<ApplicationSettings>(_configuration.GetSection("ApplicationSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
@@ -73,29 +75,11 @@ namespace GeoPing.Api
 
             // Configure IdentityServer with in-memory stores, keys, clients and res
             services.AddIdentityServer(options =>
-            options.PublicOrigin = _configuration.GetSection("ServerHost").Value)
+            options.PublicOrigin = _configuration["ApplicationSettings:Urls:ApiUrl"])
                 .AddDeveloperSigningCredential()
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddAspNetIdentity<AppIdentityUser>()
-                /*
-                // this adds the operational data from DB (codes, tokens, consents)
-                
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                    {
-                        builder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"),
-                            sql =>
-                            {
-                                sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                            });
-                    };
-
-                    // this enables automatic token cleanup. this is optional.
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30; // interval in seconds
-                })*/;
+                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                .AddInMemoryClients(IdentityServerConfig.GetClients())
+                .AddAspNetIdentity<AppIdentityUser>();
 
             services.AddAuthentication(options =>
             {
@@ -104,10 +88,10 @@ namespace GeoPing.Api
             })
             .AddIdentityServerAuthentication(options =>
             {
-                options.Authority = _configuration.GetSection("ServerHost").Value;
+                options.Authority = _configuration["ApplicationSettings:Urls:ApiUrl"];
                 options.RequireHttpsMetadata = false;
-                options.ApiName = Constants.ApiName;
-                options.ApiSecret = Constants.ClientSecret;
+                options.ApiName = _configuration["ApplicationSettings:IdentityServer:ApiName"];
+                options.ApiSecret = _configuration["ApplicationSettings:IdentityServer:ClientSecret"];
             });
 
             // Removing cookie authentitication

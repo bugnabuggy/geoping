@@ -1,21 +1,15 @@
-﻿using Geoping.Services.Configuration;
-using GeoPing.Core.Entities;
+﻿using System;
+using System.Threading.Tasks;
+using GeoPing.Core;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
-using GeoPing.Utilities.EmailSender;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GeoPing.Services
+namespace Geoping.Services
 {
     public class AccountService : IAccountService
     {

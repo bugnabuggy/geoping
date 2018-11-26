@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GeoPing.Utilities.EmailSender.Models;
 
-namespace GeoPing.Utilities.EmailSender
+namespace GeoPing.Utilities.EmailSender.Interfaces
 {
     public interface IEmailService
     {

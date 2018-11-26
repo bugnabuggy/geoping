@@ -1,5 +1,4 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
+﻿using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using GeoPing.Core.Models.Entities;
 
 namespace Geoping.Services
 {

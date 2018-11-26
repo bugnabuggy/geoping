@@ -1,5 +1,4 @@
 ﻿using GeoPing.Api.Interfaces;
-using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
@@ -17,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using GeoPing.Utilities.EmailSender.Interfaces;
+using GeoPing.Utilities.EmailSender.Models;
 
 namespace GeoPing.Api.Controllers
 {

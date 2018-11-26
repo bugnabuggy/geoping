@@ -1,5 +1,4 @@
 ﻿using GeoPing.Api.Configuration;
-using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
@@ -15,6 +14,8 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using GeoPing.Api.Configuration.SeededData;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.TestData.Helpers
 {

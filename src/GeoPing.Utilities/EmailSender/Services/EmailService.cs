@@ -1,12 +1,10 @@
-﻿using GeoPing.Utilities.EmailSender.Models;
+﻿using GeoPing.Utilities.EmailSender.Interfaces;
+using GeoPing.Utilities.EmailSender.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GeoPing.Utilities.EmailSender
+namespace GeoPing.Utilities.EmailSender.Services
 {
     public class EmailService : IEmailService
     {
