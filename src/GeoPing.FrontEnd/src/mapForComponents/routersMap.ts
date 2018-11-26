@@ -9,7 +9,7 @@ import {
   checkInStatistics,
   checkInUrl,
   checkListUrl,
-  dashboardUrl,
+  dashboardUrl, emailConfirm,
   loginUrl,
   logOutUrl,
   notFoundUrl,
@@ -31,6 +31,8 @@ import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import LogOutComponentContainer from '../componentContainers/logOutComponentContainer';
 import { NotFoundPage } from '../pages/404Page';
+import EmailConfirmPage from '../pages/emailConfirmPage';
+import ResetPasswordComponentContainer from '../componentContainers/resetPasswordComponentContainer';
 
 export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
 
@@ -49,6 +51,11 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       path: notFoundUrl,
       component: NotFoundPage,
       exact: false,
+    },
+    {
+      path: emailConfirm,
+      component: EmailConfirmPage,
+      exact: false,
     }
   ];
 
@@ -66,7 +73,7 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       },
       {
         path: resetPassword,
-        component: LoginPage,
+        component: ResetPasswordComponentContainer,
         exact: false,
       }
     ] );

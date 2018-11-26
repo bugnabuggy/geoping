@@ -53,4 +53,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
     },
     dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( ModalChecklistComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( ModalChecklistComponentContainer );

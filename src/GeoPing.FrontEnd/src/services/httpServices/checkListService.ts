@@ -9,7 +9,9 @@ import {
   getAllChecksInForUserAndGivenList,
   getAllGeoLists,
   getAllPublicGeoLosts,
-  getGeoListForId, getGeoListStatistics,
+  getGeoListForId,
+  getGeoListStatistics,
+  getUsersHasAccess,
   removeGeoList,
   updateGeoList
 } from '../../constants/endpoints';
@@ -113,7 +115,15 @@ export default class CheckListService implements ICheckListServiceType {
   }
 
   loadUserWhoHasAccess( idList: string ) {
-    return new Promise( resolve => '' );
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.get( getUsersHasAccess.replace( '%id%', idList ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 
   sharedCheckListForUser( idList: string, emails: Array<string> ) {
@@ -129,7 +139,7 @@ export default class CheckListService implements ICheckListServiceType {
       this.communicator.get( getAllChecksInForUserAndGivenList.replace( '%listid%', idList ) )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
-        })
+        } )
         .catch( ( error: any ) => {
           reject( error );
         } );
@@ -138,14 +148,14 @@ export default class CheckListService implements ICheckListServiceType {
 
   getAllCheckForList( idList: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.get( getGeoListStatistics.replace( '%listid%', idList ))
+      this.communicator.get( getGeoListStatistics.replace( '%listid%', idList ) )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
-        })
+        } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
   }
 
 }

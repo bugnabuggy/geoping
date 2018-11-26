@@ -1,2 +1,4 @@
 export const BLOCKING_WINDOW_DURING_AN_ACTION: string = 'BLOCKING_WINDOW_DURING_AN_ACTION';
 export const REDIRECT_ON_SIGN_IN_FORM: string = 'REDIRECT_ON_SIGN_IN_FORM';
+export const CONFIRM_EMAIL: string = 'CONFIRM_EMAIL';
+export const REDIRECT: string = 'REDIRECT';

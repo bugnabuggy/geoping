@@ -110,4 +110,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
     },
     dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( MyCheckListsContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( MyCheckListsContainer );

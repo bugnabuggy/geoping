@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
-import { Button, FormControl } from 'react-bootstrap';
+import { Button, Input, FormFeedback } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { validateFieldEmailListUserShare } from '../../../validations/emailListUserShare';
 
@@ -10,17 +10,21 @@ function component( props: any ) {
   return (
     <React.Fragment>
       <div className="field-to-share-list-container">
-        <FormControl
+        <Input
           {...input}
           type="email"
           placeholder="user email"
           className="field-to-share-list"
+          invalid={touched && error}
         />
-        {touched && error && <span>{error}</span>}
+        {touched && error && <FormFeedback>{error}</FormFeedback>}
         {( visited && !active ) && valid ? (
-            <React.Fragment>
-              <FontAwesomeIcon icon="check" className="field-to-share-list-icon cursor-pointer"/>
-            </React.Fragment>
+            <div>
+              <FontAwesomeIcon
+                icon="check"
+                className="field-to-share-list-icon field-to-share-list-icon-check cursor-pointer"
+              />
+            </div>
           )
           :
           (
@@ -86,11 +90,13 @@ function addUserToShareListForm( props: any ): any {
       <div className="modal-share-form-buttons">
         <Button
           type="submit"
+          color="primary"
         >
           Send invitations
         </Button>
         <Button
           onClick={props.closeModalShare}
+          color="default"
         >
           Close
         </Button>

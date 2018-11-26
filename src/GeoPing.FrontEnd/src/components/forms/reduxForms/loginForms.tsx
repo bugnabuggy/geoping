@@ -78,7 +78,7 @@ function LoginForms( props: any ): any {
           labelName="Login"
         />
         <span className="psw-span">
-          <a href={resetPassword}>forgot</a>
+          <a href={resetPassword.replace('/:idUser?/:token?', '')}>forgot</a>
         </span>
         <Field
           component={renderInput}

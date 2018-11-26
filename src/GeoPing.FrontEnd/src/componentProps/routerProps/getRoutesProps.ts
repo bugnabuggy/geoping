@@ -11,4 +11,5 @@ export default interface IGetRoutesProps {
   redirectDashboard: ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => void;
   loadUserData: () => ( dispatch: IDispatchFunction ) => void;
   redirectOnSignInForm: ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  isRedirect: ( redirect: string ) => ( dispatch: IDispatchFunction ) => void;
 }

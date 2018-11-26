@@ -48,4 +48,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( AboutComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( AboutComponentContainer );
