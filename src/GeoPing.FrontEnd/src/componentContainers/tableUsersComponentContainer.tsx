@@ -34,4 +34,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( TableUsersComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( TableUsersComponentContainer );
