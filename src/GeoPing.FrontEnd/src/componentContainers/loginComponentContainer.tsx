@@ -54,4 +54,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( LoginComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( LoginComponentContainer );

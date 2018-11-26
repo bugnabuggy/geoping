@@ -68,4 +68,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
   },
     dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( TableHistoryDashboardContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( TableHistoryDashboardContainer );

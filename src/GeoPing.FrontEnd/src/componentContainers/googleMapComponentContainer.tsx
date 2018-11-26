@@ -84,4 +84,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( GoogleMapComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( GoogleMapComponentContainer );

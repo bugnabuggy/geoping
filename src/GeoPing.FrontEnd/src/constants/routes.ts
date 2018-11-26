@@ -2,11 +2,12 @@
 export const baseUrl: string = '/';
 export const publicCheckListUrl: string = `${baseUrl}public_check_list`;
 export const notFoundUrl: string = `${baseUrl}not_found`;
+export const emailConfirm: string = `${baseUrl}email_confirm/:idUser/:token`;
 
 /* url for not authorize user */
 export const loginUrl: string = `${baseUrl}login`;
 export const registerUrl: string = `${baseUrl}register`;
-export const resetPassword: string = `${baseUrl}reset_password`;
+export const resetPassword: string = `${baseUrl}reset_password/:idUser?/:token?`;
 
 /* url for authorize user */
 export const dashboardUrl: string = `${baseUrl}dashboard`;

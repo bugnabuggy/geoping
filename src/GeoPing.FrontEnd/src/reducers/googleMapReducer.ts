@@ -261,6 +261,7 @@ function checkInGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapS
   return {
     ...state,
     checkInGeoPoint: [
+      ...state.checkInGeoPoint,
       ...action.checkInGeoPoint
     ],
   };

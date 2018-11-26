@@ -85,4 +85,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( CheckinComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( CheckinComponentContainer );

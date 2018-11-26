@@ -12,7 +12,7 @@ import { EBuildEnvironment } from '../enums/environment';
 import StaticStorage from '../services/staticStorage';
 import { dashboardUrl, loginUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
-import { redirectOnSignInForm } from '../actions/windowAction';
+import { isRedirect, redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
@@ -58,6 +58,9 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
     this.authorized();
+    if ( !prevProps.window.redirect && this.props.window.redirect ) {
+      this.props.isRedirect('');
+    }
   }
 
   render() {
@@ -79,6 +82,8 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         <Redirect to={sessionStorage.getItem( 'url_for_redirect' ) || dashboardUrl}/>}
         {this.props.window.redirectOnSignInForm && this.props.location !== loginUrl &&
         <Redirect to={loginUrl}/>}
+        {this.props.window.redirect &&
+        <Redirect to={this.props.window.redirect}/>}
       </React.Fragment>
     );
   }
@@ -99,6 +104,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       redirectDashboard,
       loadUserData,
       redirectOnSignInForm,
+      isRedirect,
     },
     dispath );
 
