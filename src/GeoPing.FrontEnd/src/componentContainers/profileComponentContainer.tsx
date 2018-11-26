@@ -54,4 +54,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
     },
     dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( ProfileComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( ProfileComponentContainer );

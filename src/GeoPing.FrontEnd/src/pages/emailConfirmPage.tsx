@@ -39,4 +39,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( EmailConfirmPage );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( EmailConfirmPage );

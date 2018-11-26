@@ -50,4 +50,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
     dispatch
   );
 
-export default connect( mapStateToProps, mapDispatchToProps )( ResetPasswordComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( ResetPasswordComponentContainer );

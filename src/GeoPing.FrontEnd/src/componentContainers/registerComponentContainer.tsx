@@ -29,4 +29,4 @@ const mapDispatchToProps = ( dispatch: any ) =>
     },
     dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( RegisterComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( RegisterComponentContainer );

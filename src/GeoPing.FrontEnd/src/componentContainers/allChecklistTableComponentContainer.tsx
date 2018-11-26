@@ -24,4 +24,4 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators( {}, dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( AllChecklistTableComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( AllChecklistTableComponentContainer );

@@ -42,4 +42,5 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( FilterForPublicCheckListsComponentContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )
+( FilterForPublicCheckListsComponentContainer );
