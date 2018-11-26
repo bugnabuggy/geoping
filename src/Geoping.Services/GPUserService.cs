@@ -9,21 +9,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using GeoPing.Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace GeoPing.Services
 {
     public class GPUserService : IGPUserService
     {
         private IRepository<GeoPingUser> _gpUserRepo;
+        private IRepository<AppIdentityUser> _identityUserRepo;
+        private IConfiguration _cfg;
 
-        public GPUserService(IRepository<GeoPingUser> gpUserRepo)
+        public GPUserService(IRepository<GeoPingUser> gpUserRepo,
+                             IRepository<AppIdentityUser> identityUserRepo,
+                             IConfiguration cfg)
         {
             _gpUserRepo = gpUserRepo;
+            _identityUserRepo = identityUserRepo;
+            _cfg = cfg;
         }
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
         {
             return _gpUserRepo.Data.FirstOrDefault(func);
+        }
+
+        public IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string firstLetters)
+        {
+            if (firstLetters.Length < _cfg.GetValue<int>("UsersShortlist:MinCharsToReturnUsersShortlist"))
+            {
+                return null;
+            }
+        
+            firstLetters = firstLetters.ToUpper();
+
+            var data = _identityUserRepo.Data
+                .Where(x => x.NormalizedUserName.StartsWith(firstLetters));
+
+            if (data.Count() < 10)
+            {
+                data.Concat(_identityUserRepo.Data
+                    .Where(x => x.NormalizedEmail.StartsWith(firstLetters)));
+            }
+
+            return data.Take(_cfg.GetValue<int>("UsersShortlist:ListSize"))
+                .Select(x => new UserNameWithEmailDTO()
+                {
+                    Username = x.UserName,
+                    Email = x.Email
+                });
         }
 
         public ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
@@ -46,9 +81,9 @@ namespace GeoPing.Services
             };
         }
 
-        public void AddGPUserForIdentity(string identityUserId, string email, string username)
+        public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username)
         {
-            _gpUserRepo.Add(new GeoPingUser
+            return _gpUserRepo.Add(new GeoPingUser
             {
                 IdentityId = identityUserId,
                 Email = email,

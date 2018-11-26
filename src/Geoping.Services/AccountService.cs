@@ -19,17 +19,24 @@ namespace GeoPing.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<AppIdentityUser> _userManager;
-        private readonly ILogger<AccountService> _logger;
+        private UserManager<AppIdentityUser> _userManager;
+        private ILogger<AccountService> _logger;
         private IGPUserService _gpUserSrv;
+        private IGeopingTokenService _tokenSrv;
+        private ISharingService _sharingSrv;
 
-        public AccountService(UserManager<AppIdentityUser> userManager,
-                              ILogger<AccountService> logger,
-                              IGPUserService gpUserSrv)
+        public AccountService
+            (UserManager<AppIdentityUser> userManager,
+            ILogger<AccountService> logger,
+            IGPUserService gpUserSrv,
+            IGeopingTokenService tokenSrv,
+            ISharingService sharingSrv)
         {
             _userManager = userManager;
             _logger = logger;
             _gpUserSrv = gpUserSrv;
+            _tokenSrv = tokenSrv;
+            _sharingSrv = sharingSrv;
         }
 
         public async Task<OperationResult> RegisterAsync(RegisterUserDTO registerUser)
@@ -60,7 +67,32 @@ namespace GeoPing.Services
                                        $"Email = [{user.Email}], " +
                                        $"Username = [{user.UserName}].");
 
-                _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+                var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+
+                // TOKEN ACTIONS ==================================================================
+
+                var token = _tokenSrv.GetToken(registerUser.Token);
+
+                if (token != null)
+                {
+                    switch (token.Type)
+                    {
+                        case "SharingInvite":
+                        {
+                            _sharingSrv.ConfirmSharingWithRegistration
+                                (token.Value, gpUser.Id, user.Email);
+
+                            _tokenSrv.MarkAsUsed(token.Token);
+
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+                }
+
+                // ================================================================================
 
                 return new OperationResult
                 {
@@ -235,46 +267,25 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, string avatar)
-        {
-            var user = _gpUserSrv.GetUser(x => x.Id == userId);
-
-            user.Avatar = avatar ?? DefaultUserSettings.AvatarImage;
-
-            var result = _gpUserSrv.EditUser(user);
-
-            if (result.Success)
-            {
-                return new OperationResult<GeoPingUser>()
-                {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile was edited successfully" }
-                };
-            }
-
-            return new OperationResult<GeoPingUser>()
-            {
-                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
-            };
-        }
-
         public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
         {
-            var user = _gpUserSrv.GetUser(x => x.Id == userId);
-
-            user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
-
-            var result = _gpUserSrv.EditUser(user);
-
-            if (result.Success)
+            if (item != null)
             {
-                return new OperationResult<GeoPingUser>()
+                var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+                user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
+
+                var result = _gpUserSrv.EditUser(user);
+
+                if (result.Success)
                 {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile avatar was edited successfully" }
-                };
+                    return new OperationResult<GeoPingUser>()
+                    {
+                        Data = user,
+                        Success = true,
+                        Messages = new[] { "Your profile avatar was edited successfully" }
+                    };
+                }
             }
 
             return new OperationResult<GeoPingUser>()

@@ -61,8 +61,7 @@ namespace GeoPing.Api.Controllers
                 result = new OperationResult()
                 {
                     Data = registerUser,
-                    Messages = new string[] { "Model is invalid" },
-                    Success = false
+                    Messages = new string[] { "Model is invalid" }
                 };
             }
 
@@ -241,7 +240,7 @@ namespace GeoPing.Api.Controllers
                                          new { userId = user.Id, token = code },
                                          protocol: HttpContext.Request.Scheme);
 
-            // CRAP HARDCODE
+            // TODO: REMOVE CRAP HARDCODE
             //====================================================================================
             var baseUrl = "https://dev.geoping.info";
             var actionEndpoint = "";

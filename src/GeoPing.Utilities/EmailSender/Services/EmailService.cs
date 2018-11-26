@@ -31,7 +31,7 @@ namespace GeoPing.Utilities.EmailSender
             };
 
             using (var emailClient = new SmtpClient())
-         {
+            {
                 emailClient.Connect(_emailCfg.SmtpServer, _emailCfg.SmtpPort, _emailCfg.UseSecureConnection);
                 emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
                 emailClient.Authenticate(_emailCfg.SmtpUserName, _emailCfg.SmtpPassword);
