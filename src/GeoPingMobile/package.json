@@ -9,9 +9,11 @@
   "dependencies": {
     "react": "16.6.1",
     "react-native": "0.57.5",
+    "react-native-maps": "^0.22.1",
     "react-navigation": "^2.17.0",
     "react-redux": "^5.1.1",
     "redux-axios-middleware": "^4.0.0",
+    "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -22,6 +24,7 @@
     "@types/react-redux": "^6.0.9",
     "@types/redux": "^3.6.0",
     "@types/redux-persist": "^4.3.1",
+    "@types/redux-thunk": "^2.1.0",
     "@types/uuid": "^3.4.4",
     "axios": "^0.18.0",
     "babel-jest": "23.6.0",
@@ -37,5 +40,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }

@@ -1,14 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const window_1 = require("../constantsForReducer/window");
+const react_native_1 = require("react-native");
 exports.windowBlocking = (isBlocking) => (dispatch) => {
     dispatch(windowBlockingAction(isBlocking));
 };
 exports.redirectOnSignInForm = (redirect) => (dispatch) => {
-    localStorage.removeItem('token');
+    react_native_1.AsyncStorage.removeItem('token');
     dispatch(redirectOnSignInFormAction(redirect));
 };
 exports.isRedirect = (redirect) => (dispatch) => {
+    console.log('redirect', redirect);
     dispatch(isRedirectAction(redirect));
 };
 /* Actions */

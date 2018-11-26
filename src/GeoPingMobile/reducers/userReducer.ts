@@ -2,12 +2,13 @@ import { userState } from '../state/userState';
 import IUserStateType from '../types/stateTypes/userStateType';
 import {
   LOAD_USER_NAME,
-  REDIRECT_DASHBOARD_FOR_LOGIN,
+  REDIRECT_DASHBOARD_FOR_LOGIN, SAVE_TOKEN,
   USER_AUTHORIZATION,
   USER_AUTHORIZATION_TEST_PERIOD,
   USER_SIGN_OUT
 } from '../constantsForReducer/user';
 import { SAVE_AVATAR } from '../constantsForReducer/profile';
+import { func } from "prop-types";
 
 export default function userReducer( state: IUserStateType = userState, action: any ) {
 
@@ -18,6 +19,7 @@ export default function userReducer( state: IUserStateType = userState, action: 
     [ REDIRECT_DASHBOARD_FOR_LOGIN ]: redirect,
     [ LOAD_USER_NAME ]: loadUserData,
     [ SAVE_AVATAR ]: saveAvatar,
+    [SAVE_TOKEN]: saveToken,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -62,5 +64,12 @@ function saveAvatar( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     avatar: action.avatar,
+  };
+}
+
+function saveToken( state: IUserStateType, action: any ): IUserStateType {
+  return {
+    ...state,
+    token: action.token,
   };
 }

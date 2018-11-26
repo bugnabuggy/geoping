@@ -1,9 +1,6 @@
 import React from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { NavigationActions, StackActions } from 'react-navigation';
 
-import LoginHttpService from '../service/loginHttpService';
-import { client_id, client_secret, grant_type, scope } from "../constants/secretSettings";
 import IinitialStateType from "../types/stateTypes/initialStateType";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -14,6 +11,7 @@ type Props = {
   // navigation: any,
   // location: any,
   userAuthorization: any,
+  state: IinitialStateType,
   // roleUser: any,
   authorizationUser: ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => void;
 };
@@ -25,7 +23,7 @@ type State = {
 
 export class LoginScreen extends React.Component<Props, State> {
   static navigationOptions = {
-    title: 'Sign in',
+    headerTitle: 'Sign in',
   };
   handleChangeLogin = ( login: string ) => {
     this.setState ( { login } );
@@ -34,37 +32,6 @@ export class LoginScreen extends React.Component<Props, State> {
     this.setState ( { password } );
   };
   handleSubmit = () => {
-    // const userSignIn: FormData = new FormData ();
-    // userSignIn.append ( 'username', this.state.login );
-    // userSignIn.append ( 'password', this.state.password );
-    // userSignIn.append ( 'client_id', client_id );
-    // userSignIn.append ( 'client_secret', client_secret );
-    // userSignIn.append ( 'grant_type', grant_type );
-    // userSignIn.append ( 'scope', scope );
-    //
-    // const service: any = new LoginHttpService ();
-    // service.login ( userSignIn )
-    //   .then ( ( response: any ) => {
-    //     this.setState ( { message: response.access_token } );
-    //     this.props.navigation.dispatch (
-    //       StackActions.reset (
-    //         {
-    //           index: 0,
-    //           actions: [
-    //             NavigationActions.navigate ( {
-    //               routeName: 'Dashboard',
-    //               params: {
-    //                 access_token: response.access_token,
-    //               }
-    //             } )
-    //           ],
-    //         } ) );
-    //
-    //     // this.props.navigation.navigate('Dashboard'); // наивгация со стрелочкой назад
-    //   } )
-    //   .catch ( ( error: any ) => {
-    //     this.setState ( { message: error.message } );
-    //   } )
     if ( this.state.login && this.state.password ) {
       this.props.authorizationUser ( this.state.login, this.state.password );
     }
@@ -77,6 +44,12 @@ export class LoginScreen extends React.Component<Props, State> {
       password: '',
       message: '',
     };
+  }
+
+  componentDidUpdate( prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any ): void {
+    // console.log('props ------ ', this.props.state.user);
+    // console.log('AsyncStorage.getItem("test")', AsyncStorage.getItem('test'));
+    // console.log('AsyncStorage.getItem("token")', AsyncStorage.getItem('token'));
   }
 
   render() {
@@ -128,9 +101,8 @@ const styles = StyleSheet.create ( {
 
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
-    // location: state.router.location,
     userAuthorization: state.user.authorized,
-    // roleUser: state.user.roleUser,
+    state: state,
   };
 };
 const mapDispatchToProps = ( dispatch: any ) =>

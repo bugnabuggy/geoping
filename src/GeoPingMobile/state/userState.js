@@ -7,4 +7,5 @@ exports.userState = {
     authorized: false,
     roleUser: userStateType_1.ERoleUser.User,
     redirectDashboard: false,
+    token: '',
 };

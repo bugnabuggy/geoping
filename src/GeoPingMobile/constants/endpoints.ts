@@ -1,4 +1,4 @@
-export const endpointBaseUrl: string = process.env.REACT_APP_API_BASE_URL;
+export const endpointBaseUrl: string = 'https://api.dev.geoping.info';
 
 export const getToken: string = `${endpointBaseUrl}/connect/token`;
 export const registration: string = `${endpointBaseUrl}/account/register`;

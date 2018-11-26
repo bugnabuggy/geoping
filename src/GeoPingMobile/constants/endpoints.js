@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.endpointBaseUrl = process.env.REACT_APP_API_BASE_URL;
+exports.endpointBaseUrl = 'https://api.dev.geoping.info';
 exports.getToken = `${exports.endpointBaseUrl}/connect/token`;
 exports.registration = `${exports.endpointBaseUrl}/account/register`;
 exports.confirmEmail = `${exports.endpointBaseUrl}/account/confirm-email?UserId=%userId%&Token=%token%`;

@@ -1,49 +1,95 @@
 import React, { Component } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from "react-native";
-// import LoginHttpService from '../service/loginHttpService';
+import { FlatList, StyleSheet, Text, TextInput, TouchableNativeFeedback, View } from "react-native";
+import { v4 as uuidV4 } from 'uuid';
+import { connect } from "react-redux";
+
+import IinitialStateType from "../types/stateTypes/initialStateType";
+import { bindActionCreators } from "redux";
+import { authorizationUser } from "../actions/userAction";
+import { loadCheckLists } from "../actions/myCheckListsAction";
+import IDispatchFunction from "../types/functionsTypes/dispatchFunction";
+import { HeaderComponent } from "../components/headerComponent";
 
 type Props = {
   data: any,
   navigation: any,
+  router: any,
+  loadCheckLists: () => ( dispatch: IDispatchFunction ) => void,
+  state: IinitialStateType,
 };
 type State = {
   selected?: any,
   data?: any,
   dataSource: any,
+  router?: any
 }
 
+export class DashboardScreen extends Component<Props, State> {
+  constructor( props: Props ) {
+    super ( props );
+  }
 
-export default class DashboardScreen extends Component<Props, State> {
-  static navigationOptions = {
-    headerTitle: 'Dashboard',
-    headerRight: (
-      <Button
-        title="Info"
-        color="#547895"
-        onPress={() => {
-        }}
-      />
-    )
+  static navigationOptions = ( { navigation }: any ) => {
+    return {
+      // headerTitle: 'Dashboard',
+      // headerRight: (
+      //   <Button
+      //     title="Log out"
+      //     color="#547895"
+      //     onPress={() => {
+      //       AsyncStorage.removeItem ( 'token' );
+      //       navigation.navigate ( 'SignIn' );
+      //     }}
+      //   />
+      // ),
+      // headerLeft: (
+      //   <Button
+      //     // icon={
+      //     //   <Image
+      //     //     source={require ( '../assets/images/Hamburger_icon.png' )}
+      //     //     style={styles.icon}
+      //     //   />
+      //     // }
+      //     title="dd"
+      //     onPress={() =>{
+      //         console.log('navigation', navigation);
+      //         navigation.openDrawer();
+      //     }}
+      //   />
+      // ),
+      drawerLabel: 'Dashboard',
+
+    }
   };
-  _keyExtractor = ( item: any, index: any ) => item.id;
 
-  // componentDidMount() {
-  //   // const service: any = new LoginHttpService ();
-  //   // service.getMyCheckLists ( this.props.navigation.state.params.access_token )
-  //   //   .then ( ( response: any ) => {
-  //   //     this.setState ( {
-  //   //       data: response,
-  //   //     } );
-  //   //     console.log ( 'response', response );
-  //   //   } )
-  // }
+  _keyExtractor = ( item: any) => item.id;
+
+  componentDidMount() {
+    this.props.loadCheckLists ();
+  }
+
   renderItem = ( props: any ) => {
     return (
-      <View style={stylesListItem.container}>
-        <Text style={stylesListItem.text}>{props.item.name}</Text>
-      </View>
+      <TouchableNativeFeedback
+        onPress={() => {
+          this.props.navigation.navigate ( {
+            routeName: 'Check_List',
+            params:{
+              idList: props.item.id,
+              nameList: props.item.name,
+            },
+          });
+          console.log ( 'router', this.props.state.router )
+        }}
+        background={TouchableNativeFeedback.SelectableBackground()}
+      >
+        <View key={props.item.id} style={stylesListItem.container}>
+          <Text style={stylesListItem.text}>{props.item.name}</Text>
+        </View>
+      </TouchableNativeFeedback>
     );
   };
+
   renderHeader = ( props: any ) => {
     return (
       <View style={stylesHeaderList.container}>
@@ -56,14 +102,16 @@ export default class DashboardScreen extends Component<Props, State> {
     );
   };
 
-  constructor( props: Props ) {
-    super ( props );
-
+  componentDidUpdate( prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any ): void {
   }
 
   render() {
     return (
       <View style={test.container}>
+        <HeaderComponent
+          navigation={this.props.navigation}
+          title="Dashboard"
+        />
         <View style={stylesHeaderList.container}>
           <TextInput
             style={stylesHeaderList.input}
@@ -73,7 +121,7 @@ export default class DashboardScreen extends Component<Props, State> {
         </View>
         <FlatList
           style={styles.container}
-          data={testData}
+          data={this.props.state.checkList.checkLists}
           keyExtractor={this._keyExtractor}
           renderItem={this.renderItem}
           initialNumToRender={10}
@@ -83,6 +131,25 @@ export default class DashboardScreen extends Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = ( state: IinitialStateType ) => {
+  return {
+    // location: state.router.location,
+    userAuthorization: state.user.authorized,
+    // roleUser: state.user.roleUser,
+    state: state,
+  };
+};
+const mapDispatchToProps = ( dispatch: any ) =>
+  bindActionCreators (
+    {
+      authorizationUser,
+      loadCheckLists,
+    },
+    dispatch );
+
+export default connect ( mapStateToProps, mapDispatchToProps ) ( DashboardScreen );
+
 const test = StyleSheet.create ( {
   container: {
     flex: 1,
@@ -100,6 +167,11 @@ const styles = StyleSheet.create ( {
     flex: 1,
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#8E8E8E',
+  },
+  icon: {
+    marginLeft: 20,
+    width: 24,
+    height: 24,
   },
 } );
 
@@ -132,63 +204,3 @@ const stylesListItem = StyleSheet.create ( {
     fontSize: 16,
   },
 } );
-
-
-const testData: any = [
-  {
-    id: 'gsdfgsdf',
-    name: 'Test 1',
-  },
-  {
-    id: 'h1d6fg',
-    name: 'Test 2',
-  },
-  {
-    id: 'df41ghdf',
-    name: 'Test 3',
-  },
-  {
-    id: 'kui562nk',
-    name: 'Test 4',
-  },
-  {
-    id: 'sg4e92cgf5d',
-    name: 'Test 5',
-  },
-  {
-    id: 'sg41cvs5df',
-    name: 'Test 6',
-  },
-  {
-    id: 's8t7g1v9s8d4fg',
-    name: 'Test 7',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 8',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 9',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 10',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 11',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 12',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 13',
-  },
-  {
-    id: 'sg24v8sdf942g',
-    name: 'Test 14',
-  }
-];

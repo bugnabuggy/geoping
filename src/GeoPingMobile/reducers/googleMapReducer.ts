@@ -25,26 +25,26 @@ import { v4 as uuidV4 } from 'uuid';
 
 export default function googleMapReducer( state: IGoogleMapStateType = googleMapState, action: any ) {
   const reduceObject: any = {
-    [ ADD_LIST_POINTS ]: addListPoints,
-    [ SELECT_GEO_POINT ]: selectGeoPoint,
-    [ DELETE_GEO_POINT ]: deleteGEOPoint,
-    [ ADD_NEW_GEO_POINT ]: addNewGeoPoint,
-    [ FIND_GEO_POSITION ]: findGeoPosition,
-    [ PERMISSION_TO_ADD ]: permissionAdd,
-    [ CHANGE_MOVING_GEO_POINT ]: changeMovingGeoPoint,
-    [ SAVE_GEO_POINT ]: saveGeoPoint,
-    [ CANCEL_GEO_POINT ]: cancelGeoPoint,
-    [ CHANGE_DATA_GEO_POINT ]: changeDataGeoPoint,
-    [ ADD_GEO_POINT_FROM_MY_POSITION ]: addGeoPointFromMyPosition,
-    [ GEO_POINT_LIST_IS_CREATED ]: geoPointListCreate,
-    [ CHECK_IN_SELECT_LIST ]: checkInSelectList,
-    [ CLEAR_STATE_GOOGLE_MAP ]: clearStateGoogleMap,
-    [ STATISTICS_LOAD_POINTS ]: statisticsLoadPoints,
-    [ CLEAR_GEO_POINT ]: clearGeoPoint,
-    [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
+    [ADD_LIST_POINTS]: addListPoints,
+    [SELECT_GEO_POINT]: selectGeoPoint,
+    [DELETE_GEO_POINT]: deleteGEOPoint,
+    [ADD_NEW_GEO_POINT]: addNewGeoPoint,
+    [FIND_GEO_POSITION]: findGeoPosition,
+    [PERMISSION_TO_ADD]: permissionAdd,
+    [CHANGE_MOVING_GEO_POINT]: changeMovingGeoPoint,
+    [SAVE_GEO_POINT]: saveGeoPoint,
+    [CANCEL_GEO_POINT]: cancelGeoPoint,
+    [CHANGE_DATA_GEO_POINT]: changeDataGeoPoint,
+    [ADD_GEO_POINT_FROM_MY_POSITION]: addGeoPointFromMyPosition,
+    [GEO_POINT_LIST_IS_CREATED]: geoPointListCreate,
+    [CHECK_IN_SELECT_LIST]: checkInSelectList,
+    [CLEAR_STATE_GOOGLE_MAP]: clearStateGoogleMap,
+    [STATISTICS_LOAD_POINTS]: statisticsLoadPoints,
+    [CLEAR_GEO_POINT]: clearGeoPoint,
+    [CHECK_IN_GEO_POINTS]: checkInGeoPoint,
   };
 
-  return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
+  return reduceObject.hasOwnProperty ( action.type ) ? reduceObject[action.type] ( state, action ) : state;
 }
 
 function addListPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
@@ -58,7 +58,7 @@ function addListPoints( state: IGoogleMapStateType, action: any ): IGoogleMapSta
 function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    selectedGeoPoint: state.geoPoints.find( geoPoint => geoPoint.id === action.geoPoint.id ) || action.geoPoint,
+    selectedGeoPoint: state.geoPoints.find ( geoPoint => geoPoint.id === action.geoPoint.id ) || action.geoPoint,
     statusMarker: action.geoPoint.id ? EnumStatusMarker.Edit : EnumStatusMarker.None,
   };
 }
@@ -66,7 +66,7 @@ function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
 function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: state.geoPoints.filter( geoPoint => geoPoint.idForMap !== action.idPoint ),
+    geoPoints: state.geoPoints.filter ( geoPoint => geoPoint.idForMap !== action.idPoint ),
     idDeleteMarker: action.idPoint,
   };
 }
@@ -74,6 +74,10 @@ function deleteGEOPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
 function addNewGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
+    geoPoints: [
+      ...state.geoPoints,
+      action.geoPoint
+    ],
     selectedGeoPoint: {
       ...action.geoPoint,
       radius: 50,
@@ -98,7 +102,7 @@ function permissionAdd( state: IGoogleMapStateType, action: any ): IGoogleMapSta
 
 function changeMovingGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   const tempGeoPoint: IGeoPoint = state.geoPoints
-    .find( ( geoPoint: IGeoPoint ) => geoPoint.id === state.selectedGeoPoint.id );
+    .find ( ( geoPoint: IGeoPoint ) => geoPoint.id === state.selectedGeoPoint.id );
   const moveStartMarker: { lat: number, lng: number } =
     state.statusMarker === EnumStatusMarker.Edit ?
       {
@@ -125,13 +129,13 @@ function saveGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStat
   const newGeoListGeopoints: Array<IGeoPoint> =
     state.statusMarker === EnumStatusMarker.New ?
       [
-        ...state.geoPoints,
+        ...state.geoPoints.filter( item => !!item.id),
         action.geoPoint,
       ]
       :
       state.statusMarker === EnumStatusMarker.Edit ?
         [
-          ...state.geoPoints.map( item => {
+          ...state.geoPoints.map ( item => {
             return item.id === action.geoPoint.id ? action.geoPoint : item;
           } ),
         ]
@@ -153,6 +157,11 @@ function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
   if ( state.statusMarker === EnumStatusMarker.New ) {
     return {
       ...state,
+      geoPoints: [
+        ...state.geoPoints.filter ( item => {
+          return item.idForMap !== state.selectedGeoPoint.idForMap;
+        } )
+      ],
       idDeleteMarker: state.selectedGeoPoint.id,
       selectedGeoPoint: googleMapState.selectedGeoPoint,
       statusMarker: EnumStatusMarker.None,
@@ -167,7 +176,7 @@ function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
     return {
       ...state,
       geoPoints: [
-        ...state.geoPoints.map( item => {
+        ...state.geoPoints.map ( item => {
           return item.id === state.selectedGeoPoint.id ?
             {
               ...item,
@@ -191,7 +200,7 @@ function changeDataGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleM
     ...state,
     selectedGeoPoint: {
       ...state.selectedGeoPoint,
-      [ action.field ]: action.data,
+      [action.field]: action.data,
     },
   };
 }
@@ -232,7 +241,7 @@ function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogle
 function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: action.points.map( ( item: any ) => {
+    geoPoints: action.points.map ( ( item: any ) => {
       const point: IGeoPoint = {
         id: item.point.id,
         name: item.point.name,
@@ -241,11 +250,11 @@ function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogl
         description: item.point.description,
         lng: item.point.longitude,
         lat: item.point.latitude,
-        idForMap: uuidV4(),
+        idForMap: uuidV4 (),
       };
       return point;
     } ),
-    checkInGeoPoint: action.points.map( ( item: any ) => item.check ),
+    checkInGeoPoint: action.points.map ( ( item: any ) => item.check ),
     isGeoPointListIsCreated: false,
   };
 }

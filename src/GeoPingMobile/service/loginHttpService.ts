@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { getMyGeoListURL, loginUrl } from "../constants/endpoints";
+import { getAllGeoLists, getToken } from "../constants/endpoints";
 import { getDataFromResponse } from "./helper";
 
 export default class LoginHttpService {
   login( data: any ) {
     return new Promise<any> ( ( resolve: any, reject: any ) => {
-      axios.post( loginUrl, data )
+      axios.post( getToken, data )
         .then( ( response: any ) => {
           resolve(getDataFromResponse(response));
         } )
@@ -17,7 +17,7 @@ export default class LoginHttpService {
 
   getMyCheckLists( token: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      axios.get(getMyGeoListURL, {
+      axios.get(getAllGeoLists, {
         headers: {
           Authorization: `Bearer ${token}`,
         }

@@ -23,23 +23,23 @@ import StaticStorage from '../services/staticStorage';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import IGeoPoint from '../DTO/geoPointDTO';
 import { EnumStatusMarker } from '../enums/statusMarker';
-import { getGeoCode } from '../services/googleMapService';
+import { editingPermission } from "./checkListAction";
 
-export const addListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
-  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  markerService.getAllMarkersForCheckList( idCheckList )
-    .then( ( geoPoints: Array<IGeoPoint> ) => {
-      dispatch( addListPointsAction( geoPoints ) );
+export const getListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+  markerService.getAllMarkersForCheckList ( idCheckList )
+    .then ( ( geoPoints: Array<IGeoPoint> ) => {
+      dispatch ( addListPointsAction ( geoPoints ) );
     } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    .catch ( ( error: any ) => {
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const selectPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( selectPointAction( geoPoint ) );
+  dispatch ( selectPointAction ( geoPoint ) );
   if ( !geoPoint.id ) {
-    dispatch( addDistanceAction( null ) );
+    dispatch ( addDistanceAction ( null ) );
   }
 };
 
@@ -47,134 +47,146 @@ export const deleteGeoPoint = ( geoPoint: IGeoPoint, statusMarker: EnumStatusMar
   ( dispatch: IDispatchFunction ) => {
     if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
       if ( geoPoint.id ) {
-        const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-        markerService.deleteMarker( idList, geoPoint.id )
-          .then( ( response: any ) => {
-            dispatch( deleteGeoPointAction( geoPoint.idForMap ) );
+        const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+        markerService.deleteMarker ( idList, geoPoint.id )
+          .then ( ( response: any ) => {
+            dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
           } )
-          .catch( ( error: any ) => {
-            dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+          .catch ( ( error: any ) => {
+            dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
           } );
       } else {
-        dispatch( deleteGeoPointAction( '' ) );
+        dispatch ( deleteGeoPointAction ( '' ) );
       }
     } else if ( statusMarker === EnumStatusMarker.New ) {
-      dispatch( deleteGeoPointAction( geoPoint.idForMap ) );
+      dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
     }
   };
 
 export const addNewPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( addNewPointAction( geoPoint ) );
+  dispatch ( addNewPointAction ( geoPoint ) );
+  editingPermission ( true ) ( dispatch );
 };
 
-export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
-  window.navigator.geolocation.getCurrentPosition(
-    ( location: any ) => {
-      const position: IPosition = {
-        lng: location.coords.longitude,
-        lat: location.coords.latitude,
-        isSuccess: true,
-        address: '',
-      };
-      dispatch( findGeoPositionAction( position ) );
-    },
-    ( error: any ) => {
-      if ( error.code === 1 ) {
-        dispatch( addNotificationAction( createNotification(
-          'Please allow access to browser geo location',
-          EnumNotificationType.Danger ) ) );
-      } else {
-        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-      }
-    } );
+export const getGeoLocation = ( latitude: number, longitude: number ) => ( dispatch: IDispatchFunction ) => {
+  const position: IPosition = {
+    lng: longitude,
+    lat: latitude,
+    isSuccess: true,
+    address: '',
+  };
+  dispatch ( findGeoPositionAction ( position ) );
 };
 
-export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
-  window.navigator.geolocation.getCurrentPosition(
-    ( location: any ) => {
-      const pos: any = {
-        lng: location.coords.longitude,
-        lat: location.coords.latitude,
-      };
-      getGeoCode( pos )
-        .then( ( address: string ) => {
-          const position: IPosition = {
-            lng: location.coords.longitude,
-            lat: location.coords.latitude,
-            isSuccess: true,
-            address: address,
-          };
-          dispatch( findGeoPositionAction( position ) );
-        } )
-        .catch( ( error: any ) => {
-          dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-        } );
-    },
-    ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-    } );
-};
+// export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
+//   window.navigator.geolocation.getCurrentPosition(
+//     ( location: any ) => {
+//       const position: IPosition = {
+//         lng: location.coords.longitude,
+//         lat: location.coords.latitude,
+//         isSuccess: true,
+//         address: '',
+//       };
+//       dispatch( findGeoPositionAction( position ) );
+//     },
+//     ( error: any ) => {
+//       if ( error.code === 1 ) {
+//         dispatch( addNotificationAction( createNotification(
+//           'Please allow access to browser geo location',
+//           EnumNotificationType.Danger ) ) );
+//       } else {
+//         dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+//       }
+//     } );
+// };
+//
+// export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
+//   window.navigator.geolocation.getCurrentPosition(
+//     ( location: any ) => {
+//       const pos: any = {
+//         lng: location.coords.longitude,
+//         lat: location.coords.latitude,
+//       };
+//       getGeoCode( pos )
+//         .then( ( address: string ) => {
+//           const position: IPosition = {
+//             lng: location.coords.longitude,
+//             lat: location.coords.latitude,
+//             isSuccess: true,
+//             address: address,
+//           };
+//           dispatch( findGeoPositionAction( position ) );
+//         } )
+//         .catch( ( error: any ) => {
+//           dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+//         } );
+//     },
+//     ( error: any ) => {
+//       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+//     } );
+// };
 
 export const permissionAdd = ( isPermissionAdd: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( permissionAddAction( isPermissionAdd ) );
+  dispatch ( permissionAddAction ( isPermissionAdd ) );
 };
 
 export const changeMovingGeoPoint = ( geoPoint: { lat: number, lng: number } ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( changeMovingGeoPointAction( geoPoint ) );
+  dispatch ( changeMovingGeoPointAction ( geoPoint ) );
 };
 
 export const createGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
-  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  markerService.createNewMarker( marker )
-    .then( ( geoPoint: any ) => {
-      dispatch( saveGeoPointAction( geoPoint ) );
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+  markerService.createNewMarker ( marker )
+    .then ( ( geoPoint: any ) => {
+      console.log('create');
+      dispatch ( saveGeoPointAction ( geoPoint ) );
     } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    .catch ( ( error: any ) => {
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const updateGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
-  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  markerService.updateMarker( marker )
-    .then( ( geoPoint: any ) => {
-      dispatch( saveGeoPointAction( geoPoint ) );
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+  markerService.updateMarker ( marker )
+    .then ( ( geoPoint: any ) => {
+      dispatch ( saveGeoPointAction ( geoPoint ) );
     } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    .catch ( ( error: any ) => {
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const saveGeoPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
   if ( !geoPoint.id ) {
-    createGeoPoint( geoPoint )( dispatch );
+    createGeoPoint ( geoPoint ) ( dispatch );
   } else {
-    updateGeoPoint( geoPoint )( dispatch );
+    updateGeoPoint ( geoPoint ) ( dispatch );
   }
 };
 
 export const cancelGeoPoint = () => ( dispatch: IDispatchFunction ) => {
-  dispatch( cancelGeoPointAction() );
+  dispatch ( cancelGeoPointAction () );
 };
 
 export const changeDataGeoPoint = ( field: string, data: string | number ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( changeDataGeoPointAction( field, data ) );
+  dispatch ( changeDataGeoPointAction ( field, data ) );
 };
 
 export const geoPointListIsCreate = ( isGeoPointListIsCreated: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( geoPointListIsCreateAction( isGeoPointListIsCreated ) );
+  dispatch ( geoPointListIsCreateAction ( isGeoPointListIsCreated ) );
 };
 
 export const addDistance = ( distance: number ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( addDistanceAction( Math.round( distance ) ) );
+  dispatch ( addDistanceAction ( Math.round ( distance ) ) );
 };
 
 export const clearStateGoogleMap = () => ( dispatch: IDispatchFunction ) => {
-  dispatch( clearStateGoogleMapAction() );
+  dispatch ( clearStateGoogleMapAction () );
 };
 
 export const clearGeoPoint = () => ( dispatch: IDispatchFunction ) => {
-  dispatch( clearGeoPointAction() );
+  dispatch ( clearGeoPointAction () );
 };
 
 /* Actions */

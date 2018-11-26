@@ -1,16 +1,18 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { BLOCKING_WINDOW_DURING_AN_ACTION, REDIRECT, REDIRECT_ON_SIGN_IN_FORM } from '../constantsForReducer/window';
+import { AsyncStorage } from "react-native";
 
 export const windowBlocking = ( isBlocking: boolean ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( isBlocking ) );
 };
 
 export const redirectOnSignInForm = ( redirect: boolean ) => ( dispatch: IDispatchFunction ) => {
-  localStorage.removeItem( 'token' );
+  AsyncStorage.removeItem( 'token' );
   dispatch( redirectOnSignInFormAction( redirect ) );
 };
 
 export const isRedirect = ( redirect: string ) => ( dispatch: IDispatchFunction ) => {
+  console.log('redirect', redirect);
   dispatch( isRedirectAction( redirect ) );
 };
 

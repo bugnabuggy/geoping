@@ -9,8 +9,8 @@ const helper_1 = require("../services/helper");
 const notificationTypeEnum_1 = require("../enums/notificationTypeEnum");
 const staticStorage_1 = __importDefault(require("../services/staticStorage"));
 const statusMarker_1 = require("../enums/statusMarker");
-const googleMapService_1 = require("../services/googleMapService");
-exports.addListPoints = (idCheckList) => (dispatch) => {
+const checkListAction_1 = require("./checkListAction");
+exports.getListPoints = (idCheckList) => (dispatch) => {
     const markerService = staticStorage_1.default.serviceLocator.get('IMarkerServiceType');
     markerService.getAllMarkersForCheckList(idCheckList)
         .then((geoPoints) => {
@@ -48,48 +48,64 @@ exports.deleteGeoPoint = (geoPoint, statusMarker, idList) => (dispatch) => {
 };
 exports.addNewPoint = (geoPoint) => (dispatch) => {
     dispatch(addNewPointAction(geoPoint));
+    checkListAction_1.editingPermission(true)(dispatch);
 };
-exports.findGeoPosition = () => (dispatch) => {
-    window.navigator.geolocation.getCurrentPosition((location) => {
-        const position = {
-            lng: location.coords.longitude,
-            lat: location.coords.latitude,
-            isSuccess: true,
-            address: '',
-        };
-        dispatch(findGeoPositionAction(position));
-    }, (error) => {
-        if (error.code === 1) {
-            dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification('Please allow access to browser geo location', notificationTypeEnum_1.EnumNotificationType.Danger)));
-        }
-        else {
-            dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));
-        }
-    });
+exports.getGeoLocation = (latitude, longitude) => (dispatch) => {
+    const position = {
+        lng: longitude,
+        lat: latitude,
+        isSuccess: true,
+        address: '',
+    };
+    dispatch(findGeoPositionAction(position));
 };
-exports.getMyAddress = () => (dispatch) => {
-    window.navigator.geolocation.getCurrentPosition((location) => {
-        const pos = {
-            lng: location.coords.longitude,
-            lat: location.coords.latitude,
-        };
-        googleMapService_1.getGeoCode(pos)
-            .then((address) => {
-            const position = {
-                lng: location.coords.longitude,
-                lat: location.coords.latitude,
-                isSuccess: true,
-                address: address,
-            };
-            dispatch(findGeoPositionAction(position));
-        })
-            .catch((error) => {
-            dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));
-        });
-    }, (error) => {
-        dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));
-    });
-};
+// export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
+//   window.navigator.geolocation.getCurrentPosition(
+//     ( location: any ) => {
+//       const position: IPosition = {
+//         lng: location.coords.longitude,
+//         lat: location.coords.latitude,
+//         isSuccess: true,
+//         address: '',
+//       };
+//       dispatch( findGeoPositionAction( position ) );
+//     },
+//     ( error: any ) => {
+//       if ( error.code === 1 ) {
+//         dispatch( addNotificationAction( createNotification(
+//           'Please allow access to browser geo location',
+//           EnumNotificationType.Danger ) ) );
+//       } else {
+//         dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+//       }
+//     } );
+// };
+//
+// export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
+//   window.navigator.geolocation.getCurrentPosition(
+//     ( location: any ) => {
+//       const pos: any = {
+//         lng: location.coords.longitude,
+//         lat: location.coords.latitude,
+//       };
+//       getGeoCode( pos )
+//         .then( ( address: string ) => {
+//           const position: IPosition = {
+//             lng: location.coords.longitude,
+//             lat: location.coords.latitude,
+//             isSuccess: true,
+//             address: address,
+//           };
+//           dispatch( findGeoPositionAction( position ) );
+//         } )
+//         .catch( ( error: any ) => {
+//           dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+//         } );
+//     },
+//     ( error: any ) => {
+//       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+//     } );
+// };
 exports.permissionAdd = (isPermissionAdd) => (dispatch) => {
     dispatch(permissionAddAction(isPermissionAdd));
 };
@@ -100,6 +116,7 @@ exports.createGeoPoint = (marker) => (dispatch) => {
     const markerService = staticStorage_1.default.serviceLocator.get('IMarkerServiceType');
     markerService.createNewMarker(marker)
         .then((geoPoint) => {
+        console.log('create');
         dispatch(saveGeoPointAction(geoPoint));
     })
         .catch((error) => {

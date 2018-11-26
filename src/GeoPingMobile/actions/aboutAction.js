@@ -11,13 +11,14 @@ const notificationsAction_1 = require("./notificationsAction");
 const helper_1 = require("../services/helper");
 const notificationTypeEnum_1 = require("../enums/notificationTypeEnum");
 const userAction_1 = require("./userAction");
+const react_native_1 = require("react-native");
 exports.useTestPeriod = (email, password) => (dispatch) => {
     environmentsServiceLocator_1.getBuildEnvironment(environment_1.EBuildEnvironment.Test);
     staticStorage_1.default.serviceLocator = environmentsServiceLocator_1.environments.get(environmentsServiceLocator_1.buildEnvironment);
     const authorizationService = staticStorage_1.default.serviceLocator.get('IAuthorization');
     authorizationService.signin(email, password)
         .then((response) => {
-        localStorage.setItem('token', response);
+        react_native_1.AsyncStorage.setItem('token', response);
         dispatch(useTestPeriodAction(true));
         dispatch(userAction_1.redirectDaschboardAction(true));
     })

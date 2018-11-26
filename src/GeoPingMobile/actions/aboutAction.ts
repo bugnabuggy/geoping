@@ -8,6 +8,7 @@ import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { redirectDaschboardAction } from './userAction';
+import { AsyncStorage } from "react-native";
 
 export const useTestPeriod = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   getBuildEnvironment( EBuildEnvironment.Test );
@@ -16,7 +17,7 @@ export const useTestPeriod = ( email: string, password: string ) => ( dispatch: 
   const authorizationService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
   authorizationService.signin( email, password )
     .then( ( response: any ) => {
-      localStorage.setItem( 'token', response );
+      AsyncStorage.setItem( 'token', response );
       dispatch( useTestPeriodAction( true ) );
       dispatch( redirectDaschboardAction( true ) );
     } )

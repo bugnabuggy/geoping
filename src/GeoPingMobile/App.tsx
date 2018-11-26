@@ -7,18 +7,15 @@
  */
 
 import React, { Component } from 'react'
-import { AsyncStorage, Platform, StyleSheet, View, Text } from 'react-native';
-import { createStore } from 'redux';
+import { Platform } from 'react-native';
+import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { PersistGate } from 'redux-persist/integration/react';
-
-
-import LoginScreen from './screens/loginScreen';
-import { createStackNavigator } from 'react-navigation';
-import DashboardScreen from './screens/dashboardScreen';
+import { createSwitchNavigator } from 'react-navigation';
 import createReducer from './reducers/rootReducer';
+import initialState from './state/initialState';
+import thunk from "redux-thunk";
+import { configurationDependencyInjerction } from "./services/configurationDependencyInjerction";
+import AppScreen from "./screens/appScreen";
 
 const instructions = Platform.select ( {
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -27,77 +24,31 @@ const instructions = Platform.select ( {
     'Shake or press menu button for dev menu',
 } );
 
-const store = createStore( createReducer({}));
-const persistore = persistStore( store, null );
+configurationDependencyInjerction ();
 
-// const presistedReducer = persistReducer( persistConfig, createReducer( {} ) );
-//
-// // const store: any = createStore ( createReducer( {} ), {} );
-// const temp_store = createStore(presistedReducer);
-// const persistor = persistStore(temp_store);
-// const store: any = {
-//   store: temp_store,
-//   persistor,
-// };
+const store = createStore (
+  createReducer ( {} ),
+  initialState,
+  applyMiddleware (
+    thunk,
+  )
+);
 
-const Navigation: any = createStackNavigator (
-  {
-    Home: { screen: LoginScreen },
-    Dashboard: { screen: DashboardScreen },
+const AppNavigation = createSwitchNavigator ( {
+    Home: AppScreen,
   },
   {
     initialRouteName: 'Home',
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: '#f4511e',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    },
   }
 );
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
-    // return (
-    //   <View>
-    //     {/*<Text style={styles.welcome}>Welcome to React Native!</Text>*/}
-    //     {/*<Text style={styles.instructions}>To get started, edit App.js</Text>*/}
-    //     {/*<Text style={styles.instructions}>{instructions}</Text>*/}
-    //   </View>
-    // );
     return (
       <Provider store={store}>
-        <PersistGate loading={<LoginScreen/>} persistor={persistore}>
-          <Navigation/>
-          {/*/!*<View>*!/*/}
-            {/*/!*<Text style={styles.welcome}>Welcome to React Native!</Text>*!/*/}
-          {/*/!*</View>*!/*/}
-          {/*<LoginScreen/>*/}
-        </PersistGate>
+        <AppNavigation/>
       </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create ( {
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-} );

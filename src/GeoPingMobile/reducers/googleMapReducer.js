@@ -41,7 +41,10 @@ function deleteGEOPoint(state, action) {
     return Object.assign({}, state, { geoPoints: state.geoPoints.filter(geoPoint => geoPoint.idForMap !== action.idPoint), idDeleteMarker: action.idPoint });
 }
 function addNewGeoPoint(state, action) {
-    return Object.assign({}, state, { selectedGeoPoint: Object.assign({}, action.geoPoint, { radius: 50 }), statusMarker: statusMarker_1.EnumStatusMarker.New });
+    return Object.assign({}, state, { geoPoints: [
+            ...state.geoPoints,
+            action.geoPoint
+        ], selectedGeoPoint: Object.assign({}, action.geoPoint, { radius: 50 }), statusMarker: statusMarker_1.EnumStatusMarker.New });
 }
 function findGeoPosition(state, action) {
     return Object.assign({}, state, { position: action.geoPosition });
@@ -67,7 +70,7 @@ function changeMovingGeoPoint(state, action) {
 function saveGeoPoint(state, action) {
     const newGeoListGeopoints = state.statusMarker === statusMarker_1.EnumStatusMarker.New ?
         [
-            ...state.geoPoints,
+            ...state.geoPoints.filter(item => !!item.id),
             action.geoPoint,
         ]
         :
@@ -87,7 +90,11 @@ function saveGeoPoint(state, action) {
 }
 function cancelGeoPoint(state, action) {
     if (state.statusMarker === statusMarker_1.EnumStatusMarker.New) {
-        return Object.assign({}, state, { idDeleteMarker: state.selectedGeoPoint.id, selectedGeoPoint: googleMapState_1.googleMapState.selectedGeoPoint, statusMarker: statusMarker_1.EnumStatusMarker.None });
+        return Object.assign({}, state, { geoPoints: [
+                ...state.geoPoints.filter(item => {
+                    return item.idForMap !== state.selectedGeoPoint.idForMap;
+                })
+            ], idDeleteMarker: state.selectedGeoPoint.id, selectedGeoPoint: googleMapState_1.googleMapState.selectedGeoPoint, statusMarker: statusMarker_1.EnumStatusMarker.None });
     }
     else if (state.statusMarker === statusMarker_1.EnumStatusMarker.Edit) {
         let moveMarker = {};

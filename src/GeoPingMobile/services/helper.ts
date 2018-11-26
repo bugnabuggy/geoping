@@ -64,3 +64,30 @@ export function checkLocation( location: string, callbackRedirect: any ) {
     callbackRedirect( true );
   }
 }
+
+export function getDataFromResponse( response: any ) {
+  if ( response.hasOwnProperty( 'data' ) ) {
+    const data: any = response.data;
+    if ( data.hasOwnProperty( 'data' ) ) {
+      return data.data;
+    } else {
+      return data;
+    }
+  } else {
+    return response;
+  }
+}
+
+/**********************************************************************/
+export function testData(index: number) {
+  const data: Array<{ id: string, name: string }> = [];
+  for ( let i = 1; i <= index; i++ ) {
+    data.push ( {
+      id: uuidV4 (),
+      name: `Test ${i}`,
+    } )
+  }
+  return data
+};
+
+export const keyExtractor = ( item: any, index: any ) => item.id;

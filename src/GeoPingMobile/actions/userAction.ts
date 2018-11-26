@@ -1,8 +1,9 @@
+import { AsyncStorage } from 'react-native';
 import IRegistrationUserType from '../types/actionsType/registrationUserDataType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   LOAD_USER_NAME,
-  REDIRECT_DASHBOARD_FOR_LOGIN,
+  REDIRECT_DASHBOARD_FOR_LOGIN, SAVE_TOKEN,
   USER_AUTHORIZATION,
   USER_SIGN_OUT
 } from '../constantsForReducer/user';
@@ -11,17 +12,21 @@ import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
+import { isRedirect, redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
 import IUser from '../types/serviceTypes/userServiceType';
+import { func } from "prop-types";
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
   const authorizeService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
   authorizeService.signin( email, password )
     .then( ( token: string ) => {
+      console.log('----------------------------------------');
       dispatch( windowBlockingAction( false ) );
       dispatch( authorizationUserAction( true ) );
       dispatch( redirectDaschboardAction( true ) );
+      dispatch( saveTokenAction(token));
+      isRedirect('Dashboard')(dispatch);
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
@@ -60,8 +65,8 @@ export const resetPasswordEnterNewPassword = ( newPassword: string ) => ( dispat
 };
 
 export const signOutUser = () => ( dispatch: IDispatchFunction ) => {
-  localStorage.removeItem( 'token' );
-  localStorage.removeItem( 'token_type' );
+  AsyncStorage.removeItem( 'token' );
+  AsyncStorage.removeItem( 'token_type' );
   dispatch( signOutUserAction() );
 };
 
@@ -111,4 +116,8 @@ export function redirectDaschboardAction( isRedirect: boolean ) {
 
 export function loadUserDataAction( userData: any ) {
   return { type: LOAD_USER_NAME, userData };
+}
+
+function saveTokenAction( token: string ) {
+  return { type: SAVE_TOKEN, token };
 }

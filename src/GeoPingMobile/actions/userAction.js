@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const react_native_1 = require("react-native");
 const user_1 = require("../constantsForReducer/user");
 const staticStorage_1 = __importDefault(require("../services/staticStorage"));
 const notificationsAction_1 = require("./notificationsAction");
@@ -14,9 +15,12 @@ exports.authorizationUser = (email, password) => (dispatch) => {
     const authorizeService = staticStorage_1.default.serviceLocator.get('IAuthorization');
     authorizeService.signin(email, password)
         .then((token) => {
+        console.log('----------------------------------------');
         dispatch(windowAction_1.windowBlockingAction(false));
         dispatch(authorizationUserAction(true));
         dispatch(redirectDaschboardAction(true));
+        dispatch(saveTokenAction(token));
+        windowAction_1.isRedirect('Dashboard')(dispatch);
         dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification('You authorized', notificationTypeEnum_1.EnumNotificationType.Success)));
     })
         .catch((error) => {
@@ -45,8 +49,8 @@ exports.resetPasswordEnterNewPassword = (newPassword) => (dispatch) => {
     return '';
 };
 exports.signOutUser = () => (dispatch) => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('token_type');
+    react_native_1.AsyncStorage.removeItem('token');
+    react_native_1.AsyncStorage.removeItem('token_type');
     dispatch(signOutUserAction());
 };
 exports.authorizationUserFlag = (isAuthorize) => (dispatch) => {
@@ -88,3 +92,6 @@ function loadUserDataAction(userData) {
     return { type: user_1.LOAD_USER_NAME, userData };
 }
 exports.loadUserDataAction = loadUserDataAction;
+function saveTokenAction(token) {
+    return { type: user_1.SAVE_TOKEN, token };
+}

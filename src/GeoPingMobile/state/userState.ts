@@ -6,4 +6,5 @@ export const userState: IUserState = {
   authorized: false,
   roleUser: ERoleUser.User,
   redirectDashboard: false,
+  token: '',
 };

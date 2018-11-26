@@ -9,7 +9,7 @@ const helper_1 = require("./helper");
 class LoginHttpService {
     login(data) {
         return new Promise((resolve, reject) => {
-            axios_1.default.post(endpoints_1.loginUrl, data)
+            axios_1.default.post(endpoints_1.getToken, data)
                 .then((response) => {
                 resolve(helper_1.getDataFromResponse(response));
             })
@@ -20,7 +20,7 @@ class LoginHttpService {
     }
     getMyCheckLists(token) {
         return new Promise((resolve, reject) => {
-            axios_1.default.get(endpoints_1.getMyGeoListURL, {
+            axios_1.default.get(endpoints_1.getAllGeoLists, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

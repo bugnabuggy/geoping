@@ -53,3 +53,32 @@ function checkLocation(location, callbackRedirect) {
     }
 }
 exports.checkLocation = checkLocation;
+function getDataFromResponse(response) {
+    if (response.hasOwnProperty('data')) {
+        const data = response.data;
+        if (data.hasOwnProperty('data')) {
+            return data.data;
+        }
+        else {
+            return data;
+        }
+    }
+    else {
+        return response;
+    }
+}
+exports.getDataFromResponse = getDataFromResponse;
+/**********************************************************************/
+function testData(index) {
+    const data = [];
+    for (let i = 1; i <= index; i++) {
+        data.push({
+            id: uuid_1.v4(),
+            name: `Test ${i}`,
+        });
+    }
+    return data;
+}
+exports.testData = testData;
+;
+exports.keyExtractor = (item, index) => item.id;

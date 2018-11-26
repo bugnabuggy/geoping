@@ -11,6 +11,7 @@ function userReducer(state = userState_1.userState, action) {
         [user_1.REDIRECT_DASHBOARD_FOR_LOGIN]: redirect,
         [user_1.LOAD_USER_NAME]: loadUserData,
         [profile_1.SAVE_AVATAR]: saveAvatar,
+        [user_1.SAVE_TOKEN]: saveToken,
     };
     return reduceObject.hasOwnProperty(action.type) ? reduceObject[action.type](state, action) : state;
 }
@@ -32,4 +33,7 @@ function loadUserData(state, action) {
 }
 function saveAvatar(state, action) {
     return Object.assign({}, state, { avatar: action.avatar });
+}
+function saveToken(state, action) {
+    return Object.assign({}, state, { token: action.token });
 }
