@@ -135,7 +135,7 @@ namespace GeoPing.Api.Controllers
         }
 
         [HttpGet]
-        [Route("allowed-users")]
+        [Route("{listId}/allowed-users")]
         public IActionResult GetAllowedUsers(string listId)
         {
             var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
