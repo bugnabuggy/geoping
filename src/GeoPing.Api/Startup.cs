@@ -83,8 +83,8 @@ namespace GeoPing.Api
             {
                 options.Authority = Configuration["ApplicationSettings:Urls:ApiUrl"];
                 options.RequireHttpsMetadata = false;
-                options.ApiName = IdentityServerSettings.ApiName;
-                options.ApiSecret = IdentityServerSettings.ClientSecret;
+                options.ApiName = Configuration["ApplicationSettings:IdentityServer:ApiName"];
+                options.ApiSecret = Configuration["ApplicationSettings:IdentityServer:ClientSecret"];
             });
 
             // Removing cookie authentitication
