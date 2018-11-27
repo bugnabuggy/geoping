@@ -29,7 +29,7 @@ namespace Geoping.Services
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
         {
-            return _gpUserRepo.Data.FirstOrDefault(func);
+            return _gpUserRepo.Get().FirstOrDefault(func);
         }
 
         public IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters)
@@ -41,16 +41,15 @@ namespace Geoping.Services
         
             firstLetters = firstLetters.ToUpper();
 
-            var data = _gpUserRepo.Data
-                .Where(x => x.Login.ToUpper().StartsWith(firstLetters));
+            var data = _gpUserRepo.Get(x => x.Login.ToUpper().StartsWith(firstLetters));
 
             if (data.Count() < _settings.AutoComplete.SizeOfAutoCompletedList)
             {
-                data.Concat(_gpUserRepo.Data
-                    .Where(x => x.Email.ToUpper().StartsWith(firstLetters)));
+                data.Concat(_gpUserRepo.Get(x => x.Email.ToUpper().StartsWith(firstLetters)));
             }
 
-            return data.Take(_settings.AutoComplete.SizeOfAutoCompletedList)
+            return data
+                .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
                 .Select(x => new UserAutoCompleteDTO()
                 {
                     FullName = $"{x.LastName} {x.FirstName}",

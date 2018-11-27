@@ -64,7 +64,7 @@ namespace Geoping.Services
 
             var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            var checks = GetFilteredData(_checksRepo.Data, filter)
+            var checks = GetFilteredData(_checksRepo.Get(), filter)
                 .OrderByDescending(x => x.Date)
                 .GroupBy(x => x.PointId)
                 .Select(x => x.FirstOrDefault());

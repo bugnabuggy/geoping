@@ -21,7 +21,14 @@ namespace GeoPing.Infrastructure.Repositories
             Data = _table;
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> filter)
+        public IQueryable<T> Get()
+        {
+            IQueryable<T> query = this.Data.AsNoTracking();
+            
+            return query;
+        }
+
+        public IQueryable<T> Get(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = this.Data.AsNoTracking();
 
@@ -30,7 +37,7 @@ namespace GeoPing.Infrastructure.Repositories
                 query = query.Where(filter);
             }
 
-            return query.ToList();
+            return query;
         }
 
         public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null,

@@ -58,11 +58,11 @@ namespace Geoping.Services
 
         public IEnumerable<SharedListInfoDTO> GetSharedLists(Expression<Func<ListSharing, bool>> query)
         {
-            var sharings = _shareRepo.Data.Where(query);
+            var sharings = _shareRepo.Get(query);
 
             var result =
                 from s in sharings
-                join l in _listRepo.Data on s.ListId equals l.Id
+                join l in _listRepo.Get() on s.ListId equals l.Id
                 select new SharedListInfoDTO()
                 {
                     ListId = l.Id,
@@ -92,7 +92,7 @@ namespace Geoping.Services
                 };
             }
 
-            var item = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+            var item = _shareRepo.Get().FirstOrDefault(x => x.Id == id);
 
             var isUserAllowed =
                 _securitySrv.IsUserHasAccessToManipulateList
@@ -261,8 +261,8 @@ namespace Geoping.Services
 
         private bool IsUserHasBeenInvitedEarlier(string invitedUserEmail, Guid listId, out ListSharing sharing)
         {
-            sharing = _shareRepo.Data.FirstOrDefault(x => x.Email == invitedUserEmail &&
-                                                          x.ListId == listId);
+            sharing = _shareRepo.Get().FirstOrDefault(x => x.Email == invitedUserEmail &&
+                                                           x.ListId == listId);
             if (sharing == null)
             {
                 return false;
@@ -320,7 +320,7 @@ namespace Geoping.Services
 
         public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
         {
-            var sharing = _shareRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+            var sharing = _shareRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
 
             if (sharing != null)
             {
@@ -371,7 +371,7 @@ namespace Geoping.Services
 
             if (isId)
             {
-                sharing = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+                sharing = _shareRepo.Get().FirstOrDefault(x => x.Id == id);
 
                 if (sharing != null)
                 {

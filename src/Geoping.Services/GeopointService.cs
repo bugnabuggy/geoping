@@ -29,17 +29,17 @@ namespace Geoping.Services
 
         public IQueryable<GeoPoint> Get()
         {
-            return _pointRepo.Data;
+            return _pointRepo.Get();
         }
 
         public IQueryable<GeoPoint> Get(Expression<Func<GeoPoint, bool>> func)
         {
-            return _pointRepo.Data.Where(func);
+            return _pointRepo.Get(func);
         }
 
         public WebResult<IQueryable<GeoPoint>> GetByFilter(Guid listId, GeopointFilterDTO filter, out int totalItems)
         {
-            var data = _pointRepo.Data.Where(x => x.ListId == listId);
+            var data = _pointRepo.Get(x => x.ListId == listId);
 
             // Filtering by name
             data = !string.IsNullOrEmpty(filter.Name)

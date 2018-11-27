@@ -36,8 +36,11 @@ namespace Geoping.Services
                 };
             }
 
-            var result = _checkInRepo.Data.FirstOrDefault(x => x.PointId == point.Id &&
-                                                               x.UserId == userId);
+            var result = _checkInRepo
+                .Get(x => x.PointId == point.Id && x.UserId == userId)
+                .OrderByDescending(x => x.Date)
+                .FirstOrDefault();
+
             if (result == null)
             {
                 return new OperationResult<CheckIn>()
@@ -68,7 +71,7 @@ namespace Geoping.Services
 
             var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            var data = from ch in _checkInRepo.Data
+            var data = from ch in _checkInRepo.Get()
                        from p in points
                        where ch.PointId == p.Id && ch.UserId == userId
                        select ch;

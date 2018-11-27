@@ -54,17 +54,17 @@ namespace Geoping.Services
 
         public IQueryable<GeoList> Get()
         {
-            return _geolistRepo.Data;
+            return _geolistRepo.Get();
         }
 
         public IQueryable<GeoList> Get(Expression<Func<GeoList, bool>> func)
         {
-            return _geolistRepo.Data.Where(func);
+            return _geolistRepo.Get(func);
         }
 
         public WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Data.Where(x => x.OwnerId == userId);
+            var data = _geolistRepo.Get(x => x.OwnerId == userId);
 
             // Filtering by public status. There is no filtering if isPublic field in filter is null
             if (filter.IsPublic != null)
@@ -90,8 +90,8 @@ namespace Geoping.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Data.Where(x => x.IsPublic == true &&
-                                                    x.OwnerId == ownerId);
+            var data = _geolistRepo.Get(x => x.IsPublic == true && 
+                                             x.OwnerId == ownerId);
 
             var result = GetPublicByFilter(data, filter);
 
@@ -109,7 +109,7 @@ namespace Geoping.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Data.Where(x => x.IsPublic == true);
+            var data = _geolistRepo.Get(x => x.IsPublic == true);
 
             var result = GetPublicByFilter(data, filter);
 
@@ -158,7 +158,7 @@ namespace Geoping.Services
 
             if (item.IsPublic)
             {
-                var wasPublic = _publicGeolistRepo.Data.Any(x => x.ListId == item.Id);
+                var wasPublic = _publicGeolistRepo.Get().Any(x => x.ListId == item.Id);
                 if (!wasPublic)
                 {
                     _publicGeolistRepo.Add(new PublicList()
@@ -272,7 +272,7 @@ var messages = new List<string>();
             data = FilterListsByCommonFilter(data, filter);
 
             var publicData = from a in data
-                             from b in _publicGeolistRepo.Data
+                             from b in _publicGeolistRepo.Get()
                              where a.Id == b.ListId
                              select new PublicListDTO
                              {
@@ -280,7 +280,7 @@ var messages = new List<string>();
                                  Name = a.Name,
                                  Description = a.Description,
                                  OwnerId = a.OwnerId,
-                                 OwnerName = _gpUserRepo.Data.FirstOrDefault(x => x.Id == a.OwnerId).Login,
+                                 OwnerName = _gpUserRepo.Get().FirstOrDefault(x => x.Id == a.OwnerId).Login,
                                  CreateDate = a.Created,
                                  EditDate = a.Edited,
                                  PublishDate = b.PublishDate,

@@ -19,18 +19,18 @@ namespace Geoping.Services
         private IRepository<GeoPingToken> _tokenRepo;
         private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _secSrv;
-        private ApplicationSettings _appSettings;
+        private ApplicationSettings _settings;
 
         public GeopingTokenService
             (IRepository<GeoPingToken> tokenRepo,
             IRepository<ListSharing> sharingRepo,
             ISecurityService secSrv,
-            IOptions<ApplicationSettings> appSettings)
+            IOptions<ApplicationSettings> settings)
         {
             _tokenRepo = tokenRepo;
             _sharingRepo = sharingRepo;
             _secSrv = secSrv;
-            _appSettings = appSettings.Value;
+            _settings = settings.Value;
         }
 
         // Value = ListSharing`s ID
@@ -70,7 +70,7 @@ namespace Geoping.Services
 
         public OperationResult<TokenInfoDTO> ExamineToken(string token)
         {
-            var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
+            var gpToken = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
 
             if (gpToken != null)
             {
@@ -89,13 +89,13 @@ namespace Geoping.Services
                 switch (gpToken.Type)
                 {
                     case "Sharing":
-                        targetUserId = _sharingRepo.Data
+                        targetUserId = _sharingRepo.Get()
                             .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
                             .UserId;
                         break;
 
                     case "SharingInvite":
-                        targetUserId = _sharingRepo.Data
+                        targetUserId = _sharingRepo.Get()
                             .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
                             .UserId;
                         break;
@@ -167,7 +167,7 @@ namespace Geoping.Services
             }
 
             if ((DateTime.UtcNow - gpToken.Created).Seconds > 
-                _appSettings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
+                _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
             {
                 return "Expired";
             }
