@@ -14,7 +14,7 @@ namespace Geoping.Services
 {
     public class GeopointService : IGeopointService
     {
-        private Dictionary<string, Expression<Func<GeoPoint, object>>> orderBys =
+        private Dictionary<string, Expression<Func<GeoPoint, object>>> _orderBys =
             new Dictionary<string, Expression<Func<GeoPoint, object>>>()
             {
                 { "name", x => x.Name }
@@ -53,9 +53,9 @@ namespace Geoping.Services
 
             totalItems = data.Count();
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = orderBys[filter.OrderBy];
+                var orderExpression = _orderBys[filter.OrderBy];
 
                 if (filter.IsDesc)
                 {
@@ -169,16 +169,16 @@ namespace Geoping.Services
             };
         }
 
-        public bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point)
+        public bool IsPointExistWithThisId(string id, Guid listId, out GeoPoint point)
         {
-            var isPointId = Guid.TryParse(Id, out Guid pointId);
+            var isPointId = Guid.TryParse(id, out Guid pointId);
             point = null;
             if (!isPointId)
             {
                 return false;
             }
 
-            point = Get(x => x.ListId == ListId && x.Id == pointId).FirstOrDefault();
+            point = Get(x => x.ListId == listId && x.Id == pointId).FirstOrDefault();
             if (point == null)
             {
                 return false;

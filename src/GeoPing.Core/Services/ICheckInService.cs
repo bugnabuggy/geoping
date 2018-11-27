@@ -12,8 +12,8 @@ namespace GeoPing.Core.Services
         OperationResult<IEnumerable<CheckIn>> GetChecksIn(string listId, Guid userId);
         OperationResult<CheckIn> AddCheckIn(CheckIn item);
 
-        bool IsListExistWithThisId(string Id, out GeoList list);
-        bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point);
-        bool IsPointExistWithThisId(string Id, out GeoPoint point);
+        bool IsListExistWithThisId(string id, out GeoList list);
+        bool IsPointExistWithThisId(string id, Guid listId, out GeoPoint point);
+        bool IsPointExistWithThisId(string id, out GeoPoint point);
     }
 }

@@ -108,9 +108,9 @@ namespace Geoping.Services
             return result;
         }
 
-        public bool IsPointExistWithThisId(string Id, out GeoPoint point)
+        public bool IsPointExistWithThisId(string id, out GeoPoint point)
         {
-            var isPointId = Guid.TryParse(Id, out Guid pointId);
+            var isPointId = Guid.TryParse(id, out Guid pointId);
             point = null;
             if (!isPointId)
             {

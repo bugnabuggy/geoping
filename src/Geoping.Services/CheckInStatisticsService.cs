@@ -13,7 +13,7 @@ namespace Geoping.Services
 {
     public class CheckInStatisticsService : ICheckInStatisticsService
     {
-        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> orderBys =
+        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> _orderBys =
             new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>()
             {
                 {"pointName", x => x.Point.Name},
@@ -103,9 +103,9 @@ namespace Geoping.Services
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = orderBys[filter.OrderBy];
+                var orderExpression = _orderBys[filter.OrderBy];
 
                 if (filter.IsDesc)
                 {

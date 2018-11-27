@@ -12,7 +12,7 @@ namespace Geoping.Services
 {
     public class GeolistService : IGeolistService
     {
-        private readonly Dictionary<string, Expression<Func<GeoList, object>>> orderCommonBys =
+        private readonly Dictionary<string, Expression<Func<GeoList, object>>> _orderCommonBys =
             new Dictionary<string, Expression<Func<GeoList, object>>>()
         {
             {"name", x => x.Name},
@@ -21,7 +21,7 @@ namespace Geoping.Services
             {"isPublic", x => x.IsPublic}
         };
 
-        private Dictionary<string, Expression<Func<PublicListDTO, object>>> orderPublicBys =
+        private Dictionary<string, Expression<Func<PublicListDTO, object>>> _orderPublicBys =
             new Dictionary<string, Expression<Func<PublicListDTO, object>>>()
         {
             {"name", x => x.Name},
@@ -90,7 +90,7 @@ namespace Geoping.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Get(x => x.IsPublic == true && 
+            var data = _geolistRepo.Get(x => x.IsPublic == true &&
                                              x.OwnerId == ownerId);
 
             var result = GetPublicByFilter(data, filter);
@@ -206,12 +206,12 @@ namespace Geoping.Services
         }
 
         // Delete several lists
-        public OperationResult Delete(Guid userId, string Ids)
+        public OperationResult Delete(Guid userId, string listIds)
         {
-            var ids = Ids.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
-                            .ToArray();
+            var ids = listIds.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                             .ToArray();
 
-            if (ids == null)
+            if (ids.Any())
             {
                 return new OperationResult()
                 {
@@ -219,7 +219,7 @@ namespace Geoping.Services
                 };
             }
 
-var messages = new List<string>();
+            var messages = new List<string>();
 
             foreach (var id in ids)
             {
@@ -249,9 +249,9 @@ var messages = new List<string>();
             };
         }
 
-        public bool IsListExistWithThisId(string Id, out GeoList list)
+        public bool IsListExistWithThisId(string id, out GeoList list)
         {
-            var isListId = Guid.TryParse(Id, out Guid listId);
+            var isListId = Guid.TryParse(id, out Guid listId);
             list = null;
             if (!isListId)
             {
@@ -391,9 +391,9 @@ var messages = new List<string>();
         {
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && orderCommonBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderCommonBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = orderCommonBys[filter.OrderBy];
+                var orderExpression = _orderCommonBys[filter.OrderBy];
 
                 if (filter.IsDesc)
                 {
@@ -419,9 +419,9 @@ var messages = new List<string>();
         {
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && orderPublicBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderPublicBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = orderPublicBys[filter.OrderBy];
+                var orderExpression = _orderPublicBys[filter.OrderBy];
 
                 if (filter.IsDesc)
                 {

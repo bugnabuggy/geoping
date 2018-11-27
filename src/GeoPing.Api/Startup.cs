@@ -20,13 +20,13 @@ namespace GeoPing.Api
 {
     public class Startup
     {
-        public IHostingEnvironment _environment;
-        public IConfigurationRoot _configuration { get; }
+        public IHostingEnvironment Environment;
+        public IConfigurationRoot Configuration { get; }
         private AppConfigurator _appConfigurator = new AppConfigurator();
 
         public Startup(IHostingEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
 
 
             var builder = new ConfigurationBuilder()
@@ -35,18 +35,18 @@ namespace GeoPing.Api
                 //.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
-            _configuration = builder.Build();
+            Configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(_configuration);
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddOptions();
-            services.Configure<ApplicationSettings>(_configuration.GetSection("ApplicationSettings"));
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvcCore()
                 .AddFormatterMappings()
@@ -71,7 +71,7 @@ namespace GeoPing.Api
 
             // Configure IdentityServer with in-memory stores, keys, clients and res
             services.AddIdentityServer(options =>
-            options.PublicOrigin = _configuration["ApplicationSettings:Urls:ApiUrl"])
+            options.PublicOrigin = Configuration["ApplicationSettings:Urls:ApiUrl"])
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
@@ -84,7 +84,7 @@ namespace GeoPing.Api
             })
             .AddIdentityServerAuthentication(options =>
             {
-                options.Authority = _configuration["ApplicationSettings:Urls:ApiUrl"];
+                options.Authority = Configuration["ApplicationSettings:Urls:ApiUrl"];
                 options.RequireHttpsMetadata = false;
                 options.ApiName = IdentityServerSettings.ApiName;
                 options.ApiSecret = IdentityServerSettings.ClientSecret;

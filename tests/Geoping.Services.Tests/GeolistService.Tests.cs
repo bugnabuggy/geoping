@@ -21,7 +21,7 @@ namespace GeoPing.Services.Tests
     public class GeolistServiceTests
     {
         private IServiceProvider _services;
-        private IGeolistService sut;
+        private IGeolistService _sut;
 
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
@@ -44,7 +44,7 @@ namespace GeoPing.Services.Tests
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
 
-            sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv);
+            _sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv);
         }
 
 
@@ -62,7 +62,7 @@ namespace GeoPing.Services.Tests
                 IsPublic = true
             };
 
-            sut.Add(testList);
+            _sut.Add(testList);
 
             var testData1 = _geolistRepo.Data.FirstOrDefault(x => x.Id == expectedListId);
 
@@ -78,7 +78,7 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_get_user_list()
         {
-            var result = sut.GetByFilter(_expectedUserId1, new UsersGeolistFilterDTO(), out int totalItems);
+            var result = _sut.GetByFilter(_expectedUserId1, new UsersGeolistFilterDTO(), out int totalItems);
 
             Assert.That(result.Success);
             Assert.AreEqual(3, result.Data.Count());
@@ -89,7 +89,7 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_get_public_lists()
         {
-            var result = sut.GetByFilter(new PublicGeolistFilterDTO(), out int totalItems);
+            var result = _sut.GetByFilter(new PublicGeolistFilterDTO(), out int totalItems);
             Assert.That(result.Success);
             Assert.AreEqual(2, result.Data.Count());
             Assert.AreEqual(2, totalItems);
@@ -99,7 +99,7 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_get_public_users_lists()
         {
-            var result = sut.GetByFilter(_expectedUserId1, new PublicGeolistFilterDTO(), out int totalItems);
+            var result = _sut.GetByFilter(_expectedUserId1, new PublicGeolistFilterDTO(), out int totalItems);
             Assert.That(result.Success);
             Assert.AreEqual(1, result.Data.Count());
             Assert.AreEqual(1, totalItems);
@@ -111,12 +111,12 @@ namespace GeoPing.Services.Tests
         {
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testList = sut.Get(x => x.Id == expectedListId).FirstOrDefault();
+            var testList = _sut.Get(x => x.Id == expectedListId).FirstOrDefault();
 
-            var testTry1 = sut.Delete(_expectedUserId2, testList);
+            var testTry1 = _sut.Delete(_expectedUserId2, testList);
             Assert.That(!testTry1.Success);
 
-            var testTry2 = sut.Delete(_expectedUserId1, testList);
+            var testTry2 = _sut.Delete(_expectedUserId1, testList);
             Assert.That(testTry2.Success);
 
             var data = _geolistRepo.Data.Where(x => x.Id == _listId1).FirstOrDefault();

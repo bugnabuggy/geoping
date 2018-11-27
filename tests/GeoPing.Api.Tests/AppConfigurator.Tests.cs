@@ -27,10 +27,10 @@ namespace GeoPing.Api.Tests
             var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             var ctx = services.GetService<ApplicationDbContext>();
-            var UserRoles = ctx.Roles;
-            var Users = ctx.Users;
+            var userRoles = ctx.Roles;
+            var users = ctx.Users;
             
-            foreach (var identityUser in Users.ToList())
+            foreach (var identityUser in users.ToList())
             {
                 Assert.IsTrue(userManager.Users.Any(u => u.Email.Equals(identityUser.Email)));
                 Assert.IsTrue(userManager.Users.Any(u => u.UserName.Equals(identityUser.UserName)));
@@ -40,7 +40,7 @@ namespace GeoPing.Api.Tests
             var admin = userManager.Users.FirstOrDefault(u => u.UserName.Equals("testadmin"));
             var user = userManager.Users.FirstOrDefault(u => u.UserName.Equals("testuser"));
 
-            foreach(var role in UserRoles.ToList())
+            foreach(var role in userRoles.ToList())
             {
                 Assert.IsTrue(userManager.IsInRoleAsync(admin, role.Name).Result);
             }

@@ -18,7 +18,7 @@ namespace GeoPing.Services.Tests
     public class GeopointServiceTests
     {
         private IServiceProvider _services;
-        private IGeopointService sut;
+        private IGeopointService _sut;
 
         private IRepository<GeoPoint> _geopointRepo;
         private readonly TestPoints _testPoints = new TestPoints();
@@ -30,7 +30,7 @@ namespace GeoPing.Services.Tests
 
             _geopointRepo = _services.GetRequiredService<IRepository<GeoPoint>>();
 
-            sut = new GeopointService(_geopointRepo);
+            _sut = new GeopointService(_geopointRepo);
         }
         
         [Test]
@@ -48,7 +48,7 @@ namespace GeoPing.Services.Tests
                 ListId = expectedListId
             };
 
-            var result = sut.Add(testPoint);
+            var result = _sut.Add(testPoint);
 
             Assert.That(result.Success);
             Assert.That(result.Data != null);
@@ -64,12 +64,12 @@ namespace GeoPing.Services.Tests
         {
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testData1 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(), out int totalItems1);
+            var testData1 = _sut.GetByFilter(expectedListId, new GeopointFilterDTO(), out int totalItems1);
 
             Assert.That(testData1.Data != null);
             Assert.That(3, Is.EqualTo(totalItems1));
 
-            var testData2 = sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ Name = "Not" }, out int totalItems2);
+            var testData2 = _sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ Name = "Not" }, out int totalItems2);
 
             Assert.That(testData2.Data != null);
             Assert.That(1, Is.EqualTo(totalItems2));
@@ -80,9 +80,9 @@ namespace GeoPing.Services.Tests
         {
             var expectedPointId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testPoint = sut.Get(x => x.Id == expectedPointId).FirstOrDefault();
+            var testPoint = _sut.Get(x => x.Id == expectedPointId).FirstOrDefault();
 
-            var result = sut.Delete(testPoint);
+            var result = _sut.Delete(testPoint);
 
             Assert.That(result.Success);
 
@@ -99,7 +99,7 @@ namespace GeoPing.Services.Tests
             var pointIds = "&#," + expectedPointId + "," + "446131617979416," + 
                            "10000000-0000-0000-0000-000000000005," + "10000000-0000-0000-0000-000000000004,";
 
-            var result = sut.Delete(pointIds);
+            var result = _sut.Delete(pointIds);
 
             Assert.That(result.Success);
 

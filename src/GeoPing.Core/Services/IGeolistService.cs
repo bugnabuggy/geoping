@@ -18,12 +18,12 @@ namespace GeoPing.Core.Services
         OperationResult<GeoList> Add(GeoList item);
         OperationResult<GeoList> Update(Guid userId, GeoList item);
         OperationResult<GeoList> Delete(Guid userId, GeoList item);
-        OperationResult Delete(Guid userId, string Ids);
+        OperationResult Delete(Guid userId, string ids);
 
         WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems);
         WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems);
         WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems);
 
-        bool IsListExistWithThisId(string Id, out GeoList list);
+        bool IsListExistWithThisId(string id, out GeoList list);
     }
 }

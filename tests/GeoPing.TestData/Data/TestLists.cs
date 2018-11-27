@@ -7,7 +7,7 @@ namespace GeoPing.TestData.Data
 {
     public class TestLists
     {
-        private readonly ICollection<GeoList> Geolists = new List<GeoList>()
+        private readonly ICollection<GeoList> _geolists = new List<GeoList>()
         {
             new GeoList
             {
@@ -41,7 +41,7 @@ namespace GeoPing.TestData.Data
             }
         };
 
-        private readonly ICollection<PublicList> PublicGeolists = new List<PublicList>()
+        private readonly ICollection<PublicList> _publicGeolists = new List<PublicList>()
         {
             new PublicList()
             {
@@ -59,12 +59,12 @@ namespace GeoPing.TestData.Data
 
         public ICollection<GeoList> GetGeolists()
         {
-            return Geolists;
+            return _geolists;
         }
 
         public ICollection<PublicList> GetPublicGeolists()
         {
-            return PublicGeolists;
+            return _publicGeolists;
         }
     }
 }

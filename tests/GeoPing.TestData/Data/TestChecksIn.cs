@@ -7,7 +7,7 @@ namespace GeoPing.TestData.Data
 {
     public class TestChecksIn
     {
-        private ICollection<CheckIn> ChecksIn = new List<CheckIn>()
+        private ICollection<CheckIn> _checksIn = new List<CheckIn>()
         {
             new CheckIn
             {
@@ -53,7 +53,7 @@ namespace GeoPing.TestData.Data
 
         public ICollection<CheckIn> GetChecksIn()
         {
-            return ChecksIn;
+            return _checksIn;
         }
     }
 }

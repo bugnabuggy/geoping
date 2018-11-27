@@ -6,18 +6,18 @@ namespace GeoPing.Utilities.EmailSender.Models
 {
     class ConfirmationEmail
     {
-        private string _userName { get; set; }
-        private string _link { get; set; }
+        private string UserName { get; set; }
+        private string Link { get; set; }
 
         public ConfirmationEmail(string username, string link)
         {
-            _userName = username;
-            _link = link;
+            UserName = username;
+            Link = link;
         }
 
         public string GetMail()
         {
-            string mail = $"<a href='{_link}'>CLICK ME</a> or the link below. {_link}";
+            string mail = $"<a href='{Link}'>CLICK ME</a> or the link below. {Link}";
 
             //string mail = $"Greetings {_userName}, \n" + "We have received your request to create an " +
             //              $"account on Geoping.info with the name {_userName} on {DateTime.UtcNow.ToLongDateString()}.\n" +

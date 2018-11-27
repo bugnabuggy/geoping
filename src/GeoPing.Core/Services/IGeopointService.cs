@@ -15,6 +15,6 @@ namespace GeoPing.Core.Services
 
         OperationResult Delete(string ids);
 
-        bool IsPointExistWithThisId(string Id, Guid ListId, out GeoPoint point);
+        bool IsPointExistWithThisId(string id, Guid listId, out GeoPoint point);
     }
 }

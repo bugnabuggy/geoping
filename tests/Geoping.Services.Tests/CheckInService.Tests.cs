@@ -17,7 +17,7 @@ namespace GeoPing.Services.Tests
     public class CheckInServiceTests
     {
         private IServiceProvider _services;
-        private ICheckInService sut;
+        private ICheckInService _sut;
 
         private IRepository<CheckIn> _checkInRepo;
         private IGeolistService _listSrv;
@@ -31,7 +31,7 @@ namespace GeoPing.Services.Tests
             _listSrv = _services.GetRequiredService<IGeolistService>();
             _pointSrv = _services.GetRequiredService<IGeopointService>();
             _checkInRepo = _services.GetRequiredService<IRepository<CheckIn>>();
-            sut = new CheckInService(_listSrv, _pointSrv, _checkInRepo);
+            _sut = new CheckInService(_listSrv, _pointSrv, _checkInRepo);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace GeoPing.Services.Tests
                 Date = DateTime.UtcNow,
                 UserId = _expectedUserId
             };
-            sut.AddCheckIn(testItem);
+            _sut.AddCheckIn(testItem);
 
             var data = _checkInRepo.Data.FirstOrDefault(x => x.Id == expectedItemId);
 
@@ -59,7 +59,7 @@ namespace GeoPing.Services.Tests
             var expectedItemId = Guid.Parse("10000000-0000-0000-0000-000000000002");
             var expectedPointId = "10000000-0000-0000-0000-000000000001";
 
-            var data = sut.GetCheckIn(expectedPointId, _expectedUserId);
+            var data = _sut.GetCheckIn(expectedPointId, _expectedUserId);
 
             Assert.That(data.Success);
             Assert.That(data.Data != null);
@@ -72,7 +72,7 @@ namespace GeoPing.Services.Tests
             var expectedItemId = Guid.Parse("10000000-0000-0000-0000-000000000002");
             var expectedListId = "10000000-0000-0000-0000-000000000001";
 
-            var data = sut.GetChecksIn(expectedListId, _expectedUserId);
+            var data = _sut.GetChecksIn(expectedListId, _expectedUserId);
 
             Assert.That(data.Success);
             Assert.That(data.Data != null);

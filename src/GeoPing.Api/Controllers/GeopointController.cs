@@ -32,11 +32,11 @@ namespace GeoPing.Api.Controllers
 
         // GET api/geolist/{ListId}/geopoint
         [HttpGet]
-        public IActionResult GetPointsByFilter(string ListId, GeopointFilterDTO filter)
+        public IActionResult GetPointsByFilter(string listId, GeopointFilterDTO filter)
         {
-            if (!_geolistSrv.IsListExistWithThisId(ListId, out GeoList list))
+            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
             {
-                return BadRequest($"There is no list with Id = [{ListId}].");
+                return BadRequest($"There is no list with Id = [{listId}].");
             }
 
             var result = _geopointSrv.GetByFilter(list.Id, filter, out int totalItems);
@@ -51,16 +51,16 @@ namespace GeoPing.Api.Controllers
         // GET api/geolist/{ListId}/geopoint/{Id}
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetPoint(string ListId, string Id)
+        public IActionResult GetPoint(string listId, string id)
         {
-            if (!_geolistSrv.IsListExistWithThisId(ListId, out GeoList list))
+            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
             {
-                return BadRequest($"There is no list with Id = [{ListId}].");
+                return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_geopointSrv.IsPointExistWithThisId(Id, list.Id, out GeoPoint point))
+            if (!_geopointSrv.IsPointExistWithThisId(id, list.Id, out GeoPoint point))
             {
-                return BadRequest($"There is no point with Id = [{Id}] in list with Id = [{ListId}].");
+                return BadRequest($"There is no point with Id = [{id}] in list with Id = [{listId}].");
             }
 
             return Ok(point);
@@ -68,11 +68,11 @@ namespace GeoPing.Api.Controllers
 
         // POST api/geolist/{ListId}/geopoint/
         [HttpPost]
-        public IActionResult AddPoint(string ListId, [FromBody]GeopointDTO item)
+        public IActionResult AddPoint(string listId, [FromBody]GeopointDTO item)
         {
-            if (!_geolistSrv.IsListExistWithThisId(ListId, out GeoList list))
+            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
             {
-                return BadRequest($"There is no list with Id = [{ListId}].");
+                return BadRequest($"There is no list with Id = [{listId}].");
             }
 
             var point = new GeoPoint()
@@ -98,16 +98,16 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{ListId}/geopoint/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditPoint(string ListId, string Id, [FromBody]GeopointDTO item)
+        public IActionResult EditPoint(string listId, string id, [FromBody]GeopointDTO item)
         {
-            if (!_geolistSrv.IsListExistWithThisId(ListId, out GeoList list))
+            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
             {
-                return BadRequest($"There is no list with Id = [{ListId}].");
+                return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_geopointSrv.IsPointExistWithThisId(Id, list.Id, out GeoPoint point))
+            if (!_geopointSrv.IsPointExistWithThisId(id, list.Id, out GeoPoint point))
             {
-                return BadRequest($"There is no point with Id = [{Id}] in list with Id = [{ListId}].");
+                return BadRequest($"There is no point with Id = [{id}] in list with Id = [{listId}].");
             }
 
             point.Latitude = item.Latitude;
@@ -129,14 +129,14 @@ namespace GeoPing.Api.Controllers
 
         // DELETE api/geolist/{ListId}/geopoint/
         [HttpDelete]
-        public IActionResult RemovePoints(string ListId, string Ids)
+        public IActionResult RemovePoints(string listId, string ids)
         {
-            if (!_geolistSrv.IsListExistWithThisId(ListId, out GeoList list))
+            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
             {
-                return BadRequest($"There is no list with Id = [{ListId}].");
+                return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            var result = _geopointSrv.Delete(Ids);
+            var result = _geopointSrv.Delete(ids);
 
             if (result.Success)
             {
@@ -149,16 +149,16 @@ namespace GeoPing.Api.Controllers
         // DELETE api/geolist/{ListId}/geopoint/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemovePoint(string ListId, string Id)
+        public IActionResult RemovePoint(string listId, string id)
         {
-            if (!_geolistSrv.IsListExistWithThisId(ListId, out GeoList list))
+            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
             {
-                return BadRequest($"There is no list with Id = [{ListId}].");
+                return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_geopointSrv.IsPointExistWithThisId(Id, list.Id, out GeoPoint point))
+            if (!_geopointSrv.IsPointExistWithThisId(id, list.Id, out GeoPoint point))
             {
-                return BadRequest($"There is no point with Id = [{Id}] in list with Id = [{ListId}].");
+                return BadRequest($"There is no point with Id = [{id}] in list with Id = [{listId}].");
             }
 
             var result = _geopointSrv.Delete(point);
