@@ -1,6 +1,6 @@
 ﻿using GeoPing.Utilities.EmailSender.Models;
 
-namespace GeoPing.Utilities.EmailSender.Interfaces
+namespace GeoPing.Utilities.EmailSender
 {
     public interface IEmailService
     {

@@ -1,13 +1,38 @@
-﻿namespace GeoPing.Core
+﻿using System.Collections.Generic;
+
+namespace GeoPing.Core
 {
     public class ApplicationSettings
     {
-        public UrlsSettings Urls { get; set; }
-        public IdentityServerSettings IdentityServer { get; set; }
-        public EmailSenderSettings EmailSender { get; set; }
-        public LoggerSettings Logger { get; set; }
-        public DefaultUserSettings DefaultUser { get; set; }
         public AutoCompleteSettings AutoComplete { get; set; }
+        public DefaultUserSettings DefaultUser { get; set; }
+        public EmailSenderSettings EmailSender { get; set; }
+        public GeopingTokenSettings GeopingToken { get; set; }
+        public IdentityServerSettings IdentityServer { get; set; }
+        public LoggerSettings Logger { get; set; }
+        public UrlsSettings Urls { get; set; }
+    }
+
+    public class GeopingTokenSettings
+    {
+        public TokenLifetimeSettings TokenLifetime { get; set; }
+    }
+
+    public class TokenLifetimeSettings
+    {
+        public int Sharing { get; set; }
+        public int SharingInvite { get; set; }
+
+        public int GetValue(string type)
+        {
+            var value = new Dictionary<string, int>()
+            {
+                { "Sharing", Sharing },
+                { "SharingInvite", SharingInvite}
+            };
+
+            return value[type];
+        }
     }
 
     public class AutoCompleteSettings
@@ -18,12 +43,11 @@
 
     public class DefaultUserSettings
     {
-        public string AvatarImage { get; set; }
+        public static string AvatarImage { get; set; }
     }
 
     public class LoggerSettings
     {
-
         public bool IsScopesIncluded { get; set; }
         public string LogLevelDefault { get; set; }
         public InternalLogSettings InternalLog { get; set; }

@@ -11,7 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Geoping.Services;
+using GeoPing.Core;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Utilities.EmailSender;
+using Moq;
+using Microsoft.Extensions.Options;
 
 namespace GeoPing.Services.Tests
 {
@@ -24,6 +28,10 @@ namespace GeoPing.Services.Tests
         private ILogger<AccountService> _logger;
         private IGPUserService _gpUserSrv;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private IGeopingTokenService _tokenSrv;
+        private ISharingService _sharingSrv;
+        private IEmailService _emailSrv;
+        private IOptions<ApplicationSettings> _settings;
 
         private string _identityId;
         private Guid _gpUserId;
@@ -36,9 +44,19 @@ namespace GeoPing.Services.Tests
             _logger = _services.GetRequiredService<ILogger<AccountService>>();
             _gpUserSrv = _services.GetRequiredService<IGPUserService>();
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
-            _accountSrv = new AccountService(_userManager,
-                                             _logger,
-                                             _gpUserSrv);
+            _tokenSrv = _services.GetRequiredService<IGeopingTokenService>();
+            _sharingSrv = _services.GetRequiredService<ISharingService>();
+            _emailSrv = new Mock<IEmailService>().Object;
+            _settings = new Mock<IOptions<ApplicationSettings>>().Object;
+
+            _accountSrv = new AccountService
+                (_userManager,
+                _logger,
+                _gpUserSrv,
+                _tokenSrv,
+                _sharingSrv,
+                _emailSrv,
+                _settings);
 
             _identityId = _userManager.FindByNameAsync("testadmin").Result.Id;
             _gpUserId = _gpUserRepo.Data.FirstOrDefault(x => x.IdentityId == _identityId).Id;

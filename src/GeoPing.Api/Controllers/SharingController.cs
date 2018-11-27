@@ -9,9 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GeoPing.Core.Models.Entities;
-using GeoPing.Utilities.EmailSender.Interfaces;
-using GeoPing.Utilities.EmailSender.Models;
+using GeoPing.Core.Models.DTO;
 
 namespace GeoPing.Api.Controllers
 {
@@ -22,80 +20,121 @@ namespace GeoPing.Api.Controllers
     {
         private ISharingService _shareSrv;
         private IClaimsHelper _helper;
-        private IEmailService _emailSvc;
 
         public SharingController(ISharingService shareSrv,
-                                 IClaimsHelper helper,
-                                 IEmailService emailSvc)
+                                 IClaimsHelper helper)
         {
             _shareSrv = shareSrv;
             _helper = helper;
-            _emailSvc = emailSvc;
         }
 
+        // GET api/users
         [HttpGet]
-        [Route("invite")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmInvitation(string token)
+        [Route("autocomplete")]
+        public IActionResult GetUsers(string query)
         {
-            var result = await _shareSrv.ConfirmInvitationAsync(_helper.GetIdentityUserIdByClaims(User.Claims), token);
+            var result = _shareSrv.GetAutoCompletedUsersList(query);
+
+            return Ok(result);
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        public IActionResult GetAllSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId));
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        [Route("new")]
+        public IActionResult GetNewSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId && 
+                                                    x.Status == "pending"));
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        [Route("accepted")]
+        public IActionResult GetAcceptedSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId &&
+                                                    x.Status == "accepted"));
+        }
+
+        // DELETE api/sharing/{sharingId}
+        [HttpDelete]
+        [Route("{sharingId}")]
+        public IActionResult RefuseSharing(string sharingId)
+        {
+            var result = _shareSrv.DeleteSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {
                 return Ok(result);
             }
-            else if (result.Data.Equals("302-1"))
+            else if (result.Messages.Contains("Unauthorized"))
             {
-                return Redirect("~/register");
+                return Unauthorized();
             }
-            else if (result.Data.Equals("302-2"))
-            {
-                return Redirect("~/connect/token");
-            }
+
             return BadRequest(result);
         }
 
-        [HttpGet]
-        [Route("invite/{listId}/accept")]
-        public IActionResult AcceptInvite(string listId)
-        {
-            var result = _shareSrv.AcceptInvite(_helper.GetAppUserIdByClaims(User.Claims), listId);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
+        // POST api/sharing/invitation/{sharingId}
         [HttpPost]
-        [Route("invite/{listId}")]
-        public IActionResult InviteUser(string listId, string email)
+        [Route("invitation/{sharingId}")]
+        public IActionResult AcceptInvite(string sharingId)
         {
-            var user = _helper.GetAppUserByClaims(User.Claims);
-
-            var result = _shareSrv.InviteByEmail(user.Id, listId, email);
+            var result = _shareSrv.AcceptSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {
-                var code = ((GeoPingToken)result.Data).Token;
-
-                SendInvitationEmail(email,
-                                    code,
-                                    "ConfirmInvitation",
-                                    $"{user.FirstName} {user.LastName} \"{user.Login}\" shared geolist with you");
-
                 return Ok(result);
             }
 
             return BadRequest(result);
         }
 
+        // DELETE api/sharing/invitation/{sharingId}
+        [HttpDelete]
+        [Route("invitation/{sharingId}")]
+        public IActionResult RefuseInvite(string sharingId)
+        {
+            var result = _shareSrv.DeclineSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
+            if (result.Success)
+            {
+                return Ok(result);
+            }
 
+            return BadRequest(result);
+        }
+
+        // POST api/sharing/{listId}
+        [HttpPost]
+        [Route("{listId}")]
+        public async Task<IActionResult> InviteUsers(string listId, [FromBody]string[] users)
+        {
+            var result = await _shareSrv.InviteUsersByList(_helper.GetAppUserIdByClaims(User.Claims), listId, users);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
 
         [HttpGet]
-        [Route("allowed-users")]
+        [Route("{listId}/allowed-users")]
         public IActionResult GetAllowedUsers(string listId)
         {
             var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
@@ -106,30 +145,6 @@ namespace GeoPing.Api.Controllers
             }
 
             return BadRequest(result);
-        }
-
-        private void SendInvitationEmail(string email, string code, string action, string subject)
-        {
-            var callbackUrl = Url.Action(action,
-                                         "Sharing",
-                                         new { token = code },
-                                         protocol: HttpContext.Request.Scheme);
-
-            _emailSvc.Send(new EmailMessage()
-            {
-                FromAddress = new EmailAddress()
-                {
-                    Name = "GeopingTeam",
-                    Address = "test@geoping.info"
-                },
-                ToAddress = new EmailAddress()
-                {
-                    Name = email,
-                    Address = email
-                },
-                Subject = subject,
-                Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
-            });
         }
     }
 }

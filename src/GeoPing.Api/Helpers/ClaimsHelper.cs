@@ -25,7 +25,6 @@ namespace GeoPing.Api.Helpers
 
         public string GetIdentityUserIdByClaims(IEnumerable<Claim> claims)
         {
-            // TODO: solve nullreference exception
             return claims.Any()
                    ? claims.FirstOrDefault(c => c.Type.Equals("sub")).Value
                    : null;

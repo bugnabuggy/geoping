@@ -1,18 +1,19 @@
-﻿using GeoPing.Utilities.EmailSender.Interfaces;
+﻿using GeoPing.Core;
 using GeoPing.Utilities.EmailSender.Models;
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 
-namespace GeoPing.Utilities.EmailSender.Services
+namespace GeoPing.Utilities.EmailSender
 {
     public class EmailService : IEmailService
     {
-        private readonly IEmailConfiguration _emailCfg;
+        private readonly ApplicationSettings _settings;
 
-        public EmailService(IEmailConfiguration emailCfg)
+        public EmailService(IOptions<ApplicationSettings> settings)
         {
-            _emailCfg = emailCfg;
+            _settings = settings.Value;
         }
 
         public void Send(EmailMessage msg)
@@ -29,11 +30,20 @@ namespace GeoPing.Utilities.EmailSender.Services
             };
 
             using (var emailClient = new SmtpClient())
-         {
-                emailClient.Connect(_emailCfg.SmtpServer, _emailCfg.SmtpPort, _emailCfg.UseSecureConnection);
+            {
+                emailClient.Connect
+                    (_settings.EmailSender.SmtpServer,
+                    _settings.EmailSender.SmtpPort,
+                    _settings.EmailSender.UseSecureConnection);
+
                 emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
-                emailClient.Authenticate(_emailCfg.SmtpUserName, _emailCfg.SmtpPassword);
+
+                emailClient.Authenticate
+                    (_settings.EmailSender.SmtpUserName,
+                    _settings.EmailSender.SmtpPassword);
+
                 emailClient.Send(message);
+
                 emailClient.Disconnect(true);
             }
         }

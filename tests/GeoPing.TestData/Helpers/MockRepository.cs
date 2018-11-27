@@ -47,7 +47,7 @@ namespace GeoPing.TestData.Helpers
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, string includePropeties)
+        public IEnumerable<T> Get(Expression<Func<T, bool>> filter)
         {
             throw new NotImplementedException();
         }

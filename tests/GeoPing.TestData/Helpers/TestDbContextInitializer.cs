@@ -1,11 +1,9 @@
 ﻿using GeoPing.Api.Configuration;
-using GeoPing.Core.Models;
-using GeoPing.Infrastructure.Data;
-using GeoPing.Infrastructure.Models;
+using GeoPing.Api.Configuration.SeededData;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,8 +12,6 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using GeoPing.Api.Configuration.SeededData;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.TestData.Helpers
 {

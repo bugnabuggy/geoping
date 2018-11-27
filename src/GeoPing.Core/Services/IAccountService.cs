@@ -22,5 +22,6 @@ namespace GeoPing.Core.Services
         OperationResult<ShortUserInfoDTO> GetShortProfile(Guid userId);
         OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);
         OperationResult<GeoPingUser> EditProfileAvatar(Guid guid, ProfileAvatarDTO avatar);
+        Task<OperationResult> ResetRassword(ResetPasswordDTO form);
     }
 }

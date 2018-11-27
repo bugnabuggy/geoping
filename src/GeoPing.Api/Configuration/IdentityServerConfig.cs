@@ -15,7 +15,7 @@ namespace GeoPing.Api.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(Constants.ApiName, "GeopingAPI")
+                new ApiResource(IdentityServerSettings.ApiName, "GeopingAPI")
             };
         }
 
@@ -27,7 +27,7 @@ namespace GeoPing.Api.Configuration
                 new Client
                 {
 
-                    ClientId = Constants.ClientId,
+                    ClientId = IdentityServerSettings.ClientId,
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
@@ -38,12 +38,12 @@ namespace GeoPing.Api.Configuration
 
                     ClientSecrets =
                     {
-                        new Secret(Constants.ClientSecret.Sha256())
+                        new Secret(IdentityServerSettings.ClientSecret.Sha256())
                     },
 
                     AllowedScopes =
                     {
-                        Constants.ApiName
+                        IdentityServerSettings.ApiName
                     },
 
                     AllowOfflineAccess = true

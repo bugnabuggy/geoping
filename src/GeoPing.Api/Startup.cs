@@ -1,7 +1,6 @@
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
-using GeoPing.Utilities.EmailSender;
 using GeoPing.Utilities.Logger;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
@@ -15,10 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Geoping.Services;
 using GeoPing.Core;
-using GeoPing.Utilities.EmailSender.Interfaces;
-using GeoPing.Utilities.EmailSender.Services;
 
 namespace GeoPing.Api
 {
@@ -90,8 +86,8 @@ namespace GeoPing.Api
             {
                 options.Authority = _configuration["ApplicationSettings:Urls:ApiUrl"];
                 options.RequireHttpsMetadata = false;
-                options.ApiName = _configuration["ApplicationSettings:IdentityServer:ApiName"];
-                options.ApiSecret = _configuration["ApplicationSettings:IdentityServer:ClientSecret"];
+                options.ApiName = IdentityServerSettings.ApiName;
+                options.ApiSecret = IdentityServerSettings.ClientSecret;
             });
 
             // Removing cookie authentitication

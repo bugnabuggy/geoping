@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using GeoPing.Core;
+﻿using GeoPing.Core;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
@@ -8,22 +6,43 @@ using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GeoPing.Utilities.EmailSender;
+using Microsoft.Extensions.Options;
+using GeoPing.Utilities.EmailSender.Models;
 
 namespace Geoping.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<AppIdentityUser> _userManager;
-        private readonly ILogger<AccountService> _logger;
+        private UserManager<AppIdentityUser> _userManager;
+        private ILogger<AccountService> _logger;
         private IGPUserService _gpUserSrv;
+        private IGeopingTokenService _tokenSrv;
+        private ISharingService _sharingSrv;
+        private IEmailService _emailSrv;
+        private ApplicationSettings _settings; 
 
-        public AccountService(UserManager<AppIdentityUser> userManager,
-                              ILogger<AccountService> logger,
-                              IGPUserService gpUserSrv)
+        public AccountService
+            (UserManager<AppIdentityUser> userManager,
+            ILogger<AccountService> logger,
+            IGPUserService gpUserSrv,
+            IGeopingTokenService tokenSrv,
+            ISharingService sharingSrv,
+            IEmailService emailSrv,
+            IOptions<ApplicationSettings> settings)
         {
             _userManager = userManager;
             _logger = logger;
             _gpUserSrv = gpUserSrv;
+            _tokenSrv = tokenSrv;
+            _sharingSrv = sharingSrv;
+            _emailSrv = emailSrv;
+            _settings = settings.Value;
         }
 
         public async Task<OperationResult> RegisterAsync(RegisterUserDTO registerUser)
@@ -54,7 +73,43 @@ namespace Geoping.Services
                                        $"Email = [{user.Email}], " +
                                        $"Username = [{user.UserName}].");
 
-                _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+                var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+
+                // TOKEN ACTIONS ==================================================================
+
+                var token = _tokenSrv.GetToken(registerUser.Token);
+
+                if (token != null)
+                {
+                    switch (token.Type)
+                    {
+                        case "SharingInvite":
+                            {
+                                _sharingSrv.ConfirmSharingWithRegistration
+                                    (token.Value, gpUser.Id, user.Email);
+
+                                _tokenSrv.MarkAsUsed(token.Token);
+
+                                break;
+                            }
+
+                        default:
+                            break;
+                    }
+                }
+
+                // ================================================================================
+
+                if (_settings.EmailSender.IsEmailConfirmEnable)
+                {
+                    var code = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+
+                    SendSecurityEmail(user, code, "ConfirmEmail", "Registration on GeoPing.info");
+                }
+                else
+                {
+                    await ConfirmAccountWithoutEmailAsync(registerUser.Email);
+                }
 
                 return new OperationResult
                 {
@@ -91,6 +146,34 @@ namespace Geoping.Services
             {
                 Success = false,
                 Messages = new[] { "There was fault while changing password. Check if the old password is correct" }
+            };
+        }
+
+        public async Task<OperationResult> ResetRassword(ResetPasswordDTO form)
+        {
+            var user = await _userManager.FindByEmailAsync(form.UserData);
+
+            if (user == null)
+            {
+                user = await _userManager.FindByNameAsync(form.UserData);
+
+                if (user == null)
+                {
+                    return new OperationResult()
+                    {
+                        Messages = new [] { "There is no user with given login or email" }
+                    };
+                }
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
+
+            return new OperationResult()
+            {
+                Success = true,
+                Messages = new[] { "A password reset confirmation email has been sent to email address you specified" }
             };
         }
 
@@ -152,7 +235,6 @@ namespace Geoping.Services
             {
                 Messages = new[] { "Something went wrong while password reset. Try again later" }
             };
-
         }
 
         public async Task ConfirmAccountWithoutEmailAsync(string userEmail)
@@ -229,46 +311,25 @@ namespace Geoping.Services
             };
         }
 
-        public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, string avatar)
-        {
-            var user = _gpUserSrv.GetUser(x => x.Id == userId);
-
-            user.Avatar = avatar ?? DefaultUserSettings.AvatarImage;
-
-            var result = _gpUserSrv.EditUser(user);
-
-            if (result.Success)
-            {
-                return new OperationResult<GeoPingUser>()
-                {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile was edited successfully" }
-                };
-            }
-
-            return new OperationResult<GeoPingUser>()
-            {
-                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
-            };
-        }
-
         public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
         {
-            var user = _gpUserSrv.GetUser(x => x.Id == userId);
-
-            user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
-
-            var result = _gpUserSrv.EditUser(user);
-
-            if (result.Success)
+            if (item != null)
             {
-                return new OperationResult<GeoPingUser>()
+                var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+                user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
+
+                var result = _gpUserSrv.EditUser(user);
+
+                if (result.Success)
                 {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile avatar was edited successfully" }
-                };
+                    return new OperationResult<GeoPingUser>()
+                    {
+                        Data = user,
+                        Success = true,
+                        Messages = new[] { "Your profile avatar was edited successfully" }
+                    };
+                }
             }
 
             return new OperationResult<GeoPingUser>()
@@ -301,6 +362,47 @@ namespace Geoping.Services
                 return true;
             }
             return false;
+        }
+
+        private void SendSecurityEmail(AppIdentityUser user, string code, string action, string subject)
+        {
+            // TODO: CAN I MAKE THIS PART BETTER WITHOUT SPEED LOSS?
+            //====================================================================================
+            var baseUrl = _settings.Urls.SiteUrl;
+            string actionEndpoint = null;
+
+            switch (action)
+            {
+                case "ConfirmEmail":
+                    actionEndpoint = _settings.Urls.ActionsUrl.ConfirmEmail;
+                    break;
+
+                case "ConfirmReset":
+                    actionEndpoint = _settings.Urls.ActionsUrl.ConfirmReset;
+                    break;
+
+                default:
+                    break;
+            }
+
+            string callbackUrl = $"{baseUrl}/{actionEndpoint}?UserId={user.Id}&Token={code}";
+            //====================================================================================
+
+            _emailSrv.Send(new EmailMessage()
+            {
+                FromAddress = new EmailAddress()
+                {
+                    Name = "GeopingTeam",
+                    Address = _settings.EmailSender.SmtpUserName
+                },
+                ToAddress = new EmailAddress()
+                {
+                    Name = user.UserName,
+                    Address = user.Email
+                },
+                Subject = subject,
+                Content = _emailSrv.GetConfirmationMail(user.UserName, callbackUrl)
+            });
         }
     }
 }
