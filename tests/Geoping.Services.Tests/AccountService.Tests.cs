@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using Geoping.Services;
 using GeoPing.Core;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Utilities.EmailSender;

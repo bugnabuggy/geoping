@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Api.Tests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Infrastructure", "src\GeoPing.Infrastructure\GeoPing.Infrastructure.csproj", "{0CF2A9B5-8109-4F5A-B2E9-958B55BE33EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geoping.Services", "src\Geoping.Services\Geoping.Services.csproj", "{55A77FD3-C1E7-4346-B852-6244627982F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Services", "src\Geoping.Services\GeoPing.Services.csproj", "{55A77FD3-C1E7-4346-B852-6244627982F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoPing.Services.Tests", "tests\Geoping.Services.Tests\GeoPing.Services.Tests.csproj", "{5DC12290-7982-4F5D-8719-9E5D52313D4C}"
 	ProjectSection(ProjectDependencies) = postProject

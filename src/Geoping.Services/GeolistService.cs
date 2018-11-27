@@ -8,7 +8,7 @@ using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class GeolistService : IGeolistService
     {

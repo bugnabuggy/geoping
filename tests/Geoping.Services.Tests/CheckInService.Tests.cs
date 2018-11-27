@@ -1,5 +1,4 @@
-﻿using Geoping.Services;
-using GeoPing.Core.Services;
+﻿using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;

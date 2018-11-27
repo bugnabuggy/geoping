@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using Geoping.Services;
 using GeoPing.Api.Configuration.SeededData;
 using GeoPing.Core;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Services;
 
 namespace GeoPing.Api.Configuration
 {
