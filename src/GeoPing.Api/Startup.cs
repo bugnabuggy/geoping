@@ -39,9 +39,11 @@ namespace GeoPing.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
+
             services.AddOptions();
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
-
+                        
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -68,7 +70,7 @@ namespace GeoPing.Api
 
             // Configure IdentityServer with in-memory stores, keys, clients and res
             services.AddIdentityServer(options =>
-            options.PublicOrigin = Configuration["ApplicationSettings:Urls:ApiUrl"])
+            options.PublicOrigin = IdentityServerSettings.ServerUrl)
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
@@ -81,10 +83,10 @@ namespace GeoPing.Api
             })
             .AddIdentityServerAuthentication(options =>
             {
-                options.Authority = Configuration["ApplicationSettings:Urls:ApiUrl"];
+                options.Authority = IdentityServerSettings.ServerUrl;
                 options.RequireHttpsMetadata = false;
-                options.ApiName = Configuration["ApplicationSettings:IdentityServer:ApiName"];
-                options.ApiSecret = Configuration["ApplicationSettings:IdentityServer:ClientSecret"];
+                options.ApiName = IdentityServerSettings.ApiName;
+                options.ApiSecret = IdentityServerSettings.ClientSecret;
             });
 
             // Removing cookie authentitication

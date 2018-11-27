@@ -8,7 +8,6 @@ namespace GeoPing.Core
         public DefaultUserSettings DefaultUser { get; set; }
         public EmailSenderSettings EmailSender { get; set; }
         public GeopingTokenSettings GeopingToken { get; set; }
-        public IdentityServerSettings IdentityServer { get; set; }
         public LoggerSettings Logger { get; set; }
         public UrlsSettings Urls { get; set; }
     }
@@ -98,13 +97,5 @@ namespace GeoPing.Core
         public string ConfirmEmail { get; set; }
         public string ConfirmReset { get; set; }
         public string ByToken { get; set; }
-    }
-
-    public class IdentityServerSettings
-    {
-        public static int AccessTokenLifetime { get; set; }
-        public static string ApiName { get; set; }
-        public static string ClientId { get; set; }
-        public static string ClientSecret { get; set; }
     }
 }
