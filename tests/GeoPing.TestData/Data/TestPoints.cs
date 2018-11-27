@@ -1,13 +1,12 @@
-﻿using GeoPing.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.TestData.Data
 {
     public class TestPoints
     {
-        private readonly ICollection<GeoPoint> Geopoints = new List<GeoPoint>()
+        private readonly ICollection<GeoPoint> _geopoints = new List<GeoPoint>()
         {
             new GeoPoint
             {
@@ -45,7 +44,7 @@ namespace GeoPing.TestData.Data
 
         public ICollection<GeoPoint> GetGeopoints()
         {
-            return Geopoints;
+            return _geopoints;
         }
     }
 }

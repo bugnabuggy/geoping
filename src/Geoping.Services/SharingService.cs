@@ -1,18 +1,19 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
+﻿using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.Utilities.EmailSender;
+using GeoPing.Utilities.EmailSender.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using GeoPing.Core.Models.DTO;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using GeoPing.Core;
+using Microsoft.Extensions.Options;
 
 namespace Geoping.Services
 {
@@ -27,7 +28,7 @@ namespace Geoping.Services
         private UserManager<AppIdentityUser> _userManager;
         private IValidationService _validator;
         private IEmailService _emailSvc;
-        private IConfiguration _cfg;
+        private ApplicationSettings _settings;
 
         public SharingService
             (IRepository<ListSharing> shareRepo,
@@ -39,7 +40,7 @@ namespace Geoping.Services
             UserManager<AppIdentityUser> userManager,
             IValidationService validator,
             IEmailService emailSvc,
-            IConfiguration cfg)
+            IOptions<ApplicationSettings> settings)
         {
             _shareRepo = shareRepo;
             _securitySrv = securitySrv;
@@ -50,16 +51,16 @@ namespace Geoping.Services
             _userManager = userManager;
             _validator = validator;
             _emailSvc = emailSvc;
-            _cfg = cfg;
+            _settings = settings.Value;
         }
 
         public IEnumerable<SharedListInfoDTO> GetSharedLists(Expression<Func<ListSharing, bool>> query)
         {
-            var sharings = _shareRepo.Data.Where(query);
+            var sharings = _shareRepo.Get(query);
 
             var result =
                 from s in sharings
-                join l in _listRepo.Data on s.ListId equals l.Id
+                join l in _listRepo.Get() on s.ListId equals l.Id
                 select new SharedListInfoDTO()
                 {
                     ListId = l.Id,
@@ -89,7 +90,7 @@ namespace Geoping.Services
                 };
             }
 
-            var item = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
+            var item = _shareRepo.Get().FirstOrDefault(x => x.Id == id);
 
             var isUserAllowed =
                 _securitySrv.IsUserHasAccessToManipulateList
@@ -258,8 +259,8 @@ namespace Geoping.Services
 
         private bool IsUserHasBeenInvitedEarlier(string invitedUserEmail, Guid listId, out ListSharing sharing)
         {
-            sharing = _shareRepo.Data.FirstOrDefault(x => x.Email == invitedUserEmail &&
-                                                          x.ListId == listId);
+            sharing = _shareRepo.Get().FirstOrDefault(x => x.Email == invitedUserEmail &&
+                                                           x.ListId == listId);
             if (sharing == null)
             {
                 return false;
@@ -268,30 +269,6 @@ namespace Geoping.Services
             return true;
         }
 
-        private void SendSharingEmail(Guid inviterId, string email, string code)
-        {
-            var inviter = _gpUserSrv.GetUser(x => x.Id == inviterId);
-
-            var callbackUrl = $"{_cfg.GetValue<string>("SiteUrl")}/" +
-                              $"{_cfg.GetValue<string>("UrlForAction:ByToken")}/" +
-                              $"{code}";
-
-            _emailSvc.Send(new EmailMessage()
-            {
-                FromAddress = new EmailAddress()
-                {
-                    Name = "GeopingTeam",
-                    Address = _cfg.GetValue<string>("EmailConfiguration:SmtpUsername")
-                },
-                ToAddress = new EmailAddress()
-                {
-                    Name = email,
-                    Address = email
-                },
-                Subject = $"User {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} shared a geolist with you.",
-                Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
-            });
-        }
 
         public OperationResult AcceptSharingInvite(Guid userId, string sharingId)
         {
@@ -339,27 +316,9 @@ namespace Geoping.Services
             };
         }
 
-        private bool IsSharingExists(string sharingId, out ListSharing sharing)
-        {
-            var isId = Guid.TryParse(sharingId, out var id);
-            sharing = null;
-
-            if (isId)
-            {
-                sharing = _shareRepo.Data.FirstOrDefault(x => x.Id == id);
-
-                if (sharing != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
         {
-            var sharing = _shareRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+            var sharing = _shareRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
 
             if (sharing != null)
             {
@@ -373,9 +332,52 @@ namespace Geoping.Services
             }
         }
 
-        public IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string query)
+        public IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query)
         {
-            return _gpUserSrv.GetUsersNameAndEmail(query);
+            return _gpUserSrv.GetUsersShortInfoList(query);
+        }
+
+        private void SendSharingEmail(Guid inviterId, string email, string code)
+        {
+            var inviter = _gpUserSrv.GetUser(x => x.Id == inviterId);
+
+            var callbackUrl = $"{_settings.Urls.SiteUrl}/" +
+                              $"{_settings.Urls.ActionsUrl.ByToken}/" +
+                              $"{code}";
+
+            _emailSvc.Send(new EmailMessage()
+            {
+                FromAddress = new EmailAddress()
+                {
+                    Name = "GeopingTeam",
+                    Address = _settings.EmailSender.SmtpUserName
+                },
+                ToAddress = new EmailAddress()
+                {
+                    Name = email,
+                    Address = email
+                },
+                Subject = $"User {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} shared a geolist with you.",
+                Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
+            });
+        }
+
+        private bool IsSharingExists(string sharingId, out ListSharing sharing)
+        {
+            var isId = Guid.TryParse(sharingId, out var id);
+            sharing = null;
+
+            if (isId)
+            {
+                sharing = _shareRepo.Get().FirstOrDefault(x => x.Id == id);
+
+                if (sharing != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

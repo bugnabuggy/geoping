@@ -1,11 +1,9 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
+﻿using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Core.Services
 {
@@ -16,6 +14,6 @@ namespace GeoPing.Core.Services
         GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username);
         OperationResult<GeoPingUser> EditUser(GeoPingUser user);
         void ActivateUser(string id);
-        IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string firstLetters);
+        IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters);
     }
 }

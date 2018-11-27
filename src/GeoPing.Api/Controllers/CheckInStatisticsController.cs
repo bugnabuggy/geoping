@@ -3,10 +3,6 @@ using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
 {

@@ -1,10 +1,9 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
+﻿using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GeoPing.Core.Services
@@ -19,6 +18,6 @@ namespace GeoPing.Core.Services
         OperationResult AcceptSharingInvite(Guid userId, string sharingId);
         OperationResult DeclineSharingInvite(Guid userId, string sharingId);
         void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);
-        IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string query);
+        IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query);
     }
 }

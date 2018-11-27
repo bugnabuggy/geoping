@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GeoPing.Api.Interfaces;
+﻿using System.Linq;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +9,9 @@ namespace GeoPing.Api.Controllers
     public class TokenController : Controller
     {
         private IGeopingTokenService _gpTokenSrv;
-        private IClaimsHelper _helper;
-        private ISharingService _sharingSrv;
 
-        public TokenController
-            (ISharingService sharingSrv,
-            IGeopingTokenService gpTokenSrv,
-            IClaimsHelper helper)
+        public TokenController(IGeopingTokenService gpTokenSrv)
         {
-            _sharingSrv = sharingSrv;
-            _helper = helper;
             _gpTokenSrv = gpTokenSrv;
         }
 

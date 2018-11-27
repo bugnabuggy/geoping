@@ -1,11 +1,8 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
+﻿using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Core.Services
 {
@@ -22,5 +19,6 @@ namespace GeoPing.Core.Services
         OperationResult<ShortUserInfoDTO> GetShortProfile(Guid userId);
         OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);
         OperationResult<GeoPingUser> EditProfileAvatar(Guid guid, ProfileAvatarDTO avatar);
+        Task<OperationResult> ResetRassword(ResetPasswordDTO form);
     }
 }

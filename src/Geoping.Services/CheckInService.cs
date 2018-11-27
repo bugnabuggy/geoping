@@ -1,11 +1,10 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
+﻿using GeoPing.Core.Models;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using GeoPing.Core.Models.Entities;
 
 namespace Geoping.Services
 {
@@ -36,8 +35,11 @@ namespace Geoping.Services
                 };
             }
 
-            var result = _checkInRepo.Data.FirstOrDefault(x => x.PointId == point.Id &&
-                                                               x.UserId == userId);
+            var result = _checkInRepo
+                .Get(x => x.PointId == point.Id && x.UserId == userId)
+                .OrderByDescending(x => x.Date)
+                .FirstOrDefault();
+
             if (result == null)
             {
                 return new OperationResult<CheckIn>()
@@ -68,7 +70,7 @@ namespace Geoping.Services
 
             var points = _pointSrv.Get(x => x.ListId == list.Id);
 
-            var data = from ch in _checkInRepo.Data
+            var data = from ch in _checkInRepo.Get()
                        from p in points
                        where ch.PointId == p.Id && ch.UserId == userId
                        select ch;
@@ -105,9 +107,9 @@ namespace Geoping.Services
             return result;
         }
 
-        public bool IsPointExistWithThisId(string Id, out GeoPoint point)
+        public bool IsPointExistWithThisId(string id, out GeoPoint point)
         {
-            var isPointId = Guid.TryParse(Id, out Guid pointId);
+            var isPointId = Guid.TryParse(id, out Guid pointId);
             point = null;
             if (!isPointId)
             {

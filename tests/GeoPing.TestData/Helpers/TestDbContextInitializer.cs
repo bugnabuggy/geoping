@@ -1,20 +1,13 @@
 ﻿using GeoPing.Api.Configuration;
-using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
-using GeoPing.Infrastructure.Data;
-using GeoPing.Infrastructure.Models;
+using GeoPing.Api.Configuration.SeededData;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoPing.TestData.Helpers
 {
@@ -42,45 +35,45 @@ namespace GeoPing.TestData.Helpers
 
         private void SeedTestPublicLists(IServiceProvider services)
         {
-            var _publicListsRepo = services.GetRequiredService<IRepository<PublicList>>();
+            var publicListsRepo = services.GetRequiredService<IRepository<PublicList>>();
             var lists = new TestLists();
 
             foreach (var list in lists.GetPublicGeolists())
             {
-                _publicListsRepo.Add(list);
+                publicListsRepo.Add(list);
             }
         }
 
         private void SeedTestChecksIn(IServiceProvider services)
         {
-            var _checkInRepo = services.GetRequiredService<IRepository<CheckIn>>();
+            var checkInRepo = services.GetRequiredService<IRepository<CheckIn>>();
             var checksIn = new TestChecksIn();
 
             foreach (var checkIn in checksIn.GetChecksIn())
             {
-                _checkInRepo.Add(checkIn);
+                checkInRepo.Add(checkIn);
             }
         }
 
         private void SeedTestLists(IServiceProvider services)
         {
-            var _geolistRepo = services.GetRequiredService<IRepository<GeoList>>();
+            var geolistRepo = services.GetRequiredService<IRepository<GeoList>>();
             var lists = new TestLists();
 
             foreach (var list in lists.GetGeolists())
             {
-                _geolistRepo.Add(list);
+                geolistRepo.Add(list);
             }
         }
 
         private void SeedTestPoints(IServiceProvider services)
         {
-            var _geopointRepo = services.GetRequiredService<IRepository<GeoPoint>>();
+            var geopointRepo = services.GetRequiredService<IRepository<GeoPoint>>();
             var points = new TestPoints();
 
             foreach (var point in points.GetGeopoints())
             {
-                _geopointRepo.Add(point);
+                geopointRepo.Add(point);
             }
         }
     }

@@ -1,19 +1,17 @@
 ﻿using IdentityServer4.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GeoPing.Core;
 
 namespace GeoPing.Api.Configuration
 {
-    public class Config
+    public class IdentityServerConfig
     {
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource(Constants.ApiName, "GeopingAPI")
+                new ApiResource(IdentityServerSettings.ApiName, "GeopingAPI")
             };
         }
 
@@ -25,7 +23,7 @@ namespace GeoPing.Api.Configuration
                 new Client
                 {
 
-                    ClientId = Constants.ClientId,
+                    ClientId = IdentityServerSettings.ClientId,
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
@@ -36,12 +34,12 @@ namespace GeoPing.Api.Configuration
 
                     ClientSecrets =
                     {
-                        new Secret(Constants.ClientSecret.Sha256())
+                        new Secret(IdentityServerSettings.ClientSecret.Sha256())
                     },
 
                     AllowedScopes =
                     {
-                        Constants.ApiName
+                        IdentityServerSettings.ApiName
                     },
 
                     AllowOfflineAccess = true

@@ -1,62 +1,57 @@
-﻿using Geoping.Services.Configuration;
-using GeoPing.Core.Entities;
-using GeoPing.Core.Models;
-using GeoPing.Core.Models.DTO;
-using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using GeoPing.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+using GeoPing.Core;
+using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Repositories;
+using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 
-namespace GeoPing.Services
+namespace Geoping.Services
 {
     public class GPUserService : IGPUserService
     {
         private IRepository<GeoPingUser> _gpUserRepo;
-        private IRepository<AppIdentityUser> _identityUserRepo;
-        private IConfiguration _cfg;
+        private ApplicationSettings _settings;
 
-        public GPUserService(IRepository<GeoPingUser> gpUserRepo,
-                             IRepository<AppIdentityUser> identityUserRepo,
-                             IConfiguration cfg)
+        public GPUserService
+            (IRepository<GeoPingUser> gpUserRepo,
+            IOptions<ApplicationSettings> settings)
         {
             _gpUserRepo = gpUserRepo;
-            _identityUserRepo = identityUserRepo;
-            _cfg = cfg;
+            _settings = settings.Value;
         }
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
         {
-            return _gpUserRepo.Data.FirstOrDefault(func);
+            return _gpUserRepo.Get().FirstOrDefault(func);
         }
 
-        public IEnumerable<UserNameWithEmailDTO> GetUsersNameAndEmail(string firstLetters)
+        public IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters)
         {
-            if (firstLetters.Length < _cfg.GetValue<int>("UsersShortlist:MinCharsToReturnUsersShortlist"))
+            if (firstLetters.Length < _settings.AutoComplete.MinCharsToAutoComplete)
             {
                 return null;
             }
         
             firstLetters = firstLetters.ToUpper();
 
-            var data = _identityUserRepo.Data
-                .Where(x => x.NormalizedUserName.StartsWith(firstLetters));
+            var data = _gpUserRepo.Get(x => x.Login.ToUpper().StartsWith(firstLetters));
 
-            if (data.Count() < 10)
+            if (data.Count() < _settings.AutoComplete.SizeOfAutoCompletedList)
             {
-                data.Concat(_identityUserRepo.Data
-                    .Where(x => x.NormalizedEmail.StartsWith(firstLetters)));
+                data = data.Concat(_gpUserRepo.Get(x => x.Email.ToUpper().StartsWith(firstLetters)));
             }
 
-            return data.Take(_cfg.GetValue<int>("UsersShortlist:ListSize"))
-                .Select(x => new UserNameWithEmailDTO()
+            return data
+                .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
+                .Select(x => new UserAutoCompleteDTO()
                 {
-                    Username = x.UserName,
+                    FullName = $"{x.LastName} {x.FirstName}",
+                    UserName = x.Login,
                     Email = x.Email
                 });
         }
@@ -64,6 +59,7 @@ namespace GeoPing.Services
         public ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
         {
             var data = GetUser(func);
+
             return new ShortUserInfoDTO()
             {
                 UserName = data.Login,

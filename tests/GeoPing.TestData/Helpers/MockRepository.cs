@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GeoPing.TestData.Helpers
@@ -47,11 +46,6 @@ namespace GeoPing.TestData.Helpers
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, string includeProperties)
         {
             throw new NotImplementedException();
@@ -63,6 +57,16 @@ namespace GeoPing.TestData.Helpers
         }
 
         public IEnumerable<T> Update(IEnumerable<T> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<T> Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<T> Get(Expression<Func<T, bool>> filter)
         {
             throw new NotImplementedException();
         }

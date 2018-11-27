@@ -1,7 +1,6 @@
-﻿using GeoPing.Core.Entities;
+﻿using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
-using GeoPing.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +23,10 @@ namespace Geoping.Services
 
         public IEnumerable<object> GetUsersHaveAccessToWatchList(GeoList list)
         {
-            var data = _shareRepo.Data
-                .Where(x => x.ListId == list.Id);
+            var data = _shareRepo.Get(x => x.ListId == list.Id);
 
-            var result = _userRepo.Data
-                .Where(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id))
+            var result = _userRepo
+                .Get(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id))
                 .Select(x => new
                 {
                     x.Id,
@@ -43,8 +41,8 @@ namespace Geoping.Services
 
         public IEnumerable<object> GetUsersHaveAccessToManipulateList(GeoList list)
         {
-            var result = _userRepo.Data
-                .Where(x => x.Id == list.OwnerId)
+            var result = _userRepo
+                .Get(x => x.Id == list.OwnerId)
                 .Select(x => new
                 {
                     x.Id,
@@ -60,10 +58,10 @@ namespace Geoping.Services
         public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
         {
             ICollection<Guid?> allowedUsers =
-                _shareRepo.Data
-                    .Where(x => x.ListId == list.Id && 
-                                x.UserId != null &&
-                                x.Status == "accepted")
+                _shareRepo
+                    .Get(x => x.ListId == list.Id && 
+                              x.UserId != null && 
+                              x.Status == "accepted")
                     .Select(x => x.UserId).ToList();
 
             allowedUsers.Add(list.OwnerId);

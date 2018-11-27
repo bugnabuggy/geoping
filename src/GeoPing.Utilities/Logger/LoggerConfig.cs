@@ -28,7 +28,7 @@ namespace GeoPing.Utilities.Logger
                 Name = "sysLog",
                 MessageCreation = new MessageBuilderConfig()
                 {
-                    Facility = NLog.Targets.Syslog.Settings.Facility.Daemons
+                    Facility = Facility.Daemons
                 },
                 MessageSend = new MessageTransmitterConfig()
                 {

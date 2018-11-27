@@ -7,11 +7,11 @@ namespace Geoping.Services
 {
     public class ValidationService : IValidationService
     {
-        bool invalid = false;
+        bool _invalid;
 
         public bool IsValidEmail(string strIn)
         {
-            invalid = false;
+            _invalid = false;
             if (String.IsNullOrEmpty(strIn))
                 return false;
 
@@ -26,7 +26,7 @@ namespace Geoping.Services
                 return false;
             }
 
-            if (invalid)
+            if (_invalid)
                 return false;
 
             // Return true if strIn is in valid email format.
@@ -48,7 +48,7 @@ namespace Geoping.Services
             // IdnMapping class with default property values.
             IdnMapping idn = new IdnMapping();
 
-            invalid = false;
+            _invalid = false;
 
             string domainName = match.Groups[2].Value;
             try
@@ -57,7 +57,7 @@ namespace Geoping.Services
             }
             catch (ArgumentException)
             {
-                invalid = true;
+                _invalid = true;
             }
             return match.Groups[1].Value + domainName;
         }

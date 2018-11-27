@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Logging;
-using NLog;
+﻿using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 
 namespace GeoPing.Utilities.Logger
