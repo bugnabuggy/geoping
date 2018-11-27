@@ -90,7 +90,7 @@ namespace Geoping.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Get(x => x.IsPublic == true &&
+            var data = _geolistRepo.Get(x => x.IsPublic &&
                                              x.OwnerId == ownerId);
 
             var result = GetPublicByFilter(data, filter);
@@ -109,7 +109,7 @@ namespace Geoping.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems)
         {
-            var data = _geolistRepo.Get(x => x.IsPublic == true);
+            var data = _geolistRepo.Get(x => x.IsPublic);
 
             var result = GetPublicByFilter(data, filter);
 
@@ -189,7 +189,7 @@ namespace Geoping.Services
                 };
             }
 
-            var result = _geolistRepo.Delete(item);
+            _geolistRepo.Delete(item);
 
             var publicList = _publicGeolistRepo.Data.FirstOrDefault(x => x.ListId == item.Id);
 
@@ -208,7 +208,7 @@ namespace Geoping.Services
         // Delete several lists
         public OperationResult Delete(Guid userId, string listIds)
         {
-            var ids = listIds.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
+            var ids = listIds.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                              .ToArray();
 
             if (ids.Any())
@@ -395,19 +395,14 @@ namespace Geoping.Services
             {
                 var orderExpression = _orderCommonBys[filter.OrderBy];
 
-                if (filter.IsDesc)
-                {
-                    data.OrderByDescending(orderExpression);
-                }
-                else
-                {
-                    data.OrderBy(orderExpression);
-                }
+                data = filter.IsDesc 
+                    ? data.OrderByDescending(orderExpression) 
+                    : data.OrderBy(orderExpression);
             }
 
             if (filter.PageSize != null)
             {
-                data.Skip((int)filter.PageSize * (int)filter.PageNumber)
+                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
                     .Take((int)filter.PageSize);
             }
 
@@ -423,20 +418,15 @@ namespace Geoping.Services
             {
                 var orderExpression = _orderPublicBys[filter.OrderBy];
 
-                if (filter.IsDesc)
-                {
-                    data.OrderByDescending(orderExpression);
-                }
-                else
-                {
-                    data.OrderBy(orderExpression);
-                }
+                data = filter.IsDesc 
+                    ? data.OrderByDescending(orderExpression) 
+                    : data.OrderBy(orderExpression);
             }
 
             if (filter.PageSize != null)
             {
-                data.Skip((int)filter.PageSize * (int)filter.PageNumber)
-                    .Take((int)filter.PageSize);
+                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
+                           .Take((int)filter.PageSize);
             }
 
             return data;

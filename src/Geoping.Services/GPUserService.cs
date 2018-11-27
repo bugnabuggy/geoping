@@ -8,8 +8,6 @@ using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using System.Collections.Generic;
-using GeoPing.Infrastructure.Models;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Geoping.Services
@@ -45,7 +43,7 @@ namespace Geoping.Services
 
             if (data.Count() < _settings.AutoComplete.SizeOfAutoCompletedList)
             {
-                data.Concat(_gpUserRepo.Get(x => x.Email.ToUpper().StartsWith(firstLetters)));
+                data = data.Concat(_gpUserRepo.Get(x => x.Email.ToUpper().StartsWith(firstLetters)));
             }
 
             return data

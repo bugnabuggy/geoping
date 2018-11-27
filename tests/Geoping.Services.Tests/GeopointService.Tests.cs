@@ -6,9 +6,7 @@ using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Geoping.Services;
 using GeoPing.Core.Models.Entities;
 

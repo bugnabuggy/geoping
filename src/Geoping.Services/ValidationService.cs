@@ -7,7 +7,7 @@ namespace Geoping.Services
 {
     public class ValidationService : IValidationService
     {
-        bool _invalid = false;
+        bool _invalid;
 
         public bool IsValidEmail(string strIn)
         {

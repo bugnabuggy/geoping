@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
-using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
@@ -67,7 +63,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no point with Id = [{pointId}].");
             }
 
-            var userId = new Guid();
+            Guid userId;
 
             try
             {

@@ -1,15 +1,11 @@
 ﻿using GeoPing.Api.Configuration;
-using GeoPing.Core.Models;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.TestData.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GeoPing.Api.Tests
 {
@@ -25,7 +21,6 @@ namespace GeoPing.Api.Tests
             appConfigurator.Initialize(services);
 
             var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             var ctx = services.GetService<ApplicationDbContext>();
             var userRoles = ctx.Roles;
             var users = ctx.Users;

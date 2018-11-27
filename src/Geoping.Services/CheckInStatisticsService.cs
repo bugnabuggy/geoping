@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using GeoPing.Core.Models.Entities;
 
 namespace Geoping.Services
@@ -24,19 +23,16 @@ namespace Geoping.Services
         private IGeolistService _listSrv;
         private IGeopointService _pointSrv;
         private ISecurityService _securitySrv;
-        private IRepository<GeoPingUser> _gpUserRepo;
 
         public CheckInStatisticsService(IRepository<CheckIn> checksRepo,
                                         IGeolistService listSrv,
                                         IGeopointService pointSrv,
-                                        ISecurityService securitySrv,
-                                        IRepository<GeoPingUser> gpUserRepo)
+                                        ISecurityService securitySrv)
         {
             _checksRepo = checksRepo;
             _listSrv = listSrv;
             _pointSrv = pointSrv;
             _securitySrv = securitySrv;
-            _gpUserRepo = gpUserRepo;
         }
 
         public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersList
@@ -107,20 +103,15 @@ namespace Geoping.Services
             {
                 var orderExpression = _orderBys[filter.OrderBy];
 
-                if (filter.IsDesc)
-                {
-                    data.OrderByDescending(orderExpression);
-                }
-                else
-                {
-                    data.OrderBy(orderExpression);
-                }
+                data = filter.IsDesc 
+                    ? data.OrderByDescending(orderExpression) 
+                    : data.OrderBy(orderExpression);
             }
 
             if (filter.PageSize != null)
             {
-                data.Skip((int)filter.PageSize * (int)filter.PageNumber)
-                    .Take((int)filter.PageSize);
+                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
+                           .Take((int)filter.PageSize);
             }
 
             return new WebResult<IQueryable<CheckInStatsDTO>>()

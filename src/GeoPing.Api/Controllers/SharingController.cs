@@ -1,15 +1,9 @@
 ﻿using GeoPing.Api.Interfaces;
 using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Models;
-using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GeoPing.Core.Models.DTO;
 
 namespace GeoPing.Api.Controllers
 {

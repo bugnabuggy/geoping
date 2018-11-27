@@ -1,12 +1,8 @@
 ﻿using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GeoPing.Core;
 using Microsoft.Extensions.Options;
 using GeoPing.Core.Models;
@@ -72,55 +68,52 @@ namespace Geoping.Services
         {
             var gpToken = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
 
-            if (gpToken != null)
+            if (gpToken == null)
             {
-                var validationResult = ValidateGPToken(gpToken);
-
-                if (validationResult != null)
-                {
-                    return new OperationResult<TokenInfoDTO>()
-                    {
-                        Messages = new[] { validationResult }
-                    };
-                }
-
-                Guid? targetUserId = null;
-
-                switch (gpToken.Type)
-                {
-                    case "Sharing":
-                        targetUserId = _sharingRepo.Get()
-                            .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
-                            .UserId;
-                        break;
-
-                    case "SharingInvite":
-                        targetUserId = _sharingRepo.Get()
-                            .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
-                            .UserId;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                MarkAsUsed(token);
-
                 return new OperationResult<TokenInfoDTO>()
                 {
-                    Success = true,
-                    Messages = new[] { "Following token was found" },
-                    Data = new TokenInfoDTO()
-                    {
-                        TokenType = gpToken.Type,
-                        UserId = targetUserId
-                    }
+                    Messages = new[] { "Token not found" }
                 };
             }
 
+            var validationResult = ValidateGPToken(gpToken);
+
+            if (validationResult != null)
+            {
+                return new OperationResult<TokenInfoDTO>()
+                {
+                    Messages = new[] { validationResult }
+                };
+            }
+
+            Guid? targetUserId = null;
+
+            switch (gpToken.Type)
+            {
+                case "Sharing":
+                    targetUserId = _sharingRepo.Get()
+                        .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
+                        .UserId;
+                    break;
+
+                case "SharingInvite":
+                    targetUserId = _sharingRepo.Get()
+                        .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
+                        .UserId;
+                    break;
+            }
+
+            MarkAsUsed(token);
+
             return new OperationResult<TokenInfoDTO>()
             {
-                Messages = new[] { "Token not found" }
+                Success = true,
+                Messages = new[] { "Following token was found" },
+                Data = new TokenInfoDTO()
+                {
+                    TokenType = gpToken.Type,
+                    UserId = targetUserId
+                }
             };
         }
 
@@ -166,7 +159,7 @@ namespace Geoping.Services
                 return "Used";
             }
 
-            if ((DateTime.UtcNow - gpToken.Created).Seconds > 
+            if ((DateTime.UtcNow - gpToken.Created).Seconds >
                 _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
             {
                 return "Expired";

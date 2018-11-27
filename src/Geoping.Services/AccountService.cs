@@ -7,9 +7,6 @@ using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GeoPing.Utilities.EmailSender;
 using Microsoft.Extensions.Options;
@@ -92,9 +89,6 @@ namespace Geoping.Services
 
                                 break;
                             }
-
-                        default:
-                            break;
                     }
                 }
 
@@ -379,9 +373,6 @@ namespace Geoping.Services
 
                 case "ConfirmReset":
                     actionEndpoint = _settings.Urls.ActionsUrl.ConfirmReset;
-                    break;
-
-                default:
                     break;
             }
 

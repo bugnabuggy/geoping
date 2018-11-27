@@ -1,17 +1,9 @@
 ﻿using GeoPing.Api.Interfaces;
-using GeoPing.Core;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
@@ -21,19 +13,13 @@ namespace GeoPing.Api.Controllers
     public class AccountController : Controller
     {
         private IAccountService _accountSrv;
-        private UserManager<AppIdentityUser> _userManager;
-        private ApplicationSettings _settings;
         private IClaimsHelper _helper;
 
         public AccountController
             (IAccountService accountSrv,
-            UserManager<AppIdentityUser> userManager,
-            IOptions<ApplicationSettings> settings,
             IClaimsHelper helper)
         {
             _accountSrv = accountSrv;
-            _userManager = userManager;
-            _settings = settings.Value;
             _helper = helper;
         }
 
@@ -43,9 +29,9 @@ namespace GeoPing.Api.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser)
         {
-            var result = new OperationResult();
+            OperationResult result;
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 result = await _accountSrv.RegisterAsync(registerUser);
             }
@@ -54,7 +40,7 @@ namespace GeoPing.Api.Controllers
                 result = new OperationResult()
                 {
                     Data = registerUser,
-                    Messages = new string[] { "Model is invalid" }
+                    Messages = new[] { "Model is invalid" }
                 };
             }
 

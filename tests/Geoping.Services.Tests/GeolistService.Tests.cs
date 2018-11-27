@@ -1,17 +1,11 @@
-﻿using GeoPing.Api.Interfaces;
-using GeoPing.Core.Models.DTO;
+﻿using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
-using GeoPing.TestData.Data;
 using GeoPing.TestData.Helpers;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Geoping.Services;
 using GeoPing.Core.Models.Entities;
 
