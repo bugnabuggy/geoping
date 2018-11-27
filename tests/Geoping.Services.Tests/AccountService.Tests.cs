@@ -63,7 +63,7 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_get_profile_info_of_testadmin()
         {
-            var profile = (GeoPingUser)_accountSrv.GetProfile(_gpUserId).Data;
+            var profile = _accountSrv.GetProfile(_gpUserId).Data;
 
             Assert.IsTrue(profile != null);
             Assert.AreEqual("testadmin", profile.Login);
