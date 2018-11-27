@@ -76,5 +76,16 @@ namespace GeoPing.TestData.Helpers
                 geopointRepo.Add(point);
             }
         }
+
+        private void SeedListSharings(IServiceProvider services)
+        {
+            var sharingsRepo = services.GetRequiredService<IRepository<ListSharing>>();
+            var sharings = new TestSharings();
+
+            foreach (var sharing in sharings.GetListSharings())
+            {
+                sharingsRepo.Add(sharing);
+            }
+        }
     }
 }

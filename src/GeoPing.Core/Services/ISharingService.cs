@@ -19,5 +19,10 @@ namespace GeoPing.Core.Services
         OperationResult DeclineSharingInvite(Guid userId, string sharingId);
         void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);
         IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query);
+        OperationResult AcceptSharing(Guid expectedUserId2, string sharingId2);
+        OperationResult RefuseSharing(Guid expectedUserId2, string sharingId2);
+        IEnumerable<SharedListInfoDTO> GetListsSharedBy(Guid userId1);
+        IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId1);
+        OperationResult RevokeSharing(Guid userId1, string sharingId4);
     }
 }
