@@ -125,12 +125,16 @@ namespace GeoPing.Services.Tests
             // User isn`t allowed to list
             data = _sut.InviteUsersByList(_userId2, _listId1, usersData).Result;
             Assert.AreEqual(false, data.Success);
+
+            // User`s data isn`t valid or user tries invite himself
+            data = _sut.InviteUsersByList(_userId1, _listId1, usersData).Result;
+            Assert.AreEqual(false, ((string[])data.Data).Any());
         }
 
         [Test]
         public void Should_invite_users_to_list()
         {
-            var usersData = new List<string>
+            var usersData = new[]
             {
                 "nonexistentuser",
                 "not.valid.email",
@@ -140,8 +144,7 @@ namespace GeoPing.Services.Tests
 
             OperationResult data;
 
-            // List shouldn`t exist
-            data = _sut.InviteUsersByList(_userId1, _listId1, usersData.ToArray()).Result;
+            data = _sut.InviteUsersByList(_userId1, _listId1, usersData).Result;
             Assert.AreEqual(true, data.Success);
             Assert.AreEqual(2, ((string[])data.Data).Count());
             Assert.AreEqual(4, data.Messages.Count());
