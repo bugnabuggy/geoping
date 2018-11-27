@@ -6,12 +6,14 @@ namespace GeoPing.Api.Configuration
 {
     public class IdentityServerConfig
     {
+        private ApplicationSettings settings;
+
         // Defining the API
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource(IdentityServerSettings.ApiName, "GeopingAPI")
+                new ApiResource("api", "GeopingAPI")
             };
         }
 
@@ -23,23 +25,23 @@ namespace GeoPing.Api.Configuration
                 new Client
                 {
 
-                    ClientId = IdentityServerSettings.ClientId,
+                    ClientId = "3BA47D64D7DA5EF4",
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AccessTokenType = AccessTokenType.Jwt,
-                    AccessTokenLifetime = IdentityServerSettings.AccessTokenLifetime,
+                    AccessTokenLifetime = 2592000,
 
                     RequireConsent = false,
 
                     ClientSecrets =
                     {
-                        new Secret(IdentityServerSettings.ClientSecret.Sha256())
+                        new Secret("8E3BCE2633F91D7B".Sha256())
                     },
 
                     AllowedScopes =
                     {
-                        IdentityServerSettings.ApiName
+                        "api"
                     },
 
                     AllowOfflineAccess = true

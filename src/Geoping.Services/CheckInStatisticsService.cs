@@ -1,14 +1,14 @@
-﻿using GeoPing.Core.Models;
-using GeoPing.Core.Models.DTO;
-using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Repositories;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class CheckInStatisticsService : ICheckInStatisticsService
     {

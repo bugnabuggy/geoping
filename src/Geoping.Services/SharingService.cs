@@ -1,4 +1,10 @@
-﻿using GeoPing.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using GeoPing.Core;
+using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
@@ -7,15 +13,9 @@ using GeoPing.Infrastructure.Repositories;
 using GeoPing.Utilities.EmailSender;
 using GeoPing.Utilities.EmailSender.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using GeoPing.Core;
 using Microsoft.Extensions.Options;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class SharingService : ISharingService
     {

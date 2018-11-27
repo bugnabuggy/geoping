@@ -1,9 +1,9 @@
-﻿using GeoPing.Core.Services;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using GeoPing.Core.Services;
 
-namespace Geoping.Services
+namespace GeoPing.Services
 {
     public class ValidationService : IValidationService
     {
