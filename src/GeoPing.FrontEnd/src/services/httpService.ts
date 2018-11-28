@@ -14,11 +14,11 @@ export default class HttpCommunicator implements IHttpCommunicator {
   private config: AxiosRequestConfig;
 
   constructor( _config: AxiosRequestConfig = {} ) {
-    this.accessToken = localStorage.getItem( 'token' ) || '';
     this.config = _config;
   }
 
   createHeader() {
+    this.accessToken = localStorage.getItem( 'token' ) || '';
     return {
       ...this.config,
       headers: !!localStorage.getItem( 'token' ) ?

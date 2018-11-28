@@ -173,4 +173,40 @@ export default class MockCheckListService implements ICheckListServiceType {
     });
   }
 
+  getAllNewSharedLists() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  getAllAcceptedSharedLists() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  cancelAcceptanceNewSharingList() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  deleteListSharing() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  acceptListSharingInvite( sharingId: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  getAutocompletedListUsers( userName: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
 }

@@ -3,15 +3,21 @@ import { IGeoListForUpdateDTO } from '../../DTO/geoListDTO';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import {
+  acceptListSharingInvite,
   addCheckIn,
+  cancelAcceptListSharing,
   createNewGeoList,
+  deleteListSharing,
   endpointBaseUrl,
+  getAllAcceptedSharedList,
   getAllChecksInForUserAndGivenList,
   getAllGeoLists,
+  getAllNewSharedLists,
   getAllPublicGeoLosts,
+  getAllUsersForListShared, getAutocompletedListUsers,
   getGeoListForId,
   getGeoListStatistics,
-  getUsersHasAccess,
+  inviteUsersToShareList,
   removeGeoList,
   updateGeoList
 } from '../../constants/endpoints';
@@ -116,7 +122,7 @@ export default class CheckListService implements ICheckListServiceType {
 
   loadUserWhoHasAccess( idList: string ) {
     return new Promise( ( resolve: any, reject: any ) => {
-      this.communicator.get( getUsersHasAccess.replace( '%id%', idList ) )
+      this.communicator.get( getAllUsersForListShared.replace( '%listid%', idList ) )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
@@ -127,7 +133,15 @@ export default class CheckListService implements ICheckListServiceType {
   }
 
   sharedCheckListForUser( idList: string, emails: Array<string> ) {
-    return new Promise( resolve => '' );
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.post( inviteUsersToShareList.replace( '%listid%', idList ), emails )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 
   providePublicAccess( idList: string, isPublic: boolean ) {
@@ -156,6 +170,78 @@ export default class CheckListService implements ICheckListServiceType {
           reject( error );
         } );
     } );
+  }
+
+  getAllNewSharedLists() {
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.get( getAllNewSharedLists )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  getAllAcceptedSharedLists() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getAllAcceptedSharedList )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  deleteListSharing( sharingId: string ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.delete( deleteListSharing.replace( '%sharingId%', sharingId ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  cancelAcceptanceNewSharingList( sharingId: string ) {
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.delete( cancelAcceptListSharing.replace( '%sharingId%', sharingId ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  acceptListSharingInvite( sharingId: string ) {
+    return new Promise( ( resolve: any, reject: any) => {
+      this.communicator.post(acceptListSharingInvite.replace('%sharingId%', sharingId), {})
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    });
+  }
+
+  getAutocompletedListUsers( userName: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get(getAutocompletedListUsers.replace('%query%', userName))
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    });
   }
 
 }

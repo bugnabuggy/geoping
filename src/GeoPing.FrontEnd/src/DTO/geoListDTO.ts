@@ -31,3 +31,16 @@ export interface IGeoListPublickDTO {
   finishersNumber: number;
   isOfficial: boolean;
 }
+
+export interface IGeoListSharingDTO {
+  listId: string;
+  shareId: string;
+  listName: string;
+  listDescription: string;
+  listOwnerId: string;
+  listCreated: string;
+  listEdited: string;
+  listIsPublic: boolean;
+  shareStatus: string;
+  shareInvitationDate: string;
+}

@@ -15,7 +15,7 @@ export const createNewGeoList: string = `${endpointBaseUrl}/api/geolist`;
 export const updateGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
 export const removeCollectionGeoLists: string = `${endpointBaseUrl}/api/geolist/%id%`;
 export const removeGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
-export const getUsersHasAccess: string = `${endpointBaseUrl}/api/sharing/user/%id%`;
+// export const getUsersHasAccess: string = `${endpointBaseUrl}/api/sharing/%listid%`;
 
 /* endpoints for geo points */
 
@@ -44,3 +44,16 @@ export const getChecksStatisticsForList: string = `${endpointBaseUrl}/api/geolis
 /* endpoints for check in statistics */
 export const getGeoListStatistics: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
 export const getUserAccessedToList: string = `${endpointBaseUrl}/api/Geolist/%listid%/sharing/allowed-users`;
+
+/* endpoints for tables */
+export const getHistory: string = `${endpointBaseUrl}/api/history`;
+
+/* endpoints for sharing */
+export const inviteUsersToShareList: string = `${endpointBaseUrl}/api/sharing/%listid%`;
+export const getAllNewSharedLists: string = `${endpointBaseUrl}/api/sharing/new`;
+export const getAllAcceptedSharedList: string = `${endpointBaseUrl}/api/sharing/accepted`;
+export const deleteListSharing: string = `${endpointBaseUrl}/api/sharing/%sharingId%`;
+export const cancelAcceptListSharing: string = `${endpointBaseUrl}/api/sharing/invitation/%sharingId%`;
+export const getAllUsersForListShared: string = `${endpointBaseUrl}/api/sharing/%listid%/allowed-users`;
+export const acceptListSharingInvite: string = `${endpointBaseUrl}/api/sharing/invitation/%sharingId%`;
+export const getAutocompletedListUsers: string = `${endpointBaseUrl}/api/sharing/autocomplete?query=%query%`;

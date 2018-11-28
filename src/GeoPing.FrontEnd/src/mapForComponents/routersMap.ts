@@ -45,7 +45,7 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
     {
       path: publicCheckListUrl,
       component: PublicGEOCheckListsPage,
-      exact: false,
+      exact: true,
     },
     {
       path: notFoundUrl,
@@ -55,7 +55,7 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
     {
       path: emailConfirm,
       component: EmailConfirmPage,
-      exact: false,
+      exact: true,
     }
   ];
 
@@ -64,17 +64,17 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       {
         path: loginUrl,
         component: LoginPage,
-        exact: false,
+        exact: true,
       },
       {
         path: registerUrl,
         component: LoginPage,
-        exact: false,
+        exact: true,
       },
       {
         path: resetPassword,
         component: ResetPasswordComponentContainer,
-        exact: false,
+        exact: true,
       }
     ] );
   } else {

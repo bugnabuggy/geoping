@@ -8,6 +8,10 @@ import IShareCheckListModalComponentProps from '../../../componentProps/shareChe
 import { IGeoListForUpdateDTO } from '../../../DTO/geoListDTO';
 
 export class ShareCheckListModalComponent extends React.Component<IShareCheckListModalComponentProps, any> {
+  constructor( props: any ) {
+    super( props );
+  }
+
   handleChange = ( e: any ) => {
     // this.props.providePublicAccess(this.props.myCheckList.idCheckListShow, e.target.checked);
     const checkList: IGeoListForUpdateDTO = {
@@ -17,13 +21,11 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
     };
     this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
   };
-  handleSubmit = ( e: any ) => {
-    this.props.sendAccessUsersForCheckList( this.props.myCheckList.idCheckListShow, e.users );
-  };
 
-  constructor( props: any ) {
-    super( props );
-  }
+  handleSubmit = ( e: any ) => {
+    const users: Array<string> = e.users.map( ( item: any ) => item.email );
+    this.props.sendAccessUsersForCheckList( this.props.myCheckList.idCheckListShow, users );
+  };
 
   componentDidMount() {
     this.props.loadUsersForShared( this.props.myCheckList.idCheckListShow );
@@ -52,8 +54,12 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
         </label>
         <span>Users to share list:</span>
         <ShareUserToList
+          sharedCheckList={this.props.sharedCheckList}
+
           closeModalShare={this.props.closeModalShare}
           handleSubmit={this.handleSubmit}
+          getAutocompletedListUsers={this.props.getAutocompletedListUsers}
+          clearAutocompleteListUsers={this.props.clearAutocompleteListUsers}
         />
         <hr/>
         <span>Users who has access:</span>

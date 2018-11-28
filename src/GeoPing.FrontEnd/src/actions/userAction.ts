@@ -83,14 +83,16 @@ export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
     } )
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
-      if ( error.response.status === 401 ) {
-        redirectOnSignInForm( true )( dispatch );
-      } else {
-        dispatch( addNotificationAction(
-          createNotification(
-            error.message,
-            EnumNotificationType.Danger
-          ) ) );
+      if ( error.response ) {
+        if ( error.response.status === 401 ) {
+          redirectOnSignInForm( true )( dispatch );
+        } else {
+          dispatch( addNotificationAction(
+            createNotification(
+              error.message,
+              EnumNotificationType.Danger
+            ) ) );
+        }
       }
     } );
 };

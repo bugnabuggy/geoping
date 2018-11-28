@@ -23,4 +23,11 @@ export default interface ICheckListServiceType {
   getAllChecksForUserAndList: ( idList: string ) => Promise<any>;
 
   getAllCheckForList: ( idList: string ) => Promise<any>;
+
+  getAllNewSharedLists: () => Promise<any>;
+  getAllAcceptedSharedLists: () => Promise<any>;
+  deleteListSharing: ( sharingId: string ) => Promise<any>;
+  cancelAcceptanceNewSharingList: ( sharingId: string ) => Promise<any>;
+  acceptListSharingInvite: ( sharingId: string ) => Promise<any>;
+  getAutocompletedListUsers: ( userName: string ) => Promise<any>;
 }

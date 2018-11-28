@@ -16,6 +16,15 @@ import { isRedirect, redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
+  constructor( props: IGetRoutesProps ) {
+    super( props );
+    console.info( 'GetRoutes constructor', props );
+    this.state = {
+      isGetUserData: false,
+    };
+    // this.authorized();
+  }
+
   authorized = () => {
     if ( !!localStorage.getItem( 'token' ) ) {
       if ( localStorage.getItem( 'token' ) === '4be0643f-1d98-573b-97cd-ca98a65347dd' ) {
@@ -38,28 +47,24 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         this.props.authorizationUserFlag( false );
       } else {
         if ( !sessionStorage.getItem( 'url_for_redirect' ) ) {
-          checkLocation( this.props.location, this.props.redirectOnSignInForm );
+          checkLocation( this.props.location, this.props.isRedirect );
         }
       }
     }
   };
-
-  constructor( props: IGetRoutesProps ) {
-    super( props );
-    console.info( 'GetRoutes constructor', props );
-    this.state = {
-      isGetUserData: false,
-    };
-  }
 
   componentDidMount() {
     this.authorized();
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
-    this.authorized();
+    // this.authorized();
     if ( !prevProps.window.redirect && this.props.window.redirect ) {
-      this.props.isRedirect('');
+      this.props.isRedirect( '' );
+    }
+
+    if ( !!!localStorage.getItem( 'token' ) && this.state.isGetUserData ) {
+      this.setState( { isGetUserData: false } );
     }
   }
 

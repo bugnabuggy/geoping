@@ -1,14 +1,19 @@
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 import { checkListState } from '../state/checkListState';
 import {
+  ACCEPT_LIST_SHARING_INVITE,
   ADD_GEO_POINT_FROM_MY_POSITION,
+  CANCEL_ACCEPT_NEW_SHARING_LIST,
   CHANGE_NAME_CHECK_LIST,
   CLEAR_STATE_CHECK_LIST,
   CLOSE_MODAL_FOR_CREATE_CHECK_LIST,
   CREATE_CHECK_LIST,
+  DELETE_LIST_SHARING,
   DELETE_MY_CHECK_LISTS,
   EDITING_PERMISSION_POINT,
   IS_CHECK_LIST_PAGE,
+  LOAD_ALL_ACCEPTED_SHARED_LISTS,
+  LOAD_ALL_NEW_SHARED_LISTS,
   LOAD_CHECK_LIST_DATA,
   LOAD_MARKERS_FOR_CHECK_LIST,
   LOAD_MY_CHECK_LISTS,
@@ -48,6 +53,12 @@ export default function checkListReducer( state: ICheckListStateType = checkList
     [ CLOSE_MODAL_SHARE ]: clearSelectedGeoList,
     [ PUBLIC_LIST_LOAD_LISTS ]: loadPublicCheckLists,
     [ IS_CHECK_LIST_PAGE ]: checkListFlag,
+
+    [ LOAD_ALL_NEW_SHARED_LISTS ]: loadAllNewSharedLists,
+    [ LOAD_ALL_ACCEPTED_SHARED_LISTS ]: loadAllAcceptedSharedLists,
+    [ DELETE_LIST_SHARING ]: deleteListSharing,
+    [ CANCEL_ACCEPT_NEW_SHARING_LIST ]: cancelAcceptNewSharingList,
+    [ACCEPT_LIST_SHARING_INVITE]: acceptListSharingInvite,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -227,5 +238,50 @@ function checkListFlag( state: ICheckListStateType, action: any ): ICheckListSta
   return {
     ...state,
     isCheckList: action.isCheckList,
+  };
+}
+
+function loadAllNewSharedLists( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    newSharedLists: action.sharedLists,
+  };
+}
+
+function loadAllAcceptedSharedLists( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    acceptedSharedLists: action.sharedLists,
+  };
+}
+
+function deleteListSharing( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    acceptedSharedLists: [
+      ...state.acceptedSharedLists.filter( item => item.shareId !== action.sharingId )
+    ],
+  };
+}
+
+function cancelAcceptNewSharingList( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    newSharedLists: [
+      ...state.newSharedLists.filter( item => item.shareId !== action.sharingId )
+    ],
+  };
+}
+
+function acceptListSharingInvite( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    acceptedSharedLists: [
+      ...state.acceptedSharedLists,
+      state.newSharedLists.find( item => item.shareId === action.sharingId )
+    ],
+    newSharedLists: [
+      ...state.newSharedLists.filter( item => item.shareId !== action.sharingId )
+    ],
   };
 }

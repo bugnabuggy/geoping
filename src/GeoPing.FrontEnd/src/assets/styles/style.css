@@ -600,6 +600,7 @@ header nav {
   justify-content: center;
   align-items: center;
 }
+
 /*******************************************************************************************************/
 /* Modal share check list **************************************************************************/
 /* toggle */
@@ -760,8 +761,42 @@ header nav {
   width: 370px;
 }
 
+.field-to-share-list-error {
+  color: #dc3545 !important;
+}
+
 .field-to-share-list-container, .field-to-share-list-li {
   position: relative;
+}
+
+.field-to-share-list-autocompleted-users {
+  position: absolute;
+  border: 2px solid #171c71;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  width: 370px;
+  top: 33px;
+  background: #f0f0f1;
+  max-height: 200px;
+  overflow: auto;
+  z-index: 1000;
+}
+
+.field-to-share-list-autocompleted-users li {
+  margin-bottom: 2px;
+  height: 30px;
+  /*border: 2px solid black;*/
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.field-to-share-list-autocompleted-users li:hover {
+  background: #8f8f90;
+}
+
+.field-to-share-list-autocompleted-users li:last-child {
+  margin-bottom: 0;
 }
 
 .field-to-share-list-icon, .field-to-share-list-icon-minus {
@@ -1154,6 +1189,7 @@ header nav {
   align-items: center;
   width: 100%;
 }
+
 .check-list-head-name-form-group label {
   margin-top: 15px;
   font-size: 30px;
@@ -1428,6 +1464,7 @@ select.form-control:not([size]):not([multiple]) {
   justify-content: center;
   margin-top: 20px;
 }
+
 .reset-password-page-container {
   height: 250px;
 }
@@ -1790,3 +1827,67 @@ select.form-control:not([size]):not([multiple]) {
   align-items: center;
   font-size: 20rem;
 }
+
+/***************************************************************************************************/
+
+/* autocomplete component */
+.react-autosuggest__container {
+  position: relative;
+}
+
+.react-autosuggest__input {
+  margin: 10px 0;
+  width: 370px;
+  height: 30px;
+  padding: 10px 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+  outline: none;
+}
+
+.react-autosuggest__input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+  display: block;
+  position: absolute;
+  /*top: 51px;*/
+  width: 370px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: #ddd;
+}
+
+/**/
