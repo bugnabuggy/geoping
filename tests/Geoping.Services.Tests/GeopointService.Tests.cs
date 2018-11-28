@@ -1,13 +1,13 @@
-﻿using GeoPing.Core.Models.DTO;
+﻿using System;
+using System.Linq;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Services.Tests
 {
@@ -36,7 +36,7 @@ namespace GeoPing.Services.Tests
             var expectedPointId = Guid.Parse("10000000-0000-0000-0000-000000000005");
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testPoint = new GeoPoint()
+            var testPoint = new GeoPoint
             {
                 Id = expectedPointId,
                 Name = "Test",
@@ -66,7 +66,7 @@ namespace GeoPing.Services.Tests
             Assert.That(testData1.Data != null);
             Assert.That(3, Is.EqualTo(totalItems1));
 
-            var testData2 = _sut.GetByFilter(expectedListId, new GeopointFilterDTO(){ Name = "Not" }, out int totalItems2);
+            var testData2 = _sut.GetByFilter(expectedListId, new GeopointFilterDTO { Name = "Not" }, out int totalItems2);
 
             Assert.That(testData2.Data != null);
             Assert.That(1, Is.EqualTo(totalItems2));

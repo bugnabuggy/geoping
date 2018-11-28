@@ -1,6 +1,5 @@
-﻿using IdentityServer4.Models;
-using System.Collections.Generic;
-using GeoPing.Core;
+﻿using System.Collections.Generic;
+using IdentityServer4.Models;
 
 namespace GeoPing.Api.Configuration
 {

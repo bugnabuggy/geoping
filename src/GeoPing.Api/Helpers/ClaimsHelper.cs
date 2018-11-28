@@ -1,12 +1,12 @@
-﻿using GeoPing.Api.Interfaces;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace GeoPing.Api.Helpers
 {

@@ -13,7 +13,7 @@ namespace GeoPing.Services
     public class GeopointService : IGeopointService
     {
         private Dictionary<string, Expression<Func<GeoPoint, object>>> _orderBys =
-            new Dictionary<string, Expression<Func<GeoPoint, object>>>()
+            new Dictionary<string, Expression<Func<GeoPoint, object>>>
             {
                 { "name", x => x.Name }
             };
@@ -73,7 +73,7 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
-            return new WebResult<IQueryable<GeoPoint>>()
+            return new WebResult<IQueryable<GeoPoint>>
             {
                 Data = data,
                 Success = true,
@@ -85,7 +85,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Add(GeoPoint item)
         {
-            return new OperationResult<GeoPoint>()
+            return new OperationResult<GeoPoint>
             {
                 Data = _pointRepo.Add(item),
                 Messages = new[] { "Geopoint was successfully added." },
@@ -95,7 +95,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Update(GeoPoint item)
         {
-            return new OperationResult<GeoPoint>()
+            return new OperationResult<GeoPoint>
             {
                 Data = _pointRepo.Update(item),
                 Messages = new[] { "Geopoint was successfully edited." },
@@ -111,13 +111,13 @@ namespace GeoPing.Services
             }
             catch (Exception ex)
             {
-                return new OperationResult<GeoPoint>()
+                return new OperationResult<GeoPoint>
                 {
                     Messages = new[] { ex.Message }
                 };
             }
 
-            return new OperationResult<GeoPoint>()
+            return new OperationResult<GeoPoint>
             {
                 Messages = new[] { $"Geopoint with Id = [{item.Id}] was successfully removed." },
                 Success = true
@@ -131,7 +131,7 @@ namespace GeoPing.Services
 
             if (pointIds.Any())
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     Messages = new[] { "There are no given valid geolist Id" }
                 };
@@ -160,7 +160,7 @@ namespace GeoPing.Services
                 messages.AddRange(Delete(point).Messages);
             }
 
-            return new OperationResult()
+            return new OperationResult
             {
                 Success = true,
                 Messages = messages.AsEnumerable()

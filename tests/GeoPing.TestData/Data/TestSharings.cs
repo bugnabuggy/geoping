@@ -1,13 +1,12 @@
-﻿using GeoPing.Core.Models.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.TestData.Data
 {
     public class TestSharings
     {
-        private readonly ICollection<ListSharing> _sharings = new List<ListSharing>()
+        private readonly ICollection<ListSharing> _sharings = new List<ListSharing>
         {
             new ListSharing
             {

@@ -1,9 +1,9 @@
 ﻿using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Api.Controllers
 {
@@ -70,7 +70,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            var point = new GeoPoint()
+            var point = new GeoPoint
             {
                 Address = item.Address,
                 Description = item.Description,

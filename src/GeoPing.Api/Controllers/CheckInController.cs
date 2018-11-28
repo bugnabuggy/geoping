@@ -74,7 +74,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest(ex.Message);
             }
 
-            var checkIn = new CheckIn()
+            var checkIn = new CheckIn
             {
                 Distance = item.Distance,
                 Latitude = item.Latitude,

@@ -1,4 +1,5 @@
-﻿using GeoPing.Api.Configuration;
+﻿using System;
+using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
@@ -6,15 +7,14 @@ using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace GeoPing.TestData.Helpers
 {
     public class DataBaseDiBootstrapperSQLserver : IServiceProviderBootstrapper
     {
         private static object _contextLock = new object();
-        private static bool _contextInitialized = false;
-        private static int _contextCount = 0;
+        private static bool _contextInitialized;
+        private static int _contextCount;
         private static DbContextOptions<ApplicationDbContext> _options;
 
         // not for resharper or vs studio test runners, have to be separat test runner project! to use config

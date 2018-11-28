@@ -1,11 +1,11 @@
-﻿using GeoPing.Core.Services;
+﻿using System;
+using System.Linq;
+using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Services.Tests
 {
@@ -35,7 +35,7 @@ namespace GeoPing.Services.Tests
         {
             var expectedItemId = Guid.Parse("00000000-0000-0000-0000-000000000005");
 
-            var testItem = new CheckIn()
+            var testItem = new CheckIn
             {
                 Id = expectedItemId,
                 PointId = Guid.Parse("10000000-0000-0000-0000-000000000001"),

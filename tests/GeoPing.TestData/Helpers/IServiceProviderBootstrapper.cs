@@ -1,5 +1,5 @@
-﻿using GeoPing.Infrastructure.Data;
-using System;
+﻿using System;
+using GeoPing.Infrastructure.Data;
 
 namespace GeoPing.TestData.Helpers
 {

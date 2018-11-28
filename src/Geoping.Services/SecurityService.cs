@@ -11,19 +11,19 @@ namespace GeoPing.Services
 {
     public class SecurityService : ISecurityService
     {
-        private IRepository<ListSharing> _shareRepo;
+        private IRepository<ListSharing> _sharingRepo;
         private IRepository<GeoPingUser> _userRepo;
 
-        public SecurityService(IRepository<ListSharing> shareRepo,
+        public SecurityService(IRepository<ListSharing> sharingRepo,
                                IRepository<GeoPingUser> userRepo)
         {
-            _shareRepo = shareRepo;
+            _sharingRepo = sharingRepo;
             _userRepo = userRepo;
         }
 
         public IEnumerable<object> GetUsersHaveAccessToWatchList(GeoList list)
         {
-            var data = _shareRepo.Get(x => x.ListId == list.Id);
+            var data = _sharingRepo.Get(x => x.ListId == list.Id);
 
             var result = _userRepo
                 .Get(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id))
@@ -58,7 +58,7 @@ namespace GeoPing.Services
         public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
         {
             ICollection<Guid?> allowedUsers =
-                _shareRepo
+                _sharingRepo
                     .Get(x => x.ListId == list.Id && 
                               x.UserId != null && 
                               x.Status == "accepted")
