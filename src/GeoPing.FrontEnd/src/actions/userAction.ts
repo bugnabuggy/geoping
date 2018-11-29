@@ -11,8 +11,9 @@ import StaticStorage from '../services/staticStorage';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
-import { redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
+import { isRedirect, redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
 import IUser from '../types/serviceTypes/userServiceType';
+import { dashboardUrl } from '../constants/routes';
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
@@ -21,7 +22,10 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
     .then( ( token: string ) => {
       dispatch( windowBlockingAction( false ) );
       dispatch( authorizationUserAction( true ) );
-      dispatch( redirectDaschboardAction( true ) );
+      // dispatch( redirectDaschboardAction( true ) );
+      const redirecUrl: boolean = !!sessionStorage.getItem( 'url_for_redirect' );
+      // debugger
+      isRedirect( redirecUrl ? sessionStorage.getItem( 'url_for_redirect' ) : dashboardUrl )( dispatch );
       dispatch( addNotificationAction( createNotification( 'You authorized', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
@@ -69,8 +73,8 @@ export const authorizationUserFlag = ( isAuthorize: boolean ) => ( dispatch: IDi
   dispatch( authorizationUserAction( isAuthorize ) );
 };
 
-export const redirectDashboard = ( isRedirect: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( redirectDaschboardAction( isRedirect ) );
+export const redirectDashboard = ( isRedirectValue: boolean ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( redirectDaschboardAction( isRedirectValue ) );
 };
 
 export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
@@ -83,14 +87,16 @@ export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
     } )
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
-      if ( error.response.status === 401 ) {
-        redirectOnSignInForm( true )( dispatch );
-      } else {
-        dispatch( addNotificationAction(
-          createNotification(
-            error.message,
-            EnumNotificationType.Danger
-          ) ) );
+      if ( error.response ) {
+        if ( error.response.status === 401 ) {
+          redirectOnSignInForm( true )( dispatch );
+        } else {
+          dispatch( addNotificationAction(
+            createNotification(
+              error.message,
+              EnumNotificationType.Danger
+            ) ) );
+        }
       }
     } );
 };
@@ -105,8 +111,8 @@ function signOutUserAction(): Object {
   return { type: USER_SIGN_OUT };
 }
 
-export function redirectDaschboardAction( isRedirect: boolean ) {
-  return { type: REDIRECT_DASHBOARD_FOR_LOGIN, isRedirect };
+export function redirectDaschboardAction( isRedirectValue: boolean ) {
+  return { type: REDIRECT_DASHBOARD_FOR_LOGIN, isRedirectValue };
 }
 
 export function loadUserDataAction( userData: any ) {

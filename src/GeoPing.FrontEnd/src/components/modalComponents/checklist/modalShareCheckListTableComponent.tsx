@@ -10,10 +10,14 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
 
   renderUserWhoHasAccess = () => {
     const elements: Array<any> = this.props.sharedCheckList.listUsersWitchAccess.map( ( item: any ) => {
+      const name: string = item.firstName && item.lastName ?
+        `${item.firstName} ${item.lastName}`
+        :
+        item.login;
       return (
         <tr key={uuidV4()}>
           <td>
-            {item.name}
+            {name}
           </td>
           <td>
             {item.status}

@@ -9,8 +9,9 @@ export function validateFieldEmailListUserShare( value: any ) {
   } else {
     const usersError: any = [];
     for ( const index in value.users ) {
-      if ( !regEmail.test( value.users[ index ].email ) ) {
-        usersError[ index ] = { email: 'no user int hte system, will send invitation' };
+      // if ( !regEmail.test( value.users[ index ].email ) ) {
+      if ( !value.users[ index ].email ) {
+        usersError[ index ] = { email: 'Please enter login or email' };
       }
     }
     if ( usersError.length ) {

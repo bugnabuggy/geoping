@@ -7,7 +7,8 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import IShareCheckListModalComponentContainerProps
   from '../componentContainerProps/shareCheckListModalComponentContainerProps';
 import {
-  clearSharedCheckList,
+  clearAutocompleteListUsers,
+  clearSharedCheckList, getAutocompletedListUsers,
   loadUsersForShared,
   providePublicAccess,
   sendAccessUsersForCheckList
@@ -29,6 +30,8 @@ class ShareCheckListModalComponentContainer extends React.Component<IShareCheckL
           sendAccessUsersForCheckList={this.props.sendAccessUsersForCheckList}
           providePublicAccess={this.props.providePublicAccess}
           updateCheckList={this.props.updateCheckList}
+          getAutocompletedListUsers={this.props.getAutocompletedListUsers}
+          clearAutocompleteListUsers={this.props.clearAutocompleteListUsers}
         />
       )
       :
@@ -53,6 +56,8 @@ const mapDispatchToProps = ( dispath: any ) =>
       sendAccessUsersForCheckList,
       providePublicAccess,
       updateCheckList,
+      getAutocompletedListUsers,
+      clearAutocompleteListUsers,
     },
     dispath );
 

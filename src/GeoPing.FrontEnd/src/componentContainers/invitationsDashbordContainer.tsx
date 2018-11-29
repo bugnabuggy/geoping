@@ -5,10 +5,23 @@ import IInvitationsDashbordContainer from '../componentContainerProps/invitation
 import { InvitationsDashbordComponent } from '../components/InvitationsDashbordComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IinitialStateType from '../types/stateTypes/initialStateType';
-import { closeFilterInvitations, filterInvitations } from '../actions/invitationsAction';
+import {
+  acceptListSharingInvite,
+  cancelAcceptNewSharingList,
+  closeFilterInvitations,
+  deleteListSharing,
+  filterInvitations,
+  loadAllAcceptedSharedLists,
+  loadAllNewSharedList
+} from '../actions/invitationsAction';
 import { ModalInvitationsFilterComponent } from '../components/modalComponents/modalInvitationsFilterComponent';
 
 class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordContainer, any> {
+  componentDidMount(): void {
+    this.props.loadAllNewSharedList();
+    this.props.loadAllAcceptedSharedLists();
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -23,7 +36,13 @@ class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordC
             <FontAwesomeIcon icon="filter"/>
           </div>
         </div>
-        <InvitationsDashbordComponent/>
+        <InvitationsDashbordComponent
+          checkList={this.props.checkList}
+          invitations={this.props.invitations}
+
+          acceptListSharingInvite={this.props.acceptListSharingInvite}
+          cancelAcceptNewSharingList={this.props.cancelAcceptNewSharingList}
+        />
         <ModalInvitationsFilterComponent
           show={this.props.show}
 
@@ -37,6 +56,8 @@ class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordC
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     show: state.invitations.showInvitationsFilter,
+    checkList: state.checkList,
+    invitations: state.invitations,
   };
 };
 
@@ -44,7 +65,12 @@ const mapDispatchToProps = ( dispatch: any ) =>
   bindActionCreators(
     {
       filterInvitations,
-      closeFilterInvitations
+      closeFilterInvitations,
+      loadAllNewSharedList,
+      loadAllAcceptedSharedLists,
+      deleteListSharing,
+      cancelAcceptNewSharingList,
+      acceptListSharingInvite,
     },
     dispatch );
 

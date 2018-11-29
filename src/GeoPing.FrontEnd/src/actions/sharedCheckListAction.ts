@@ -6,7 +6,9 @@ import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import IUserWithAccessDTO from '../DTO/userWitchAccessDTO';
 import {
+  CLEAR_AUTOCOMPLETE_LIST_USERS,
   CLEAR_SHARED_CHECK_LIST,
+  GET_AUTOCOMPLETED_LIST_USERS,
   LOAD_USERS_LIST_WITCH_SHARED_ACCESS,
   LOADING_USERS_WHO_HAS_ACCESS,
   PROVIDE_PUBLIC_ACCESS,
@@ -54,6 +56,22 @@ export const providePublicAccess = ( idList: string, isPublic: boolean ) => ( di
     } );
 };
 
+export const getAutocompletedListUsers = ( userName: string ) => ( dispatch: IDispatchFunction ) => {
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.getAutocompletedListUsers( userName )
+    .then( ( response: any ) => {
+      console.info( 'getAutocompletedListUsers', response );
+      dispatch( getAutocompletedListUsersAction( response ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    } );
+};
+
+export const clearAutocompleteListUsers = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearAutocompleteListUsersAction() );
+};
+
 /* Actions */
 
 function loadUsersForSharedAction( usersList: Array<IUserWithAccessDTO> ):
@@ -76,4 +94,12 @@ function providePublicAccessAction( idList: string, isPublic: boolean ):
 
 function loadingUsersWhoHasAccess( isLoading: boolean ): { type: string, isLoading: boolean } {
   return { type: LOADING_USERS_WHO_HAS_ACCESS, isLoading };
+}
+
+function getAutocompletedListUsersAction( users: Array<any> ) {
+  return { type: GET_AUTOCOMPLETED_LIST_USERS, users };
+}
+
+function clearAutocompleteListUsersAction() {
+  return { type: CLEAR_AUTOCOMPLETE_LIST_USERS };
 }
