@@ -10,8 +10,17 @@ namespace GeoPing.TestData.Data
         {
             new ListSharing
             {
+                Id = Guid.Parse("10000000-0000-0000-0000-000000000000"),
+                ListId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
+                Email = "test1@test.com",
+                InvitationDate = DateTime.UtcNow,
+                Status = "pending",
+                UserId = Guid.Parse("10000000-0000-0000-0000-000000000001")
+            },
+            new ListSharing
+            {
                 Id = Guid.Parse("10000000-0000-0000-0000-000000000001"),
-                ListId = Guid.Parse("11000000-0000-0000-0000-000000000001"),
+                ListId = Guid.Parse("10000000-0000-0000-0000-000000000001"),
                 Email = "test1@test.com",
                 InvitationDate = DateTime.UtcNow,
                 Status = "accepted",

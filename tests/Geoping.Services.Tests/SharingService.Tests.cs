@@ -11,6 +11,7 @@ using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using GeoPing.Utilities.EmailSender;
+using GeoPing.Utilities.EmailSender.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -26,11 +27,11 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoList> _listRepo;
         private ISecurityService _securitySrv;
         private IGeolistService _listSrv;
-        private IGeopingTokenService _tokenSrv;
         private IGPUserService _gpUserSrv;
         private UserManager<AppIdentityUser> _userManager;
+        private Mock<IGeopingTokenService> _mockTokenSrv;
         private IValidationService _validator;
-        private IEmailService _emailSvc;
+        private Mock<IEmailService> _mockEmailSvc;
         private Mock<IOptions<ApplicationSettings>> _mockSettings;
 
         private IServiceProvider _services;
@@ -57,11 +58,28 @@ namespace GeoPing.Services.Tests
             _listRepo = _services.GetRequiredService<IRepository<GeoList>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
             _listSrv = _services.GetRequiredService<IGeolistService>();
-            _tokenSrv = new Mock<IGeopingTokenService>().Object;
             _gpUserSrv = _services.GetRequiredService<IGPUserService>();
             _userManager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
-            _validator = new Mock<IValidationService>().Object;
-            _emailSvc = new Mock<IEmailService>().Object;
+            _mockTokenSrv = new Mock<IGeopingTokenService>();
+            _validator = _services.GetRequiredService<IValidationService>();
+            _mockEmailSvc = new Mock<IEmailService>();
+            _mockSettings = new Mock<IOptions<ApplicationSettings>>();
+
+
+            _mockTokenSrv
+                .Setup(x => x.CreateSharingInviteToken(It.IsAny<string>()))
+                .Returns(new GeoPingToken());
+            _mockTokenSrv
+                .Setup(x => x.CreateSharingToken(It.IsAny<string>()))
+                .Returns(new GeoPingToken());
+
+            _mockEmailSvc
+                .Setup(x => x.Send(It.IsAny<EmailMessage>()))
+                .Verifiable();
+            _mockEmailSvc
+                .Setup(x => x.GetConfirmationMail(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns("");
+
 
             _mockSettings
                 .Setup(x => x.Value)
@@ -71,7 +89,12 @@ namespace GeoPing.Services.Tests
                     {
                         MinCharsToAutoComplete = 3,
                         SizeOfAutoCompletedList = 10
-                    }
+                    },
+                    Urls = new UrlsSettings
+                    {
+                        ActionsUrl = new ActionsUrlSettings()
+                    },
+                    EmailSender = new EmailSenderSettings()
                 });
 
             _sut = new SharingService
@@ -79,36 +102,36 @@ namespace GeoPing.Services.Tests
                 _listRepo,
                 _securitySrv,
                 _listSrv,
-                _tokenSrv,
+                _mockTokenSrv.Object,
                 _gpUserSrv,
                 _userManager,
                 _validator,
-                _emailSvc,
+                _mockEmailSvc.Object,
                 _mockSettings.Object);
         }
 
-        [Test]
-        public void Should_return_autocompleted_users_list()
-        {
-            string query;
-            IEnumerable<UserAutoCompleteDTO> data;
+        //[Test]
+        //public void Should_return_autocompleted_users_list()
+        //{
+        //    string query;
+        //    IEnumerable<UserAutoCompleteDTO> data;
 
-            query = "te";
-            data = _sut.GetAutoCompletedUsersList(query);
-            Assert.AreEqual(null, data);
+        //    query = "te";
+        //    data = _sut.GetAutoCompletedUsersList(query);
+        //    Assert.AreEqual(null, data);
 
-            query = "test";
-            data = _sut.GetAutoCompletedUsersList(query);
-            Assert.AreEqual(4, data.Count());
+        //    query = "test";
+        //    data = _sut.GetAutoCompletedUsersList(query);
+        //    Assert.AreEqual(4, data.Count());
 
-            query = "testuser";
-            data = _sut.GetAutoCompletedUsersList(query);
-            Assert.AreEqual(2, data.Count());
+        //    query = "testuser";
+        //    data = _sut.GetAutoCompletedUsersList(query);
+        //    Assert.AreEqual(2, data.Count());
 
-            query = "TestUser@test.com";
-            data = _sut.GetAutoCompletedUsersList(query);
-            Assert.AreEqual(1, data.Count());
-        }
+        //    query = "TestUser@test.com";
+        //    data = _sut.GetAutoCompletedUsersList(query);
+        //    Assert.AreEqual(1, data.Count());
+        //}
 
         [Test]
         public async Task Shouldnt_invite_user_because_list_doesnt_exist()
@@ -168,12 +191,12 @@ namespace GeoPing.Services.Tests
 
             var sharingsAfter = _sharingRepo.Data.Count();
 
-            Assert.AreEqual(false, ((string[])data.Data).Any());
+            Assert.AreEqual(false, data.Success);
             Assert.AreEqual(sharingsBefore, sharingsAfter);
         }
 
         [Test]
-        public void Should_invite_users_to_list()
+        public async Task Should_invite_users_to_list()
         {
             var usersData = new[]
             {
@@ -187,7 +210,7 @@ namespace GeoPing.Services.Tests
 
             var sharingsBefore = _sharingRepo.Data.Count();
 
-            data = _sut.InviteUsersByList(_userId1, _listId1, usersData).Result;
+            data = await _sut.InviteUsersByList(_userId1, _listId1, usersData);
 
             var sharingsAfter = _sharingRepo.Data.Count();
 
@@ -197,7 +220,7 @@ namespace GeoPing.Services.Tests
 
             Assert.AreEqual(sharingsBefore, sharingsAfter - 2);
             Assert.That(_sharingRepo.Get().FirstOrDefault(x => x.Email == "valid@email.com").Status == "invited");
-            Assert.That(_sharingRepo.Get().FirstOrDefault(x => x.Email == "TestUser@test.com").Status == "pending");
+            Assert.That(_sharingRepo.Get().FirstOrDefault(x => x.Email == "tester@test.com").Status == "pending");
         }
 
         [Test]
@@ -214,10 +237,10 @@ namespace GeoPing.Services.Tests
         public void Shouldnt_accept_invite_by_user_because_user_isnt_allowed()
         {
             // Cause of user has no access
-            var data = _sut.AcceptSharing(_userId2, _sharingId1);
+            var data = _sut.AcceptSharing(_userId1, _sharingId2);
 
             Assert.AreEqual(false, data.Success);
-            Assert.That(_sharingRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(_sharingId1)).Status != "accepted");
+            Assert.That(_sharingRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(_sharingId2)).Status != "accepted");
         }
 
         [Test]
@@ -262,11 +285,11 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_confirm_sharing_by_user_with_registration()
         {
-            Assert.AreEqual(null, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault());
+            Assert.AreEqual(null, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault().UserId);
 
             _sut.ConfirmSharingWithRegistration(_sharingId3, _userId1, "test1@test.com");
 
-            Assert.AreEqual(_userId1, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault());
+            Assert.AreEqual(_userId1, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault().UserId);
         }
 
         [Test]
@@ -278,13 +301,31 @@ namespace GeoPing.Services.Tests
         }
 
         [Test]
-        public void Should_get_lists_shared_by_user()
+        public void Should_get_lists_shared_with_user_having_status_pending()
         {
-            var data = _sut.GetListsSharedBy(_userId1);
+            var data = _sut.GetListsSharedWith(_userId1, "pending");
 
             Assert.AreEqual(1, data.Count());
-            Assert.AreEqual(true, data.Any(x => x.ShareId == Guid.Parse(_sharingId4)));
+            Assert.That(!data.Any(x => x.ShareStatus == "accepted"));
         }
+
+        [Test]
+        public void Should_get_lists_shared_with_user_having_status_accepted()
+        {
+            var data = _sut.GetListsSharedWith(_userId1, "accepted");
+
+            Assert.AreEqual(1, data.Count());
+            Assert.That(!data.Any(x => x.ShareStatus == "pending"));
+        }
+
+        //[Test]
+        //public void Should_get_lists_shared_by_user()
+        //{
+        //    var data = _sut.GetListsSharedBy(_userId1);
+
+        //    Assert.AreEqual(1, data.Count());
+        //    Assert.AreEqual(true, data.Any(x => x.ShareId == Guid.Parse(_sharingId4)));
+        //}
 
         [Test]
         public void Should_revoke_sharing_by_user()

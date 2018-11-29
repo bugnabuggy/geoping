@@ -54,66 +54,56 @@ namespace GeoPing.Services
             _settings = settings.Value;
         }
 
-        public IEnumerable<SharedListInfoDTO> GetSharedLists(Expression<Func<ListSharing, bool>> query)
+
+        public OperationResult AcceptSharing(Guid actingUserId, string sharingId)
         {
-            var sharings = _sharingRepo.Get(query);
+            var isExist = IsSharingExists(sharingId, out var sharing);
 
-            var result =
-                from s in sharings
-                join l in _listRepo.Get() on s.ListId equals l.Id
-                select new SharedListInfoDTO
-                {
-                    ListId = l.Id,
-                    ListName = l.Name,
-                    ListDescription = l.Description,
-                    ListOwnerId = l.OwnerId,
-                    ListCreated = l.Created,
-                    ListEdited = l.Edited,
-                    ListIsPublic = l.IsPublic,
-                    ShareId = s.Id,
-                    ShareStatus = s.Status,
-                    ShareInvitationDate = s.InvitationDate
-                };
-
-            return result.AsEnumerable();
-        }
-
-        public OperationResult DeleteSharing(Guid userId, string sharingId)
-        {
-            var isSharingId = Guid.TryParse(sharingId, out var id);
-
-            if (!isSharingId)
+            if (!isExist)
             {
                 return new OperationResult
                 {
-                    Messages = new[] { $"Sharing record with id = [{sharingId}] is invalid" }
+                    Messages = new[] { $"Sharing record with ID = [{sharingId}] doesn`t exist" }
                 };
             }
 
-            var item = _sharingRepo.Get().FirstOrDefault(x => x.Id == id);
-
-            var isUserAllowed =
-                _securitySrv.IsUserHasAccessToManipulateList
-                (userId, _listRepo.Get(x => x.Id == item.ListId).FirstOrDefault()) || 
-                userId == item.UserId;
-
-            if (isUserAllowed)
+            if (sharing.UserId == actingUserId)
             {
-                _sharingRepo.Delete(item);
+                sharing.Status = "accepted";
+
+                _sharingRepo.Update(sharing);
+
+                _tokenSrv.DeleteSharingTokens(sharingId);
 
                 return new OperationResult
                 {
                     Success = true,
-                    Messages = new[] { "You successfully leave the shared list" }
+                    Messages = new[] { "The share invite was accepted." }
                 };
             }
 
             return new OperationResult
             {
-                Messages = new[] { "Unauthorized", "You are not allowed to do this." }
+                Messages = new[] { "You are not allowed to do this." }
             };
         }
 
+        public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
+        {
+            var sharing = _sharingRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+
+            if (sharing != null)
+            {
+                if (sharing.Email == email)
+                {
+                    sharing.UserId = userId;
+                    sharing.Status = "pending";
+
+                    _sharingRepo.Update(sharing);
+                }
+            }
+        }
+        
         // Send sharing invitations to users in list
         public async Task<OperationResult> InviteUsersByList(Guid actingUserId, string listId, string[] usersData)
         {
@@ -168,15 +158,26 @@ namespace GeoPing.Services
 
                 var invitedGPUser = _gpUserSrv.GetUser(x => x.IdentityId == user.Id);
 
+                if (invitedGPUser.Id == actingUserId)
+                {
+                    messages.Add("You can`t invite yourself");
+                    continue;
+                }
+
                 InviteUser(actingUserId, list.Id, user.Email, invitedGPUser);
                 messages.Add($"The user [{userData}] was invited.");
                 invitedUsers.Add(user.Email);
             }
 
+            bool success;
+            success = invitedUsers.Any()
+                ? true
+                : false;
+
             return new OperationResult
             {
-                Success = true,
-                Data = invitedUsers,
+                Success = success,
+                Data = invitedUsers.ToArray(),
                 Messages = messages
             };
         }
@@ -209,96 +210,94 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult AcceptSharingInvite(Guid userId, string sharingId)
+        public IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query)
         {
-            var isExist = IsSharingExists(sharingId, out var sharing);
+            return _gpUserSrv.GetUsersShortInfoList(query);
+        }
 
-            if (isExist && sharing.UserId == userId)
+        public IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId)
+        {
+            var sharings = _sharingRepo.Get(x => x.UserId == userId);
+
+            return GetSharedListsInfo(sharings);
+        }
+
+        public IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId, string sharingStatus)
+        {
+            var sharings = _sharingRepo.Get(x => x.UserId == userId &&
+                                                 x.Status == sharingStatus);
+
+            return GetSharedListsInfo(sharings);
+        }
+
+        public OperationResult RefuseSharing(Guid actingUserId, string sharingId)
+        {
+            var isSharingExists = IsSharingExists(sharingId, out var sharing);
+
+            if (!isSharingExists)
             {
-                sharing.Status = "accepted";
-
-                _sharingRepo.Update(sharing);
-
-                _tokenSrv.DeleteSharingTokens(sharingId);
-
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "The share invite was accepted" }
+                    Messages = new[] { $"Sharing record with ID = [{sharingId}] doesn`t exist" }
                 };
             }
 
-            return new OperationResult
-            {
-                Messages = new[] { "A shared list wasn`t found" }
-            };
-        }
+            var isUserAllowed = actingUserId == sharing.UserId;
 
-        public OperationResult DeclineSharingInvite(Guid userId, string sharingId)
-        {
-            var isExist = IsSharingExists(sharingId, out var sharing);
-
-            if (isExist && sharing.UserId == userId)
+            if (actingUserId == sharing.UserId)
             {
                 _sharingRepo.Delete(sharing);
 
                 return new OperationResult
                 {
                     Success = true,
-                    Messages = new[] { "The share invite was declined" }
+                    Messages = new[] { "You successfully refuse the sharing list" }
                 };
             }
 
             return new OperationResult
             {
-                Messages = new[] { "A shared list wasn`t found" }
+                Messages = new[] { "You are not allowed to do this." }
             };
         }
 
-        public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
+        public OperationResult RevokeSharing(Guid ownerUserId, string sharingId)
         {
-            var sharing = _sharingRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+            var isSharingExists = IsSharingExists(sharingId, out var sharing);
 
-            if (sharing != null)
+            if (!isSharingExists)
             {
-                if (sharing.Email == email)
+                return new OperationResult
                 {
-                    sharing.UserId = userId;
-                    sharing.Status = "pending";
-
-                    _sharingRepo.Update(sharing);
-                }
+                    Messages = new[] { $"Sharing record with ID = [{sharingId}] doesn`t exist" }
+                };
             }
-        }
 
-        public IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query)
-        {
-            return _gpUserSrv.GetUsersShortInfoList(query);
-        }
+            var sharedList = _listRepo.Get().FirstOrDefault(x => x.Id == sharing.ListId);
 
-        public OperationResult AcceptSharing(Guid expectedUserId2, string sharingId2)
-        {
-            throw new NotImplementedException();
-        }
+            if (sharedList == null)
+            {
+                return new OperationResult
+                {
+                    Messages = new[] { $"Shared list doesn`t exist" }
+                };
+            }
 
-        public OperationResult RefuseSharing(Guid expectedUserId2, string sharingId2)
-        {
-            throw new NotImplementedException();
-        }
+            if (!_securitySrv.IsUserHasAccessToManipulateList(ownerUserId, sharedList))
+            {
+                return new OperationResult
+                {
+                    Messages = new[] { "You are not allowed to do this." }
+                };
+            }
 
-        public IEnumerable<SharedListInfoDTO> GetListsSharedBy(Guid userId1)
-        {
-            throw new NotImplementedException();
-        }
+            _sharingRepo.Delete(sharing);
 
-        public IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public OperationResult RevokeSharing(Guid userId1, string sharingId4)
-        {
-            throw new NotImplementedException();
+            return new OperationResult
+            {
+                Success = true,
+                Messages = new[] { "You successfully revoke the sharing list" }
+            };
         }
 
         // Inviting user procedure
@@ -369,7 +368,7 @@ namespace GeoPing.Services
                               $"{_settings.Urls.ActionsUrl.ByToken}/" +
                               $"{code}";
 
-            _emailSvc.Send(new EmailMessage
+            var message = new EmailMessage
             {
                 FromAddress = new EmailAddress
                 {
@@ -383,7 +382,9 @@ namespace GeoPing.Services
                 },
                 Subject = $"User {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} shared a geolist with you.",
                 Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
-            });
+            };
+
+            _emailSvc.Send(message);
         }
 
         private bool IsSharingExists(string sharingId, out ListSharing sharing)
@@ -393,7 +394,7 @@ namespace GeoPing.Services
 
             if (isId)
             {
-                sharing = _sharingRepo.Get().FirstOrDefault(x => x.Id == id);
+                sharing = _sharingRepo.Data.FirstOrDefault(x => x.Id == id);
 
                 if (sharing != null)
                 {
@@ -402,6 +403,28 @@ namespace GeoPing.Services
             }
 
             return false;
+        }
+
+        private IEnumerable<SharedListInfoDTO> GetSharedListsInfo(IQueryable<ListSharing> sharings)
+        {
+            var result =
+                from s in sharings
+                join l in _listRepo.Get() on s.ListId equals l.Id
+                select new SharedListInfoDTO
+                {
+                    ListId = l.Id,
+                    ListName = l.Name,
+                    ListDescription = l.Description,
+                    ListOwnerId = l.OwnerId,
+                    ListCreated = l.Created,
+                    ListEdited = l.Edited,
+                    ListIsPublic = l.IsPublic,
+                    ShareId = s.Id,
+                    ShareStatus = s.Status,
+                    ShareInvitationDate = s.InvitationDate
+                };
+
+            return result.AsEnumerable();
         }
     }
 }

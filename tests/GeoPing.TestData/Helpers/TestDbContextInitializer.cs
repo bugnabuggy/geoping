@@ -30,14 +30,26 @@ namespace GeoPing.TestData.Helpers
             //return default principal back;
             httpContextAccessor.HttpContext.User = principal;
 
-            await SeedUsers(services);
+            await SeedTestUsers(services);
             SeedTestLists(services);
             SeedTestPublicLists(services);
             SeedTestPoints(services);
             SeedTestChecksIn(services);
+            SeedTestListSharings(services);
         }
 
-        private async Task SeedUsers(IServiceProvider services)
+        private void SeedTestListSharings(IServiceProvider services)
+        {
+            var sharingsRepo = services.GetRequiredService<IRepository<ListSharing>>();
+            var sharings = new TestSharings();
+
+            foreach (var sharing in sharings.GetListSharings())
+            {
+                sharingsRepo.Add(sharing);
+            }
+        }
+
+        private async Task SeedTestUsers(IServiceProvider services)
         {
             var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
             var gpUserRepo = services.GetRequiredService<IRepository<GeoPingUser>>();
