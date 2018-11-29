@@ -24,4 +24,5 @@ export default interface IGoogleMapComponentProps {
   addDistance: ( distance: number ) => ( dispatch: IDispatchFunction ) => void;
   getMyAddress: () => (dispatch: IDispatchFunction) => void;
   findGeoPosition: () => ( dispatch: IDispatchFunction ) => void;
+  setAddressGeoPoint: ( latLng: any ) => ( dispatch: IDispatchFunction ) => void;
 }
