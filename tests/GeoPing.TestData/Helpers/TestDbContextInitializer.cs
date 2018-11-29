@@ -16,7 +16,7 @@ namespace GeoPing.TestData.Helpers
 {
     public class TestDbContextInitializer
     {
-        public void SeedData(IServiceProvider services)
+        public async Task SeedDataAsync(IServiceProvider services)
         {
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
             var principal = new ClaimsPrincipal(httpContextAccessor.HttpContext.User);
@@ -30,7 +30,7 @@ namespace GeoPing.TestData.Helpers
             //return default principal back;
             httpContextAccessor.HttpContext.User = principal;
 
-            SeedUsers(services);
+            await SeedUsers(services);
             SeedTestLists(services);
             SeedTestPublicLists(services);
             SeedTestPoints(services);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using GeoPing.Core;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
@@ -34,9 +35,9 @@ namespace GeoPing.Services.Tests
         private Guid _gpUserId;
 
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEachAsync()
         {
-            _services = new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
+            _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
             _userManager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
             _logger = _services.GetRequiredService<ILogger<AccountService>>();
             _gpUserSrv = _services.GetRequiredService<IGPUserService>();

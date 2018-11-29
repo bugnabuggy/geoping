@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GeoPing.Infrastructure.Data;
 
 namespace GeoPing.TestData.Helpers
@@ -8,6 +9,6 @@ namespace GeoPing.TestData.Helpers
         ApplicationDbContext GetApplicationDbContext();
 
         IServiceProvider GetServiceProvider();
-        IServiceProvider GetServiceProviderWithSeedDb();
+        Task<IServiceProvider> GetServiceProviderWithSeedDb();
     }
 }

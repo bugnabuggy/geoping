@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
@@ -21,9 +22,9 @@ namespace GeoPing.Services.Tests
         private readonly TestPoints _testPoints = new TestPoints();
 
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEach()
         {
-            _services = new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
+            _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _geopointRepo = _services.GetRequiredService<IRepository<GeoPoint>>();
 
@@ -77,7 +78,7 @@ namespace GeoPing.Services.Tests
         {
             var expectedPointId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testPoint = _sut.Get(x => x.Id == expectedPointId).FirstOrDefault();
+            var testPoint = _geopointRepo.Data.FirstOrDefault(x => x.Id == expectedPointId);
 
             var result = _sut.Delete(testPoint);
 

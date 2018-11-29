@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
@@ -46,11 +47,11 @@ namespace GeoPing.TestData.Helpers
             return serviceProvider;
         }
 
-        public IServiceProvider GetServiceProviderWithSeedDb()
+        public async Task<IServiceProvider> GetServiceProviderWithSeedDb()
         {
             var provider = GetServiceProvider();
             var dbSeed = new TestDbContextInitializer();
-            dbSeed.SeedData(provider);
+            await dbSeed.SeedDataAsync(provider);
 
             return provider;
         }

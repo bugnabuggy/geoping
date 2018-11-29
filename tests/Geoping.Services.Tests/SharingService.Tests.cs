@@ -49,9 +49,9 @@ namespace GeoPing.Services.Tests
         private string _sharingId5 = "10000000-0000-0000-0000-000000000005";
 
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEachAsync()
         {
-            _services = new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
+            _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _sharingRepo = _services.GetRequiredService<IRepository<ListSharing>>();
             _listRepo = _services.GetRequiredService<IRepository<GeoList>>();

@@ -129,7 +129,7 @@ namespace GeoPing.Services
             var pointIds = ids.Split(new [] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                              .ToArray();
 
-            if (pointIds.Any())
+            if (!pointIds.Any())
             {
                 return new OperationResult
                 {
@@ -149,7 +149,7 @@ namespace GeoPing.Services
                     continue;
                 }
 
-                var point = Get(x => x.Id == pointId).FirstOrDefault();
+                var point = _pointRepo.Data.FirstOrDefault(x => x.Id == pointId);
 
                 if (point == null)
                 {
