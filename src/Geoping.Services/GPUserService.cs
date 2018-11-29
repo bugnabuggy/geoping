@@ -30,6 +30,11 @@ namespace GeoPing.Services
             return _gpUserRepo.Get().FirstOrDefault(func);
         }
 
+        public IQueryable<GeoPingUser> GetUsers(Expression<Func<GeoPingUser, bool>> func)
+        {
+            return _gpUserRepo.Get(func);
+        }
+
         public IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters)
         {
             if (firstLetters.Length < _settings.AutoComplete.MinCharsToAutoComplete)

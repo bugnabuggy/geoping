@@ -103,7 +103,7 @@ namespace GeoPing.Services
                 }
             }
         }
-        
+
         // Send sharing invitations to users in list
         public async Task<OperationResult> InviteUsersByList(Guid actingUserId, string listId, string[] usersData)
         {
@@ -182,34 +182,6 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId)
-        {
-            var isListExist = _listSrv.IsListExistWithThisId(listId, out var list);
-            if (!isListExist)
-            {
-                return new OperationResult<IEnumerable<object>>
-                {
-                    Messages = new[] { $"There is no list with id = [{listId}]" }
-                };
-            }
-
-            var isUserAllowed = _securitySrv.IsUserHasAccessToWatchList(userId, list);
-            if (!isUserAllowed)
-            {
-                return new OperationResult<IEnumerable<object>>
-                {
-                    Messages = new[] { "You are not allowed to do this" }
-                };
-            }
-
-            return new OperationResult<IEnumerable<object>>
-            {
-                Success = true,
-                Messages = new[] { $"Following users have access to list with ID = [{listId}]" },
-                Data = _securitySrv.GetUsersHaveAccessToWatchList(list)
-            };
-        }
-
         public IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query)
         {
             return _gpUserSrv.GetUsersShortInfoList(query);
@@ -230,6 +202,49 @@ namespace GeoPing.Services
             return GetSharedListsInfo(sharings);
         }
 
+        public OperationResult<IEnumerable<UserListWasSharedWithDTO>> 
+            GetUsersListWasSharedWith(Guid userId, string listId)
+        {
+            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list); 
+
+            if (list == null)
+            {
+                return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
+                {
+                    Messages = new[] { $"There is no list with id = [{listId}]" }
+                };
+            }
+
+            if (!_securitySrv.IsUserHasAccessToWatchList(userId, list))
+            {
+                return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
+                {
+                    Messages = new[] { "You are not allowed to do this" }
+                };
+            }
+
+            var result =
+                from sh in _sharingRepo.Get(x => x.ListId == list.Id)
+                from user in _gpUserSrv.GetUsers(x => x.Id == sh.UserId)
+                select new UserListWasSharedWithDTO
+                {
+                    UserId = user.Id,
+                    UserName = user.Login,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    SharingId = sh.Id,
+                    SharingDate = sh.InvitationDate.ToUniversalTime(),
+                    SharingStatus = sh.Status
+                };
+
+            return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
+            {
+                Success = true,
+                Messages = new[] { $"List with ID = [{listId}] was shared with following users" },
+                Data = result
+            };
+        }
+
         public OperationResult RefuseSharing(Guid actingUserId, string sharingId)
         {
             var isSharingExists = IsSharingExists(sharingId, out var sharing);
@@ -238,7 +253,7 @@ namespace GeoPing.Services
             {
                 return new OperationResult
                 {
-                    Messages = new[] { $"Sharing record with ID = [{sharingId}] doesn`t exist" }
+                    Messages = new[] { $"Sharing record with ID = [{sharingId}] doesn`t exist." }
                 };
             }
 
@@ -251,7 +266,7 @@ namespace GeoPing.Services
                 return new OperationResult
                 {
                     Success = true,
-                    Messages = new[] { "You successfully refuse the sharing list" }
+                    Messages = new[] { "You successfully refuse the sharing list." }
                 };
             }
 

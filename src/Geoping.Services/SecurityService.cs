@@ -21,13 +21,12 @@ namespace GeoPing.Services
             _userRepo = userRepo;
         }
 
-        // Owner was temporary excluded
         public IEnumerable<object> GetUsersHaveAccessToWatchList(GeoList list)
         {
             var data = _sharingRepo.Get(x => x.ListId == list.Id);
 
             var result = _userRepo
-                .Get(x => /*x.Id == list.OwnerId ||*/ data.Any(y => y.UserId == x.Id))
+                .Get(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id))
                 .Select(x => new
                 {
                     x.Id,
