@@ -38,4 +38,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( TokenPageContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( TokenPageContainer );

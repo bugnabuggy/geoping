@@ -31,4 +31,4 @@ const mapDispatchToProps = ( dispath: any ) =>
     },
     dispath );
 
-export default connect( mapStateToProps, mapDispatchToProps )( TokenErrorContainer );
+export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( TokenErrorContainer );
