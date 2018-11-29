@@ -41,7 +41,7 @@ namespace GeoPing.Services
             {
                 return null;
             }
-        
+
             firstLetters = firstLetters.ToUpper();
 
             var data = _gpUserRepo.Get(x => x.Login.ToUpper().StartsWith(firstLetters));
@@ -55,7 +55,9 @@ namespace GeoPing.Services
                 .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
                 .Select(x => new UserAutoCompleteDTO
                 {
-                    FullName = $"{x.LastName} {x.FirstName}",
+                    FullName = x.LastName == null && x.FirstName == null
+                        ? $"{x.LastName} {x.FirstName}".Trim()
+                        : null,
                     UserName = x.Login,
                     Email = x.Email
                 });
@@ -69,7 +71,7 @@ namespace GeoPing.Services
             {
                 UserName = data.Login,
                 Avatar = data.Avatar
-            }; 
+            };
         }
 
         public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
@@ -90,7 +92,7 @@ namespace GeoPing.Services
                 Email = email,
                 Login = username,
                 AccountType = "regular",
-                Avatar =   DefaultUserSettings.AvatarImage
+                Avatar = DefaultUserSettings.AvatarImage
             });
         }
 
