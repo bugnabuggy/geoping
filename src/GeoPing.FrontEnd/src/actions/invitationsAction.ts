@@ -10,11 +10,14 @@ import StaticStorage from '../services/staticStorage';
 import { IGeoListSharingDTO } from '../DTO/geoListDTO';
 import {
   ACCEPT_LIST_SHARING_INVITE,
+  ACCEPT_SHARING_LISTS_LOADING,
   CANCEL_ACCEPT_NEW_SHARING_LIST,
   DELETE_LIST_SHARING,
   LOAD_ALL_ACCEPTED_SHARED_LISTS,
-  LOAD_ALL_NEW_SHARED_LISTS
+  LOAD_ALL_NEW_SHARED_LISTS,
+  NEW_SHARING_LISTS_LOADING
 } from '../constantsForReducer/checkList';
+import { windowBlocking } from './windowAction';
 
 export const filterInvitations = () => ( dispatch: IDispatchFunction ) => {
   dashboardFiltersMockService( 'filterInvitations' )
@@ -30,62 +33,72 @@ export const closeFilterInvitations = () => ( dispatch: IDispatchFunction ) => {
 };
 
 export const loadAllNewSharedList = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( newSharingListsLoadingAction( true ) );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getAllNewSharedLists()
     .then( ( response: any ) => {
-      console.info( 'response', response );
       dispatch( loadAllNewSharedListAction( response ) );
+      dispatch( newSharingListsLoadingAction( false ) );
     } )
     .catch( ( error: any ) => {
+      dispatch( newSharingListsLoadingAction( false ) );
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const loadAllAcceptedSharedLists = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( acceptSharingListsLoadingAction( true ) );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getAllAcceptedSharedLists()
     .then( ( response: any ) => {
-      console.info( 'response', response );
       dispatch( loadAllAcceptedSharedListsAction( response ) );
+      dispatch( acceptSharingListsLoadingAction( false ) );
     } )
     .catch( ( error: any ) => {
+      dispatch( acceptSharingListsLoadingAction( false ) );
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const deleteListSharing = ( sharingId: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.deleteListSharing( sharingId )
     .then( ( response: any ) => {
-      console.info( 'response', response );
       dispatch( deleteListSharingAction( sharingId ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
 export const cancelAcceptNewSharingList = ( sharingId: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.cancelAcceptanceNewSharingList( sharingId )
     .then( ( response: any ) => {
-      console.info( 'response', response );
       dispatch( cancelAcceptNewSharingListAction( sharingId ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
 export const acceptListSharingInvite = ( sharingId: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.acceptListSharingInvite( sharingId )
     .then( ( response: any ) => {
-      console.info( 'response', response );
       dispatch( acceptListSharingInviteAction( sharingId ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
@@ -117,4 +130,12 @@ function cancelAcceptNewSharingListAction( sharingId: string ) {
 
 function acceptListSharingInviteAction( sharingId: string ) {
   return { type: ACCEPT_LIST_SHARING_INVITE, sharingId };
+}
+
+function newSharingListsLoadingAction( isLoading: boolean ) {
+  return { type: NEW_SHARING_LISTS_LOADING, isLoading };
+}
+
+function acceptSharingListsLoadingAction( isLoading: boolean ) {
+  return { type: ACCEPT_SHARING_LISTS_LOADING, isLoading };
 }

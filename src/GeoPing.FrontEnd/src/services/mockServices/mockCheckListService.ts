@@ -209,4 +209,16 @@ export default class MockCheckListService implements ICheckListServiceType {
     });
   }
 
+  getInfoAboutToken( token: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  removeToken( token: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
 }

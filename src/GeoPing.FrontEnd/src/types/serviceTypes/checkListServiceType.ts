@@ -30,4 +30,6 @@ export default interface ICheckListServiceType {
   cancelAcceptanceNewSharingList: ( sharingId: string ) => Promise<any>;
   acceptListSharingInvite: ( sharingId: string ) => Promise<any>;
   getAutocompletedListUsers: ( userName: string ) => Promise<any>;
+  getInfoAboutToken: ( token: string ) => Promise<any>;
+  removeToken: ( token: string ) => Promise<any>;
 }

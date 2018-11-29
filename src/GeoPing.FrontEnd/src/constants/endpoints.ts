@@ -57,3 +57,5 @@ export const cancelAcceptListSharing: string = `${endpointBaseUrl}/api/sharing/i
 export const getAllUsersForListShared: string = `${endpointBaseUrl}/api/sharing/%listid%/allowed-users`;
 export const acceptListSharingInvite: string = `${endpointBaseUrl}/api/sharing/invitation/%sharingId%`;
 export const getAutocompletedListUsers: string = `${endpointBaseUrl}/api/sharing/autocomplete?query=%query%`;
+export const getInfoAboutToken: string = `${endpointBaseUrl}/api/token/%token%`;
+export const removeToken: string = `${endpointBaseUrl}/api/token/%token%`;

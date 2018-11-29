@@ -1475,6 +1475,82 @@ select.form-control:not([size]):not([multiple]) {
 
 /*****************************************************************************************/
 
+/* token page */
+.token-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+/*****************************************************************************************/
+
+/* Invitations */
+.invitations-new-lists {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invitations-new-lists span {
+  flex: 1;
+  margin-left: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.invitations-new-lists-images {
+  display: flex;
+  margin: 0 0 0 10px;
+  width: 60px;
+  justify-content: space-around;
+  font-size: 25px;
+}
+
+.invitations-new-lists-images div:first-child {
+  color: #128D15;
+}
+
+.invitations-new-lists-images div:last-child {
+  color: #a4575b;
+}
+
+.invitations-accept-lists {
+  display: flex;
+  justify-content: space-between;
+}
+
+.invitations-accept-lists span {
+  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+}
+
+.invitations-accept-lists-link {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: black;
+}
+
+.invitations-accept-lists-link:hover {
+  text-decoration: none;
+  color: black;
+  background: rgb(70, 195, 127);
+}
+
+.invitations-accept-lists-icon-container {
+  color: #a4575b;
+  font-size: 25px;
+  height: 25px;
+  display: flex;
+  margin-left: 10px;
+}
+
+/*****************************************************************************************/
+
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {

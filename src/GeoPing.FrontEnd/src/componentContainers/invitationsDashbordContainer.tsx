@@ -8,7 +8,8 @@ import IinitialStateType from '../types/stateTypes/initialStateType';
 import {
   acceptListSharingInvite,
   cancelAcceptNewSharingList,
-  closeFilterInvitations, deleteListSharing,
+  closeFilterInvitations,
+  deleteListSharing,
   filterInvitations,
   loadAllAcceptedSharedLists,
   loadAllNewSharedList
@@ -18,6 +19,7 @@ import { ModalInvitationsFilterComponent } from '../components/modalComponents/m
 class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordContainer, any> {
   componentDidMount(): void {
     this.props.loadAllNewSharedList();
+    this.props.loadAllAcceptedSharedLists();
   }
 
   render() {
@@ -34,7 +36,13 @@ class InvitationsDashbordContainer extends React.Component<IInvitationsDashbordC
             <FontAwesomeIcon icon="filter"/>
           </div>
         </div>
-        <InvitationsDashbordComponent/>
+        <InvitationsDashbordComponent
+          checkList={this.props.checkList}
+          invitations={this.props.invitations}
+
+          acceptListSharingInvite={this.props.acceptListSharingInvite}
+          cancelAcceptNewSharingList={this.props.cancelAcceptNewSharingList}
+        />
         <ModalInvitationsFilterComponent
           show={this.props.show}
 
@@ -49,6 +57,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     show: state.invitations.showInvitationsFilter,
     checkList: state.checkList,
+    invitations: state.invitations,
   };
 };
 

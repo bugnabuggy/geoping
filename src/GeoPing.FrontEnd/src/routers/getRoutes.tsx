@@ -3,7 +3,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Routes from './routesComponent';
+import { Routes } from './routesComponent';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
 import { authorizationUserFlag, loadUserData, redirectDashboard } from '../actions/userAction';
@@ -40,7 +40,6 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
       }
       if ( sessionStorage.getItem( 'url_for_redirect' ) === this.props.location ) {
         sessionStorage.removeItem( 'url_for_redirect' );
-        this.props.redirectDashboard( false );
       }
     } else {
       if ( this.props.user.authorized ) {
@@ -58,7 +57,9 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
-    // this.authorized();
+    if ( prevProps.user.authorized && this.props.user.authorized ) {
+      this.authorized();
+    }
     if ( !prevProps.window.redirect && this.props.window.redirect ) {
       this.props.isRedirect( '' );
     }
@@ -69,17 +70,17 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   }
 
   render() {
-
     return (
       <React.Fragment>
         <WindowBlockingComponent
           isBlocking={this.props.window.isBlockingWindow}
         />
         <Routes
-          authorized={!!localStorage.getItem( 'token' )}
+          isTokenVerified={!!localStorage.getItem( 'token' )}
           roleUser={this.props.user.roleUser}
           path={this.props.location}
         />
+
         {this.props.user.authorized &&
         this.props.user.redirectDashboard &&
         this.props.location !== dashboardUrl &&

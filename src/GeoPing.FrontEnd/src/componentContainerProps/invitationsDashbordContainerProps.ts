@@ -1,9 +1,11 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
+import IinvitationsStateType from '../types/stateTypes/invitationsStateType';
 
 export default interface IInvitationsDashbordContainer {
   show: boolean;
   checkList: ICheckListStateType;
+  invitations: IinvitationsStateType;
 
   filterInvitations: () => (dispatch: IDispatchFunction ) => void;
   closeFilterInvitations: () => (dispatch: IDispatchFunction ) => void;

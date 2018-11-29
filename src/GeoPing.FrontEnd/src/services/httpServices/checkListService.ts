@@ -14,11 +14,14 @@ import {
   getAllGeoLists,
   getAllNewSharedLists,
   getAllPublicGeoLosts,
-  getAllUsersForListShared, getAutocompletedListUsers,
+  getAllUsersForListShared,
+  getAutocompletedListUsers,
   getGeoListForId,
   getGeoListStatistics,
+  getInfoAboutToken,
   inviteUsersToShareList,
   removeGeoList,
+  removeToken,
   updateGeoList
 } from '../../constants/endpoints';
 import { getDataFromResponse } from '../helper';
@@ -221,27 +224,51 @@ export default class CheckListService implements ICheckListServiceType {
   }
 
   acceptListSharingInvite( sharingId: string ) {
-    return new Promise( ( resolve: any, reject: any) => {
-      this.communicator.post(acceptListSharingInvite.replace('%sharingId%', sharingId), {})
+    return new Promise( ( resolve: any, reject: any ) => {
+      this.communicator.post( acceptListSharingInvite.replace( '%sharingId%', sharingId ), {} )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
   }
 
   getAutocompletedListUsers( userName: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.get(getAutocompletedListUsers.replace('%query%', userName))
+      this.communicator.get( getAutocompletedListUsers.replace( '%query%', userName ) )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
+  }
+
+  getInfoAboutToken( token: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getInfoAboutToken.replace( '%token%', token ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  removeToken( token: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.delete( removeToken.replace( '%token%', token ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 
 }

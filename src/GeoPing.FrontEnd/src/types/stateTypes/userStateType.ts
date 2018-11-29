@@ -4,6 +4,7 @@ export default interface IUserStateType {
   authorized: boolean;
   roleUser: ERoleUser;
   redirectDashboard: boolean;
+  userId: string;
 }
 
 export enum ERoleUser {

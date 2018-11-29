@@ -16,7 +16,9 @@ import {
   profileUrl,
   publicCheckListUrl,
   registerUrl,
-  resetPassword
+  resetPassword,
+  token,
+  tokenError
 } from '../constants/routes';
 import { AboutComponent } from '../pages/aboutPage';
 import PublicGEOCheckListsPage from '../pages/publicGEOCheckListsPage';
@@ -33,6 +35,8 @@ import LogOutComponentContainer from '../componentContainers/logOutComponentCont
 import { NotFoundPage } from '../pages/404Page';
 import EmailConfirmPage from '../pages/emailConfirmPage';
 import ResetPasswordComponentContainer from '../componentContainers/resetPasswordComponentContainer';
+import TokenPageContainer from '../componentContainers/tokenPageContainer';
+import TokenErrorContainer from '../componentContainers/tokenErrorContainer';
 
 export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
 
@@ -56,6 +60,16 @@ export default function routersMap( authorize: boolean, userRole: ERoleUser ) {
       path: emailConfirm,
       component: EmailConfirmPage,
       exact: true,
+    },
+    {
+      path: token,
+      component: TokenPageContainer,
+      exact: false,
+    },
+    {
+      path: tokenError,
+      component: TokenErrorContainer,
+      exact: false,
     }
   ];
 

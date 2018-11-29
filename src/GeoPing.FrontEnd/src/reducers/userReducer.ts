@@ -48,7 +48,7 @@ function userAuthorizationTestPeriod( state: IUserStateType, action: any ): IUse
 function redirect( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
-    redirectDashboard: action.isRedirect,
+    redirectDashboard: action.isRedirectValue,
   };
 }
 
