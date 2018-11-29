@@ -436,7 +436,7 @@ namespace GeoPing.Services
                     ListIsPublic = l.IsPublic,
                     ShareId = s.Id,
                     ShareStatus = s.Status,
-                    ShareInvitationDate = s.InvitationDate
+                    ShareInvitationDate = s.InvitationDate.ToUniversalTime()
                 };
 
             return result.AsEnumerable();
