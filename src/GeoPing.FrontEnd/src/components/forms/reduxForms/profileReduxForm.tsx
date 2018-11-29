@@ -51,6 +51,7 @@ const renderAvatar = ( props: any ) => {
         height={195}
         onCrop={props.input.onChange}
         onClose={props.input.onChange}
+        src={props.input.value}
       />
     </div>
   );

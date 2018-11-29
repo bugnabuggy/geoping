@@ -6,39 +6,49 @@ import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { CLOSE_MODAL_WINDOW, LOAD_INFO, SAVE_AVATAR, SHOW_MODAL_WINDOW } from '../constantsForReducer/profile';
+import { windowBlocking } from './windowAction';
 
 export const loadProfileData = ( idUser: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const profileService: IProfileServiceType = StaticStorage.serviceLocator.get( 'IProfileServiceType' );
   profileService.loadProfileData( idUser )
     .then( ( profile: any ) => {
       dispatch( loadProfileDataAction( profile ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
 export const changePassword = ( password: string, newPassword: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
   userService.changePassword( password, newPassword )
     .then( ( message: string ) => {
       dispatch( addNotificationAction( createNotification(
         message, EnumNotificationType.Success ) ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
 export const updateProfileData = ( data: any ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const profileService: IProfileServiceType = StaticStorage.serviceLocator.get( 'IProfileServiceType' );
   profileService.updateProfileData( data )
     .then( ( profile: any ) => {
       dispatch( addNotificationAction( createNotification(
         'Profile saved', EnumNotificationType.Success ) ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 export const upgradeAccount = () => ( dispatch: IDispatchFunction ) => {
@@ -53,15 +63,18 @@ export const closeModalChangePassword = () => ( dispatch: IDispatchFunction ) =>
 };
 
 export const saveAvatar = ( avatar: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const profileService: IProfileServiceType = StaticStorage.serviceLocator.get( 'IProfileServiceType' );
   profileService.saveAvatar( avatar )
     .then( ( response: any ) => {
       dispatch( saveAvatarAction( response.avatar ) );
       dispatch( addNotificationAction( createNotification(
         'Avatar saved', EnumNotificationType.Success ) ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
