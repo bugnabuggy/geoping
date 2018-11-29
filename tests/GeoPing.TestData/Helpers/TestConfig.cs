@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GeoPing.TestData.Helpers
+﻿namespace GeoPing.TestData.Helpers
 {
     public class TestConfig
     {

@@ -1,11 +1,7 @@
-﻿using GeoPing.Core.Entities;
-using GeoPing.Infrastructure.Models;
+﻿using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Infrastructure.Data
 {
@@ -34,23 +30,30 @@ namespace GeoPing.Infrastructure.Data
 
             // One-to-one relationship of GeoList and PublicList
             builder.Entity<PublicList>()
-                .HasOne<GeoList>(pl => pl.Geolist)
+                .HasOne(pl => pl.Geolist)
                 .WithOne()
                 .HasForeignKey<PublicList>(pl => pl.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-many relationship of Geolist and Geopoints
             builder.Entity<GeoPoint>()
-                .HasOne<GeoList>(gp => gp.Geolist)
+                .HasOne(gp => gp.Geolist)
                 .WithMany()
                 .HasForeignKey(gp => gp.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-many relationship of Geopoint and Checks In
             builder.Entity<CheckIn>()
-                .HasOne<GeoPoint>(ch => ch.Geopoint)
+                .HasOne(ch => ch.Geopoint)
                 .WithMany()
                 .HasForeignKey(ch => ch.PointId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // One-to-many relationship of GeoList and ListSharings
+            builder.Entity<ListSharing>()
+                .HasOne(ls => ls.List)
+                .WithMany()
+                .HasForeignKey(ls => ls.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

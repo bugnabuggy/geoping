@@ -2,53 +2,143 @@
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/geolist/{ListId}/sharing")]
+    [Route("api/sharing")]
     [Authorize]
     public class SharingController : Controller
     {
         private ISharingService _shareSrv;
-        private ISecurityService _securitySrv;
         private IClaimsHelper _helper;
-        private IGeolistService _listSrv;
 
         public SharingController(ISharingService shareSrv,
-                                 ISecurityService securitySrv,
-                                 IClaimsHelper helper,
-                                 IGeolistService listSrv)
+                                 IClaimsHelper helper)
         {
             _shareSrv = shareSrv;
-            _securitySrv = securitySrv;
             _helper = helper;
-            _listSrv = listSrv;
+        }
+
+        // GET api/users
+        [HttpGet]
+        [Route("autocomplete")]
+        public IActionResult GetUsers(string query)
+        {
+            var result = _shareSrv.GetAutoCompletedUsersList(query);
+
+            return Ok(result);
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        public IActionResult GetAllSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId));
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        [Route("new")]
+        public IActionResult GetNewSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId && 
+                                                    x.Status == "pending"));
+        }
+
+        // GET api/sharng
+        [HttpGet]
+        [Route("accepted")]
+        public IActionResult GetAcceptedSharedLists()
+        {
+            var userId = _helper.GetAppUserIdByClaims(User.Claims);
+
+            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId &&
+                                                    x.Status == "accepted"));
+        }
+
+        // DELETE api/sharing/{sharingId}
+        [HttpDelete]
+        [Route("{sharingId}")]
+        public IActionResult RefuseSharing(string sharingId)
+        {
+            var result = _shareSrv.DeleteSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
+            }
+
+            return BadRequest(result);
+        }
+
+        // POST api/sharing/invitation/{sharingId}
+        [HttpPost]
+        [Route("invitation/{sharingId}")]
+        public IActionResult AcceptInvite(string sharingId)
+        {
+            var result = _shareSrv.AcceptSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // DELETE api/sharing/invitation/{sharingId}
+        [HttpDelete]
+        [Route("invitation/{sharingId}")]
+        public IActionResult RefuseInvite(string sharingId)
+        {
+            var result = _shareSrv.DeclineSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // POST api/sharing/{listId}
+        [HttpPost]
+        [Route("{listId}")]
+        public async Task<IActionResult> InviteUsers(string listId, [FromBody]string[] users)
+        {
+            var result = await _shareSrv.InviteUsersByList(_helper.GetAppUserIdByClaims(User.Claims), listId, users);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
         [HttpGet]
-        [Route("allowed-users")]
+        [Route("{listId}/allowed-users")]
         public IActionResult GetAllowedUsers(string listId)
         {
-            var isListExist = _listSrv.IsListExistWithThisId(listId, out var list);
-            if (!isListExist)
+            var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            if (result.Success)
             {
-                return BadRequest($"There is no list with id = [{listId}]");
+                return Ok(result);
             }
 
-            var isUserAllowed = _securitySrv.IsUserHasAccessToList(_helper.GetAppUserIdByClaims(User.Claims), list);
-            if (!isUserAllowed)
-            {
-                return StatusCode(401, "You are not allowed to do this");
-            }
-
-            var result = _securitySrv.GetUsersHaveAccessToList(list);
-
-            return Ok(result);
+            return BadRequest(result);
         }
     }
 }

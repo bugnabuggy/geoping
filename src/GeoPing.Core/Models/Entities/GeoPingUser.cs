@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GeoPing.Core.Entities
+namespace GeoPing.Core.Models.Entities
 {
     public class GeoPingUser
     {
@@ -13,6 +11,7 @@ namespace GeoPing.Core.Entities
         public string Login { get; set; }
         public DateTime Birthday { get; set; }
         public string PhoneNumber { get; set; }
+        public string Country { get; set; }
         public string AccountType { get; set; }
         public DateTime LastPaid { get; set; }
         public bool IsActivated { get; set; }

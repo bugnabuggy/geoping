@@ -1,8 +1,5 @@
-﻿using GeoPing.Core.Models;
-using GeoPing.Infrastructure.Models;
-using System;
+﻿using GeoPing.Infrastructure.Models;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GeoPing.TestData.Data
 {

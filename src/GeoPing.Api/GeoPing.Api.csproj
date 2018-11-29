@@ -37,7 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GeoPing.Core\GeoPing.Core.csproj" />
     <ProjectReference Include="..\GeoPing.Infrastructure\GeoPing.Infrastructure.csproj" />
-    <ProjectReference Include="..\Geoping.Services\Geoping.Services.csproj" />
+    <ProjectReference Include="..\Geoping.Services\GeoPing.Services.csproj" />
     <ProjectReference Include="..\GeoPing.Utilities\GeoPing.Utilities.csproj" />
   </ItemGroup>
 

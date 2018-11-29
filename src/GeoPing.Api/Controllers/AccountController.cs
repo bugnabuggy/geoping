@@ -1,21 +1,9 @@
 ﻿using GeoPing.Api.Interfaces;
-using GeoPing.Core.Entities;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Data;
-using GeoPing.Infrastructure.Models;
-using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
@@ -24,35 +12,26 @@ namespace GeoPing.Api.Controllers
     [Route("account")]
     public class AccountController : Controller
     {
-        private readonly IConfiguration _configuration;
-        private readonly IAccountService _accountSrv;
-        private readonly IEmailService _emailSvc;
-        private UserManager<AppIdentityUser> _userManager;
+        private IAccountService _accountSrv;
         private IClaimsHelper _helper;
 
-        public AccountController(IAccountService accountSrv,
-                                 IEmailService emailSvc,
-                                 UserManager<AppIdentityUser> userManager,
-                                 IConfiguration configuration,
-                                 IClaimsHelper helper)
+        public AccountController
+            (IAccountService accountSrv,
+            IClaimsHelper helper)
         {
             _accountSrv = accountSrv;
-            _emailSvc = emailSvc;
-            _userManager = userManager;
-            _configuration = configuration;
             _helper = helper;
         }
 
         // POST /account/register
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserDTO registerUser)
         {
-            var result = new OperationResult();
+            OperationResult result;
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 result = await _accountSrv.RegisterAsync(registerUser);
             }
@@ -61,25 +40,12 @@ namespace GeoPing.Api.Controllers
                 result = new OperationResult()
                 {
                     Data = registerUser,
-                    Messages = new string[] { "Model is invalid" },
-                    Success = false
+                    Messages = new[] { "Model is invalid" }
                 };
             }
 
             if (result.Success)
             {
-                var appUser = await _userManager.FindByEmailAsync(registerUser.Email);
-
-                if (_configuration.GetValue<bool>("isEmailConfirmationOn"))
-                {
-                    var code = _userManager.GenerateEmailConfirmationTokenAsync(appUser).Result;
-
-                    SendSecurityEmail(appUser, code, "ConfirmEmail", "Email confirmation");
-                }
-                else
-                {
-                    await _accountSrv.ConfirmAccountWithoutEmailAsync(registerUser.Email);
-                }
                 return Ok(result);
             }
             return BadRequest(result);
@@ -87,11 +53,11 @@ namespace GeoPing.Api.Controllers
 
         // POST /account/change-password
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         [Route("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordDTO changePassword)
         {
-            var result = await _accountSrv.ChangePasswordAsync(_helper.GetIdentityUserIdByClaims(User.Claims), changePassword);
+            var result = await _accountSrv.ChangePasswordAsync
+                (_helper.GetIdentityUserIdByClaims(User.Claims), changePassword);
             if (result.Success)
             {
                 return Ok(result);
@@ -102,25 +68,17 @@ namespace GeoPing.Api.Controllers
         // POST /account/reset-password
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         [Route("reset-password")]
-        public async Task<IActionResult> ResetPasswordRequest(string loginOrEmail)
+        public async Task<IActionResult> ResetPasswordRequest([FromBody]ResetPasswordDTO form)
         {
-            var user = await _userManager.FindByEmailAsync(loginOrEmail);
-            if (user == null)
+            var result = await _accountSrv.ResetRassword(form);
+
+            if (result.Success)
             {
-                user = await _userManager.FindByNameAsync(loginOrEmail);
-                if (user == null)
-                {
-                    return BadRequest("There is no user with given login or email");
-                }
+                return Ok(result); 
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
-
-            return Ok("A password reset confirmation email has been sent to email address you specified");
+            return BadRequest(result);
         }
 
         // GET /account/profile
@@ -164,7 +122,6 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-
         // GET /account/profile/short
         [HttpGet]
         [Route("profile/short")]
@@ -183,13 +140,12 @@ namespace GeoPing.Api.Controllers
         // GET /account/confirm-email
         [HttpGet]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             if (userId == null || token == null)
             {
-                return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
+                return BadRequest("There is no given validation data");
             }
 
             var result = await _accountSrv.ConfirmEmailAsync(userId, token);
@@ -202,18 +158,17 @@ namespace GeoPing.Api.Controllers
         }
 
         // POST /account/confirm-reset
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         [Route("confirm-reset")]
-        public async Task<IActionResult> ConfirmReset(string userId, string token, string newPassword)
+        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]NewPasswordDTO item)
         {
             if (userId == null || token == null)
             {
-                return BadRequest(new OperationResult { Messages = new[] { "There is no given validation data" } });
+                return BadRequest("There is no given validation data");
             }
 
-            var result = await _accountSrv.ConfirmResetAsync(userId, token, newPassword);
+            var result = await _accountSrv.ConfirmResetAsync(userId, token, item.NewPassword);
 
             if (result.Success)
             {
@@ -221,44 +176,5 @@ namespace GeoPing.Api.Controllers
             }
             return BadRequest(result);
         }
-
-        #region Helpers
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        // Sends security emails for given user with given security token for specified action, 
-        // Action field is endpoint of action
-        // Subject field is email subject
-        private void SendSecurityEmail(AppIdentityUser user, string code, string action, string subject)
-        {
-            var callbackUrl = Url.Action(action,
-                                         "Account",
-                                         new { userId = user.Id, code = code },
-                                         protocol: HttpContext.Request.Scheme);
-
-            _emailSvc.Send(new EmailMessage()
-            {
-                FromAddress = new EmailAddress()
-                {
-                    Name = "GeopingTeam",
-                    Address = "test@geoping.info"
-                },
-                ToAddress = new EmailAddress()
-                {
-                    Name = user.UserName,
-                    Address = user.Email
-                },
-                Subject = subject,
-                Content = _emailSvc.GetConfirmationMail(user.UserName, callbackUrl)
-            });
-        }
-
-        #endregion
     }
 }

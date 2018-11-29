@@ -10,9 +10,8 @@ namespace GeoPing.Infrastructure.Repositories
     {
         IQueryable<T> Data { get; }
 
-        IEnumerable<T> Get(Expression<Func<T, bool>> filter,
-                            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy,
-                            string includePropeties);
+        IQueryable<T> Get();
+        IQueryable<T> Get(Expression<Func<T, bool>> filter);
 
         T Add(T item);
         T Update(T item);

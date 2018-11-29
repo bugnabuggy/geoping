@@ -18,38 +18,30 @@ namespace GeoPing.Infrastructure.Repositories
         {
             _ctx = ctx;
             _table = _ctx.Set<T>();
-            Data = _table.AsNoTracking();
+            Data = _table;
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> filter = null,
-                                  Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-                                  string includeProperties = "")
+        public IQueryable<T> Get()
         {
-            IQueryable<T> query = this.Data;
+            IQueryable<T> query = this.Data.AsNoTracking();
+            
+            return query;
+        }
+
+        public IQueryable<T> Get(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = this.Data.AsNoTracking();
 
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
+            return query;
         }
 
-        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null, 
-                                                   Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null,
+                                                   Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
                                                    string includeProperties = "")
         {
             IQueryable<T> query = this.Data;
@@ -92,7 +84,7 @@ namespace GeoPing.Infrastructure.Repositories
             return items;
         }
 
-        public async Task<T> AddAsync(T item) 
+        public async Task<T> AddAsync(T item)
         {
             await _table.AddAsync(item);
             _ctx.SaveChanges();
