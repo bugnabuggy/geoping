@@ -39,7 +39,7 @@ namespace GeoPing.TestData.Helpers
             var appConfigurator = new AppConfigurator();
             appConfigurator.ConfigureServices(services);
 
-            services.AddSingleton<IConfiguration>(c => new Mock<IConfiguration>().Object);
+            services.AddSingleton(c => new Mock<IConfiguration>().Object);
 
             var serviceProvider = services.BuildServiceProvider();
 

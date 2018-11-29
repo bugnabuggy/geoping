@@ -1,9 +1,9 @@
-﻿using GeoPing.Api.Interfaces;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using GeoPing.Api.Interfaces;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
 {
@@ -74,7 +74,8 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
-            else if (result.Messages.Contains("Unauthorized"))
+
+            if (result.Messages.Contains("Unauthorized"))
             {
                 return Unauthorized();
             }

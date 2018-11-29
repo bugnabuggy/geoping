@@ -1,6 +1,6 @@
-﻿using GeoPing.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GeoPing.Core.Models;
 using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Core.Services

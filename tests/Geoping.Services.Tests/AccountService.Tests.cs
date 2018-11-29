@@ -1,18 +1,18 @@
-﻿using GeoPing.Core.Services;
-using GeoPing.Infrastructure.Models;
-using GeoPing.Infrastructure.Repositories;
-using GeoPing.TestData.Helpers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
 using GeoPing.Core;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
+using GeoPing.Infrastructure.Repositories;
+using GeoPing.TestData.Helpers;
 using GeoPing.Utilities.EmailSender;
-using Moq;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Moq;
+using NUnit.Framework;
 
 namespace GeoPing.Services.Tests
 {

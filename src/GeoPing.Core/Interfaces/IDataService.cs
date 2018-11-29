@@ -1,7 +1,7 @@
-﻿using GeoPing.Core.Models;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using GeoPing.Core.Models;
 
 namespace GeoPing.Core.Interfaces
 {

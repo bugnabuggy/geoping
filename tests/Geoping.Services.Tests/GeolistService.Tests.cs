@@ -1,12 +1,12 @@
-﻿using GeoPing.Core.Models.DTO;
+﻿using System;
+using System.Linq;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Services.Tests
 {
@@ -46,7 +46,7 @@ namespace GeoPing.Services.Tests
         {
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000005");
 
-            var testList = new GeoList()
+            var testList = new GeoList
             {
                 Id = expectedListId,
                 Created = DateTime.UtcNow,

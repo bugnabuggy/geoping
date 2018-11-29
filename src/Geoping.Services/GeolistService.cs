@@ -13,8 +13,8 @@ namespace GeoPing.Services
     public class GeolistService : IGeolistService
     {
         private readonly Dictionary<string, Expression<Func<GeoList, object>>> _orderCommonBys =
-            new Dictionary<string, Expression<Func<GeoList, object>>>()
-        {
+            new Dictionary<string, Expression<Func<GeoList, object>>>
+            {
             {"name", x => x.Name},
             {"dateCreated", x => x.Created},
             {"dateEdited", x => x.Edited},
@@ -22,8 +22,8 @@ namespace GeoPing.Services
         };
 
         private Dictionary<string, Expression<Func<PublicListDTO, object>>> _orderPublicBys =
-            new Dictionary<string, Expression<Func<PublicListDTO, object>>>()
-        {
+            new Dictionary<string, Expression<Func<PublicListDTO, object>>>
+            {
             {"name", x => x.Name},
             {"author", x => x.OwnerName},
             {"dateCreated", x => x.CreateDate},
@@ -78,13 +78,13 @@ namespace GeoPing.Services
 
             data = PaginationByCommonFilter(data, filter);
 
-            return new WebResult<IQueryable<GeoList>>()
+            return new WebResult<IQueryable<GeoList>>
             {
                 Data = data,
                 Success = true,
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
-                TotalItems = totalItems,
+                TotalItems = totalItems
             };
         }
 
@@ -97,13 +97,13 @@ namespace GeoPing.Services
 
             totalItems = result.Count();
 
-            return new WebResult<IQueryable<PublicListDTO>>()
+            return new WebResult<IQueryable<PublicListDTO>>
             {
                 Data = result,
                 Success = true,
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
-                TotalItems = totalItems,
+                TotalItems = totalItems
             };
         }
 
@@ -115,13 +115,13 @@ namespace GeoPing.Services
 
             totalItems = result.Count();
 
-            return new WebResult<IQueryable<PublicListDTO>>()
+            return new WebResult<IQueryable<PublicListDTO>>
             {
                 Data = result,
                 Success = true,
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
-                TotalItems = totalItems,
+                TotalItems = totalItems
             };
         }
 
@@ -131,14 +131,14 @@ namespace GeoPing.Services
 
             if (item.IsPublic)
             {
-                _publicGeolistRepo.Add(new PublicList()
+                _publicGeolistRepo.Add(new PublicList
                 {
                     ListId = result.Id,
                     PublishDate = DateTime.UtcNow
                 });
             }
 
-            return new OperationResult<GeoList>()
+            return new OperationResult<GeoList>
             {
                 Data = result,
                 Messages = new[] { "Geolist was successfully added." },
@@ -150,7 +150,7 @@ namespace GeoPing.Services
         {
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
-                return new OperationResult<GeoList>()
+                return new OperationResult<GeoList>
                 {
                     Messages = new[] { "You have no rights to maniputale this list" }
                 };
@@ -161,7 +161,7 @@ namespace GeoPing.Services
                 var wasPublic = _publicGeolistRepo.Get().Any(x => x.ListId == item.Id);
                 if (!wasPublic)
                 {
-                    _publicGeolistRepo.Add(new PublicList()
+                    _publicGeolistRepo.Add(new PublicList
                     {
                         ListId = item.Id,
                         PublishDate = DateTime.UtcNow
@@ -170,7 +170,7 @@ namespace GeoPing.Services
             }
             var result = _geolistRepo.Update(item);
 
-            return new OperationResult<GeoList>()
+            return new OperationResult<GeoList>
             {
                 Data = result,
                 Messages = new[] { "Geolist was successfully edited." },
@@ -183,7 +183,7 @@ namespace GeoPing.Services
         {
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
-                return new OperationResult<GeoList>()
+                return new OperationResult<GeoList>
                 {
                     Messages = new[] { $"You have no rights to manipulate list with Id = [{item.Id}]." }
                 };
@@ -198,7 +198,7 @@ namespace GeoPing.Services
                 _publicGeolistRepo.Delete(publicList);
             }
 
-            return new OperationResult<GeoList>()
+            return new OperationResult<GeoList>
             {
                 Messages = new[] { $"Geolist with Id = [{item.Id}] was successfully removed." },
                 Success = true
@@ -213,7 +213,7 @@ namespace GeoPing.Services
 
             if (ids.Any())
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     Messages = new[] { "There are no given valid geolist Id" }
                 };
@@ -242,7 +242,7 @@ namespace GeoPing.Services
                 messages.AddRange(Delete(userId, list).Messages);
             }
 
-            return new OperationResult()
+            return new OperationResult
             {
                 Success = true,
                 Messages = messages.AsEnumerable()

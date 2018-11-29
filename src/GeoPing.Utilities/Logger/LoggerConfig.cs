@@ -23,21 +23,21 @@ namespace GeoPing.Utilities.Logger
             // Configuration object
             var config = new LoggingConfiguration();
 
-            var syslogTarget = new SyslogTarget()
+            var syslogTarget = new SyslogTarget
             {
                 Name = "sysLog",
-                MessageCreation = new MessageBuilderConfig()
+                MessageCreation = new MessageBuilderConfig
                 {
                     Facility = Facility.Daemons
                 },
-                MessageSend = new MessageTransmitterConfig()
+                MessageSend = new MessageTransmitterConfig
                 {
                     Protocol = ProtocolType.Tcp,
-                    Tcp = new TcpConfig()
+                    Tcp = new TcpConfig
                     {
                         Server = "logs4.papertrailapp.com",
                         Port = 49554,
-                        Tls = new TlsConfig()
+                        Tls = new TlsConfig
                         {
                             Enabled = true
                         }
@@ -54,7 +54,7 @@ namespace GeoPing.Utilities.Logger
             {
                 FileName = "${basedir}/log.log",
                 ArchiveAboveSize = 104857600,
-                MaxArchiveFiles = 1,
+                MaxArchiveFiles = 1
             };
 
             config.AddTarget(fileTarget);
