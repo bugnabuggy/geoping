@@ -29,7 +29,7 @@ namespace GeoPing.Services
 
             if (!isPointExist)
             {
-                return new OperationResult<CheckIn>()
+                return new OperationResult<CheckIn>
                 {
                     Messages = new[] { $"There is no point with Id = [{pointId}]" }
                 };
@@ -42,13 +42,13 @@ namespace GeoPing.Services
 
             if (result == null)
             {
-                return new OperationResult<CheckIn>()
+                return new OperationResult<CheckIn>
                 {
                     Messages = new[] { $"User didn`t check in point with Id = [{point.Id}]" }
                 };
             }
 
-            return new OperationResult<CheckIn>()
+            return new OperationResult<CheckIn>
             {
                 Data = result,
                 Messages = new[] { $"User checked in point with Id = [{point.Id}]" },
@@ -85,7 +85,7 @@ namespace GeoPing.Services
 
         public OperationResult<CheckIn> AddCheckIn(CheckIn item)
         {
-            return new OperationResult<CheckIn>()
+            return new OperationResult<CheckIn>
             {
                 Data = _checkInRepo.Add(item),
                 Messages = new[] { $"User was successfully checked in point with id = [{item.PointId}]" },

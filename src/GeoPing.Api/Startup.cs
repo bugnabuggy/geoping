@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using GeoPing.Api.Configuration;
+using GeoPing.Core;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Utilities.Logger;
@@ -10,8 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using GeoPing.Core;
 
 namespace GeoPing.Api
 {

@@ -6,7 +6,7 @@ namespace GeoPing.TestData.Data
 {
     public class TestChecksIn
     {
-        private ICollection<CheckIn> _checksIn = new List<CheckIn>()
+        private ICollection<CheckIn> _checksIn = new List<CheckIn>
         {
             new CheckIn
             {
@@ -47,7 +47,7 @@ namespace GeoPing.TestData.Data
                 Date = DateTime.UtcNow,
                 UserId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
                 PointId = Guid.Parse("10000000-0000-0000-0000-000000000002")
-            },
+            }
         };
 
         public ICollection<CheckIn> GetChecksIn()

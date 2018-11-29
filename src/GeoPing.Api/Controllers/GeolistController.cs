@@ -1,12 +1,12 @@
-﻿using GeoPing.Api.Interfaces;
+﻿using System;
+using System.Linq;
+using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Api.Controllers
 {
@@ -63,7 +63,7 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
         {
             var isId = Guid.TryParse(userId, out Guid ownerId);
-            var result = new WebResult<IQueryable<PublicListDTO>>() { Messages = new[] { "Unvalid user identifier" } };
+            var result = new WebResult<IQueryable<PublicListDTO>> { Messages = new[] { "Unvalid user identifier" } };
             if (isId)
             {
                 result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
@@ -93,7 +93,7 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         public IActionResult AddList([FromBody]GeolistDTO item)
         {
-            var list = new GeoList()
+            var list = new GeoList
             {
                 Name = item.Name,
                 Description = item.Description,

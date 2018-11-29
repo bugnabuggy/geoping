@@ -1,23 +1,23 @@
-﻿using GeoPing.Core.Models;
-using GeoPing.Core.Models.DTO;
-using GeoPing.Core.Models.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Core.Services
 {
     public interface ISharingService
     {
-        IEnumerable<SharedListInfoDTO> GetSharedLists(Expression<Func<ListSharing, bool>> query);
-
-        OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId);
-        Task<OperationResult> InviteUsersByList(Guid userId, string listId, string[] usersData);
-        OperationResult DeleteSharing(Guid userId, string sharingId);
-        OperationResult AcceptSharingInvite(Guid userId, string sharingId);
-        OperationResult DeclineSharingInvite(Guid userId, string sharingId);
+        OperationResult AcceptSharing(Guid actingUserId, string sharingId);
         void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);
+        OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId);
         IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query);
+        IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId);
+        IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId, string sharingStatus);
+        Task<OperationResult> InviteUsersByList(Guid actingUserId, string listId, string[] usersData);
+        OperationResult RefuseSharing(Guid actingUserId, string sharingId);
+        OperationResult RevokeSharing(Guid ownerUserId, string sharingId);
     }
 }

@@ -13,7 +13,7 @@ namespace GeoPing.Services
     public class CheckInStatisticsService : ICheckInStatisticsService
     {
         private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> _orderBys =
-            new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>()
+            new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>
             {
                 {"pointName", x => x.Point.Name},
                 {"date", x => x.Check.Date}
@@ -44,7 +44,7 @@ namespace GeoPing.Services
 
             if (!isListExist)
             {
-                return new WebResult<IQueryable<CheckInStatsDTO>>()
+                return new WebResult<IQueryable<CheckInStatsDTO>>
                 {
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
                 };
@@ -52,7 +52,7 @@ namespace GeoPing.Services
 
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, list))
             {
-                return new WebResult<IQueryable<CheckInStatsDTO>>()
+                return new WebResult<IQueryable<CheckInStatsDTO>>
                 {
                     Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]" }
                 };
@@ -68,9 +68,9 @@ namespace GeoPing.Services
             var data = from p in points
                        join ch in checks on p.Id equals ch.PointId into stat
                        from x in stat.DefaultIfEmpty()
-                       select new CheckInStatsDTO()
+                       select new CheckInStatsDTO
                        {
-                           Point = new CheckInStatPointDTO()
+                           Point = new CheckInStatPointDTO
                            {
                                Id = p.Id,
                                Name = p.Name,
@@ -78,11 +78,11 @@ namespace GeoPing.Services
                                Latitude = p.Latitude,
                                Longitude = p.Longitude,
                                Radius = p.Radius,
-                               Address = p.Address,
+                               Address = p.Address
                            },
                            Check = x != null
-                           ? new CheckInStatCheckDTO()
-                           {
+                           ? new CheckInStatCheckDTO
+                               {
                                UserId = x.UserId,
                                PointId = x.PointId,
                                Latitude = x.Latitude,
@@ -114,14 +114,14 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
-            return new WebResult<IQueryable<CheckInStatsDTO>>()
+            return new WebResult<IQueryable<CheckInStatsDTO>>
             {
                 Data = data,
                 Success = true,
                 Messages = new[] { $"There are all checks in for points of list with Id = [{listId}]" },
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
-                TotalItems = totalItems,
+                TotalItems = totalItems
             };
         }
 

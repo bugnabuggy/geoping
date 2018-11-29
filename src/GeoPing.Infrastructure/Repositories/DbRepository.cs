@@ -1,10 +1,10 @@
-﻿using GeoPing.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GeoPing.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeoPing.Infrastructure.Repositories
 {
@@ -23,14 +23,14 @@ namespace GeoPing.Infrastructure.Repositories
 
         public IQueryable<T> Get()
         {
-            IQueryable<T> query = this.Data.AsNoTracking();
+            IQueryable<T> query = Data.AsNoTracking();
             
             return query;
         }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> filter)
         {
-            IQueryable<T> query = this.Data.AsNoTracking();
+            IQueryable<T> query = Data.AsNoTracking();
 
             if (filter != null)
             {
@@ -44,7 +44,7 @@ namespace GeoPing.Infrastructure.Repositories
                                                    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
                                                    string includeProperties = "")
         {
-            IQueryable<T> query = this.Data;
+            IQueryable<T> query = Data;
 
             if (filter != null)
             {
@@ -54,7 +54,7 @@ namespace GeoPing.Infrastructure.Repositories
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProperty in includeProperties.Split
-                    (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProperty);
                 }
@@ -64,10 +64,8 @@ namespace GeoPing.Infrastructure.Repositories
             {
                 return await orderBy(query).ToListAsync();
             }
-            else
-            {
-                return await query.ToListAsync();
-            }
+
+            return await query.ToListAsync();
         }
 
         public T Add(T item)

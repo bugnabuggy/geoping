@@ -24,7 +24,7 @@ namespace GeoPing.Core
 
         public int GetValue(string type)
         {
-            var value = new Dictionary<string, int>()
+            var value = new Dictionary<string, int>
             {
                 { "Sharing", Sharing },
                 { "SharingInvite", SharingInvite}

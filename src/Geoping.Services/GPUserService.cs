@@ -48,7 +48,7 @@ namespace GeoPing.Services
 
             return data
                 .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
-                .Select(x => new UserAutoCompleteDTO()
+                .Select(x => new UserAutoCompleteDTO
                 {
                     FullName = $"{x.LastName} {x.FirstName}",
                     UserName = x.Login,
@@ -60,7 +60,7 @@ namespace GeoPing.Services
         {
             var data = GetUser(func);
 
-            return new ShortUserInfoDTO()
+            return new ShortUserInfoDTO
             {
                 UserName = data.Login,
                 Avatar = data.Avatar
@@ -69,7 +69,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
         {
-            return new OperationResult<GeoPingUser>()
+            return new OperationResult<GeoPingUser>
             {
                 Data = _gpUserRepo.Update(user),
                 Messages = new[] { "Profile was successfully edited." },

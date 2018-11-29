@@ -1,8 +1,8 @@
-﻿using GeoPing.Core.Interfaces;
+﻿using System;
+using System.Linq;
+using GeoPing.Core.Interfaces;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
-using System;
-using System.Linq;
 using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Core.Services

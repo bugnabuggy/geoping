@@ -6,7 +6,7 @@ namespace GeoPing.TestData.Data
 {
     public class TestLists
     {
-        private readonly ICollection<GeoList> _geolists = new List<GeoList>()
+        private readonly ICollection<GeoList> _geolists = new List<GeoList>
         {
             new GeoList
             {
@@ -40,20 +40,20 @@ namespace GeoPing.TestData.Data
             }
         };
 
-        private readonly ICollection<PublicList> _publicGeolists = new List<PublicList>()
+        private readonly ICollection<PublicList> _publicGeolists = new List<PublicList>
         {
-            new PublicList()
+            new PublicList
             {
                 Id = Guid.Parse("10000000-0000-0000-0000-000000000001"),
                 PublishDate = DateTime.UtcNow,
                 ListId = Guid.Parse("10000000-0000-0000-0000-000000000003")
             },
-            new PublicList()
+            new PublicList
             {
                 Id = Guid.Parse("10000000-0000-0000-0000-000000000002"),
                 PublishDate = DateTime.UtcNow,
                 ListId = Guid.Parse("10000000-0000-0000-0000-000000000004")
-            },
+            }
         };
 
         public ICollection<GeoList> GetGeolists()

@@ -1,11 +1,11 @@
-﻿using GeoPing.Api.Configuration;
+﻿using System;
+using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace GeoPing.Api
 {
