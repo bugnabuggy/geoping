@@ -13,7 +13,7 @@ import {
   GEO_POINT_LIST_IS_CREATED,
   PERMISSION_TO_ADD,
   SAVE_GEO_POINT,
-  SELECT_GEO_POINT
+  SELECT_GEO_POINT, SET_ADDRESS_GEO_POINT
 } from '../constantsForReducer/googleMap';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
@@ -42,6 +42,7 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ STATISTICS_LOAD_POINTS ]: statisticsLoadPoints,
     [ CLEAR_GEO_POINT ]: clearGeoPoint,
     [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
+    [ SET_ADDRESS_GEO_POINT ]: setAddressGeoPoint,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -264,5 +265,15 @@ function checkInGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapS
       ...state.checkInGeoPoint,
       ...action.checkInGeoPoint
     ],
+  };
+}
+
+function setAddressGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    selectedGeoPoint: {
+      ...state.selectedGeoPoint,
+      description: action.address,
+    },
   };
 }

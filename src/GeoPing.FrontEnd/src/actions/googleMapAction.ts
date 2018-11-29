@@ -12,7 +12,8 @@ import {
   GEO_POINT_LIST_IS_CREATED,
   PERMISSION_TO_ADD,
   SAVE_GEO_POINT,
-  SELECT_GEO_POINT
+  SELECT_GEO_POINT,
+  SET_ADDRESS_GEO_POINT
 } from '../constantsForReducer/googleMap';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { IPosition } from '../types/stateTypes/googleMapStateType';
@@ -111,6 +112,16 @@ export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
         } );
     },
     ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    } );
+};
+
+export const setAddressGeoPoint = ( latLng: any ) => ( dispatch: IDispatchFunction ) => {
+  getGeoCode( latLng )
+    .then( ( address: string ) => {
+      dispatch( setAddressGeoPointAction( address ) );
+    } )
+    .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
@@ -235,4 +246,8 @@ function clearStateGoogleMapAction(): { type: string } {
 
 function clearGeoPointAction(): { type: any } {
   return { type: CLEAR_GEO_POINT };
+}
+
+function setAddressGeoPointAction( address: string ) {
+  return { type: SET_ADDRESS_GEO_POINT, address };
 }
