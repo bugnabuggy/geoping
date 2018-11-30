@@ -3,7 +3,6 @@ using GeoPing.Api.Configuration;
 using GeoPing.Core;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
-using GeoPing.Utilities.Logger;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -108,9 +107,6 @@ namespace GeoPing.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            LoggerConfig.SetSettings();
-            loggerFactory.AddGPLog();
-          
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
