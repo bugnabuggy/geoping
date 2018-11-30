@@ -27,7 +27,7 @@ namespace GeoPing.Services
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
         {
-            return _gpUserRepo.Get().FirstOrDefault(func);
+            return _gpUserRepo.Data.FirstOrDefault(func);
         }
 
         public IQueryable<GeoPingUser> GetUsers(Expression<Func<GeoPingUser, bool>> func)
