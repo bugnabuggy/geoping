@@ -119,7 +119,7 @@ namespace GeoPing.Services
 
         public GeoPingToken GetToken(string token)
         {
-            var result = _tokenRepo.Get(x => x.Token == token).FirstOrDefault();
+            var result = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
 
             if (ValidateGPToken(result) == null)
             {
@@ -154,15 +154,18 @@ namespace GeoPing.Services
 
         private string ValidateGPToken(GeoPingToken gpToken)
         {
-            if (gpToken.IsUsed)
+            if (gpToken != null)
             {
-                return "Used";
-            }
+                if (gpToken.IsUsed)
+                {
+                    return "Used";
+                }
 
-            if ((DateTime.UtcNow - gpToken.Created).Seconds >
-                _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
-            {
-                return "Expired";
+                if ((DateTime.UtcNow - gpToken.Created).Seconds >
+                    _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
+                {
+                    return "Expired";
+                } 
             }
 
             return null;

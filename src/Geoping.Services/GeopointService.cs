@@ -176,7 +176,8 @@ namespace GeoPing.Services
                 return false;
             }
 
-            point = Get(x => x.ListId == listId && x.Id == pointId).FirstOrDefault();
+            point = Get().FirstOrDefault(x => x.ListId == listId && 
+                                              x.Id == pointId);
             if (point == null)
             {
                 return false;
