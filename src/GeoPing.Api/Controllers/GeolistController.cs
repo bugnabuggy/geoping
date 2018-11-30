@@ -39,6 +39,17 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
+        // Get lists where user is owner by filter
+        // GET api/geolist
+        [HttpGet]
+        [Route("allowed")]
+        public IActionResult GetUsersAllowedLists()
+        {
+            var result = _geolistSrv.GetAllowedLists(_helper.GetAppUserIdByClaims(User.Claims));
+
+            return Ok(result);
+        }
+
         // Get all public lists by filter
         // GET api/geolist/public
         [HttpGet]
