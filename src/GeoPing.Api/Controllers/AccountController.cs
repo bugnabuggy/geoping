@@ -31,7 +31,7 @@ namespace GeoPing.Api.Controllers
         {
             OperationResult result;
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 result = await _accountSrv.RegisterAsync(registerUser);
             }
