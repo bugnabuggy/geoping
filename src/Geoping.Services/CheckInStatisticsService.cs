@@ -88,7 +88,7 @@ namespace GeoPing.Services
                                Latitude = x.Latitude,
                                Longitude = x.Longitude,
                                Distance = x.Distance,
-                               Date = x.Date,
+                               Date = x.Date.ToUniversalTime(),
                                Ip = x.Ip,
                                DeviceId = x.DeviceId,
                                UserAgent = x.UserAgent

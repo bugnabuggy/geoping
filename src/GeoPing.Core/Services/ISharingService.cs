@@ -12,11 +12,13 @@ namespace GeoPing.Core.Services
     {
         OperationResult AcceptSharing(Guid actingUserId, string sharingId);
         void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);
-        OperationResult<IEnumerable<object>> GetAllowedUsers(Guid userId, string listId);
         IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query);
         IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId);
         IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId, string sharingStatus);
-        Task<OperationResult> InviteUsersByList(Guid actingUserId, string listId, string[] usersData);
+        OperationResult<IEnumerable<UserListWasSharedWithDTO>> 
+            GetUsersListWasSharedWith(Guid userId, string listId);
+        Task<OperationResult<IEnumerable<UserListWasSharedWithDTO>>> 
+            InviteUsersByList(Guid actingUserId, string listId, string[] usersData);
         OperationResult RefuseSharing(Guid actingUserId, string sharingId);
         OperationResult RevokeSharing(Guid ownerUserId, string sharingId);
     }
