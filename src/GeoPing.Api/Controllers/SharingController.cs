@@ -124,7 +124,10 @@ namespace GeoPing.Api.Controllers
         [Route("{listId}/allowed-users")]
         public IActionResult GetAllowedUsers(string listId)
         {
-            var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            //var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            var result = _shareSrv.GetUsersListWasSharedWith(_helper.GetAppUserIdByClaims(User.Claims), listId);
 
             if (result.Success)
             {
