@@ -231,7 +231,7 @@ namespace GeoPing.Services
                     continue;
                 }
 
-                var list = Get(x => x.Id == listId).FirstOrDefault();
+                var list = Get().FirstOrDefault(x => x.Id == listId);
 
                 if (list == null)
                 {
@@ -258,7 +258,7 @@ namespace GeoPing.Services
                 return false;
             }
 
-            list = Get(x => x.Id == listId).FirstOrDefault();
+            list = Get().FirstOrDefault(x => x.Id == listId);
             if (list == null)
             {
                 return false;

@@ -36,9 +36,9 @@ namespace GeoPing.Services
             }
 
             var result = _checkInRepo
-                .Get(x => x.PointId == point.Id && x.UserId == userId)
+                .Get()
                 .OrderByDescending(x => x.Date)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.PointId == point.Id && x.UserId == userId);
 
             if (result == null)
             {
@@ -116,7 +116,7 @@ namespace GeoPing.Services
                 return false;
             }
 
-            point = _pointSrv.Get(x => x.Id == pointId).FirstOrDefault();
+            point = _pointSrv.Get().FirstOrDefault(x => x.Id == pointId);
             if (point == null)
             {
                 return false;

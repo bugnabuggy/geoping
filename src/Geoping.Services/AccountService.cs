@@ -72,27 +72,28 @@ namespace GeoPing.Services
 
                 var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
 
-                // TOKEN ACTIONS ==================================================================
+                // Token actions
 
-                var token = _tokenSrv.GetToken(registerUser.Token);
-
-                if (token != null)
+                if (registerUser.Token != null)
                 {
-                    switch (token.Type)
+                    var token = _tokenSrv.GetToken(registerUser.Token);
+
+                    if (token != null)
                     {
-                        case "SharingInvite":
-                            {
-                                _sharingSrv.ConfirmSharingWithRegistration
-                                    (token.Value, gpUser.Id, user.Email);
+                        switch (token.Type)
+                        {
+                            case "SharingInvite":
+                                {
+                                    _sharingSrv.ConfirmSharingWithRegistration
+                                        (token.Value, gpUser.Id, user.Email);
 
-                                _tokenSrv.MarkAsUsed(token.Token);
+                                    _tokenSrv.MarkAsUsed(token.Token);
 
-                                break;
-                            }
-                    }
+                                    break;
+                                }
+                        }
+                    } 
                 }
-
-                // ================================================================================
 
                 if (_settings.EmailSender.IsEmailConfirmEnable)
                 {
