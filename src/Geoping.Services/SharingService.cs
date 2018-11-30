@@ -105,12 +105,12 @@ namespace GeoPing.Services
         }
 
         // Send sharing invitations to users in list
-        public async Task<OperationResult> InviteUsersByList(Guid actingUserId, string listId, string[] usersData)
+        public async Task<OperationResult<IEnumerable<UserListWasSharedWithDTO>>> InviteUsersByList(Guid actingUserId, string listId, string[] usersData)
         {
             // Checks if list is exists
             if (!_listSrv.IsListExistWithThisId(listId, out var list))
             {
-                return new OperationResult
+                return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
                     Messages = new[] { $"There is no list with id = [{listId}]" }
                 };
@@ -119,14 +119,14 @@ namespace GeoPing.Services
             // Checks if user have rights to call this method
             if (!_securitySrv.IsUserHasAccessToManipulateList(actingUserId, list))
             {
-                return new OperationResult
+                return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
                     Messages = new[] { "You are not allowed to do this" }
                 };
             }
 
             var messages = new List<string>();
-            var invitedUsers = new List<string>();
+            var sharings = new List<ListSharing>();
 
             foreach (var userData in usersData)
             {
@@ -149,9 +149,8 @@ namespace GeoPing.Services
                     // In case of user wasn`t found, invite goes to recieved email data
                     if (user == null)
                     {
-                        InviteUser(actingUserId, list.Id, userData, null);
+                        sharings.Add(InviteUser(actingUserId, list.Id, userData, null));
                         messages.Add($"The user [{userData}] was invited.");
-                        invitedUsers.Add(userData);
                         continue;
                     }
                 }
@@ -164,20 +163,18 @@ namespace GeoPing.Services
                     continue;
                 }
 
-                InviteUser(actingUserId, list.Id, user.Email, invitedGPUser);
+                sharings.Add(InviteUser(actingUserId, list.Id, user.Email, invitedGPUser));
                 messages.Add($"The user [{userData}] was invited.");
-                invitedUsers.Add(user.Email);
             }
 
-            bool success;
-            success = invitedUsers.Any()
+            var success = sharings.Any()
                 ? true
                 : false;
 
-            return new OperationResult
+            return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
                 Success = success,
-                Data = invitedUsers.ToArray(),
+                Data = GetUsersListWasSharedWithInfo(sharings.AsQueryable()),
                 Messages = messages
             };
         }
@@ -223,19 +220,7 @@ namespace GeoPing.Services
                 };
             }
 
-            var result =
-                from sh in _sharingRepo.Get(x => x.ListId == list.Id)
-                from user in _gpUserSrv.GetUsers(x => x.Id == sh.UserId)
-                select new UserListWasSharedWithDTO
-                {
-                    UserId = user.Id,
-                    UserName = user.Login,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    SharingId = sh.Id,
-                    SharingDate = sh.InvitationDate.ToUniversalTime(),
-                    SharingStatus = sh.Status
-                };
+            var result = GetUsersListWasSharedWithInfo(_sharingRepo.Get(x => x.ListId == list.Id));
 
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
@@ -316,7 +301,7 @@ namespace GeoPing.Services
         }
 
         // Inviting user procedure
-        private void InviteUser
+        private ListSharing InviteUser
             (Guid userId, Guid listId, string invitedUserEmail, GeoPingUser invitedUser)
         {
             // Check if user was invited. Send one more mail, if he was
@@ -334,7 +319,7 @@ namespace GeoPing.Services
 
                 SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
 
-                return;
+                return null;
             }
 
             // TODO: CAN I SOMEHOW UNITE CONDITION IF INVITEDUSER != NULL WITHOUT EXTRALARGE CODELINES
@@ -361,6 +346,7 @@ namespace GeoPing.Services
                 : _tokenSrv.CreateSharingInviteToken(sharing.Id.ToString());
 
             SendSharingEmail(userId, sharing.Email, gpToken.Token);
+            return sharing;
         }
 
         private bool IsUserHasBeenInvitedEarlier(string invitedUserEmail, Guid listId, out ListSharing sharing)
@@ -440,6 +426,45 @@ namespace GeoPing.Services
                 };
 
             return result.AsEnumerable();
+        }
+
+        private IEnumerable<UserListWasSharedWithDTO> GetUsersListWasSharedWithInfo(IQueryable<ListSharing> sharings)
+        {
+            //var users = _gpUserSrv.GetUsers(x => sharings.Any(y => x.Id == y.UserId));
+
+            //ICollection<UserListWasSharedWithDTO> result = new List<UserListWasSharedWithDTO>();
+
+            //foreach (var sh in sharings)
+            //{
+            //    var user = users.FirstOrDefault(x => x.Id == sh.UserId);
+            //    result.Add(new UserListWasSharedWithDTO()
+            //    {
+            //        UserId = user?.Id ?? null,
+            //        UserName = user?.Login ?? sh.Email,
+            //        FirstName = user?.FirstName ?? null,
+            //        LastName = user?.LastName ?? null,
+            //        SharingId = sh.Id,
+            //        SharingDate = sh.InvitationDate.ToUniversalTime(),
+            //        SharingStatus = sh.Status
+            //    });
+            //}
+
+            var result =
+                from sh in sharings
+                join u in _gpUserSrv.GetUsers(x => true) on sh.UserId equals u.Id into data
+                from x in data.DefaultIfEmpty()
+                select new UserListWasSharedWithDTO
+                {
+                    UserId = x.Id,
+                    UserName = x.Login ?? sh.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    SharingId = sh.Id,
+                    SharingDate = sh.InvitationDate.ToUniversalTime(),
+                    SharingStatus = sh.Status
+                };
+
+            return result;
         }
     }
 }

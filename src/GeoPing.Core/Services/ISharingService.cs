@@ -17,7 +17,8 @@ namespace GeoPing.Core.Services
         IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId, string sharingStatus);
         OperationResult<IEnumerable<UserListWasSharedWithDTO>> 
             GetUsersListWasSharedWith(Guid userId, string listId);
-        Task<OperationResult> InviteUsersByList(Guid actingUserId, string listId, string[] usersData);
+        Task<OperationResult<IEnumerable<UserListWasSharedWithDTO>>> 
+            InviteUsersByList(Guid actingUserId, string listId, string[] usersData);
         OperationResult RefuseSharing(Guid actingUserId, string sharingId);
         OperationResult RevokeSharing(Guid ownerUserId, string sharingId);
     }
