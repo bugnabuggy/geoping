@@ -251,11 +251,19 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     circle.bindTo( 'center', marker, 'position' );
     _circles.push( circle );
   }
+  const latLng: any = {
+    lat: geoPoint.lat,
+    lng: geoPoint.lng,
+  };
+  _that.props.setAddressGeoPoint( latLng );
   marker.addListener( 'click', ( e: any ) => {
     handleGeoPointClick( e, geoPoint );
   } );
   marker.addListener( 'drag', ( e: any ) => {
     handleGeoPointDrag( e );
+  } );
+  marker.addListener( 'dragend', ( e: any ) => {
+    _that.props.setAddressGeoPoint( e.latLng );
   } );
   _markers.push( marker );
 }

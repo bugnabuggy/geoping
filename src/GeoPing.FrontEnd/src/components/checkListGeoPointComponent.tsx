@@ -6,12 +6,21 @@ import 'rc-slider/assets/index.css';
 import ICheckListGeoPointComponentProps from '../componentProps/checkListGeoPointComponentProps';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
-import { Card, CardBody, CardHeader, FormGroup, Input, Label } from 'reactstrap';
+import { Card, CardBody, CardHeader, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 
 export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPointComponentProps, any> {
+  constructor( props: ICheckListGeoPointComponentProps ) {
+    super( props );
+    this.state = {
+      isNamePointError: false,
+    };
+  }
 
   handleChangeInput = ( e: any ) => {
     this.props.changeDataGeoPoint( e.target.name, e.target.value );
+    if ( e.target.name === 'name' ) {
+      this.setState( { isNamePointError: false } );
+    }
   };
 
   handleChangeCoords = ( e: any ) => {
@@ -26,11 +35,15 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
 
   handleClickOk = ( e: any ) => {
     e.stopPropagation();
-    const newMarker: IGeoPoint = {
-      ...this.props.googleMap.selectedGeoPoint,
-      idList: this.props.checkList.selectedGeoList.id,
-    };
-    this.props.saveGeoPoint( newMarker );
+    if ( this.props.googleMap.selectedGeoPoint.name ) {
+      const newMarker: IGeoPoint = {
+        ...this.props.googleMap.selectedGeoPoint,
+        idList: this.props.checkList.selectedGeoList.id,
+      };
+      this.props.saveGeoPoint( newMarker );
+    } else {
+      this.setState( { isNamePointError: true } );
+    }
   };
 
   handleClickCancel = ( e: any ) => {
@@ -56,9 +69,11 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <Input
                   name="name"
                   value={this.props.googleMap.selectedGeoPoint.name}
+                  invalid={this.state.isNamePointError}
                   onChange={this.handleChangeInput}
                   disabled={!this.props.checkList.isEditing}
                 />
+                <FormFeedback>Enter name point</FormFeedback>
               </FormGroup>
               <FormGroup
                 className="check-list-geo-point-form-group-lat-long"

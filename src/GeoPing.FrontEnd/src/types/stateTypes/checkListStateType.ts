@@ -1,4 +1,4 @@
-import IGeoListType, { IGeoListPublickDTO } from '../../DTO/geoListDTO';
+import IGeoListType, { IGeoListPublickDTO, IGeoListSharingDTO } from '../../DTO/geoListDTO';
 
 export default interface ICheckListStateType {
   isShowModal: boolean;
@@ -18,4 +18,6 @@ export default interface ICheckListStateType {
   selectedGeoList: IGeoListType;
   checkLists: Array<IGeoListType>;
   checkListPublic: Array<IGeoListPublickDTO>;
+  newSharedLists: Array<IGeoListSharingDTO>;
+  acceptedSharedLists: Array<IGeoListSharingDTO>;
 }

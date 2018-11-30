@@ -12,3 +12,8 @@ export default interface IUserType {
   lastPaid: string;
   avatar: string;
 }
+
+export interface IAutocompleteUsersDTO {
+  userName: string;
+  email: string;
+}

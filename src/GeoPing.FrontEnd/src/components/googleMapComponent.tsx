@@ -25,6 +25,7 @@ export default class GoogleMapComponent extends React.Component<IGoogleMapCompon
         geoPointListIsCreate={this.props.geoPointListIsCreate}
         addDistance={this.props.addDistance}
         getMyAddress={this.props.getMyAddress}
+        setAddressGeoPoint={this.props.setAddressGeoPoint}
       />
     );
 

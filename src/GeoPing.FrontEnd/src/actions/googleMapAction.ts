@@ -12,7 +12,8 @@ import {
   GEO_POINT_LIST_IS_CREATED,
   PERMISSION_TO_ADD,
   SAVE_GEO_POINT,
-  SELECT_GEO_POINT
+  SELECT_GEO_POINT,
+  SET_ADDRESS_GEO_POINT
 } from '../constantsForReducer/googleMap';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { IPosition } from '../types/stateTypes/googleMapStateType';
@@ -24,6 +25,7 @@ import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import IGeoPoint from '../DTO/geoPointDTO';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import { getGeoCode } from '../services/googleMapService';
+import { windowBlocking } from './windowAction';
 
 export const addListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
@@ -47,12 +49,15 @@ export const deleteGeoPoint = ( geoPoint: IGeoPoint, statusMarker: EnumStatusMar
   ( dispatch: IDispatchFunction ) => {
     if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
       if ( geoPoint.id ) {
+        windowBlocking( true )( dispatch );
         const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
         markerService.deleteMarker( idList, geoPoint.id )
           .then( ( response: any ) => {
             dispatch( deleteGeoPointAction( geoPoint.idForMap ) );
+            windowBlocking( false )( dispatch );
           } )
           .catch( ( error: any ) => {
+            windowBlocking( false )( dispatch );
             dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
           } );
       } else {
@@ -115,6 +120,16 @@ export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
     } );
 };
 
+export const setAddressGeoPoint = ( latLng: any ) => ( dispatch: IDispatchFunction ) => {
+  getGeoCode( latLng )
+    .then( ( address: string ) => {
+      dispatch( setAddressGeoPointAction( address ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    } );
+};
+
 export const permissionAdd = ( isPermissionAdd: boolean ) => ( dispatch: IDispatchFunction ) => {
   dispatch( permissionAddAction( isPermissionAdd ) );
 };
@@ -128,9 +143,11 @@ export const createGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunc
   markerService.createNewMarker( marker )
     .then( ( geoPoint: any ) => {
       dispatch( saveGeoPointAction( geoPoint ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
@@ -139,13 +156,16 @@ export const updateGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunc
   markerService.updateMarker( marker )
     .then( ( geoPoint: any ) => {
       dispatch( saveGeoPointAction( geoPoint ) );
+      windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      windowBlocking( false )( dispatch );
     } );
 };
 
 export const saveGeoPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   if ( !geoPoint.id ) {
     createGeoPoint( geoPoint )( dispatch );
   } else {
@@ -235,4 +255,8 @@ function clearStateGoogleMapAction(): { type: string } {
 
 function clearGeoPointAction(): { type: any } {
   return { type: CLEAR_GEO_POINT };
+}
+
+function setAddressGeoPointAction( address: string ) {
+  return { type: SET_ADDRESS_GEO_POINT, address };
 }

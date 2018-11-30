@@ -3,6 +3,7 @@ import IMyCheckListsStateType from '../types/stateTypes/myCheckListsStateType';
 import ISharedCheckListStateType from '../types/stateTypes/sharedCheckListStateType';
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 import { IGeoListForUpdateDTO } from '../DTO/geoListDTO';
+import { clearAutocompleteListUsers } from '../actions/sharedCheckListAction';
 
 export default interface IShareCheckListModalComponentContainerProps {
   myCheckList: IMyCheckListsStateType;
@@ -16,4 +17,6 @@ export default interface IShareCheckListModalComponentContainerProps {
     ( dispatch: IDispatchFunction ) => void;
   providePublicAccess: ( idList: string, isPublic: boolean ) => ( dispatch: IDispatchFunction ) => void;
   updateCheckList: ( idCheckList: string, checkList: IGeoListForUpdateDTO ) => ( dispatch: IDispatchFunction ) => void;
+  getAutocompletedListUsers: ( userName: string) => ( dispatch: IDispatchFunction ) => void;
+  clearAutocompleteListUsers: () => ( dispatch: IDispatchFunction ) => void;
 }

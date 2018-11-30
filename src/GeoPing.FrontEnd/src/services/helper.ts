@@ -9,7 +9,7 @@ import {
   checkInStatistics,
   checkInUrl,
   checkListUrl,
-  dashboardUrl,
+  dashboardUrl, loginUrl,
   profileUrl,
 } from '../constants/routes';
 
@@ -69,11 +69,11 @@ export function checkLocation( location: string, callbackRedirect: any ) {
   ];
   const redirect: any = authorizedPath.find( ( path: string ) => {
     const reg: RegExp = new RegExp( `${path.replace( /:\w+/g, '[a-z0-9-]+' )}`, 'g' );
+
     return reg.test( location );
   } );
-
   if ( redirect ) {
     sessionStorage.setItem( 'url_for_redirect', location );
-    callbackRedirect( true );
+    callbackRedirect( loginUrl );
   }
 }

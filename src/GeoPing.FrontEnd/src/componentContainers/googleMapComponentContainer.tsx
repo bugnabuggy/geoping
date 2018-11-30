@@ -15,7 +15,8 @@ import {
   geoPointListIsCreate,
   getMyAddress,
   permissionAdd,
-  selectPoint
+  selectPoint,
+  setAddressGeoPoint
 } from '../actions/googleMapAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { addNewPointForMyGeoPosition, editingPermission } from '../actions/checkListAction';
@@ -50,6 +51,7 @@ class GoogleMapComponentContainer extends React.Component<IGoogleMapComponentCon
           addDistance={this.props.addDistance}
           getMyAddress={this.props.getMyAddress}
           findGeoPosition={this.props.findGeoPosition}
+          setAddressGeoPoint={this.props.setAddressGeoPoint}
         />
       </React.Fragment>
     );
@@ -81,6 +83,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       addDistance,
       clearStateGoogleMap,
       getMyAddress,
+      setAddressGeoPoint,
     },
     dispath );
 

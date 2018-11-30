@@ -3,7 +3,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Routes from './routesComponent';
+import { Routes } from './routesComponent';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import IGetRoutesProps from '../componentProps/routerProps/getRoutesProps';
 import { authorizationUserFlag, loadUserData, redirectDashboard } from '../actions/userAction';
@@ -16,6 +16,15 @@ import { isRedirect, redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
+  constructor( props: IGetRoutesProps ) {
+    super( props );
+    console.info( 'GetRoutes constructor', props );
+    this.state = {
+      isGetUserData: false,
+    };
+    // this.authorized();
+  }
+
   authorized = () => {
     if ( !!localStorage.getItem( 'token' ) ) {
       if ( localStorage.getItem( 'token' ) === '4be0643f-1d98-573b-97cd-ca98a65347dd' ) {
@@ -31,50 +40,47 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
       }
       if ( sessionStorage.getItem( 'url_for_redirect' ) === this.props.location ) {
         sessionStorage.removeItem( 'url_for_redirect' );
-        this.props.redirectDashboard( false );
       }
     } else {
       if ( this.props.user.authorized ) {
         this.props.authorizationUserFlag( false );
       } else {
         if ( !sessionStorage.getItem( 'url_for_redirect' ) ) {
-          checkLocation( this.props.location, this.props.redirectOnSignInForm );
+          checkLocation( this.props.location, this.props.isRedirect );
         }
       }
     }
   };
-
-  constructor( props: IGetRoutesProps ) {
-    super( props );
-    console.info( 'GetRoutes constructor', props );
-    this.state = {
-      isGetUserData: false,
-    };
-  }
 
   componentDidMount() {
     this.authorized();
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {
-    this.authorized();
+    if ( prevProps.user.authorized && this.props.user.authorized ) {
+      this.authorized();
+    }
     if ( !prevProps.window.redirect && this.props.window.redirect ) {
-      this.props.isRedirect('');
+      this.props.isRedirect( '' );
+    }
+
+    if ( !!!localStorage.getItem( 'token' ) && this.state.isGetUserData ) {
+      this.setState( { isGetUserData: false } );
     }
   }
 
   render() {
-
     return (
       <React.Fragment>
         <WindowBlockingComponent
           isBlocking={this.props.window.isBlockingWindow}
         />
         <Routes
-          authorized={!!localStorage.getItem( 'token' )}
+          isTokenVerified={!!localStorage.getItem( 'token' )}
           roleUser={this.props.user.roleUser}
           path={this.props.location}
         />
+
         {this.props.user.authorized &&
         this.props.user.redirectDashboard &&
         this.props.location !== dashboardUrl &&

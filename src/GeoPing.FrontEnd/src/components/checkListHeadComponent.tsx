@@ -5,6 +5,21 @@ import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { IGeoListForUpdateDTO } from '../DTO/geoListDTO';
 
 export class CheckListHeadComponent extends React.Component<ICheckListHeadComponentProps, any> {
+  saveNameList = (value: string) => {
+    if ( this.props.checkList.selectedGeoList.name !== value ) {
+      const checkList: IGeoListForUpdateDTO = {
+        Name: value,
+        Description: this.props.checkList.selectedGeoList.description,
+        IsPublic: true,
+      };
+
+      this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
+    }
+    this.setState( { name: value } );
+    this.setState( {
+      isEdit: false,
+    } );
+  };
   handleEdit = () => {
     this.setState( {
       isEdit: !this.state.isEdit,
@@ -23,19 +38,11 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
   };
   keyUp = ( e: any ) => {
     if ( e.keyCode === 13 ) {
-      if ( this.props.checkList.selectedGeoList.name !== e.target.value ) {
-        const checkList: IGeoListForUpdateDTO = {
-          Name: e.target.value,
-          Description: this.props.checkList.selectedGeoList.description,
-          IsPublic: true,
-        };
-
-        this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
-      }
-      this.setState( {
-        isEdit: false,
-      } );
+      this.saveNameList(e.target.value);
     }
+  };
+  blurEdit = ( e: any ) => {
+    this.saveNameList(e.target.value);
   };
   handleChangeName = ( e: any ) => {
     this.setState( { name: e.target.value } );
@@ -73,7 +80,7 @@ export class CheckListHeadComponent extends React.Component<ICheckListHeadCompon
                 {this.state.isEdit && <FormControl
                   name="name"
                   defaultValue={this.props.checkList.selectedGeoList.name}
-                  // onBlur={this.blurEdit}
+                  onBlur={this.blurEdit}
                   onChange={this.handleChangeName}
                   autoFocus={this.state.isEdit}
                   onKeyUp={this.keyUp}

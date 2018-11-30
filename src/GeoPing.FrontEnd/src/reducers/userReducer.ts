@@ -18,6 +18,7 @@ export default function userReducer( state: IUserStateType = userState, action: 
     [ REDIRECT_DASHBOARD_FOR_LOGIN ]: redirect,
     [ LOAD_USER_NAME ]: loadUserData,
     [ SAVE_AVATAR ]: saveAvatar,
+    [USER_SIGN_OUT]: logOut,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -47,7 +48,7 @@ function userAuthorizationTestPeriod( state: IUserStateType, action: any ): IUse
 function redirect( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
-    redirectDashboard: action.isRedirect,
+    redirectDashboard: action.isRedirectValue,
   };
 }
 
@@ -62,5 +63,11 @@ function saveAvatar( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     avatar: action.avatar,
+  };
+}
+
+function logOut( state: IUserStateType, action: any ): IUserStateType {
+  return {
+    ...userState,
   };
 }
