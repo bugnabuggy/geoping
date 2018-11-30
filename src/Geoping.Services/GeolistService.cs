@@ -39,17 +39,21 @@ namespace GeoPing.Services
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _securitySrv;
 
-        public GeolistService(IRepository<GeoList> geolistRepo,
-                              IRepository<PublicList> publicGeolistRepo,
-                              IRepository<GeoPingUser> gpUserRepo,
-                              ISecurityService securitySrv)
+        public GeolistService
+            (IRepository<GeoList> geolistRepo, 
+            IRepository<PublicList> publicGeolistRepo, 
+            IRepository<GeoPingUser> gpUserRepo, 
+            ISecurityService securitySrv,
+            IRepository<ListSharing> sharingRepo)
         {
             _geolistRepo = geolistRepo;
             _publicGeolistRepo = publicGeolistRepo;
             _gpUserRepo = gpUserRepo;
             _securitySrv = securitySrv;
+            _sharingRepo = sharingRepo;
         }
 
         public IQueryable<GeoList> Get()
@@ -60,6 +64,17 @@ namespace GeoPing.Services
         public IQueryable<GeoList> Get(Expression<Func<GeoList, bool>> func)
         {
             return _geolistRepo.Get(func);
+        }
+
+        public IQueryable<GeoList> GetAllowedLists(Guid userId)
+        {
+            var sharings = _sharingRepo.Get(x => x.UserId == userId &&
+                                                 x.Status == "accepted");
+
+            var result = _geolistRepo.Get(x => x.OwnerId == userId ||
+                                               sharings.Any(y => y.ListId == x.Id));
+
+            return result;
         }
 
         public WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems)

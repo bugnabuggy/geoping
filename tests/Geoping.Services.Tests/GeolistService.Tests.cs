@@ -20,6 +20,7 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _securitySrv;
 
         private Guid _expectedUserId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
@@ -36,9 +37,10 @@ namespace GeoPing.Services.Tests
             _geolistRepo = _services.GetRequiredService<IRepository<GeoList>>();
             _publicGeolistRepo = _services.GetRequiredService<IRepository<PublicList>>();
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
+            _sharingRepo = _services.GetRequiredService<IRepository<ListSharing>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
 
-            _sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv);
+            _sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv, _sharingRepo);
         }
 
 

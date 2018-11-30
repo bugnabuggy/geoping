@@ -11,6 +11,7 @@ namespace GeoPing.Core.Services
     {
         IQueryable<GeoList> Get();
         IQueryable<GeoList> Get(Expression<Func<GeoList, bool>> func);
+        IQueryable<GeoList> GetAllowedLists(Guid userId);
 
         OperationResult<GeoList> Add(GeoList item);
         OperationResult<GeoList> Update(Guid userId, GeoList item);
