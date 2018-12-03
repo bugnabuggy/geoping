@@ -61,7 +61,7 @@ namespace GeoPing.Services
                 {
                     FullName = x.LastName != null || x.FirstName != null
                         ? $"{x.LastName} {x.FirstName}".Trim()
-                        : null,
+                        : "",
                     UserName = x.Login,
                     Email = x.Email
                 });

@@ -32,8 +32,7 @@ namespace GeoPing.Services
                     x.Id,
                     x.Login,
                     x.FirstName,
-                    x.LastName,
-                    x.Birthday
+                    x.LastName
                 });
 
             return result;

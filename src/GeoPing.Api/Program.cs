@@ -1,6 +1,7 @@
 ﻿using System;
 using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,9 @@ namespace GeoPing.Api
                 {
                     var db = services.GetRequiredService<ApplicationDbContext>();
                     db.Database.Migrate();
+
+                    var isdb = services.GetRequiredService<PersistedGrantDbContext>();
+                    isdb.Database.Migrate();
 
                     appConfigurator.Initialize(services);
                 }
