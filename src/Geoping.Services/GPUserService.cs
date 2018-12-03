@@ -27,7 +27,12 @@ namespace GeoPing.Services
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
         {
-            return _gpUserRepo.Get().FirstOrDefault(func);
+            return _gpUserRepo.Data.FirstOrDefault(func);
+        }
+
+        public IQueryable<GeoPingUser> GetUsers(Expression<Func<GeoPingUser, bool>> func)
+        {
+            return _gpUserRepo.Get(func);
         }
 
         public IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters)
@@ -36,7 +41,7 @@ namespace GeoPing.Services
             {
                 return null;
             }
-        
+
             firstLetters = firstLetters.ToUpper();
 
             var data = _gpUserRepo.Get(x => x.Login.ToUpper().StartsWith(firstLetters));
@@ -48,9 +53,11 @@ namespace GeoPing.Services
 
             return data
                 .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
-                .Select(x => new UserAutoCompleteDTO()
+                .Select(x => new UserAutoCompleteDTO
                 {
-                    FullName = $"{x.LastName} {x.FirstName}",
+                    FullName = x.LastName == null && x.FirstName == null
+                        ? $"{x.LastName} {x.FirstName}".Trim()
+                        : null,
                     UserName = x.Login,
                     Email = x.Email
                 });
@@ -60,16 +67,16 @@ namespace GeoPing.Services
         {
             var data = GetUser(func);
 
-            return new ShortUserInfoDTO()
+            return new ShortUserInfoDTO
             {
                 UserName = data.Login,
                 Avatar = data.Avatar
-            }; 
+            };
         }
 
         public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
         {
-            return new OperationResult<GeoPingUser>()
+            return new OperationResult<GeoPingUser>
             {
                 Data = _gpUserRepo.Update(user),
                 Messages = new[] { "Profile was successfully edited." },
@@ -85,7 +92,7 @@ namespace GeoPing.Services
                 Email = email,
                 Login = username,
                 AccountType = "regular",
-                Avatar =   DefaultUserSettings.AvatarImage
+                Avatar = DefaultUserSettings.AvatarImage
             });
         }
 

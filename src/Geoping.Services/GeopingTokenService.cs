@@ -32,7 +32,7 @@ namespace GeoPing.Services
         // Value = ListSharing`s ID
         public GeoPingToken CreateSharingInviteToken(string value)
         {
-            var result = _tokenRepo.Add(new GeoPingToken()
+            var result = _tokenRepo.Add(new GeoPingToken
             {
                 Type = "SharingInvite",
                 Created = DateTime.UtcNow,
@@ -46,7 +46,7 @@ namespace GeoPing.Services
         // Value = ListSharing`s ID
         public GeoPingToken CreateSharingToken(string value)
         {
-            var result = _tokenRepo.Add(new GeoPingToken()
+            var result = _tokenRepo.Add(new GeoPingToken
             {
                 Type = "Sharing",
                 Created = DateTime.UtcNow,
@@ -70,7 +70,7 @@ namespace GeoPing.Services
 
             if (gpToken == null)
             {
-                return new OperationResult<TokenInfoDTO>()
+                return new OperationResult<TokenInfoDTO>
                 {
                     Messages = new[] { "Token not found" }
                 };
@@ -80,7 +80,7 @@ namespace GeoPing.Services
 
             if (validationResult != null)
             {
-                return new OperationResult<TokenInfoDTO>()
+                return new OperationResult<TokenInfoDTO>
                 {
                     Messages = new[] { validationResult }
                 };
@@ -105,11 +105,11 @@ namespace GeoPing.Services
 
             MarkAsUsed(token);
 
-            return new OperationResult<TokenInfoDTO>()
+            return new OperationResult<TokenInfoDTO>
             {
                 Success = true,
                 Messages = new[] { "Following token was found" },
-                Data = new TokenInfoDTO()
+                Data = new TokenInfoDTO
                 {
                     TokenType = gpToken.Type,
                     UserId = targetUserId
@@ -119,7 +119,7 @@ namespace GeoPing.Services
 
         public GeoPingToken GetToken(string token)
         {
-            var result = _tokenRepo.Get(x => x.Token == token).FirstOrDefault();
+            var result = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
 
             if (ValidateGPToken(result) == null)
             {
@@ -139,14 +139,14 @@ namespace GeoPing.Services
 
                 _tokenRepo.Update(gpToken);
 
-                return new OperationResult()
+                return new OperationResult
                 {
                     Success = true,
                     Messages = new[] { "Token is used now" }
                 };
             }
 
-            return new OperationResult()
+            return new OperationResult
             {
                 Messages = new[] { "Token is invalid" }
             };
@@ -154,15 +154,18 @@ namespace GeoPing.Services
 
         private string ValidateGPToken(GeoPingToken gpToken)
         {
-            if (gpToken.IsUsed)
+            if (gpToken != null)
             {
-                return "Used";
-            }
+                if (gpToken.IsUsed)
+                {
+                    return "Used";
+                }
 
-            if ((DateTime.UtcNow - gpToken.Created).Seconds >
-                _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
-            {
-                return "Expired";
+                if ((DateTime.UtcNow - gpToken.Created).Seconds >
+                    _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
+                {
+                    return "Expired";
+                } 
             }
 
             return null;

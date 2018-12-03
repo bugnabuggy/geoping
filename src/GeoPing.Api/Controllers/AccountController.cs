@@ -1,10 +1,10 @@
-﻿using GeoPing.Api.Interfaces;
+﻿using System.Threading.Tasks;
+using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
 {
@@ -31,13 +31,13 @@ namespace GeoPing.Api.Controllers
         {
             OperationResult result;
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 result = await _accountSrv.RegisterAsync(registerUser);
             }
             else
             {
-                result = new OperationResult()
+                result = new OperationResult
                 {
                     Data = registerUser,
                     Messages = new[] { "Model is invalid" }
@@ -71,7 +71,7 @@ namespace GeoPing.Api.Controllers
         [Route("reset-password")]
         public async Task<IActionResult> ResetPasswordRequest([FromBody]ResetPasswordDTO form)
         {
-            var result = await _accountSrv.ResetRassword(form);
+            var result = await _accountSrv.ResetPassword(form);
 
             if (result.Success)
             {

@@ -73,6 +73,56 @@ for everyone and watch, how many people go through that list and what is their o
             ]
         }
 
+### Get geolists user has access to them(owned lists and accepted shared lists) [GET /api/geolist/allowed]
+
++ Response 200 (application/json)
+
+        {
+            "totalItems": 4,
+            "pageNumber": 0,
+            "pageSize": null,
+            "success": true,
+            "messages": null,
+            "data": [
+                {
+                "id": "81fa0020-79b4-4eca-2cbb-08d63e41e787",
+                "name": "2323",
+                "description": "Something",
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T08:30:09.7331955",
+                "edited": "2018-10-30T11:49:05.2061244",
+                "isPublic": false
+                },
+                {
+                "id": "a64eeeb6-6ac0-4a90-d903-08d63e4a51e5",
+                "name": "The is onew more list",
+                "description": null,
+                "ownerId": "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "created": "2018-10-30T09:30:24.1643948",
+                "edited": "0001-01-01T00:00:00",
+                "isPublic": false
+                },
+                {
+                "id": "3c536def-7b1c-4927-aa08-08d63e4cb799",
+                "name": "Test",
+                "description": null,
+                "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                "created": "2018-10-30T10:40:34.9106833",
+                "edited": "2018-10-30T11:26:57.4737233",
+                "isPublic": false
+                },
+                {
+                "id": "b4eced40-6768-4901-aa09-08d63e4cb799",
+                "name": null,
+                "description": "The list",
+                "ownerId": "2db0e95f-8835-4340-48e2-08d63e40e147",
+                "created": "2018-10-30T10:42:59.8369056",
+                "edited": "2018-10-30T11:48:15.284905",
+                "isPublic": false
+                }
+            ]
+        }
+
 ### Get all public geolists [GET /api/geolist/public]
 
 + Attributes
@@ -325,6 +375,7 @@ for everyone and watch, how many people go through that list and what is their o
             ],
             "data": null
         }
+    
         
 ## Geopoints collection [/api/geolist/{ListId}/geopoint]
 
@@ -537,6 +588,7 @@ for everyone and watch, how many people go through that list and what is their o
                 "checkTime": "2018-10-09T15:39:34.4816628+06:00"
             }
         }
+      
         
 ## Check in [/api/geolist/{ListId}/check]
 
@@ -633,7 +685,261 @@ for everyone and watch, how many people go through that list and what is their o
                 "userAgent": null
             }
         }
+
+
+## Sharing [/api/sharing]
+
+### Get autocompleted list of users [GET /api/sharing/autocomplete?query={query}]
+
++ Attribute
+    + query (string) - First part of user`s login or email 
+
++ Response 200
+
+        [
+            {
+                "userName": "shefard3",
+                "email": "shefard3r@test.com",
+                "fullName": "Shef"
+            },
+            {
+                "userName": "shefard55r",
+                "email": "shefard55r@yandex.ru",
+                "fullName": null
+            },
+            {
+                "userName": "shefard2",
+                "email": "shefard2r@test.com",
+                "fullName": "Ard"
+            },
+            {
+                "userName": "shefard1",
+                "email": "shefard1r@test.com",
+                "fullName": "Test"
+            },
+            {
+                "userName": "alxshef",
+                "email": "shefard@test.ru",
+                "fullName": null
+            }
+        ]
+
+### Get all of shared lists [GET]
+
++ Response 200
+
+        [
+            {
+                "listId": "eb1ea9a4-09d0-4c93-3f4d-08d65116546e",
+                "shareId": "1336c8c9-83c9-45d6-51ec-08d6511b033a",
+                "listName": "The test list",
+                "listDescription": "NONE",
+                "listOwnerId": "f654fc54-272c-4c17-cde9-08d651153978",
+                "listCreated": "2018-11-23T07:36:06.6488461",
+                "listEdited": "0001-01-01T00:00:00",
+                "listIsPublic": true,
+                "shareStatus": "accepted",
+                "shareInvitationDate": "2018-11-23T08:09:37.9248869"
+            },
+            {
+                "listId": "b057c129-f266-40dd-94d3-aa558024c14d",
+                "shareId": "1c65f215-66fc-46ca-924d-08d63ff6c4e1",
+                "listName": "The second test list",
+                "listDescription": "NONE",
+                "listOwnerId": "f654fc54-272c-4c17-cde9-08d651153978",
+                "listCreated": "2018-11-23T07:39:28.6488461",
+                "listEdited": "0001-01-01T00:00:00",
+                "listIsPublic": false,
+                "shareStatus": "pending",
+                "shareInvitationDate": "2018-11-01T12:42:04.7054003Z"
+            }
+        ]
+
+### Get all of new shared lists [GET /api/sharing/new]
+
++ Response 200
+
+        [
+            {
+                "listId": "b057c129-f266-40dd-94d3-aa558024c14d",
+                "shareId": "1c65f215-66fc-46ca-924d-08d63ff6c4e1",
+                "listName": "The second test list",
+                "listDescription": "NONE",
+                "listOwnerId": "f654fc54-272c-4c17-cde9-08d651153978",
+                "listCreated": "2018-11-23T07:39:28.6488461",
+                "listEdited": "0001-01-01T00:00:00",
+                "listIsPublic": false,
+                "shareStatus": "pending",
+                "shareInvitationDate": "2018-11-01T12:42:04.7054003Z"
+            }
+        ]
+        
+### Get all of accepted shared lists [GET /api/sharing/accepted]
+
++ Response 200
+
+        [
+            {
+                "listId": "eb1ea9a4-09d0-4c93-3f4d-08d65116546e",
+                "shareId": "1336c8c9-83c9-45d6-51ec-08d6511b033a",
+                "listName": "The test list",
+                "listDescription": "NONE",
+                "listOwnerId": "f654fc54-272c-4c17-cde9-08d651153978",
+                "listCreated": "2018-11-23T07:36:06.6488461",
+                "listEdited": "0001-01-01T00:00:00",
+                "listIsPublic": true,
+                "shareStatus": "accepted",
+                "shareInvitationDate": "2018-11-23T08:09:37.9248869"
+            }
+        ]
+
+### Revoke list sharing by owner-user [DELETE /api/sharing/{sharingId}]
+
++ Attributes
+    + sharingId (string) - Id of list sharing record
     
++ Response 200
+
+        {
+            "success": true,
+            "messages": [
+                "You successfully revoke the sharing list."
+            ],
+            "data": null
+        }
+
+### Accept list sharing invite [POST /api/sharing/invitation/{sharingId}]
+
++ Attributes
+    + sharingId (string) - Id of list sharing record
+    
++ Response 200
+
+        {
+            "success": true,
+            "messages": [
+                "The share invite was accepted"
+            ],
+            "data": null
+        }
+
+### Refuse both list sharing invite and list sharing [DELETE /api/sharing/invitation/{sharingId}]
+
++ Attributes
+    + sharingId (string) - Id of list sharing record
+    
++ Response 200
+
+        {
+            "success": true,
+            "messages": [
+                "You successfully refuse the sharing list."
+            ],
+            "data": null
+        }
+
+### Invite users to share list [POST /api/sharing/{listId}]
+
++ Attributes
+    + listId (string) - Id of list
+    
++ Request
+
+        [
+            "testuser",
+            "test@geoping.com",
+            "crap@..craping.com"
+        ]
+
++ Response 200
+
+        {
+            "success": true,
+            "messages": [
+                "The user [testuser@geoping.com] was invited.",
+                "The user [test@geoping.com] was invited.",
+                "The user [crap@..craping.com] hasn`t been invited. He hasn`t been found or data isn`t valid as email."
+            ],
+            "data": [
+                "testuser@geoping.com",
+                "test@geoping.com"
+            ]
+        }
+
+### Get all of users, list was shared with [GET /api/sharing/{listId}/allowed-users]
+    
++ Attributes
+    + listId (string) - ID of list, you are going to get users list was shared with
+
++ Response 200
+
+        [
+            {
+                "id" : "1336c8c9-83c9-45d6-51ec-08d6511b033a",
+                "login" : "testuser",
+                "firstName" : null,
+                "lastName" : null,
+                "sharingId" : "6252da5d-3bdf-4aed-48e1-08d63e40e147",
+                "sharingDate" : "2018-10-30T09:48:08.7829466",
+                "sharingStatus" : "accepted",
+            },
+            {
+                "id" : "97ea3d31-18ab-4fb7-b1fa-b4f1515c8023",
+                "login" : "test11",
+                "firstName" : "test",
+                "lastName" : "user",
+                "sharingId" : "81fa0020-79b4-4eca-2cbb-08d63e41e787",
+                "sharingDate" : "2018-10-30T09:47:40.3179059",
+                "sharingStatus" : "pending",
+            },
+            {
+                "id" : "62a4d629-a663-413f-9fb2-de335966a5bd",
+                "login" : "tes323",
+                "firstName" : null,
+                "lastName" : null,
+                "sharingId" : "a64eeeb6-6ac0-4a90-d903-08d63e4a51e5",
+                "sharingDate" : "2018-10-30T09:47:40.2970114",
+                "sharingStatus" : "invited",
+            }
+        ]
+
+
+## Token processing [/api/token/{token}]
+
+### Get info about token [GET]
+
++ Attributes
+    + token (string) - Value of token, received by email
+    
++ Response 200
+
+        {
+            "success": true,
+            "messages": [
+                "Following token was found"
+            ],
+            "data": {
+                "tokenType": "SharingInvite",
+                "userId": null
+            }
+        }
+
+### Remove token [DELETE]
+
++ Attributes
+    + token (string) - Value of token, received by email
+    
++ Response 200
+
+        {
+            "success": true,
+            "messages": [
+                "Token is used now"
+            ],
+            "data": null
+        }
+ 
+ 
 ## User and identity [/account]
 
 ### GeoPingUser class fields [GET]
@@ -662,6 +968,7 @@ for everyone and watch, how many people go through that list and what is their o
             "UserName": "username",
             "Email": "username@gmail.com",
             "Password": "Password@123",
+            "Token": "sometokenforsomepurpose"
         }
         
 + Response 200 (application/json)
@@ -692,10 +999,16 @@ for everyone and watch, how many people go through that list and what is their o
             ]
         }
 
-### Password reset request[POST /account/reset-password?{LoginOrEmail}]
+### Password reset request[POST /account/reset-password]
 
-+ Parameters
-    + LoginOrEmail (string) - User`s login or email
++ Attributes
+    + UserData (string) - User`s login or email
+    
++ Request (application/json)
+
+        {
+            "UserData": "myemail@forgot.com"
+        }
     
 + Response 200 (application/json)
 
@@ -742,7 +1055,6 @@ for everyone and watch, how many people go through that list and what is their o
             }
         }
 
-
 ### Edit profile[PUT /account/profile]
 
 
@@ -781,7 +1093,7 @@ for everyone and watch, how many people go through that list and what is their o
                 "avatar" : "veryverylongstringthatrepresentstheusersavatar"
         }
 
-### Confirm email [GET /account/confirm-email?{UserId}&{Token}]
+### Confirm email [GET /account/confirm-email?UserId={UserId}&Token={Token}]
 
 + Parameters
     + UserId (string) - Identity id of user
@@ -797,12 +1109,17 @@ for everyone and watch, how many people go through that list and what is their o
             "data": []
         }
         
-### Confirm password reset [POST /account/confirm-reset?{UserId}&{Token}&{NewPassword}]
+### Confirm password reset [POST /account/confirm-reset?UserId={UserId}&Token={Token}]
 
 + Parameters
     + UserId (string) - Identity id of user
     + Token (string) - Token got by user to confirm his email
-    + NewPassword (string) - New password
+    
++ Request (application/json)
+
+        {
+            "NewPassword" : "Password@123"
+        }
 
 + Response 200 (application/json)
 

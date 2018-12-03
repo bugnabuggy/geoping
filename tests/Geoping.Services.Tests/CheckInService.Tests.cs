@@ -1,11 +1,12 @@
-﻿using GeoPing.Core.Services;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Services.Tests
 {
@@ -21,9 +22,9 @@ namespace GeoPing.Services.Tests
         private Guid _expectedUserId = Guid.Parse("10000000-0000-0000-0000-000000000002");
 
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEachAsync()
         {
-            _services = new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
+            _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
             _listSrv = _services.GetRequiredService<IGeolistService>();
             _pointSrv = _services.GetRequiredService<IGeopointService>();
             _checkInRepo = _services.GetRequiredService<IRepository<CheckIn>>();
@@ -35,7 +36,7 @@ namespace GeoPing.Services.Tests
         {
             var expectedItemId = Guid.Parse("00000000-0000-0000-0000-000000000005");
 
-            var testItem = new CheckIn()
+            var testItem = new CheckIn
             {
                 Id = expectedItemId,
                 PointId = Guid.Parse("10000000-0000-0000-0000-000000000001"),

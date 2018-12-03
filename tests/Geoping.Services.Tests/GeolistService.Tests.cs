@@ -1,12 +1,13 @@
-﻿using GeoPing.Core.Models.DTO;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using GeoPing.Core.Models.DTO;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Services.Tests
 {
@@ -19,6 +20,7 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
         private IRepository<GeoPingUser> _gpUserRepo;
+        private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _securitySrv;
 
         private Guid _expectedUserId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
@@ -28,16 +30,17 @@ namespace GeoPing.Services.Tests
         private Guid _listId2 = Guid.Parse("10000000-0000-0000-0000-000000000005");
         
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEachAsync()
         {
-            _services = new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
+            _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _geolistRepo = _services.GetRequiredService<IRepository<GeoList>>();
             _publicGeolistRepo = _services.GetRequiredService<IRepository<PublicList>>();
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
+            _sharingRepo = _services.GetRequiredService<IRepository<ListSharing>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
 
-            _sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv);
+            _sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv, _sharingRepo);
         }
 
 
@@ -46,7 +49,7 @@ namespace GeoPing.Services.Tests
         {
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000005");
 
-            var testList = new GeoList()
+            var testList = new GeoList
             {
                 Id = expectedListId,
                 Created = DateTime.UtcNow,
@@ -104,7 +107,7 @@ namespace GeoPing.Services.Tests
         {
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
-            var testList = _sut.Get(x => x.Id == expectedListId).FirstOrDefault();
+            var testList = _geolistRepo.Data.FirstOrDefault(x => x.Id == expectedListId);
 
             var testTry1 = _sut.Delete(_expectedUserId2, testList);
             Assert.That(!testTry1.Success);

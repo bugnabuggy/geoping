@@ -1,11 +1,11 @@
-﻿using GeoPing.Api.Configuration;
+﻿using System.Linq;
+using GeoPing.Api.Configuration;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.TestData.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.Linq;
 
 namespace GeoPing.Api.Tests
 {

@@ -1,9 +1,9 @@
-﻿using GeoPing.Api.Interfaces;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using GeoPing.Api.Interfaces;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GeoPing.Api.Controllers
 {
@@ -32,53 +32,46 @@ namespace GeoPing.Api.Controllers
             return Ok(result);
         }
 
-        // GET api/sharng
+        // GET api/sharing
         [HttpGet]
         public IActionResult GetAllSharedLists()
         {
             var userId = _helper.GetAppUserIdByClaims(User.Claims);
 
-            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId));
+            return Ok(_shareSrv.GetListsSharedWith(userId));
         }
 
-        // GET api/sharng
+        // GET api/sharing
         [HttpGet]
         [Route("new")]
         public IActionResult GetNewSharedLists()
         {
             var userId = _helper.GetAppUserIdByClaims(User.Claims);
 
-            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId && 
-                                                    x.Status == "pending"));
+            return Ok(_shareSrv.GetListsSharedWith(userId, "pending"));
         }
 
-        // GET api/sharng
+        // GET api/sharing
         [HttpGet]
         [Route("accepted")]
         public IActionResult GetAcceptedSharedLists()
         {
             var userId = _helper.GetAppUserIdByClaims(User.Claims);
 
-            return Ok(_shareSrv.GetSharedLists(x => x.UserId == userId &&
-                                                    x.Status == "accepted"));
+            return Ok(_shareSrv.GetListsSharedWith(userId, "accepted"));
         }
 
         // DELETE api/sharing/{sharingId}
         [HttpDelete]
         [Route("{sharingId}")]
-        public IActionResult RefuseSharing(string sharingId)
+        public IActionResult RevokeSharing(string sharingId)
         {
-            var result = _shareSrv.DeleteSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+            var result = _shareSrv.RevokeSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {
                 return Ok(result);
             }
-            else if (result.Messages.Contains("Unauthorized"))
-            {
-                return Unauthorized();
-            }
-
             return BadRequest(result);
         }
 
@@ -87,7 +80,7 @@ namespace GeoPing.Api.Controllers
         [Route("invitation/{sharingId}")]
         public IActionResult AcceptInvite(string sharingId)
         {
-            var result = _shareSrv.AcceptSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+            var result = _shareSrv.AcceptSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {
@@ -102,7 +95,7 @@ namespace GeoPing.Api.Controllers
         [Route("invitation/{sharingId}")]
         public IActionResult RefuseInvite(string sharingId)
         {
-            var result = _shareSrv.DeclineSharingInvite(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+            var result = _shareSrv.RefuseSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {
@@ -131,7 +124,10 @@ namespace GeoPing.Api.Controllers
         [Route("{listId}/allowed-users")]
         public IActionResult GetAllowedUsers(string listId)
         {
-            var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            //var result = _shareSrv.GetAllowedUsers(_helper.GetAppUserIdByClaims(User.Claims), listId);
+
+            var result = _shareSrv.GetUsersListWasSharedWith(_helper.GetAppUserIdByClaims(User.Claims), listId);
 
             if (result.Success)
             {

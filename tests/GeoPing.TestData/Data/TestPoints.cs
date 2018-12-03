@@ -6,7 +6,7 @@ namespace GeoPing.TestData.Data
 {
     public class TestPoints
     {
-        private readonly ICollection<GeoPoint> _geopoints = new List<GeoPoint>()
+        private readonly ICollection<GeoPoint> _geopoints = new List<GeoPoint>
         {
             new GeoPoint
             {

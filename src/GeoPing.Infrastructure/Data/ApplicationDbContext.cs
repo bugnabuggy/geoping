@@ -1,7 +1,7 @@
-﻿using GeoPing.Infrastructure.Models;
+﻿using GeoPing.Core.Models.Entities;
+using GeoPing.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Infrastructure.Data
 {

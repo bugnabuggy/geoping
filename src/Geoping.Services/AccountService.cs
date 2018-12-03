@@ -72,27 +72,28 @@ namespace GeoPing.Services
 
                 var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
 
-                // TOKEN ACTIONS ==================================================================
+                // Token actions
 
-                var token = _tokenSrv.GetToken(registerUser.Token);
-
-                if (token != null)
+                if (registerUser.Token != null)
                 {
-                    switch (token.Type)
+                    var token = _tokenSrv.GetToken(registerUser.Token);
+
+                    if (token != null)
                     {
-                        case "SharingInvite":
-                            {
-                                _sharingSrv.ConfirmSharingWithRegistration
-                                    (token.Value, gpUser.Id, user.Email);
+                        switch (token.Type)
+                        {
+                            case "SharingInvite":
+                                {
+                                    _sharingSrv.ConfirmSharingWithRegistration
+                                        (token.Value, gpUser.Id, user.Email);
 
-                                _tokenSrv.MarkAsUsed(token.Token);
+                                    _tokenSrv.MarkAsUsed(token.Token);
 
-                                break;
-                            }
-                    }
+                                    break;
+                                }
+                        }
+                    } 
                 }
-
-                // ================================================================================
 
                 if (_settings.EmailSender.IsEmailConfirmEnable)
                 {
@@ -143,7 +144,7 @@ namespace GeoPing.Services
             };
         }
 
-        public async Task<OperationResult> ResetRassword(ResetPasswordDTO form)
+        public async Task<OperationResult> ResetPassword(ResetPasswordDTO form)
         {
             var user = await _userManager.FindByEmailAsync(form.UserData);
 
@@ -153,7 +154,7 @@ namespace GeoPing.Services
 
                 if (user == null)
                 {
-                    return new OperationResult()
+                    return new OperationResult
                     {
                         Messages = new [] { "There is no user with given login or email" }
                     };
@@ -164,7 +165,7 @@ namespace GeoPing.Services
 
             SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 
-            return new OperationResult()
+            return new OperationResult
             {
                 Success = true,
                 Messages = new[] { "A password reset confirmation email has been sent to email address you specified" }
@@ -176,7 +177,7 @@ namespace GeoPing.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     Data = userId,
                     Messages = new[] { $"There is no user with UserID = [{userId}]" }
@@ -189,14 +190,14 @@ namespace GeoPing.Services
 
             {
                 _gpUserSrv.ActivateUser(user.Id);
-                return new OperationResult()
+                return new OperationResult
                 {
                     Success = true,
                     Messages = new[] { $"User with Id = [{userId}] has been confirmed successfully" }
                 };
             }
 
-            return new OperationResult()
+            return new OperationResult
             {
                 Messages = new[] { "Something went wrong while email confirmation. Try again later" }
             };
@@ -207,7 +208,7 @@ namespace GeoPing.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     Data = userId,
                     Messages = new[] { $"There is no user with UserID = [{userId}]" }
@@ -218,14 +219,14 @@ namespace GeoPing.Services
 
             if (result.Succeeded)
             {
-                return new OperationResult()
+                return new OperationResult
                 {
                     Success = true,
                     Messages = new[] { $"User`s password with Id = [{userId}] has been reset successfully" }
                 };
             }
 
-            return new OperationResult()
+            return new OperationResult
             {
                 Messages = new[] { "Something went wrong while password reset. Try again later" }
             };
@@ -246,12 +247,12 @@ namespace GeoPing.Services
 
             if (result == null)
             {
-                return new OperationResult<GeoPingUser>()
+                return new OperationResult<GeoPingUser>
                 {
                     Messages = new[] { "User was not found" }
                 };
             }
-            return new OperationResult<GeoPingUser>()
+            return new OperationResult<GeoPingUser>
             {
                 Data = result,
                 Messages = new[] { "The following user was found" },
@@ -265,12 +266,12 @@ namespace GeoPing.Services
 
             if (result == null)
             {
-                return new OperationResult<ShortUserInfoDTO>()
+                return new OperationResult<ShortUserInfoDTO>
                 {
                     Messages = new[] { "User was not found" }
                 };
             }
-            return new OperationResult<ShortUserInfoDTO>()
+            return new OperationResult<ShortUserInfoDTO>
             {
                 Data = result,
                 Messages = new[] { "The following user was found" },
@@ -291,7 +292,7 @@ namespace GeoPing.Services
 
             if (result.Success)
             {
-                return new OperationResult<GeoPingUser>()
+                return new OperationResult<GeoPingUser>
                 {
                     Data = user,
                     Success = true,
@@ -299,7 +300,7 @@ namespace GeoPing.Services
                 };
             }
 
-            return new OperationResult<GeoPingUser>()
+            return new OperationResult<GeoPingUser>
             {
                 Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
             };
@@ -317,7 +318,7 @@ namespace GeoPing.Services
 
                 if (result.Success)
                 {
-                    return new OperationResult<GeoPingUser>()
+                    return new OperationResult<GeoPingUser>
                     {
                         Data = user,
                         Success = true,
@@ -326,7 +327,7 @@ namespace GeoPing.Services
                 }
             }
 
-            return new OperationResult<GeoPingUser>()
+            return new OperationResult<GeoPingUser>
             {
                 Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
             };
@@ -379,14 +380,14 @@ namespace GeoPing.Services
             string callbackUrl = $"{baseUrl}/{actionEndpoint}?UserId={user.Id}&Token={code}";
             //====================================================================================
 
-            _emailSrv.Send(new EmailMessage()
+            _emailSrv.Send(new EmailMessage
             {
-                FromAddress = new EmailAddress()
+                FromAddress = new EmailAddress
                 {
                     Name = "GeopingTeam",
                     Address = _settings.EmailSender.SmtpUserName
                 },
-                ToAddress = new EmailAddress()
+                ToAddress = new EmailAddress
                 {
                     Name = user.UserName,
                     Address = user.Email

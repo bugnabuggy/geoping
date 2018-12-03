@@ -1,18 +1,19 @@
-﻿using GeoPing.Core.Services;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using GeoPing.Core;
+using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
+using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NUnit.Framework;
-using System;
-using System.Linq;
-using GeoPing.Core;
-using GeoPing.Core.Models.Entities;
-using GeoPing.Utilities.EmailSender;
-using Moq;
 using Microsoft.Extensions.Options;
+using Moq;
+using NUnit.Framework;
 
 namespace GeoPing.Services.Tests
 {
@@ -34,9 +35,9 @@ namespace GeoPing.Services.Tests
         private Guid _gpUserId;
 
         [SetUp]
-        public void BeforeEach()
+        public async Task BeforeEachAsync()
         {
-            _services = new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
+            _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
             _userManager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
             _logger = _services.GetRequiredService<ILogger<AccountService>>();
             _gpUserSrv = _services.GetRequiredService<IGPUserService>();

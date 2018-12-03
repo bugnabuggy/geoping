@@ -29,26 +29,26 @@ namespace GeoPing.Services
 
             if (!isPointExist)
             {
-                return new OperationResult<CheckIn>()
+                return new OperationResult<CheckIn>
                 {
                     Messages = new[] { $"There is no point with Id = [{pointId}]" }
                 };
             }
 
             var result = _checkInRepo
-                .Get(x => x.PointId == point.Id && x.UserId == userId)
+                .Get()
                 .OrderByDescending(x => x.Date)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.PointId == point.Id && x.UserId == userId);
 
             if (result == null)
             {
-                return new OperationResult<CheckIn>()
+                return new OperationResult<CheckIn>
                 {
                     Messages = new[] { $"User didn`t check in point with Id = [{point.Id}]" }
                 };
             }
 
-            return new OperationResult<CheckIn>()
+            return new OperationResult<CheckIn>
             {
                 Data = result,
                 Messages = new[] { $"User checked in point with Id = [{point.Id}]" },
@@ -85,7 +85,7 @@ namespace GeoPing.Services
 
         public OperationResult<CheckIn> AddCheckIn(CheckIn item)
         {
-            return new OperationResult<CheckIn>()
+            return new OperationResult<CheckIn>
             {
                 Data = _checkInRepo.Add(item),
                 Messages = new[] { $"User was successfully checked in point with id = [{item.PointId}]" },
@@ -116,7 +116,7 @@ namespace GeoPing.Services
                 return false;
             }
 
-            point = _pointSrv.Get(x => x.Id == pointId).FirstOrDefault();
+            point = _pointSrv.Get().FirstOrDefault(x => x.Id == pointId);
             if (point == null)
             {
                 return false;

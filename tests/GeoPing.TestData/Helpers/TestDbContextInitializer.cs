@@ -1,19 +1,22 @@
-﻿using GeoPing.Api.Configuration;
+﻿using System;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Threading.Tasks;
+using GeoPing.Api.Configuration;
 using GeoPing.Api.Configuration.SeededData;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Security.Claims;
-using System.Security.Principal;
 
 namespace GeoPing.TestData.Helpers
 {
     public class TestDbContextInitializer
     {
-        public void SeedData(IServiceProvider services)
+        public async Task SeedDataAsync(IServiceProvider services)
         {
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
             var principal = new ClaimsPrincipal(httpContextAccessor.HttpContext.User);
@@ -27,10 +30,63 @@ namespace GeoPing.TestData.Helpers
             //return default principal back;
             httpContextAccessor.HttpContext.User = principal;
 
+            await SeedTestUsers(services);
             SeedTestLists(services);
             SeedTestPublicLists(services);
             SeedTestPoints(services);
             SeedTestChecksIn(services);
+            SeedTestListSharings(services);
+        }
+
+        private void SeedTestListSharings(IServiceProvider services)
+        {
+            var sharingsRepo = services.GetRequiredService<IRepository<ListSharing>>();
+            var sharings = new TestSharings();
+
+            foreach (var sharing in sharings.GetListSharings())
+            {
+                sharingsRepo.Add(sharing);
+            }
+        }
+
+        private async Task SeedTestUsers(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<AppIdentityUser>>();
+            var gpUserRepo = services.GetRequiredService<IRepository<GeoPingUser>>();
+            var users = new TestUsers();
+
+            foreach (var user in users.GetUsers())
+            {
+                await userManager.CreateAsync
+                (
+                    new AppIdentityUser
+                    {
+                        Id = user.Id.ToString(),
+                        Email = user.Email,
+                        UserName = user.UserName,
+                        EmailConfirmed = true
+                    }
+                );
+
+                gpUserRepo.Add
+                (
+                    new GeoPingUser
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Login = user.UserName,
+                        Birthday = user.Birthday,
+                        PhoneNumber = user.PhoneNumber,
+                        Country = user.Country,
+                        AccountType = "regular",
+                        IsActivated = true,
+                        IdentityId = user.Id.ToString(),
+                        Avatar = user.Avatar
+                    }
+                );
+            }
         }
 
         private void SeedTestPublicLists(IServiceProvider services)
@@ -74,6 +130,17 @@ namespace GeoPing.TestData.Helpers
             foreach (var point in points.GetGeopoints())
             {
                 geopointRepo.Add(point);
+            }
+        }
+
+        private void SeedListSharings(IServiceProvider services)
+        {
+            var sharingsRepo = services.GetRequiredService<IRepository<ListSharing>>();
+            var sharings = new TestSharings();
+
+            foreach (var sharing in sharings.GetListSharings())
+            {
+                sharingsRepo.Add(sharing);
             }
         }
     }

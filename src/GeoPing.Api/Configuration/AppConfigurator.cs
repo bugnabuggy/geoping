@@ -1,18 +1,18 @@
-﻿using GeoPing.Api.Helpers;
+﻿using System;
+using System.Linq;
+using GeoPing.Api.Configuration.SeededData;
+using GeoPing.Api.Helpers;
 using GeoPing.Api.Interfaces;
+using GeoPing.Core;
+using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
+using GeoPing.Services;
 using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using GeoPing.Api.Configuration.SeededData;
-using GeoPing.Core;
-using GeoPing.Core.Models.Entities;
-using GeoPing.Services;
 
 namespace GeoPing.Api.Configuration
 {
@@ -95,7 +95,7 @@ namespace GeoPing.Api.Configuration
                         //logger.LogError("Something went wrong while addition roles for test users");
                     }
 
-                    ctx.GPUsers.Add(new GeoPingUser()
+                    ctx.GPUsers.Add(new GeoPingUser
                     {
                         IdentityId = user.Id,
                         Email = user.Email,
