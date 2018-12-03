@@ -221,12 +221,23 @@ namespace GeoPing.Services
             }
 
             var result = GetUsersListWasSharedWithInfo(_sharingRepo.Get(x => x.ListId == list.Id));
-
+            
+            // Addition owner to this list
+            var owner = _gpUserSrv.GetUsers(x => x.Id == userId)
+                .Select(x => new UserListWasSharedWithDTO()
+                {
+                    UserId = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    UserName = x.Login,
+                    SharingStatus = "owner"
+                });
+            
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
                 Success = true,
                 Messages = new[] { $"List with ID = [{listId}] was shared with following users" },
-                Data = result
+                Data = owner.Concat(result)
             };
         }
 
@@ -307,15 +318,9 @@ namespace GeoPing.Services
             // Check if user was invited. Send one more mail, if he was
             if (IsUserHasBeenInvitedEarlier(invitedUserEmail, listId, out var pastSharing))
             {
-                GeoPingToken newGPToken;
-                if (pastSharing.UserId == null)
-                {
-                    newGPToken = _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString());
-                }
-                else
-                {
-                    newGPToken = _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
-                }
+                var newGPToken = pastSharing.UserId == null 
+                    ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString()) 
+                    : _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
 
                 SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
 
