@@ -1,4 +1,8 @@
-﻿using NLog;
+﻿using System.Collections.Generic;
+using GeoPing.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using NLog;
 using NLog.Common;
 using NLog.Config;
 using NLog.Targets;
@@ -9,15 +13,17 @@ namespace GeoPing.Utilities.Logger
 {
     public class LoggerConfig
     {
-        public static void SetSettings()
+        public static void SetSettings(IOptions<ApplicationSettings> settings)
         {
-            if (false)
+            LoggerSettings _settings = settings.Value.Logger;
+
+            if (_settings.InternalLog.IsEnabled)
             {
                 // Enable internal logging to a file
-                InternalLogger.LogFile = "internallog.log";
+                InternalLogger.LogFile = _settings.InternalLog.Directory;
 
                 // Set internal log level
-                InternalLogger.LogLevel = LogLevel.Trace;
+                InternalLogger.LogLevel = LogLevel.FromString(_settings.InternalLog.Level);
             }
 
             // Configuration object
@@ -35,8 +41,8 @@ namespace GeoPing.Utilities.Logger
                     Protocol = ProtocolType.Tcp,
                     Tcp = new TcpConfig
                     {
-                        Server = "logs4.papertrailapp.com",
-                        Port = 49554,
+                        Server = _settings.Syslog.Server,
+                        Port = _settings.Syslog.Port,
                         Tls = new TlsConfig
                         {
                             Enabled = true
@@ -47,12 +53,12 @@ namespace GeoPing.Utilities.Logger
             };
 
             config.AddTarget(syslogTarget);
-            config.AddRule(LogLevel.Debug, LogLevel.Fatal, syslogTarget);
+            config.AddRule(LogLevel.FromString(_settings.Syslog.Level), LogLevel.Fatal, syslogTarget);
 
             // FileTarget object
             var fileTarget = new FileTarget("fileLogger")
             {
-                FileName = "${basedir}/log.log",
+                FileName = _settings.File.Directory,
                 ArchiveAboveSize = 104857600,
                 MaxArchiveFiles = 1
             };
@@ -60,7 +66,7 @@ namespace GeoPing.Utilities.Logger
             config.AddTarget(fileTarget);
 
             // Define rules for target
-            config.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget);
+            config.AddRule(LogLevel.FromString(_settings.File.Level), LogLevel.Fatal, fileTarget);
 
             // Activate configuration object
             LogManager.Configuration = config;

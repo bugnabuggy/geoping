@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GeoPing.Api
 {
@@ -106,9 +107,12 @@ namespace GeoPing.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure
+            (IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory)
         {
-            LoggerConfig.SetSettings();
+            LoggerConfig.SetSettings(app.ApplicationServices.GetRequiredService<IOptions<ApplicationSettings>>());
             loggerFactory.AddGPLog();
           
             if (env.IsDevelopment())
