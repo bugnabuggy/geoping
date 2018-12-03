@@ -1,6 +1,5 @@
 ﻿using GeoPing.Core.Models.Entities;
 using GeoPing.Infrastructure.Models;
-using IdentityServer4.EntityFramework.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
