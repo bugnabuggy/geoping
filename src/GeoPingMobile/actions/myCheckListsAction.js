@@ -18,7 +18,7 @@ exports.loadCheckLists = () => (dispatch) => {
         dispatch(loadingAction(false));
     })
         .catch((error) => {
-        console.log('err', error.response.data);
+        console.log('err', error.response);
         dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));
         dispatch(loadingAction(false));
     });

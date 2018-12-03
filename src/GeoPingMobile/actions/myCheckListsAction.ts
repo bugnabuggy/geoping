@@ -22,7 +22,7 @@ export const loadCheckLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadingAction( false ) );
     } )
     .catch( ( error: any ) => {
-      console.log('err', error.response.data);
+      console.log('err', error.response);
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       dispatch( loadingAction( false ) );
     } );

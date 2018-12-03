@@ -12,12 +12,13 @@ import {
   dashboardUrl,
   profileUrl,
 } from '../constants/routes';
+import { Dimensions } from "react-native";
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {
     message,
     type: notificationType,
-    id: uuidV4(),
+    id: uuidV4 (),
   };
   return newNotification;
 }
@@ -54,21 +55,21 @@ export function checkLocation( location: string, callbackRedirect: any ) {
     adminAllUsersUrl,
     adminAllCheckLists
   ];
-  const redirect: any = authorizedPath.find( ( path: string ) => {
-    const reg: RegExp = new RegExp( `${path.replace( /:\w+/g, '[a-z0-9-]+' )}`, 'g' );
-    return reg.test( location );
+  const redirect: any = authorizedPath.find ( ( path: string ) => {
+    const reg: RegExp = new RegExp ( `${path.replace ( /:\w+/g, '[a-z0-9-]+' )}`, 'g' );
+    return reg.test ( location );
   } );
 
   if ( redirect ) {
-    sessionStorage.setItem( 'url_for_redirect', location );
-    callbackRedirect( true );
+    sessionStorage.setItem ( 'url_for_redirect', location );
+    callbackRedirect ( true );
   }
 }
 
 export function getDataFromResponse( response: any ) {
-  if ( response.hasOwnProperty( 'data' ) ) {
+  if ( response.hasOwnProperty ( 'data' ) ) {
     const data: any = response.data;
-    if ( data.hasOwnProperty( 'data' ) ) {
+    if ( data.hasOwnProperty ( 'data' ) ) {
       return data.data;
     } else {
       return data;
@@ -78,8 +79,25 @@ export function getDataFromResponse( response: any ) {
   }
 }
 
+export function getOrientation() {
+  const windowHeight: number = Dimensions.get ( 'window' ).height;
+  const windowWidth: number = Dimensions.get ( 'window' ).width;
+  if ( windowWidth < windowHeight ) {
+    return 'portrait'
+  } else {
+    return 'landscape'
+  }
+}
+
+export function getWindowWidthAndHeight() {
+  return {
+    height: Dimensions.get ( 'window' ).height,
+    width: Dimensions.get ( 'window' ).width,
+  };
+}
+
 /**********************************************************************/
-export function testData(index: number) {
+export function testData( index: number ) {
   const data: Array<{ id: string, name: string }> = [];
   for ( let i = 1; i <= index; i++ ) {
     data.push ( {

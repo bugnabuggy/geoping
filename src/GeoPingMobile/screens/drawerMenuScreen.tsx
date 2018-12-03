@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export class DrawerMenuScreen extends React.Component<any, any> {
   static navigationOptions = {
@@ -17,11 +12,19 @@ export class DrawerMenuScreen extends React.Component<any, any> {
         <TouchableOpacity
           style={styles.menuItemTouchable}
           onPress={() => {
-          this.props.navigation.navigate('Dashboard');
-        }}>
+            this.props.navigation.navigate ( 'Dashboard' );
+          }}
+        >
           <Text style={styles.menuItem}>Dashboard</Text>
         </TouchableOpacity>
-        <Text>Check in</Text>
+        <TouchableOpacity
+          style={styles.menuItemTouchable}
+          onPress={() => {
+            this.props.navigation.navigate ( 'Check_in' );
+          }}
+        >
+          <Text style={styles.menuItem}>Check in</Text>
+        </TouchableOpacity>
         <Text>Profile</Text>
         <Text>Exit</Text>
       </View>
@@ -29,7 +32,7 @@ export class DrawerMenuScreen extends React.Component<any, any> {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create ( {
   menuItem: {
     fontSize: 20,
   },
@@ -39,4 +42,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#531b1e',
   }
-});
+} );

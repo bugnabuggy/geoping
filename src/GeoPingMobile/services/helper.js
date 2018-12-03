@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const routes_1 = require("../constants/routes");
+const react_native_1 = require("react-native");
 function createNotification(message, notificationType) {
     const newNotification = {
         message,
@@ -68,6 +69,24 @@ function getDataFromResponse(response) {
     }
 }
 exports.getDataFromResponse = getDataFromResponse;
+function getOrientation() {
+    const windowHeight = react_native_1.Dimensions.get('window').height;
+    const windowWidth = react_native_1.Dimensions.get('window').width;
+    if (windowWidth < windowHeight) {
+        return 'portrait';
+    }
+    else {
+        return 'landscape';
+    }
+}
+exports.getOrientation = getOrientation;
+function getWindowWidthAndHeight() {
+    return {
+        height: react_native_1.Dimensions.get('window').height,
+        width: react_native_1.Dimensions.get('window').width,
+    };
+}
+exports.getWindowWidthAndHeight = getWindowWidthAndHeight;
 /**********************************************************************/
 function testData(index) {
     const data = [];

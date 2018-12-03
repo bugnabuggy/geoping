@@ -70,7 +70,8 @@ exports.loadUserData = () => (dispatch) => {
         .catch((error) => {
         windowAction_1.windowBlocking(false)(dispatch);
         if (error.response.status === 401) {
-            windowAction_1.redirectOnSignInForm(true)(dispatch);
+            // redirectOnSignInForm( true )( dispatch );
+            windowAction_1.isRedirect('SignIn')(dispatch);
         }
         else {
             dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));

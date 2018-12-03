@@ -8,7 +8,6 @@ const notificationsAction_1 = require("./notificationsAction");
 const helper_1 = require("../services/helper");
 const notificationTypeEnum_1 = require("../enums/notificationTypeEnum");
 const staticStorage_1 = __importDefault(require("../services/staticStorage"));
-const statusMarker_1 = require("../enums/statusMarker");
 const checkListAction_1 = require("./checkListAction");
 exports.getListPoints = (idCheckList) => (dispatch) => {
     const markerService = staticStorage_1.default.serviceLocator.get('IMarkerServiceType');
@@ -26,25 +25,25 @@ exports.selectPoint = (geoPoint) => (dispatch) => {
         dispatch(addDistanceAction(null));
     }
 };
-exports.deleteGeoPoint = (geoPoint, statusMarker, idList) => (dispatch) => {
-    if (statusMarker === statusMarker_1.EnumStatusMarker.Edit || statusMarker === statusMarker_1.EnumStatusMarker.None) {
-        if (geoPoint.id) {
-            const markerService = staticStorage_1.default.serviceLocator.get('IMarkerServiceType');
-            markerService.deleteMarker(idList, geoPoint.id)
-                .then((response) => {
-                dispatch(deleteGeoPointAction(geoPoint.idForMap));
-            })
-                .catch((error) => {
-                dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));
-            });
-        }
-        else {
-            dispatch(deleteGeoPointAction(''));
-        }
+exports.deleteGeoPoint = (geoPoint) => (dispatch) => {
+    // if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
+    if (geoPoint.id) {
+        const markerService = staticStorage_1.default.serviceLocator.get('IMarkerServiceType');
+        markerService.deleteMarker(geoPoint.idList, geoPoint.id)
+            .then((response) => {
+            dispatch(deleteGeoPointAction(geoPoint.idForMap));
+        })
+            .catch((error) => {
+            dispatch(notificationsAction_1.addNotificationAction(helper_1.createNotification(error.message, notificationTypeEnum_1.EnumNotificationType.Danger)));
+        });
     }
-    else if (statusMarker === statusMarker_1.EnumStatusMarker.New) {
+    else {
+        // dispatch ( deleteGeoPointAction ( '' ) );
         dispatch(deleteGeoPointAction(geoPoint.idForMap));
     }
+    // } else if ( statusMarker === EnumStatusMarker.New ) {
+    //   dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
+    // }
 };
 exports.addNewPoint = (geoPoint) => (dispatch) => {
     dispatch(addNewPointAction(geoPoint));

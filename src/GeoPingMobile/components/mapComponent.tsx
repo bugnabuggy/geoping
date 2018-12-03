@@ -21,7 +21,6 @@ type State = {
     longitude: number;
   };
   error: string;
-  orientation: string;
 };
 
 export class MapComponent extends React.Component<Props, State> {
@@ -33,25 +32,19 @@ export class MapComponent extends React.Component<Props, State> {
         longitude: 0,
       },
       error: '',
-      orientation: this.getOrientation (),
     };
-    Dimensions.addEventListener ( 'change', () => {
-      this.setState ( {
-        orientation: this.getOrientation (),
-      } );
-    } );
   }
 
   componentDidMount(): void {
-    PermissionsAndroid.request (
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-      {
-        'title': 'Fine location permission',
-        'message': 'GeoPing needs access to your location so you can mark the points'
-      }
-    )
-      .then ( ( granted: any ) => {
-        if ( granted === PermissionsAndroid.RESULTS.GRANTED ) {
+    // PermissionsAndroid.request (
+    //   PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    //   {
+    //     'title': 'Fine location permission',
+    //     'message': 'GeoPing needs access to your location so you can mark the points'
+    //   }
+    // )
+    //   .then ( ( granted: any ) => {
+    //     if ( granted === PermissionsAndroid.RESULTS.GRANTED ) {
           navigator.geolocation.getCurrentPosition (
             ( position ) => {
               this.props.getGeoLocation( position.coords.latitude, position.coords.longitude );
@@ -62,24 +55,16 @@ export class MapComponent extends React.Component<Props, State> {
                 error: error.message,
               } )
             },
-            { enableHighAccuracy: Platform.OS != 'android', timeout: 2000, maximumAge: 2000 }
+            { enableHighAccuracy: Platform.OS != 'android', timeout: 10000, maximumAge: 3000 }
           );
-        } else {
-          console.log ( 'response PERMISSIONS', granted );
-        }
-      } )
-      .catch ( ( error: any ) => {
-        console.log ( 'error PERMISSIONS', error );
-      } )
+      //   } else {
+      //     console.log ( 'response PERMISSIONS', granted );
+      //   }
+      // } )
+      // .catch ( ( error: any ) => {
+      //   console.log ( 'error PERMISSIONS', error );
+      // } )
   }
-
-  getOrientation = () => {
-    if ( Dimensions.get ( 'window' ).width < Dimensions.get ( 'window' ).height ) {
-      return 'portrait';
-    } else {
-      return 'landscape';
-    }
-  };
 
   _renderMarker = () => {
     return this.props.googleMap.geoPoints.map ( marker => {
@@ -159,9 +144,8 @@ export class MapComponent extends React.Component<Props, State> {
   };
 
   render() {
-    const windowHeight = Dimensions.get ( 'window' ).height;
     return (
-      <View style={{ height: ( windowHeight / 2 ) }}>
+      <View>
         {this.props.googleMap.position.isSuccess && !this.state.error ?
           (
             <MapView
@@ -179,7 +163,7 @@ export class MapComponent extends React.Component<Props, State> {
           :
           (
             <View style={{
-              height: ( windowHeight / 2 ),
+              height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
             }}>

@@ -12,6 +12,7 @@ type Props = {
 
   selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   cancelGeoPoint: () => ( dispatch: IDispatchFunction ) => void;
+  deleteGeoPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
 };
 type State = {};
 
@@ -52,7 +53,8 @@ export class ListPointsComponent extends React.Component<Props, State> {
           </Text>
           <TouchableOpacity
             onPress={() => {
-              console.log ( 'Delete' )
+              // console.log ( 'Delete' )
+              this.props.deleteGeoPoint(props.item);
             }}
           >
             <RenderItemComponent

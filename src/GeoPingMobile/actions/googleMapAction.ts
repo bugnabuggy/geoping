@@ -43,12 +43,11 @@ export const selectPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunct
   }
 };
 
-export const deleteGeoPoint = ( geoPoint: IGeoPoint, statusMarker: EnumStatusMarker, idList: string ) =>
-  ( dispatch: IDispatchFunction ) => {
-    if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
+export const deleteGeoPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
+    // if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
       if ( geoPoint.id ) {
         const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
-        markerService.deleteMarker ( idList, geoPoint.id )
+        markerService.deleteMarker ( geoPoint.idList, geoPoint.id )
           .then ( ( response: any ) => {
             dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
           } )
@@ -56,11 +55,12 @@ export const deleteGeoPoint = ( geoPoint: IGeoPoint, statusMarker: EnumStatusMar
             dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
           } );
       } else {
-        dispatch ( deleteGeoPointAction ( '' ) );
+        // dispatch ( deleteGeoPointAction ( '' ) );
+        dispatch ( deleteGeoPointAction ( geoPoint.idForMap ));
       }
-    } else if ( statusMarker === EnumStatusMarker.New ) {
-      dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
-    }
+    // } else if ( statusMarker === EnumStatusMarker.New ) {
+    //   dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
+    // }
   };
 
 export const addNewPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {

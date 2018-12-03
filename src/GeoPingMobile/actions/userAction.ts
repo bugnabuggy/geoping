@@ -89,7 +89,8 @@ export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
       if ( error.response.status === 401 ) {
-        redirectOnSignInForm( true )( dispatch );
+        // redirectOnSignInForm( true )( dispatch );
+        isRedirect('SignIn')(dispatch);
       } else {
         dispatch( addNotificationAction(
           createNotification(

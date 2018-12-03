@@ -3159,6 +3159,10 @@ lodash-es@^4.17.10:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.11.tgz#145ab4a7ac5c5e52a3531fb4f310255a152b4be0"
 
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+
 lodash.pad@^4.1.0:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/lodash.pad/-/lodash.pad-4.5.1.tgz#4330949a833a7c8da22cc20f6a26c4d59debba70"
@@ -4177,6 +4181,12 @@ react-native-drawer-layout@1.3.2:
 react-native-maps@^0.22.1:
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.22.1.tgz#ce856e71970e872e596e6fa4773279cae2c4dcdd"
+
+react-native-picker-select@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-5.1.0.tgz#528cb6a4bd113d8329ea795a8f4497c14f9d3433"
+  dependencies:
+    lodash.isequal "^4.5.0"
 
 react-native-safe-area-view@0.11.0:
   version "0.11.0"

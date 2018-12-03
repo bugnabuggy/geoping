@@ -1,17 +1,17 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import IinitialStateType from "../types/stateTypes/initialStateType";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { HeaderComponent } from "../components/headerComponent";
 import { PointEditFormComponent } from "../components/pointEditFormComponent";
 import { ListPointsComponent } from "../components/listPointsComponent";
-import { MapComponent } from "../components/mapComponent";
 import {
   addNewPoint,
   cancelGeoPoint,
   changeDataGeoPoint,
   changeMovingGeoPoint,
+  deleteGeoPoint,
   getGeoLocation,
   getListPoints,
   saveGeoPoint,
@@ -23,6 +23,8 @@ import { RenderItemComponent } from "../components/renderItemComponent";
 import { ECodeImage } from "../enums/codeImage";
 import { defaultMarker } from "../constants/defaultMarker";
 import { v4 as uuidV4 } from 'uuid';
+import { WrapperMapComponent } from "../components/wrapperMapComponent";
+import { getOrientation } from "../services/helper";
 
 type Props = {
   navigation: any;
@@ -36,10 +38,25 @@ type Props = {
   changeDataGeoPoint: ( field: string, data: string | number ) => ( dispatch: IDispatchFunction ) => void;
   addNewPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   getGeoLocation: ( latitude: number, longitude: number ) => ( dispatch: IDispatchFunction ) => void;
+  deleteGeoPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
 };
-type State = {};
+type State = {
+  orientation: string;
+};
 
 class CheckListScreen extends React.Component<Props, State> {
+  constructor( props: Props ) {
+    super ( props );
+    this.state = {
+      orientation: getOrientation(),
+    };
+    Dimensions.addEventListener ( 'change', () => {
+      this.setState ( {
+        orientation: getOrientation(),
+      } );
+    } );
+  }
+
   componentDidMount(): void {
     if ( this.props.navigation.state.params.idList ) {
       this.props.getListPoints ( this.props.navigation.state.params.idList );
@@ -71,44 +88,49 @@ class CheckListScreen extends React.Component<Props, State> {
         <ScrollView
           contentContainerStyle={{
             paddingBottom: 50,
+            flexDirection: this.state.orientation === 'portrait' ? 'column' : 'row',
           }}
         >
-          <MapComponent
-            googleMap={this.props.state.googleMap}
+          <WrapperMapComponent
+            state={this.props.state}
+            orientation={this.state.orientation}
 
             selectPoint={this.props.selectPoint}
             changeMovingGeoPoint={this.props.changeMovingGeoPoint}
             getGeoLocation={this.props.getGeoLocation}
           />
-          <View style={styles.container}>
-            <TouchableOpacity
-              disabled={this.props.state.checkList.isEditing}
-              style={styles.touchable}
-              onPress={this.addNewPoint}
-            >
-              <RenderItemComponent
-                codeIcon={ECodeImage.PlusCircle}
-                style={styles.addPointIcon}
-              />
-              <Text style={styles.addPointText}>add new point</Text>
-            </TouchableOpacity>
+          <View>
+            <View style={styles.container}>
+              <TouchableOpacity
+                disabled={this.props.state.checkList.isEditing}
+                style={styles.touchable}
+                onPress={this.addNewPoint}
+              >
+                <RenderItemComponent
+                  codeIcon={ECodeImage.PlusCircle}
+                  style={styles.addPointIcon}
+                />
+                <Text style={styles.addPointText}>add new point</Text>
+              </TouchableOpacity>
+            </View>
+            <PointEditFormComponent
+              selectedGeoPoint={this.props.state.googleMap.selectedGeoPoint}
+              isEditing={this.props.state.checkList.isEditing}
+              idList={this.props.navigation.state.params.idList}
+
+              cancelGeoPoint={this.props.cancelGeoPoint}
+              changeDataGeoPoint={this.props.changeDataGeoPoint}
+              saveGeoPoint={this.props.saveGeoPoint}
+            />
+            <ListPointsComponent
+              geoPointsList={this.props.state.googleMap.geoPoints}
+              selectedGeoPoint={this.props.state.googleMap.selectedGeoPoint}
+
+              selectPoint={this.props.selectPoint}
+              cancelGeoPoint={this.props.cancelGeoPoint}
+              deleteGeoPoint={this.props.deleteGeoPoint}
+            />
           </View>
-          <PointEditFormComponent
-            selectedGeoPoint={this.props.state.googleMap.selectedGeoPoint}
-            isEditing={this.props.state.checkList.isEditing}
-            idList={this.props.navigation.state.params.idList}
-
-            cancelGeoPoint={this.props.cancelGeoPoint}
-            changeDataGeoPoint={this.props.changeDataGeoPoint}
-            saveGeoPoint={this.props.saveGeoPoint}
-          />
-          <ListPointsComponent
-            geoPointsList={this.props.state.googleMap.geoPoints}
-            selectedGeoPoint={this.props.state.googleMap.selectedGeoPoint}
-
-            selectPoint={this.props.selectPoint}
-            cancelGeoPoint={this.props.cancelGeoPoint}
-          />
         </ScrollView>
       </View>
     );
@@ -131,6 +153,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       changeDataGeoPoint,
       addNewPoint,
       getGeoLocation,
+      deleteGeoPoint,
     },
     dispatch );
 
