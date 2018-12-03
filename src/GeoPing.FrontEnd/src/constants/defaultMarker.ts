@@ -6,7 +6,7 @@ export const defaultMarker: IGeoPoint = {
   name: '',
   lat: 0,
   lng: 0,
-  radius: 0,
+  radius: 50,
   description: '',
   idForMap: '',
 };
