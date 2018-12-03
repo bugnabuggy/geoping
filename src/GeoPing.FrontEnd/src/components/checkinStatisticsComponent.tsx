@@ -78,7 +78,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
       return {
         value: item.id,
-        label: item.login,
+        label: item.userName,
       };
     } );
     return options;
