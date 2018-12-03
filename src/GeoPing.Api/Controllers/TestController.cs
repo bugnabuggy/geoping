@@ -9,9 +9,9 @@ namespace GeoPing.Api.Controllers
     [Authorize]
     public class TestController : ControllerBase
     {
-        private ILogger _logger;
+        private ILogger<TestController> _logger;
 
-        public TestController(ILogger logger)
+        public TestController(ILogger<TestController> logger)
         {
             _logger = logger;
         }
