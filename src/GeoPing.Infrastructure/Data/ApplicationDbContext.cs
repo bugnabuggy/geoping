@@ -1,5 +1,6 @@
 ﻿using GeoPing.Core.Models.Entities;
 using GeoPing.Infrastructure.Models;
+using IdentityServer4.EntityFramework.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ namespace GeoPing.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            
             // One-to-one relationship of GeoList and PublicList
             builder.Entity<PublicList>()
                 .HasOne(pl => pl.Geolist)

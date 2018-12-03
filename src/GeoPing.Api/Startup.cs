@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Threading.Tasks;
 using GeoPing.Api.Configuration;
 using GeoPing.Core;
@@ -75,7 +76,20 @@ namespace GeoPing.Api
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
-                .AddAspNetIdentity<AppIdentityUser>();
+                .AddAspNetIdentity<AppIdentityUser>()
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                    {
+                        var migrationAssembly = typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name;
+
+                        builder.UseSqlServer
+                        (Configuration.GetConnectionString("DefaultConnection"),
+                            sql => sql.MigrationsAssembly(migrationAssembly));
+                    };
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
+                });
 
             services.AddAuthentication(options =>
             {
