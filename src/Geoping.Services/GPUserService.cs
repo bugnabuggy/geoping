@@ -48,14 +48,18 @@ namespace GeoPing.Services
 
             if (data.Count() < _settings.AutoComplete.SizeOfAutoCompletedList)
             {
-                data = data.Concat(_gpUserRepo.Get(x => x.Email.ToUpper().StartsWith(firstLetters)));
+                var dataByEmail = _gpUserRepo
+                    .Get(x => x.Email.ToUpper().StartsWith(firstLetters))
+                    .Except(data);
+
+                data = data.Concat(dataByEmail);
             }
 
             return data
                 .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
                 .Select(x => new UserAutoCompleteDTO
                 {
-                    FullName = x.LastName == null && x.FirstName == null
+                    FullName = x.LastName != null || x.FirstName != null
                         ? $"{x.LastName} {x.FirstName}".Trim()
                         : null,
                     UserName = x.Login,
