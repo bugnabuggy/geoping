@@ -74,7 +74,8 @@ namespace GeoPing.Services
             return new ShortUserInfoDTO
             {
                 UserName = data.Login,
-                Avatar = data.Avatar
+                Avatar = data.Avatar,
+                UserId = data.Id
             };
         }
 
