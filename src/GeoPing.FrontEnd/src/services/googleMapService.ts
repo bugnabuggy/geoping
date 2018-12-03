@@ -237,20 +237,18 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     idForMap: geoPoint.idForMap,
     animation: _googleLib.maps.Animation.DROP,
   } );
-  if ( geoPoint.idForMap !== idUserMarker ) {
-    const circle: any = new _googleLib.maps.Circle( {
-      map: _googleMap,
-      radius: geoPoint.radius,
-      idForMap: geoPoint.idForMap,
-      fillColor: `#${blueColor}`,
-      fillOpacity: 0.35,
-      strokeOpacity: 0.5,
-      strokeWeight: 2,
-      strokeColor: `#${blueColor}`,
-    } );
-    circle.bindTo( 'center', marker, 'position' );
-    _circles.push( circle );
-  }
+  const circle: any = new _googleLib.maps.Circle( {
+    map: _googleMap,
+    radius: geoPoint.radius,
+    idForMap: geoPoint.idForMap,
+    fillColor: `#${blueColor}`,
+    fillOpacity: 0.35,
+    strokeOpacity: 0.5,
+    strokeWeight: 2,
+    strokeColor: `#${blueColor}`,
+  } );
+  circle.bindTo( 'center', marker, 'position' );
+  _circles.push( circle );
   const latLng: any = {
     lat: geoPoint.lat,
     lng: geoPoint.lng,
@@ -324,11 +322,10 @@ function handleMapListener( event: any ) {
 }
 
 function handleGeoPointClick( e: any, geoPoint: IGeoPoint ) {
-  if ( _that.props.googleMap.selectedGeoPoint.idForMap !== geoPoint.idForMap ) {
+  if ( !_that.props.googleMap.selectedGeoPoint.idForMap ) {
     _that.props.selectPoint( geoPoint );
-    // if ( _that.props.isCheckIn ) {
-    //   _that.props.editingPermission( false );
-    // }
+  } else if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
+    _that.props.selectPoint( defaultMarker );
   }
 }
 

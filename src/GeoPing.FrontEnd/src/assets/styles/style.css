@@ -1556,7 +1556,7 @@ select.form-control:not([size]):not([multiple]) {
   #app {
     height: 100vh;
     display: grid;
-    grid-template-rows: 70px minmax(min-content, 1fr) 70px;
+    grid-template-rows: max-content minmax(min-content, 1fr) 70px;
     grid-template-columns: 100%;
     grid-gap: 5px;
   }
