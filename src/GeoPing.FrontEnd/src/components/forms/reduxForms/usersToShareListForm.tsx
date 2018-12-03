@@ -16,7 +16,7 @@ const _debounce = debounce( 1000, autocomplite );
 function renderAutocompleteItem( suggestion: any ) {
   return (
     <div>
-      {suggestion.fullName.trim() || suggestion.userName}
+      {suggestion.fullName || suggestion.userName}
     </div>
   );
 }
