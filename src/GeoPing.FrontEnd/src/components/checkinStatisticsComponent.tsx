@@ -13,6 +13,17 @@ import { checkInStatistics } from '../constants/routes';
 
 export class CheckinStatisticsComponent extends React.Component<ICheckinStatisticsComponentProps, any> {
   formatDate = 'MM/DD/YYYY';
+
+  constructor( props: any ) {
+    super( props );
+    this.state = {
+      startDate: moment().subtract( 1, 'days' ),
+      endDate: moment(),
+      selectList: '',
+      selectUser: '',
+    };
+  }
+
   handleSelectUser = ( e: any ) => {
     if ( e ) {
       this.props.loadPoints(
@@ -27,6 +38,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       this.setState( { selectUser: '' } );
     }
   };
+
   handleSelectList = ( e: any ) => {
     if ( e ) {
       this.props.loadUsers( e.value );
@@ -37,6 +49,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     }
     this.props.clearGeoPoint();
   };
+
   handleSelectStart = ( date: any ) => {
     this.props.loadPoints(
       this.props.listId,
@@ -48,6 +61,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       startDate: date,
     } );
   };
+
   handleSelectEnd = ( date: any ) => {
     this.props.loadPoints(
       this.props.listId,
@@ -59,6 +73,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       endDate: date,
     } );
   };
+
   renderOptionUsers = ( props: Array<any> ) => {
     const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
       return {
@@ -68,6 +83,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     } );
     return options;
   };
+
   renderOptionLists = ( props: Array<any> ) => {
     const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
       return {
@@ -77,6 +93,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     } );
     return options;
   };
+
   selectOptionList = (): any => {
     const checkList: any = this.props.checkList.checkLists.find(
       ( item: any ) => item.id === this.props.listId
@@ -86,6 +103,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       label: checkList ? checkList.name : '',
     };
   };
+
   selectOptionUser = () => {
     const user: any = this.props.checkinStatistics.selectUser.find(
       ( item: any ) => item.id === this.state.selectUser
@@ -95,16 +113,6 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       label: user ? user.login : '',
     };
   };
-
-  constructor( props: any ) {
-    super( props );
-    this.state = {
-      startDate: moment().subtract( 1, 'days' ),
-      endDate: moment(),
-      selectList: '',
-      selectUser: '',
-    };
-  }
 
   // componentDidMount() {
   //   this.props.getAllCheckForList( this.props.listId );
@@ -143,31 +151,35 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
             value={this.selectOptionUser()}
           />
         </FormGroup>
-        <FormGroup className="check-in-statistics-form-select">
+        <FormGroup className="check-in-statistics-form-select-period">
           <ControlLabel className="check-in-statistics-form-label">Select Period</ControlLabel>
           <div
             className="check-in-statistics-form-period"
           >
-            <ControlLabel className="">From</ControlLabel>
-            <DatePicker
-              customInput={<CustomDateComponent/>}
-              selected={this.state.startDate}
-              selectsStart={true}
-              maxDate={this.state.endDate}
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              onChange={this.handleSelectStart}
-            />
-            <ControlLabel className="">To</ControlLabel>
-            <DatePicker
-              customInput={<CustomDateComponent/>}
-              selected={this.state.endDate}
-              selectsEnd={true}
-              minDate={this.state.startDate}
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              onChange={this.handleSelectEnd}
-            />
+            <div className="check-in-statistics-form-period-item">
+              <ControlLabel className="">From</ControlLabel>
+              <DatePicker
+                customInput={<CustomDateComponent/>}
+                selected={this.state.startDate}
+                selectsStart={true}
+                maxDate={this.state.endDate}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleSelectStart}
+              />
+            </div>
+            <div className="check-in-statistics-form-period-item">
+              <ControlLabel className="">To</ControlLabel>
+              <DatePicker
+                customInput={<CustomDateComponent/>}
+                selected={this.state.endDate}
+                selectsEnd={true}
+                minDate={this.state.startDate}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={this.handleSelectEnd}
+              />
+            </div>
           </div>
         </FormGroup>
       </div>

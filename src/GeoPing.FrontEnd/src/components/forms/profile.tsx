@@ -42,7 +42,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
     return (
       <div className="profile-page">
         <div className="flex-box-col">
-          <label htmlFor="profile-form">Profile</label>
+          {/*<label htmlFor="profile-form">Profile</label>*/}
           {this.props.profileState.isLoaded ?
             <ProfileReduxForm
               onSubmit={this.submit}

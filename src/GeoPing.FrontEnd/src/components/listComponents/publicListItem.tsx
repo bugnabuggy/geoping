@@ -15,11 +15,11 @@ export class PublicListItem extends React.Component<IPublicCheckListItemProps, a
                 <div>
                   <p className="list-item-name">{this.props.nameList}</p>
                 </div>
-                <div className="row list-item-info">
-                  <div className="col-5">
+                <div className="list-item-info">
+                  <div className="">
                     Author: {this.props.author}
                   </div>
-                  <div className="col-4">
+                  <div className="">
                     Subscribers: {this.props.subscribers.toLocaleString( 'ru' )}
                   </div>
                   <div className="">
@@ -28,7 +28,7 @@ export class PublicListItem extends React.Component<IPublicCheckListItemProps, a
                   </div>
                 </div>
               </div>
-              <div className="col-2 list-item-icons">
+              <div className="list-item-icons">
                 <FontAwesomeIcon icon="globe-africa" className="list-item-icon-globe cursor-pointer"/>
                 <FontAwesomeIcon icon="plus-square" className="list-item-icon-plus-square cursor-pointer"/>
               </div>
