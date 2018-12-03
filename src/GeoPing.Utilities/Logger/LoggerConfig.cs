@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using GeoPing.Core;
-using Microsoft.Extensions.Configuration;
+﻿using GeoPing.Core;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Common;
