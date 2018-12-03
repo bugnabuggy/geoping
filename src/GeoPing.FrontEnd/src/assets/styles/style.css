@@ -7,7 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  min-width: 470px;
+  /*min-width: 470px;*/
   width: 100%;
 }
 
@@ -143,7 +143,7 @@ select.form-control:not([size]):not([multiple]) {
 /*login ************************************************/
 .login-page {
   height: 100%;
-  font-size: 1.5em;
+  /*font-size: 1.5em;*/
   display: flex;
   justify-content: center;
   align-items: center;
@@ -239,15 +239,15 @@ header nav {
 
 .sign-container {
   height: 100%;
-  font-size: 1.5rem;
+  /*font-size: 1.5rem;*/
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .register-form {
-  max-width: 500px;
-  padding: 0 20px 0 20px;
+  /*max-width: 500px;*/
+  /*padding: 0 20px 0 20px;*/
 }
 
 .isValid-check {
@@ -284,9 +284,9 @@ header nav {
 }
 
 .profile-form {
-  padding: 40px 160px;
+  /*padding: 40px 0;*/
   max-width: 1000px;
-  border: 1px solid;
+  /*border: 1px solid;*/
   margin-bottom: 40px;
 }
 
@@ -436,12 +436,19 @@ header nav {
   font-size: 1.1em;
 }
 
-.check-list-panel-item div:nth-child(2) {
-  width: 70px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.check-list-panel-item div {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: calc(100% - 70px);
 }
+
+/*.check-list-panel-item div:nth-child(2) {*/
+/*width: 70px;*/
+/*display: flex;*/
+/*justify-content: space-between;*/
+/*align-items: center;*/
+/*}*/
 
 .check-list-panel:hover {
   background: rgb(195, 195, 195);
@@ -454,7 +461,7 @@ header nav {
 .check-list-panel-link-container {
   position: absolute;
   display: flex;
-  top: 15px;
+  top: 20px;
   right: 10px;
   align-items: center;
   font-size: 15px;
@@ -507,7 +514,8 @@ header nav {
 }
 
 .check-in-select-list-label {
-  width: 200px;
+  /*width: 200px;*/
+  flex: 1;
 }
 
 .check-in-buttons-container {
@@ -517,7 +525,8 @@ header nav {
 }
 
 .check-in-select {
-  width: 400px;
+  /*width: 400px;*/
+  flex: 2;
 }
 
 .check-in-current-coordinates {
@@ -919,6 +928,13 @@ header nav {
 
 .list-item-info {
   font-size: 0.8em;
+  flex-direction: row;
+  display: flex;
+}
+
+.list-item-info div {
+  flex: 1;
+  padding: 2px;
 }
 
 .list-item-name {
@@ -941,6 +957,7 @@ header nav {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 .public-check-list-pagination-container {
@@ -1344,16 +1361,23 @@ header nav {
   align-items: center;
 }
 
+.check-in-statistics-form-period-item, .check-in-statistics-form-select-period {
+  display: flex;
+}
+
 .check-in-statistics-form-label {
-  width: 150px;
+  /*width: 150px;*/
+  flex: 1;
 }
 
 .check-in-statistics-form-input {
-  width: 300px;
+  /*width: 300px;*/
+  flex: 2;
 }
 
 .check-in-statistics-form-period {
-  width: 300px;
+  /*width: 300px;*/
+  flex: 2;
 }
 
 .check-in-statistics-form-period-date {
@@ -1482,6 +1506,7 @@ select.form-control:not([size]):not([multiple]) {
   align-items: center;
   height: 100%;
 }
+
 /*****************************************************************************************/
 
 /* Invitations */
@@ -1816,6 +1841,22 @@ select.form-control:not([size]):not([multiple]) {
     justify-content: space-between;
   }
 
+  .check-in-statistics-form-select-period {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .check-in-statistics-form-period {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .check-in-statistics-form-period-item {
+    display: flex;
+    flex: 1;
+  }
+
   .filter-users-field-data-from, .filter-users-field-data-to, .filter-users-field-list-count-from, .filter-users-field-list-count-to {
     width: 50%;
   }
@@ -1851,6 +1892,15 @@ select.form-control:not([size]):not([multiple]) {
 
   .filter-users-field-buttons {
     order: 7;
+  }
+
+  .list-item-info {
+    flex-direction: column;
+  }
+
+  .list-item-icons {
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   /****************************************************************************************/
@@ -1913,7 +1963,7 @@ select.form-control:not([size]):not([multiple]) {
 
 .react-autosuggest__input {
   margin: 10px 0;
-  width: 370px;
+  width: calc(100% - 100px);
   height: 30px;
   padding: 10px 20px;
   font-family: Helvetica, sans-serif;

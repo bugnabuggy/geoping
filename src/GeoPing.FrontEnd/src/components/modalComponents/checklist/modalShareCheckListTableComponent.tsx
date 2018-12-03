@@ -13,7 +13,7 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
       const name: string = item.firstName && item.lastName ?
         `${item.firstName} ${item.lastName}`
         :
-        item.login;
+        item.userName;
       return (
         <tr key={uuidV4()}>
           <td>
