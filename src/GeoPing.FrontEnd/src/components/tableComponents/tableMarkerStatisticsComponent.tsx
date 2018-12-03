@@ -15,6 +15,7 @@ export class TableMarkerStatisticsComponent extends React.Component<ITableMarker
     return this.props.googleMap.geoPoints.map( ( item: any, index: number ) => {
       const checkIn: any = this.props.googleMap.checkInGeoPoint.find( ( check: any ) => check.pointId === item.id );
       return {
+        id: index,
         check: checkIn && !!checkIn.pointId,
         name: item.name,
         coordsPoint: `${item.lat} / ${item.lng}`,

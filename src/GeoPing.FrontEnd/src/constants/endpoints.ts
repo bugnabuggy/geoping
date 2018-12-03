@@ -43,7 +43,7 @@ export const getChecksStatisticsForList: string = `${endpointBaseUrl}/api/geolis
 
 /* endpoints for check in statistics */
 export const getGeoListStatistics: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
-export const getUserAccessedToList: string = `${endpointBaseUrl}/api/Geolist/%listid%/sharing/allowed-users`;
+export const getUserAccessedToList: string = `${endpointBaseUrl}/api/sharing/%listid%/allowed-users`;
 
 /* endpoints for tables */
 export const getHistory: string = `${endpointBaseUrl}/api/history`;
