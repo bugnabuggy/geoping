@@ -59,6 +59,7 @@ namespace GeoPing.Services
                 .Take(_settings.AutoComplete.SizeOfAutoCompletedList)
                 .Select(x => new UserAutoCompleteDTO
                 {
+                    UserId = x.Id,
                     FullName = x.LastName != null || x.FirstName != null
                         ? $"{x.LastName} {x.FirstName}".Trim()
                         : "",

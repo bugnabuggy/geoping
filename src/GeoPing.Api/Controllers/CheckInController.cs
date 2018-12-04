@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/geolist/{listId}")]
+    [Route("api/check")]
     [Authorize]
     public class CheckInController : Controller
     {
@@ -25,7 +25,7 @@ namespace GeoPing.Api.Controllers
 
         // GET api/geolist/{listId}/geopoint/check
         [HttpGet]
-        [Route("check")]
+        [Route("geolist/{listId}")]
         public IActionResult GetChecksIn(string listId)
         {
             var result = _checkInSrv.GetChecksIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
@@ -40,7 +40,7 @@ namespace GeoPing.Api.Controllers
 
         // GET api/geolist/{listId}/geopoint/{pointId}/check
         [HttpGet]
-        [Route("geopoint/{pointId}/check")]
+        [Route("geopoint/{pointId}")]
         public IActionResult GetCheckIn(string pointId)
         {
             var result = _checkInSrv.GetCheckIn(pointId, _helper.GetAppUserIdByClaims(User.Claims));
@@ -55,7 +55,7 @@ namespace GeoPing.Api.Controllers
 
         // POST api/geolist/{listId}/geopoint/{pointId}/check
         [HttpPost]
-        [Route("geopoint/{pointId}/check")]
+        [Route("geopoint/{pointId}")]
         public IActionResult AddCheckIn(string pointId, [FromBody]CheckInDTO item)
         {
             if (!_checkInSrv.IsPointExistWithThisId(pointId, out GeoPoint point))
