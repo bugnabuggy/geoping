@@ -21,35 +21,18 @@ namespace GeoPing.Services
             _userRepo = userRepo;
         }
 
-        public IEnumerable<object> GetUsersHaveAccessToWatchList(GeoList list)
+        public IEnumerable<GeoPingUser> GetUsersHaveAccessToWatchList(GeoList list)
         {
             var data = _sharingRepo.Get(x => x.ListId == list.Id);
 
-            var result = _userRepo
-                .Get(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id))
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Login,
-                    x.FirstName,
-                    x.LastName
-                });
+            var result = _userRepo.Get(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id));
 
             return result;
         }
 
-        public IEnumerable<object> GetUsersHaveAccessToManipulateList(GeoList list)
+        public IEnumerable<GeoPingUser> GetUsersHaveAccessToManipulateList(GeoList list)
         {
-            var result = _userRepo
-                .Get(x => x.Id == list.OwnerId)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Login,
-                    x.FirstName,
-                    x.LastName,
-                    x.Birthday
-                });
+            var result = _userRepo.Get(x => x.Id == list.OwnerId);
 
             return result;
         }

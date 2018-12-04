@@ -84,7 +84,7 @@ namespace GeoPing.Services
 
             return new OperationResult
             {
-                Messages = new[] { "You are not allowed to do this." }
+                Messages = new[] { "Unauthorized" }
             };
         }
 
@@ -216,28 +216,17 @@ namespace GeoPing.Services
             {
                 return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
-                    Messages = new[] { "You are not allowed to do this" }
+                    Messages = new[] { "Unauthorized", "You are not allowed to do this" }
                 };
             }
 
             var result = GetUsersListWasSharedWithInfo(_sharingRepo.Get(x => x.ListId == list.Id));
             
-            // Addition owner to this list
-            var owner = _gpUserSrv.GetUsers(x => x.Id == userId)
-                .Select(x => new UserListWasSharedWithDTO()
-                {
-                    UserId = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    UserName = x.Login,
-                    SharingStatus = "owner"
-                });
-            
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
                 Success = true,
                 Messages = new[] { $"List with ID = [{listId}] was shared with following users" },
-                Data = owner.Concat(result)
+                Data = result
             };
         }
 

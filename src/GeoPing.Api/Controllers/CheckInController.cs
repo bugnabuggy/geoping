@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/geolist/{listId}")]
+    [Route("api/check")]
     [Authorize]
     public class CheckInController : Controller
     {
@@ -23,9 +23,9 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // GET api/geolist/{listId}/geopoint/check
+        // GET api/check/geolist/{listId}
         [HttpGet]
-        [Route("check")]
+        [Route("geolist/{listId}")]
         public IActionResult GetChecksIn(string listId)
         {
             var result = _checkInSrv.GetChecksIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
@@ -38,9 +38,9 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // GET api/geolist/{listId}/geopoint/{pointId}/check
+        // GET api/check/geopoint/{pointId}
         [HttpGet]
-        [Route("geopoint/{pointId}/check")]
+        [Route("geopoint/{pointId}")]
         public IActionResult GetCheckIn(string pointId)
         {
             var result = _checkInSrv.GetCheckIn(pointId, _helper.GetAppUserIdByClaims(User.Claims));
@@ -53,9 +53,9 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST api/geolist/{listId}/geopoint/{pointId}/check
+        // POST api/check/geopoint/{pointId}
         [HttpPost]
-        [Route("geopoint/{pointId}/check")]
+        [Route("geopoint/{pointId}")]
         public IActionResult AddCheckIn(string pointId, [FromBody]CheckInDTO item)
         {
             if (!_checkInSrv.IsPointExistWithThisId(pointId, out GeoPoint point))
