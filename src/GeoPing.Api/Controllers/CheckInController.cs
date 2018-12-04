@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
@@ -58,41 +59,17 @@ namespace GeoPing.Api.Controllers
         [Route("geopoint/{pointId}")]
         public IActionResult AddCheckIn(string pointId, [FromBody]CheckInDTO item)
         {
-            if (!_checkInSrv.IsPointExistWithThisId(pointId, out GeoPoint point))
-            {
-                return BadRequest($"There is no point with Id = [{pointId}].");
-            }
-
-            Guid userId;
-
-            try
-            {
-                userId = _helper.GetAppUserIdByClaims(User.Claims);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            var checkIn = new CheckIn
-            {
-                Distance = item.Distance,
-                Latitude = item.Latitude,
-                Longitude = item.Longitude,
-                Ip = item.Ip,
-                DeviceId = item.DeviceId,
-                UserAgent = item.UserAgent,
-                Date = DateTime.UtcNow,
-                PointId = point.Id,
-                UserId = userId
-            };
-
-            var result = _checkInSrv.AddCheckIn(checkIn);
+            var result = _checkInSrv.AddCheckIn(_helper.GetAppUserIdByClaims(User.Claims), pointId, item);
 
             if (result.Success)
             {
                 return Ok(result);
             }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
+            }
+
             return BadRequest(result);
         }
     }
