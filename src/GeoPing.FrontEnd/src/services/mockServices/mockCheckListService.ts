@@ -13,7 +13,7 @@ export default class MockCheckListService implements ICheckListServiceType {
         edited: '',
         created: new Date().toString(),
         id: uuidV4(),
-        ownerId: JSON.parse(sessionStorage.getItem('localDB')).ownerId,
+        ownerId: JSON.parse( sessionStorage.getItem( 'localDB' ) ).ownerId,
         periodFrom: '',
         periodTo: '',
         rating: null,
@@ -81,7 +81,7 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
-  filterPublicCheckList(filters: any) {
+  filterPublicCheckList( filters: any ) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
@@ -147,7 +147,7 @@ export default class MockCheckListService implements ICheckListServiceType {
                 item;
             } )
           ];
-          sessionStorage.setItem('localDB', JSON.stringify(localDB));
+          sessionStorage.setItem( 'localDB', JSON.stringify( localDB ) );
           resolve( 'ok' );
         },
         1000
@@ -157,68 +157,74 @@ export default class MockCheckListService implements ICheckListServiceType {
 
   addCheckIn( idList: string, idPoint: string, data: ICheckInDTO ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   getAllChecksForUserAndList( idList: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   getAllCheckForList( idList: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   getAllNewSharedLists() {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   getAllAcceptedSharedLists() {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   cancelAcceptanceNewSharingList() {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   deleteListSharing() {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   acceptListSharingInvite( sharingId: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   getAutocompletedListUsers( userName: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   getInfoAboutToken( token: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
   }
 
   removeToken( token: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      resolve('ok');
-    });
+      resolve( 'ok' );
+    } );
+  }
+
+  removeAccessUserForList( sharingId: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve( 'ok' );
+    } );
   }
 
 }

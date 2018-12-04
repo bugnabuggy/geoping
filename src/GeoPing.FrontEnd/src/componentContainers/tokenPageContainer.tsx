@@ -7,16 +7,19 @@ import { Card, CardBody } from 'reactstrap';
 import { verifyToken } from '../actions/tokenAction';
 
 class TokenPageContainer extends React.Component<ITokenPageContainerProps, any> {
-  componentDidMount() {
-    this.props.verifyToken(this.props.match.params.token, this.props.userId);
+
+  componentDidUpdate( prevProps: Readonly<ITokenPageContainerProps>, prevState: Readonly<any>, snapshot?: any ): void {
+    if ( !prevProps.userId && this.props.userId ) {
+      this.props.verifyToken( this.props.match.params.token, this.props.userId );
+    }
   }
 
   render() {
-    return(
+    return (
       <div className="token-page-container">
         <Card>
           <CardBody>
-            <h1>Please wait we verifying your token</h1>
+            <h1>{this.props.shared.messageForActivateToken}</h1>
           </CardBody>
         </Card>
       </div>
@@ -28,6 +31,7 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     checkList: state.checkList,
     userId: state.user.userId,
+    shared: state.sharedCheckList,
   };
 };
 

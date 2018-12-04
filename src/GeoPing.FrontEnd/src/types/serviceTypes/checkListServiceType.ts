@@ -32,4 +32,6 @@ export default interface ICheckListServiceType {
   getAutocompletedListUsers: ( userName: string ) => Promise<any>;
   getInfoAboutToken: ( token: string ) => Promise<any>;
   removeToken: ( token: string ) => Promise<any>;
+
+  removeAccessUserForList: ( sharingId: string ) => Promise<any>;
 }

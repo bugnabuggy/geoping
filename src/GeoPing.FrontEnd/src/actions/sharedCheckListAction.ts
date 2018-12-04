@@ -12,8 +12,10 @@ import {
   LOAD_USERS_LIST_WITCH_SHARED_ACCESS,
   LOADING_USERS_WHO_HAS_ACCESS,
   PROVIDE_PUBLIC_ACCESS,
+  REMOVE_ACCESS_USER_FOR_LIST,
   SEND_SHARE_CHECK_LIST_FOR_USERS
 } from '../constantsForReducer/sharedCheckList';
+import { windowBlocking } from './windowAction';
 
 export const loadUsersForShared = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( loadingUsersWhoHasAccess( true ) );
@@ -35,12 +37,15 @@ export const clearSharedCheckList = () => ( dispatch: IDispatchFunction ) => {
 
 export const sendAccessUsersForCheckList = ( idCheckList: string, emails: Array<string> ) =>
   ( dispatch: IDispatchFunction ) => {
+    windowBlocking( true )( dispatch );
     const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
     checkListService.sharedCheckListForUser( idCheckList, emails )
       .then( ( users: any ) => {
         dispatch( sendAccessUsersForCheckListAction( users ) );
+        windowBlocking( false )( dispatch );
       } )
       .catch( ( error: any ) => {
+        windowBlocking( false )( dispatch );
         dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       } );
   };
@@ -69,6 +74,17 @@ export const getAutocompletedListUsers = ( userName: string ) => ( dispatch: IDi
 
 export const clearAutocompleteListUsers = () => ( dispatch: IDispatchFunction ) => {
   dispatch( clearAutocompleteListUsersAction() );
+};
+
+export const removeAccessUserForList = ( sharingId: string ) => ( dispatch: IDispatchFunction ) => {
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.removeAccessUserForList( sharingId )
+    .then( ( response: any ) => {
+      dispatch( removeAccessUserForListAction( sharingId ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    } );
 };
 
 /* Actions */
@@ -101,4 +117,8 @@ function getAutocompletedListUsersAction( users: Array<any> ) {
 
 function clearAutocompleteListUsersAction() {
   return { type: CLEAR_AUTOCOMPLETE_LIST_USERS };
+}
+
+function removeAccessUserForListAction( sharingId: string ) {
+  return { type: REMOVE_ACCESS_USER_FOR_LIST, sharingId };
 }

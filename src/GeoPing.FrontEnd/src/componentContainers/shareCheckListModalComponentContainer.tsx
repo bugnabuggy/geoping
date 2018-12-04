@@ -8,9 +8,11 @@ import IShareCheckListModalComponentContainerProps
   from '../componentContainerProps/shareCheckListModalComponentContainerProps';
 import {
   clearAutocompleteListUsers,
-  clearSharedCheckList, getAutocompletedListUsers,
+  clearSharedCheckList,
+  getAutocompletedListUsers,
   loadUsersForShared,
   providePublicAccess,
+  removeAccessUserForList,
   sendAccessUsersForCheckList
 } from '../actions/sharedCheckListAction';
 import { updateCheckList } from '../actions/checkListAction';
@@ -32,6 +34,7 @@ class ShareCheckListModalComponentContainer extends React.Component<IShareCheckL
           updateCheckList={this.props.updateCheckList}
           getAutocompletedListUsers={this.props.getAutocompletedListUsers}
           clearAutocompleteListUsers={this.props.clearAutocompleteListUsers}
+          removeAccessUserForList={this.props.removeAccessUserForList}
         />
       )
       :
@@ -58,6 +61,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       updateCheckList,
       getAutocompletedListUsers,
       clearAutocompleteListUsers,
+      removeAccessUserForList,
     },
     dispath );
 

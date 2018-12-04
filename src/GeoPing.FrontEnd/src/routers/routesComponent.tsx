@@ -42,6 +42,7 @@ import LogOutComponentContainer from '../componentContainers/logOutComponentCont
 import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
+// import routersMap from '../mapForComponents/routersMap';
 // import LoginPage from '../pages/loginPage';
 // import { AboutComponent } from '../pages/aboutPage';
 
@@ -109,12 +110,9 @@ const NotAuthorizeRoute = ( { isAllowed, ...props }: any ) => !isAllowed ?
 export const Routes = ( props: any ) =>
   (
     <React.Fragment>
-      {props.path !== notFoundUrl ?
-        <header>
-          <HeaderComponentContainer/>
-        </header>
-        :
-        <div/>}
+      <header>
+        <HeaderComponentContainer/>
+      </header>
       <main>
         <NotificationComponentContainer/>
         <Switch>

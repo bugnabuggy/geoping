@@ -59,7 +59,7 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
         </div>
         <Card>
           <div className="dashboard-check-list-panel-body">
-            <CardBody className="p-1">
+            <CardBody className="p-2">
 
               {this.props.myCheckList.isLoading ?
                 (

@@ -65,6 +65,8 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
         <span>Users who has access:</span>
         <ModalShareCheckListTableComponent
           sharedCheckList={this.props.sharedCheckList}
+
+          removeAccessUserForList={this.props.removeAccessUserForList}
         />
       </ModalComponent>
     );
