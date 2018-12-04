@@ -15,7 +15,7 @@ namespace GeoPing.Core.Models.Entities
         public string UserAgent { get; set; }
 
         // Relational fields
-        public Guid PointId { get; set; }
+        public Guid? PointId { get; set; }
         public virtual GeoPoint Geopoint { get; set; }
     }
 }
