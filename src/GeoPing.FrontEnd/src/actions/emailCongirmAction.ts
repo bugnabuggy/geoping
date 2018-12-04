@@ -5,20 +5,41 @@ import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { CONFIRM_EMAIL } from '../constantsForReducer/window';
+import { windowBlocking } from './windowAction';
 
-export const confirmEmail = ( userId: string, token: string ) => ( dispatch: IDispatchFunction) => {
+export const confirmEmail = ( userId: string, token: string ) => ( dispatch: IDispatchFunction ) => {
+  windowBlocking( true )( dispatch );
   const userService: IUser = StaticStorage.serviceLocator.get( 'IUser' );
-  userService.confirmEmail( userId, token)
+  userService.confirmEmail( userId, token )
     .then( ( response: any ) => {
-      dispatch(confirmEmailAction());
-    })
-    .catch( ( error: any ) => {
+      dispatch( confirmEmailAction() );
+      windowBlocking( false )( dispatch );
       dispatch( addNotificationAction(
         createNotification(
-          error.message,
+          'Email Confirm',
           EnumNotificationType.Danger
         ) ) );
-    });
+    } )
+    .catch( ( error: any ) => {
+      if ( error.response ) {
+        if ( error.response.status === 400 && error.response.data.data === null ) {
+          error.response.data.messages.forEach( ( message: string ) => {
+            dispatch( addNotificationAction(
+              createNotification(
+                message,
+                EnumNotificationType.Danger
+              ) ) );
+          } );
+        } else {
+          dispatch( addNotificationAction(
+            createNotification(
+              error.message,
+              EnumNotificationType.Danger
+            ) ) );
+        }
+      }
+      windowBlocking( false )( dispatch );
+    } );
 };
 
 /* Actions */
