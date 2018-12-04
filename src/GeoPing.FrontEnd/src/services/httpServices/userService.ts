@@ -2,7 +2,8 @@ import IUser from '../../types/serviceTypes/userServiceType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import {
-  changeUserPassword, confirmEmail,
+  changeUserPassword,
+  confirmEmail,
   getUserAccessedToList,
   loadUserData,
   resetPassword,
@@ -69,7 +70,9 @@ export default class UserService implements IUser {
 
   sendLoginOrEmail( loginOrEmail: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post( sendLoginOrEmail.replace( '%login%', loginOrEmail ), loginOrEmail )
+      // const formData: FormData = new FormData();
+      // formData.append( 'UserData', loginOrEmail );
+      this.communicator.post( sendLoginOrEmail, {'UserData': loginOrEmail } )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
@@ -82,8 +85,10 @@ export default class UserService implements IUser {
   sendNewPassword( userId: string, token: string, newPassword: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
       this.communicator.post(
-        resetPassword.replace( '%id%', userId ).replace( '%token%', token ).replace( '%pass%', newPassword ),
-        ''
+        resetPassword.replace( '%id%', userId ).replace( '%token%', token ),
+        {
+          NewPassword: newPassword,
+        }
       )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
