@@ -16,7 +16,7 @@ const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 const renderInput = ( props: any ) => {
   return (
     <FormGroup>
-      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>
       <div className="form-input-container">
         <FormControl
           {...props.input}
@@ -24,19 +24,21 @@ const renderInput = ( props: any ) => {
           placeholder={props.placeholder}
           disabled={props.disabled}
         />
-        <div className="form-icon-container">
-          {props.meta.touched ?
-            props.meta.error ?
-              <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+        <div className="tooltip_form-container">
+          <div className="form-icon-container">
+            {props.meta.touched ?
+              props.meta.error ?
+                <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+                :
+                <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
               :
-              <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
-            :
-            null
-          }
-          {props.meta.touched &&
-          !props.meta.active &&
-          props.meta.error &&
-          <div className="tooltip_form">{props.meta.error}</div>}
+              null
+            }
+            {props.meta.touched &&
+            !props.meta.active &&
+            props.meta.error &&
+            <div className="tooltip_form">{props.meta.error}</div>}
+          </div>
         </div>
       </div>
     </FormGroup>
@@ -61,13 +63,15 @@ const renderDate = ( props: any ) => {
   const date: moment.Moment = moment( props.input.value );
   return (
     <FormGroup>
-      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>{''}
-      <DatePicker
-        selected={date}
-        locale="ru"
-        onChange={props.input.onChange}
-        className="form-control"
-      />
+      <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>
+      <div style={{ width: 'calc(100% - 33px)' }}>
+        <DatePicker
+          selected={date}
+          locale="ru"
+          onChange={props.input.onChange}
+          className="form-control"
+        />
+      </div>
     </FormGroup>
   );
 };
@@ -75,7 +79,7 @@ const renderDate = ( props: any ) => {
 function profileForm( props: any ): any {
   const { handleSubmit, } = props;
   return (
-    <form className="profile-form">
+    <form className="profile-form" style={{width: '100%'}}>
       <Field
         component={renderAvatar}
         name="avatar"

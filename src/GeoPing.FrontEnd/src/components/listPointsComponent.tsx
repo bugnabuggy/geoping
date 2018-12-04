@@ -29,7 +29,7 @@ export class ListPointsComponent extends React.Component<IListPointsComponentPro
       <React.Fragment>
         <Card style={{ maxHeight: '500px', overflow: 'auto' }}>
           <CardHeader tag="h3">List Geo Points</CardHeader>
-          <CardBody>
+          <CardBody className="p-1">
             {this.props.checkList.isGeoPointLoading ?
               (
                 <div className="container-spinner-center">
