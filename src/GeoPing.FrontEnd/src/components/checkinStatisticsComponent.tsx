@@ -74,24 +74,22 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     } );
   };
 
-  renderOptionUsers = ( props: Array<any> ) => {
-    const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
+  renderOptionUsers = ( props: Array<any> ): Array<{ value: string, label: string }> => {
+    return props.map( ( item: any ) => {
       return {
         value: item.id,
         label: item.userName,
       };
     } );
-    return options;
   };
 
-  renderOptionLists = ( props: Array<any> ) => {
-    const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
+  renderOptionLists = ( props: Array<any> ): Array<{ value: string, label: string }> => {
+    return props.map( ( item: any ) => {
       return {
         value: item.id,
         label: item.name,
       };
     } );
-    return options;
   };
 
   selectOptionList = (): any => {
