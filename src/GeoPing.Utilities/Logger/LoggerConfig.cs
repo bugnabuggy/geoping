@@ -64,8 +64,8 @@ namespace GeoPing.Utilities.Logger
                     Protocol = ProtocolType.Tcp,
                     Tcp = new TcpConfig
                     {
-                        Server = settings.SyslogCommon.Server,
-                        Port = settings.SyslogCommon.Port,
+                        Server = settings.SyslogError.Server,
+                        Port = settings.SyslogError.Port,
                         Tls = new TlsConfig
                         {
                             Enabled = true
