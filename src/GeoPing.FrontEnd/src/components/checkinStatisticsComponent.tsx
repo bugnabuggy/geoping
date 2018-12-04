@@ -74,24 +74,22 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     } );
   };
 
-  renderOptionUsers = ( props: Array<any> ) => {
-    const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
+  renderOptionUsers = ( props: Array<any> ): Array<{ value: string, label: string }> => {
+    return props.map( ( item: any ) => {
       return {
-        value: item.id,
+        value: item.userId,
         label: item.userName,
       };
     } );
-    return options;
   };
 
-  renderOptionLists = ( props: Array<any> ) => {
-    const options: Array<{ value: string, label: string }> = props.map( ( item: any ) => {
+  renderOptionLists = ( props: Array<any> ): Array<{ value: string, label: string }> => {
+    return props.map( ( item: any ) => {
       return {
         value: item.id,
         label: item.name,
       };
     } );
-    return options;
   };
 
   selectOptionList = (): any => {
@@ -106,11 +104,11 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
 
   selectOptionUser = () => {
     const user: any = this.props.checkinStatistics.selectUser.find(
-      ( item: any ) => item.id === this.state.selectUser
+      ( item: any ) => item.userId === this.state.selectUser
     );
     return {
-      value: user ? user.id : '',
-      label: user ? user.login : '',
+      value: user ? user.userId : '',
+      label: user ? user.userName : '',
     };
   };
 
@@ -136,7 +134,6 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
             options={this.renderOptionLists( this.props.checkList.checkLists )}
             className="check-in-statistics-form-input"
             onChange={this.handleSelectList}
-            isClearable={true}
             value={this.selectOptionList()}
           />
         </FormGroup>
