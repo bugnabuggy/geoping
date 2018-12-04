@@ -74,6 +74,20 @@ export const deleteListSharing = ( sharingId: string ) => ( dispatch: IDispatchF
     } );
 };
 
+const errorProcessing = {
+  error: ( error: any, dispatch: IDispatchFunction ) => {
+    if ( error.response ) {
+      if ( error.response.status === 400 && error.response.data.data === null ) {
+        loadAllNewSharedList()( dispatch );
+        loadAllAcceptedSharedLists()( dispatch );
+        dispatch( addNotificationAction( createNotification(
+          'This shared list was not found or canceled by the owner.',
+          EnumNotificationType.Danger ) ) );
+      }
+    }
+  }
+};
+
 export const cancelAcceptNewSharingList = ( sharingId: string ) => ( dispatch: IDispatchFunction ) => {
   windowBlocking( true )( dispatch );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
@@ -83,7 +97,8 @@ export const cancelAcceptNewSharingList = ( sharingId: string ) => ( dispatch: I
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      errorProcessing.error( error, dispatch );
+      // dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
       windowBlocking( false )( dispatch );
     } );
 };
@@ -97,7 +112,7 @@ export const acceptListSharingInvite = ( sharingId: string ) => ( dispatch: IDis
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      errorProcessing.error( error, dispatch );
       windowBlocking( false )( dispatch );
     } );
 };

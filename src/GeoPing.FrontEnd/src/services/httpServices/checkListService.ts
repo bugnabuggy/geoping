@@ -271,4 +271,15 @@ export default class CheckListService implements ICheckListServiceType {
     } );
   }
 
+  removeAccessUserForList( sharingId: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.delete( deleteListSharing.replace('%sharingId%', sharingId))
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    });
+  }
 }

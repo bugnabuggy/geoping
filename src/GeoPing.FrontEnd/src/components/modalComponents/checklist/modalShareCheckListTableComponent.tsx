@@ -5,11 +5,12 @@ import { v4 as uuidV4 } from 'uuid';
 import IModalShareCheckListTableComponentProps
   from '../../../componentProps/modalComponentProps/modalShareCheckListTableComponentProps';
 import { PulseLoader } from 'react-spinners';
+import IUserWithAccessDTO from '../../../DTO/userWitchAccessDTO';
 
 export class ModalShareCheckListTableComponent extends React.Component<IModalShareCheckListTableComponentProps, any> {
 
   renderUserWhoHasAccess = () => {
-    const elements: Array<any> = this.props.sharedCheckList.listUsersWitchAccess.map( ( item: any ) => {
+    const elements: Array<any> = this.props.sharedCheckList.listUsersWitchAccess.map( ( item: IUserWithAccessDTO ) => {
       const name: string = item.firstName && item.lastName ?
         `${item.firstName} ${item.lastName}`
         :
@@ -20,12 +21,12 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
             {name}
           </td>
           <td>
-            {item.status}
+            {item.sharingStatus}
           </td>
           <td>
             <div
               onClick={() => {
-                // console.log ( 'Delete' );
+                this.props.removeAccessUserForList( item.sharingId );
               }}
             >
               <FontAwesomeIcon icon="minus-circle" className="cursor-pointer"/>

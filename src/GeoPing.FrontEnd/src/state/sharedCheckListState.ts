@@ -3,5 +3,6 @@ import ISharedCheckListStateType from '../types/stateTypes/sharedCheckListStateT
 export const sharedCheckList: ISharedCheckListStateType = {
   listUsersWitchAccess: [],
   isLoading: false,
+  messageForActivateToken: '',
   autocompleteUsers: [],
 };

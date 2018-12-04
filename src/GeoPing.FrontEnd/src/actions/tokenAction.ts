@@ -7,6 +7,7 @@ import { createNotification } from '../services/helper';
 import { addNotificationAction } from './notificationsAction';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { signOutUser } from './userAction';
+import { MESSAGE_FOR_ACTIVATE_TOKEN } from '../constantsForReducer/sharedCheckList';
 
 const statusError: any = {
   404: ( dispatch: IDispatchFunction ) => {
@@ -27,6 +28,7 @@ export const removeToken = ( token: string ) => ( dispatch: IDispatchFunction ) 
   checkListService.removeToken( token )
     .then( ( response: any ) => {
       windowBlocking( false )( dispatch );
+      dispatch(messageForActivateTokenAction('Your token verified'));
     } )
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
@@ -56,10 +58,11 @@ const tokenType: any = {
 
 export const verifyToken = ( token: string, userId: string ) => ( dispatch: IDispatchFunction ) => {
   windowBlocking( true )( dispatch );
+  dispatch(messageForActivateTokenAction('Please wait we verifying your token'));
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getInfoAboutToken( token )
     .then( ( response: any ) => {
-      const isEqualToken: boolean = tokenType[ response.tokenType ]( response, userId, token, dispatch );
+      tokenType[ response.tokenType ]( response, userId, token, dispatch );
     } )
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
@@ -72,3 +75,7 @@ export const verifyToken = ( token: string, userId: string ) => ( dispatch: IDis
 };
 
 /* Action */
+
+function messageForActivateTokenAction( message: string ) {
+  return { type: MESSAGE_FOR_ACTIVATE_TOKEN, message };
+}

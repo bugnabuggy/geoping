@@ -96,7 +96,7 @@ export class InvitationsDashbordComponent extends React.Component<IInvitationsDa
           <CardHeader>
             New
           </CardHeader>
-          <CardBody className="p-1">
+          <CardBody className="p-2">
             {this.props.invitations.isNewSharingListsLoading ?
               (
                 <div className="container-spinner-center">
@@ -118,7 +118,7 @@ export class InvitationsDashbordComponent extends React.Component<IInvitationsDa
           <CardHeader>
             Accepted
           </CardHeader>
-          <CardBody className="p-1">
+          <CardBody className="p-2">
             {this.props.invitations.isAcceptedSharingListsLoading ?
               (
                 <div className="container-spinner-center">

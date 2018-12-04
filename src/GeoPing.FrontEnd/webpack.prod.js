@@ -14,7 +14,7 @@ module.exports = merge(common, {
   mode: 'production',
   entry: path.resolve(__dirname, 'src/index'),
   output: {
-    publicPath: './',
+    publicPath: '/',
     filename: 'bundle.js',
   },
   plugins: [

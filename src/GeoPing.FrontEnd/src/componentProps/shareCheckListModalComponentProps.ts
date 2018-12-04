@@ -18,4 +18,5 @@ export default interface IShareCheckListModalComponentProps {
   updateCheckList: ( idCheckList: string, checkList: IGeoListForUpdateDTO ) => ( dispatch: IDispatchFunction ) => void;
   getAutocompletedListUsers: ( userName: string) => ( dispatch: IDispatchFunction ) => void;
   clearAutocompleteListUsers: () => ( dispatch: IDispatchFunction ) => void;
+  removeAccessUserForList: ( sharingId: string ) => ( dispatch: IDispatchFunction ) => void;
 }
