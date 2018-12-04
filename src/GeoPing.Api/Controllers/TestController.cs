@@ -21,6 +21,8 @@ namespace GeoPing.Api.Controllers
         {
             _logger.LogInformation($"TEST LOGGING BY USER {User.Claims.FirstOrDefault(x => x.Type == "sub").Value}");
 
+            _logger.LogError($"TEST ERROR LOGGING BY USER {User.Claims.FirstOrDefault(x => x.Type == "sub").Value}");
+
             return new JsonResult(from c in User.Claims
                                   select new
                                   {
