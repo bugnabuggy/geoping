@@ -237,18 +237,20 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     idForMap: geoPoint.idForMap,
     animation: _googleLib.maps.Animation.DROP,
   } );
-  const circle: any = new _googleLib.maps.Circle( {
-    map: _googleMap,
-    radius: geoPoint.radius,
-    idForMap: geoPoint.idForMap,
-    fillColor: `#${blueColor}`,
-    fillOpacity: 0.35,
-    strokeOpacity: 0.5,
-    strokeWeight: 2,
-    strokeColor: `#${blueColor}`,
-  } );
-  circle.bindTo( 'center', marker, 'position' );
-  _circles.push( circle );
+  if ( geoPoint.idForMap !== idUserMarker ) {
+    const circle: any = new _googleLib.maps.Circle( {
+      map: _googleMap,
+      radius: geoPoint.radius,
+      idForMap: geoPoint.idForMap,
+      fillColor: `#${blueColor}`,
+      fillOpacity: 0.35,
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      strokeColor: `#${blueColor}`,
+    } );
+    circle.bindTo( 'center', marker, 'position' );
+    _circles.push( circle );
+  }
   const latLng: any = {
     lat: geoPoint.lat,
     lng: geoPoint.lng,
