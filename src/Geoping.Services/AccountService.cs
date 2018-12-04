@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using GeoPing.Core;
 using GeoPing.Core.Models;
@@ -18,16 +19,16 @@ namespace GeoPing.Services
     {
         private UserManager<AppIdentityUser> _userManager;
         private ILogger<AccountService> _logger;
-        private IGPUserService _gpUserSrv;
+        private IGeopingUserService _gpUserSrv;
         private IGeopingTokenService _tokenSrv;
         private ISharingService _sharingSrv;
         private IEmailService _emailSrv;
-        private ApplicationSettings _settings; 
+        private ApplicationSettings _settings;
 
         public AccountService
             (UserManager<AppIdentityUser> userManager,
             ILogger<AccountService> logger,
-            IGPUserService gpUserSrv,
+            IGeopingUserService gpUserSrv,
             IGeopingTokenService tokenSrv,
             ISharingService sharingSrv,
             IEmailService emailSrv,
@@ -92,17 +93,21 @@ namespace GeoPing.Services
                                     break;
                                 }
                         }
-                    } 
+                    }
                 }
+
+                var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var code = _tokenSrv.CreateConfirmationToken(user.Id, aspnetToken).Token;
 
                 if (_settings.EmailSender.IsEmailConfirmEnable)
                 {
-                    var code = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-
                     SendSecurityEmail(user, code, "ConfirmEmail", "Registration on GeoPing.info");
                 }
                 else
                 {
+                    await _userManager.ConfirmEmailAsync(user, aspnetToken);
+
                     await ConfirmAccountWithoutEmailAsync(registerUser.Email);
                 }
 
@@ -156,12 +161,14 @@ namespace GeoPing.Services
                 {
                     return new OperationResult
                     {
-                        Messages = new [] { "There is no user with given login or email" }
+                        Messages = new[] { "There is no user with given login or email" }
                     };
                 }
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var aspnetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var code = _tokenSrv.CreateConfirmationToken(user.Id, aspnetToken).Token;
 
             SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 
@@ -172,63 +179,130 @@ namespace GeoPing.Services
             };
         }
 
-        public async Task<OperationResult> ConfirmEmailAsync(string userId, string token)
+        public async Task<OperationResult> ConfirmEmailAsync(string token)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var isTokenExist = _tokenSrv.TryGetToken(token, out GeoPingToken gpToken);
+
+            if (!isTokenExist)
+            {
+                return new OperationResult
+                {
+                    Messages = new[] { "Invalid token" }
+                };
+            }
+
+            var tokenValidationResult = _tokenSrv.ValidateGPToken(gpToken);
+            if (tokenValidationResult != null)
+            {
+                return new OperationResult
+                {
+                    Messages = new[] { $"{tokenValidationResult} token" }
+                };
+            }
+
+            // TODO: SOLVE TASK ABOUT HOW TO UNPACK CONFIRMATION TOKEN AND REMOVE THIS CRAP
+            var valueData = gpToken.Value
+                .Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            var data = new
+            {
+                UserId = valueData[0],
+                Token = valueData[1]
+            };
+            // END OF CRAP
+
+            var user = await _userManager.FindByIdAsync(data.UserId);
             if (user == null)
             {
                 return new OperationResult
                 {
-                    Data = userId,
-                    Messages = new[] { $"There is no user with UserID = [{userId}]" }
+                    Data = data.UserId,
+                    Messages = new[] { $"There is no user with UserID = [{data.UserId}]" }
                 };
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, token);
+            var result = await _userManager.ConfirmEmailAsync(user, data.Token);
 
-            if (result.Succeeded)
-
+            if (!result.Succeeded)
             {
-                _gpUserSrv.ActivateUser(user.Id);
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { $"User with Id = [{userId}] has been confirmed successfully" }
+                    Data = result.Errors,
+                    Messages = new[] { "Something went wrong while email confirmation. Try again later" }
                 };
             }
+
+            _gpUserSrv.ActivateUser(user.Id);
+
+            _tokenSrv.MarkAsUsed(data.Token);
 
             return new OperationResult
             {
-                Messages = new[] { "Something went wrong while email confirmation. Try again later" }
+                Success = true,
+                Messages = new[] { $"User with Id = [{data.UserId}] has been confirmed successfully" }
             };
         }
 
-        public async Task<OperationResult> ConfirmResetAsync(string userId, string token, string newPassword)
+        public async Task<OperationResult> ConfirmResetAsync(string token, string newPassword)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var isTokenExist = _tokenSrv.TryGetToken(token, out GeoPingToken gpToken);
+
+            if (!isTokenExist)
+            {
+                return new OperationResult
+                {
+                    Messages = new[] { "Invalid token" }
+                };
+            }
+
+            var tokenValidationResult = _tokenSrv.ValidateGPToken(gpToken);
+            if (tokenValidationResult != null)
+            {
+                return new OperationResult
+                {
+                    Messages = new[] { $"{tokenValidationResult} token" }
+                };
+            }
+
+            // TODO: SOLVE TASK ABOUT HOW TO UNPACK CONFIRMATION TOKEN AND REMOVE THIS CRAP
+            var valueData = gpToken.Value
+                .Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            var data = new
+            {
+                UserId = valueData[0],
+                Token = valueData[1]
+            };
+            // END OF CRAP
+
+            var user = await _userManager.FindByIdAsync(data.UserId);
             if (user == null)
             {
                 return new OperationResult
                 {
-                    Data = userId,
-                    Messages = new[] { $"There is no user with UserID = [{userId}]" }
+                    Data = data.UserId,
+                    Messages = new[] { $"There is no user with UserID = [{data.UserId}]" }
                 };
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            var result = await _userManager.ResetPasswordAsync(user, data.Token, newPassword);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { $"User`s password with Id = [{userId}] has been reset successfully" }
+                    Messages = new[] { "Something went wrong while password reset. Try again later" }
                 };
             }
 
+            _gpUserSrv.ActivateUser(user.Id);
+
+            _tokenSrv.MarkAsUsed(data.Token);
+
             return new OperationResult
             {
-                Messages = new[] { "Something went wrong while password reset. Try again later" }
+                Success = true,
+                Messages = new[] { $"User`s password with Id = [{data.UserId}] has been reset successfully" }
             };
         }
 
@@ -252,6 +326,7 @@ namespace GeoPing.Services
                     Messages = new[] { "User was not found" }
                 };
             }
+
             return new OperationResult<GeoPingUser>
             {
                 Data = result,
@@ -364,6 +439,7 @@ namespace GeoPing.Services
             // TODO: CAN I MAKE THIS PART BETTER WITHOUT SPEED LOSS?
             //====================================================================================
             var baseUrl = _settings.Urls.SiteUrl;
+
             string actionEndpoint = null;
 
             switch (action)
@@ -377,7 +453,7 @@ namespace GeoPing.Services
                     break;
             }
 
-            string callbackUrl = $"{baseUrl}/{actionEndpoint}?UserId={user.Id}&Token={code}";
+            string callbackUrl = $"{baseUrl}/{actionEndpoint}?Token={code}";
             //====================================================================================
 
             _emailSrv.Send(new EmailMessage

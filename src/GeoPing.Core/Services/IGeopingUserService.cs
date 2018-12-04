@@ -8,7 +8,7 @@ using GeoPing.Core.Models.Entities;
 
 namespace GeoPing.Core.Services
 {
-    public interface IGPUserService
+    public interface IGeopingUserService
     {
         IQueryable<GeoPingUser> GetUsers(Expression<Func<GeoPingUser, bool>> func);
         GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func);

@@ -12,8 +12,8 @@ namespace GeoPing.Core.Services
         Task<OperationResult> ChangePasswordAsync(string identityUserId, ChangePasswordDTO changePassword);
         bool IsUserExists(RegisterUserDTO user, out string item);
         bool IsUserExists(string userId);
-        Task<OperationResult> ConfirmEmailAsync(string userId, string token);
-        Task<OperationResult> ConfirmResetAsync(string userId, string token, string newPassword);
+        Task<OperationResult> ConfirmEmailAsync(string token);
+        Task<OperationResult> ConfirmResetAsync(string token, string newPassword);
         Task ConfirmAccountWithoutEmailAsync(string userEmail);
         OperationResult<GeoPingUser> GetProfile(Guid gpUserId);
         OperationResult<ShortUserInfoDTO> GetShortProfile(Guid userId);

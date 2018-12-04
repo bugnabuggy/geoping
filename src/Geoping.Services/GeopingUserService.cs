@@ -12,12 +12,12 @@ using Microsoft.Extensions.Options;
 
 namespace GeoPing.Services
 {
-    public class GPUserService : IGPUserService
+    public class GeopingUserService : IGeopingUserService
     {
         private IRepository<GeoPingUser> _gpUserRepo;
         private ApplicationSettings _settings;
 
-        public GPUserService
+        public GeopingUserService
             (IRepository<GeoPingUser> gpUserRepo,
             IOptions<ApplicationSettings> settings)
         {
