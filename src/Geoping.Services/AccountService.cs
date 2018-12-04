@@ -225,9 +225,9 @@ namespace GeoPing.Services
                     Messages = new[] { $"User`s password with Id = [{userId}] has been reset successfully" }
                 };
             }
-
             return new OperationResult
             {
+                Data = result.Errors,
                 Messages = new[] { "Something went wrong while password reset. Try again later" }
             };
         }
