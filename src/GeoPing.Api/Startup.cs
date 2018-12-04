@@ -88,7 +88,7 @@ namespace GeoPing.Api
                             sql => sql.MigrationsAssembly(migrationAssembly));
                     };
                     options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
+                    options.TokenCleanupInterval = IdentityServerSettings.TokenCleanupInterval;
                 });
 
             services.AddAuthentication(options =>

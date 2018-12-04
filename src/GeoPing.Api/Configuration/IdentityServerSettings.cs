@@ -7,5 +7,6 @@
         public static string ClientId { get; set; }
         public static string ClientSecret { get; set; }
         public static string ServerUrl { get; set; }
+        public static int TokenCleanupInterval { get; set; }
     }
 }
