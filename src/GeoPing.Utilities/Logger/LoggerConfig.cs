@@ -50,7 +50,7 @@ namespace GeoPing.Utilities.Logger
 
             };
             config.AddTarget(syslogTargetCommon);
-            config.AddRule(LogLevel.FromString(settings.SyslogCommon.Level), LogLevel.Fatal, syslogTargetCommon);
+            config.AddRule(LogLevel.FromString(settings.SyslogCommon.Level), LogLevel.Warn, syslogTargetCommon);
 
             var syslogTargetError = new SyslogTarget
             {
