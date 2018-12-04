@@ -2,7 +2,7 @@
 export const baseUrl: string = '/';
 export const publicCheckListUrl: string = `${baseUrl}public_check_list`;
 export const notFoundUrl: string = `${baseUrl}not_found`;
-export const emailConfirm: string = `${baseUrl}email_confirm/:idUser/:token`;
+export const emailConfirm: string = `${baseUrl}email_confirm`;
 export const token: string = `${baseUrl}token/:token`;
 export const tokenError: string = `${baseUrl}token_error`;
 
