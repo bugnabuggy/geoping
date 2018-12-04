@@ -20,6 +20,37 @@ const renderInput = ( props: any ) => {
           placeholder={props.placeholder}
           data-tip={props.meta.error}
         />
+        <div className="tooltip_form-container">
+          <div className="form-icon-container">
+            {props.meta.touched ?
+              props.meta.error ?
+                <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+                :
+                <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
+              :
+              null
+            }
+            {props.meta.touched &&
+            !props.meta.active &&
+            props.meta.error &&
+            <div className="tooltip_form">{props.meta.error}</div>}
+          </div>
+        </div>
+      </div>
+    </FormGroup>
+  );
+};
+const termsOfService = ( props: any ) => {
+  return (
+    <div className="form-input-container">
+      <Checkbox
+        {...props.input}
+        type={props.type}
+        style={{ flex: 2 }}
+      >
+        {props.label}
+      </Checkbox>
+      <div className="tooltip_form-container">
         <div className="form-icon-container">
           {props.meta.touched ?
             props.meta.error ?
@@ -35,32 +66,6 @@ const renderInput = ( props: any ) => {
           <div className="tooltip_form">{props.meta.error}</div>}
         </div>
       </div>
-    </FormGroup>
-  );
-};
-const termsOfService = ( props: any ) => {
-  return (
-    <div className="form-input-container">
-      <Checkbox
-        {...props.input}
-        type={props.type}
-      >
-        {props.label}
-      </Checkbox>
-      <div className="form-icon-container">
-        {props.meta.touched ?
-          props.meta.error ?
-            <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
-            :
-            <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
-          :
-          null
-        }
-        {props.meta.touched &&
-        !props.meta.active &&
-        props.meta.error &&
-        <div className="tooltip_form">{props.meta.error}</div>}
-      </div>
     </div>
   );
 };
@@ -68,24 +73,28 @@ const termsOfService = ( props: any ) => {
 const recaptcha = ( props: any ) => {
   return (
     <div className="form-input-container">
-      <ReCAPTCHA
-        onChange={props.input.onChange}
-        z-index="1"
-        sitekey="6LcJA3AUAAAAAPnLVNeX96LdBvtBHiFx5JQlG9oS"
-      />
-      <div className="form-icon-container">
-        {props.meta.touched ?
-          props.meta.error ?
-            <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+      <div style={{flex: 2}}>
+        <ReCAPTCHA
+          onChange={props.input.onChange}
+          z-index="1"
+          sitekey="6LcJA3AUAAAAAPnLVNeX96LdBvtBHiFx5JQlG9oS"
+        />
+      </div>
+      <div className="tooltip_form-container">
+        <div className="form-icon-container">
+          {props.meta.touched ?
+            props.meta.error ?
+              <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+              :
+              null
             :
             null
-          :
-          null
-        }
-        {props.meta.touched &&
-        !props.meta.active &&
-        props.meta.error &&
-        <div className="tooltip_form">{props.meta.error}</div>}
+          }
+          {props.meta.touched &&
+          !props.meta.active &&
+          props.meta.error &&
+          <div className="tooltip_form">{props.meta.error}</div>}
+        </div>
       </div>
     </div>
   );

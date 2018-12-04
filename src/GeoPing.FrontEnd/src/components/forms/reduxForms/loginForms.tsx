@@ -39,27 +39,36 @@ function googleAuthorizeInit( redirect: ( isRedirect: boolean ) => void, blockin
 
 const renderInput = ( props: any ) => {
   return (
-    <FormGroup>
+    <FormGroup style={{ position: 'relative' }}>
       <ControlLabel>{props.labelName}</ControlLabel>{' '}
+      {props.type === 'password' &&
+      (
+        <span className="psw-span">
+          <a href={resetPassword.replace( '/:idUser?/:token?', '' )}>forgot</a>
+        </span>
+      )
+      }
       <div className="form-input-container">
         <FormControl
           {...props.input}
-          type={( props.labelName === 'Password' ) ? 'password' : 'text'}
+          type={props.type}
           placeholder={props.placeholder}
         />
-        <div className="form-icon-container">
-          {props.meta.touched ?
-            props.meta.error ?
-              <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+        <div className="tooltip_form-container">
+          <div className="form-icon-container">
+            {props.meta.touched ?
+              props.meta.error ?
+                <FontAwesomeIcon icon={timesCircleIcon} className="form-icon-times"/>
+                :
+                <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
               :
-              <FontAwesomeIcon icon={checkCircleIcon} className="form-icon-check"/>
-            :
-            null
-          }
-          {props.meta.touched &&
-          !props.meta.active &&
-          props.meta.error &&
-          <div className="tooltip_form">{props.meta.error}</div>}
+              null
+            }
+            {props.meta.touched &&
+            !props.meta.active &&
+            props.meta.error &&
+            <div className="tooltip_form">{props.meta.error}</div>}
+          </div>
         </div>
       </div>
     </FormGroup>
@@ -70,32 +79,33 @@ function LoginForms( props: any ): any {
   const { handleSubmit } = props;
   props.googleAuthInit( googleAuthorizeInit );
   return (
-    <div>
+    <React.Fragment>
       <form className="login-form">
         <Field
           component={renderInput}
           name="login"
           labelName="Login"
+          type="text"
         />
-        <span className="psw-span">
-          <a href={resetPassword.replace('/:idUser?/:token?', '')}>forgot</a>
-        </span>
         <Field
           component={renderInput}
           name="password"
           labelName="Password"
+          type="password"
         />
-        <span className="reg-span">
-          <a href={registerUrl}>register account</a>
-        </span>
-        <Button
-          bsStyle="primary"
-          className="login-btn"
-          type="submit"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
+        <div className="login-form-button-container">
+          <span className="reg-span">
+            <a href={registerUrl}>register account</a>
+          </span>
+          <Button
+            bsStyle="primary"
+            className="login-btn"
+            type="submit"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </div>
       </form>
       <div
         id="customBtn"
@@ -106,7 +116,7 @@ function LoginForms( props: any ): any {
       >
         <img className="google-button-img" src="/assets/images/google-button.png"/>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
 

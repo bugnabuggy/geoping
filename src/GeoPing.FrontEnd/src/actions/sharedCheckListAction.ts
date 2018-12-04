@@ -60,7 +60,6 @@ export const getAutocompletedListUsers = ( userName: string ) => ( dispatch: IDi
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getAutocompletedListUsers( userName )
     .then( ( response: any ) => {
-      console.info( 'getAutocompletedListUsers', response );
       dispatch( getAutocompletedListUsersAction( response ) );
     } )
     .catch( ( error: any ) => {
