@@ -161,7 +161,7 @@ namespace GeoPing.Services
             return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
             {
                 Success = true,
-                Messages = new[] { $"List with ID = [{listId}] was shared with following users" },
+                Messages = new[] { $"Following users may check in points of list with ID = [{listId}]" },
                 Data = result
             };
         }
