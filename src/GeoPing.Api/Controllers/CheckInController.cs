@@ -23,7 +23,7 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // GET api/geolist/{listId}/geopoint/check
+        // GET api/check/geolist/{listId}
         [HttpGet]
         [Route("geolist/{listId}")]
         public IActionResult GetChecksIn(string listId)
@@ -38,7 +38,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // GET api/geolist/{listId}/geopoint/{pointId}/check
+        // GET api/check/geopoint/{pointId}
         [HttpGet]
         [Route("geopoint/{pointId}")]
         public IActionResult GetCheckIn(string pointId)
@@ -53,7 +53,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST api/geolist/{listId}/geopoint/{pointId}/check
+        // POST api/check/geopoint/{pointId}
         [HttpPost]
         [Route("geopoint/{pointId}")]
         public IActionResult AddCheckIn(string pointId, [FromBody]CheckInDTO item)

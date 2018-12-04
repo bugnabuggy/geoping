@@ -22,6 +22,7 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
+        // GET api/statistics/geolist/{listId}
         [HttpGet]
         [Route("geolist/{listId}")]
         public IActionResult GetCheckInStatistics(string listId, CheckInStatFilterDTO filter)
@@ -41,7 +42,7 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // GET api/check/geolist/{listId}/users
+        // GET api/statistics/geolist/{listId}/users
         [HttpGet]
         [Route("geolist/{listId}/users")]
         public IActionResult GetUsersToCheck(string listId)
