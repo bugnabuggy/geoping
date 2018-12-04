@@ -77,7 +77,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
   renderOptionUsers = ( props: Array<any> ): Array<{ value: string, label: string }> => {
     return props.map( ( item: any ) => {
       return {
-        value: item.id,
+        value: item.userId,
         label: item.userName,
       };
     } );
@@ -104,7 +104,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
 
   selectOptionUser = () => {
     const user: any = this.props.checkinStatistics.selectUser.find(
-      ( item: any ) => item.id === this.state.selectUser
+      ( item: any ) => item.userId === this.state.selectUser
     );
     return {
       value: user ? user.userId : '',
@@ -144,6 +144,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
             className="check-in-statistics-form-input"
             onChange={this.handleSelectUser}
             hideSelectedOptions={true}
+            isClearable={true}
             value={this.selectOptionUser()}
           />
         </FormGroup>
