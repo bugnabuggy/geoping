@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using GeoPing.Core;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 namespace GeoPing.Services
@@ -16,13 +19,16 @@ namespace GeoPing.Services
     {
         private IRepository<GeoPingUser> _gpUserRepo;
         private ApplicationSettings _settings;
+        private UserManager<AppIdentityUser> _userManager;
 
         public GeopingUserService
             (IRepository<GeoPingUser> gpUserRepo,
-            IOptions<ApplicationSettings> settings)
+            IOptions<ApplicationSettings> settings,
+            UserManager<AppIdentityUser> userManager)
         {
             _gpUserRepo = gpUserRepo;
             _settings = settings.Value;
+            _userManager = userManager;
         }
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
@@ -68,15 +74,23 @@ namespace GeoPing.Services
                 });
         }
 
-        public ShortUserInfoDTO GetUserNameAndAvatar(Expression<Func<GeoPingUser, bool>> func)
+        public async Task<ShortUserInfoDTO> GetUserCommonInfo(string userId)
         {
-            var data = GetUser(func);
+            var gpUser = GetUser(x => x.IdentityId == userId);
+
+            if (gpUser == null)
+            {
+                return new ShortUserInfoDTO();
+            }
+
+            var user = await _userManager.FindByIdAsync(gpUser.IdentityId);
 
             return new ShortUserInfoDTO
             {
-                UserName = data.Login,
-                Avatar = data.Avatar,
-                UserId = data.Id
+                UserName = gpUser.Login,
+                Avatar = gpUser.Avatar,
+                UserId = gpUser.Id,
+                Roles = await _userManager.GetRolesAsync(user)
             };
         }
 
