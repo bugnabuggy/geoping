@@ -125,6 +125,47 @@ namespace GeoPing.Services
             };
         }
 
+        public OperationResult<IEnumerable<UserAutoCompleteDTO>> GetAllowedUsers(Guid userId, string listId)
+        {
+            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
+
+            if (list == null)
+            {
+                return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
+                {
+                    Messages = new[] { $"There is no list with id = [{listId}]" }
+                };
+            }
+
+            if (!_securitySrv.IsUserHasAccessToWatchList(userId, list))
+            {
+                return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
+                {
+                    Messages = new[] { "Unauthorized" }
+                };
+            }
+
+            var users = _securitySrv.GetUsersHaveAccessToWatchList(list);
+            
+            var result = users
+                .Select(x => new UserAutoCompleteDTO()
+                {
+                    UserId = x.Id,
+                    FullName = x.LastName != null || x.FirstName != null
+                        ? $"{x.LastName} {x.FirstName}".Trim()
+                        : "",
+                    UserName = x.Login,
+                    Email = x.Email
+                });
+
+            return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
+            {
+                Success = true,
+                Messages = new[] { $"Following users may check in points of list with ID = [{listId}]" },
+                Data = result
+            };
+        }
+
         private IQueryable<CheckIn> GetFilteredData
             (IQueryable<CheckIn> data, CheckInStatFilterDTO filter)
         {

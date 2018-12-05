@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeoPing.Core.Models;
+using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
@@ -12,15 +13,19 @@ namespace GeoPing.Services
     {
         private IGeolistService _geolistSrv;
         private IGeopointService _pointSrv;
+        private ISecurityService _securitySrv;
         private IRepository<CheckIn> _checkInRepo;
 
-        public CheckInService(IGeolistService geolistSrv,
-                              IGeopointService pointSrv,
-                              IRepository<CheckIn> checkInRepo)
+        public CheckInService
+            (IGeolistService geolistSrv,
+            IGeopointService pointSrv,
+            IRepository<CheckIn> checkInRepo,
+            ISecurityService securitySrv)
         {
             _geolistSrv = geolistSrv;
             _pointSrv = pointSrv;
             _checkInRepo = checkInRepo;
+            _securitySrv = securitySrv;
         }
 
         public OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId)
@@ -83,12 +88,49 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<CheckIn> AddCheckIn(CheckIn item)
+        public OperationResult<CheckIn> AddCheckIn(Guid userId, string pointId, CheckInDTO item)
         {
+            CheckIn checkIn;
+
+            if (pointId != null)
+            {
+                if (!IsPointExistWithThisId(pointId, out GeoPoint point))
+                {
+                    return new OperationResult<CheckIn>()
+                    {
+                        Messages = new[] { "There is no point with Id = [{pointId}]." }
+                    };
+                }
+
+                if (!_securitySrv.IsUserHasAccessToWatchList
+                    (userId, _geolistSrv.Get(x => x.Id == point.ListId).FirstOrDefault()))
+                {
+                    return new OperationResult<CheckIn>()
+                    {
+                        Messages = new[] { "Unauthorized" }
+                    };
+                }
+            }
+
+            checkIn = new CheckIn
+            {
+                Distance = item.Distance,
+                Latitude = item.Latitude,
+                Longitude = item.Longitude,
+                Ip = item.Ip,
+                DeviceId = item.DeviceId,
+                UserAgent = item.UserAgent,
+                Date = DateTime.UtcNow,
+                UserId = userId,
+                PointId = pointId != null
+                    ? (Guid?)Guid.Parse(pointId)
+                    : null
+            };
+
             return new OperationResult<CheckIn>
             {
-                Data = _checkInRepo.Add(item),
-                Messages = new[] { $"User was successfully checked in point with id = [{item.PointId}]" },
+                Data = _checkInRepo.Add(checkIn),
+                Messages = new[] { $"User was successfully checked in point with id = [{pointId}]" },
                 Success = true
             };
         }
