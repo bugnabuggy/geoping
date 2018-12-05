@@ -59,6 +59,11 @@ namespace GeoPing.Api.Controllers
         [Route("geopoint/{pointId}")]
         public IActionResult AddCheckIn(string pointId, [FromBody]CheckInDTO item)
         {
+            if (pointId == "null")
+            {
+                pointId = null;
+            }
+
             var result = _checkInSrv.AddCheckIn(_helper.GetAppUserIdByClaims(User.Claims), pointId, item);
 
             if (result.Success)
