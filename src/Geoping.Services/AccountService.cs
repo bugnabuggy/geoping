@@ -335,9 +335,9 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<ShortUserInfoDTO> GetShortProfile(Guid gpUserId)
+        public async Task<OperationResult<ShortUserInfoDTO>> GetShortProfile(string userId)
         {
-            var result = _gpUserSrv.GetUserNameAndAvatar(x => x.Id == gpUserId);
+            var result = await _gpUserSrv.GetUserCommonInfo(userId);
 
             if (result == null)
             {
@@ -346,6 +346,7 @@ namespace GeoPing.Services
                     Messages = new[] { "User was not found" }
                 };
             }
+
             return new OperationResult<ShortUserInfoDTO>
             {
                 Data = result,

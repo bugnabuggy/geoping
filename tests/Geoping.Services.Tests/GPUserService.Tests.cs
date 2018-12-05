@@ -7,8 +7,10 @@ using GeoPing.Core;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -21,6 +23,7 @@ namespace GeoPing.Services.Tests
     {
         private IRepository<GeoPingUser> _gpUserRepo;
         private Mock<IOptions<ApplicationSettings>> _settings;
+        private UserManager<AppIdentityUser> _usermanager;
 
         private IGeopingUserService _sut;
 
@@ -32,6 +35,7 @@ namespace GeoPing.Services.Tests
             _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
+            _usermanager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
 
             _settings = new Mock<IOptions<ApplicationSettings>>();
             _settings
@@ -45,7 +49,7 @@ namespace GeoPing.Services.Tests
                     }
                 });
 
-            _sut = new GeopingUserService(_gpUserRepo, _settings.Object);
+            _sut = new GeopingUserService(_gpUserRepo, _settings.Object, _usermanager);
         }
 
         [Test]

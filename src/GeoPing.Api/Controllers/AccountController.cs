@@ -125,15 +125,15 @@ namespace GeoPing.Api.Controllers
         // GET /account/profile/short
         [HttpGet]
         [Route("profile/short")]
-        public IActionResult GetShortProfile()
+        public async Task<IActionResult> GetShortProfile()
         {
-            var userId = _helper.GetAppUserIdByClaims(User.Claims);
-            var result = _accountSrv.GetShortProfile(userId);
+            var result = await _accountSrv.GetShortProfile(_helper.GetIdentityUserIdByClaims(User.Claims));
 
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
