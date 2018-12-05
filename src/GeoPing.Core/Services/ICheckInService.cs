@@ -9,7 +9,7 @@ namespace GeoPing.Core.Services
     public interface ICheckInService
     {
         OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId);
-        OperationResult<IEnumerable<CheckIn>> GetChecksIn(string listId, Guid userId);
+        OperationResult<IEnumerable<CheckIn>> GetChecksIn(Guid userId, string listId);
         OperationResult<CheckIn> AddCheckIn(Guid userId, string pointId, CheckInDTO item);
 
         bool IsListExistWithThisId(string id, out GeoList list);

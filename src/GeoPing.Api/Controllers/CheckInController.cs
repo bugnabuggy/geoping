@@ -29,7 +29,7 @@ namespace GeoPing.Api.Controllers
         [Route("geolist/{listId}")]
         public IActionResult GetChecksIn(string listId)
         {
-            var result = _checkInSrv.GetChecksIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
+            var result = _checkInSrv.GetChecksIn(_helper.GetAppUserIdByClaims(User.Claims), listId);
 
             if (result.Success)
             {

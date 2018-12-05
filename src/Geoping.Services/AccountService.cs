@@ -79,7 +79,7 @@ namespace GeoPing.Services
 
                 var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
 
-                _logger.LogDebug($"Geoping user was created for {user.Email} - {gpUser.Id}.");
+                _logger.LogInformation($"Geoping user was created for {user.Email}::{gpUser.Id}.");
 
                 // Token actions
 
@@ -106,7 +106,7 @@ namespace GeoPing.Services
                         }
                     }
 
-                    _logger.LogDebug($"Using invalid token while registration.");
+                    _logger.LogDebug($"Used invalid token while registration.");
                 }
 
                 var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -155,7 +155,7 @@ namespace GeoPing.Services
         {
             var user = await _userManager.FindByIdAsync(identityUserId);
 
-            _logger.LogDebug($"User {user.Email}::{user.Id} has invoked password change.");
+            _logger.LogInformation($"User {user.Email}::{user.Id} has invoked password change.");
 
             var result = await _userManager.ChangePasswordAsync
                 (user, changePassword.OldPassword, changePassword.NewPassword);
@@ -172,7 +172,7 @@ namespace GeoPing.Services
                 };
             }
 
-            _logger.LogDebug($"User {user.Email}::{user.Id} has changed his password successfully.");
+            _logger.LogInformation($"User {user.Email}::{user.Id} has changed his password successfully.");
 
             return new OperationResult
             {
@@ -219,7 +219,7 @@ namespace GeoPing.Services
 
             SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 
-            _logger.LogDebug($"User {user.Email}::{user.Id} has requested password reset.");
+            _logger.LogInformation($"User {user.Email}::{user.Id} has requested password reset.");
 
             return new OperationResult
             {
@@ -399,7 +399,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> GetProfile(Guid gpUserId)
         {
-            _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] was requested.");
+            _logger.LogInformation($"Profile of Geoping user with id = [{gpUserId}] was requested.");
 
             var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
 
@@ -414,7 +414,7 @@ namespace GeoPing.Services
                 };
             }
 
-            _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] request was successful.");
+            _logger.LogInformation($"Profile of Geoping user with id = [{gpUserId}] request was successful.");
 
             return new OperationResult<GeoPingUser>
             {
@@ -453,7 +453,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> EditProfile(Guid userId, GeoPingUserDTO userData)
         {
-            _logger.LogDebug($"Geoping user with id = [{userId}] has requested profile editing.");
+            _logger.LogInformation($"Geoping user with id = [{userId}] has requested profile editing.");
 
             var user = _gpUserSrv.GetUser(x => x.Id == userId);
 
@@ -479,7 +479,7 @@ namespace GeoPing.Services
                 };
             }
 
-            _logger.LogDebug($"Profile of Geoping user with id = [{userId}] has been edited.");
+            _logger.LogInformation($"Profile of Geoping user with id = [{userId}] has been edited.");
 
             return new OperationResult<GeoPingUser>
             {
@@ -491,7 +491,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
         {
-            _logger.LogDebug($"Geoping user with id = [{userId}] has requested avatar editing.");
+            _logger.LogInformation($"Geoping user with id = [{userId}] has requested avatar editing.");
 
             var result = new OperationResult<GeoPingUser>();
 
@@ -512,6 +512,8 @@ namespace GeoPing.Services
                     Messages = new[] { "Something went wrong while avatar editing.", ex.Message }
                 };
             }
+
+            _logger.LogInformation($"Avatar of Geoping user with id = [{userId}] has been edited successfully.");
 
             return new OperationResult<GeoPingUser>
             {
