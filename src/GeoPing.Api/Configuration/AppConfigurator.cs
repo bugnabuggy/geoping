@@ -39,7 +39,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IGeolistService, GeolistService>();
             services.AddScoped<IClaimsHelper, ClaimsHelper>();
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IGPUserService, GPUserService>();
+            services.AddScoped<IGeopingUserService, GeopingUserService>();
             services.AddScoped<ICheckInService, CheckInService>();
             services.AddScoped<ICheckInStatisticsService, CheckInStatisticsService>();
             services.AddScoped<ISharingService, SharingService>();

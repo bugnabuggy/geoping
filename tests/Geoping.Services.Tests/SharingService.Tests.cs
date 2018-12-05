@@ -27,7 +27,7 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoList> _listRepo;
         private ISecurityService _securitySrv;
         private IGeolistService _listSrv;
-        private IGPUserService _gpUserSrv;
+        private IGeopingUserService _gpUserSrv;
         private UserManager<AppIdentityUser> _userManager;
         private Mock<IGeopingTokenService> _mockTokenSrv;
         private IValidationService _validator;
@@ -58,7 +58,7 @@ namespace GeoPing.Services.Tests
             _listRepo = _services.GetRequiredService<IRepository<GeoList>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
             _listSrv = _services.GetRequiredService<IGeolistService>();
-            _gpUserSrv = _services.GetRequiredService<IGPUserService>();
+            _gpUserSrv = _services.GetRequiredService<IGeopingUserService>();
             _userManager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
             _mockTokenSrv = new Mock<IGeopingTokenService>();
             _validator = _services.GetRequiredService<IValidationService>();

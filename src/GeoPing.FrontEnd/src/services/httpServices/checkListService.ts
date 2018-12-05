@@ -102,9 +102,9 @@ export default class CheckListService implements ICheckListServiceType {
     // return this.communicator.put( updateGeoList.replace( '%id%', idCheckList ), checkList );
   }
 
-  addCheckIn( idList: string, idPoint: string, data: ICheckInDTO ) {
+  addCheckIn( idPoint: string, data: ICheckInDTO ) {
     return new Promise( ( resolve: any, reject: any ) => {
-      this.communicator.post( addCheckIn.replace( '%listid%', idList ).replace( '%id%', idPoint ), data )
+      this.communicator.post( addCheckIn.replace( '%id%', idPoint ), data )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )

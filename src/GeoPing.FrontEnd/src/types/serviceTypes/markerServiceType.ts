@@ -10,5 +10,5 @@ export default interface IMarkerServiceType {
 
   updateMarker: ( marker: IGeoPoint ) => Promise<any>;
 
-  getChecksStatisticsForList: ( listId: string, userId: string, dateFrom: string, dateTo: string ) => Promise<any>;
+  getChecksStatisticsForList: ( listId: string, data: any ) => Promise<any>;
 }

@@ -26,7 +26,9 @@ export const loadUsersForShared = ( idList: string ) => ( dispatch: IDispatchFun
       dispatch( loadingUsersWhoHasAccess( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadUsersForShared', EnumNotificationType.Danger )
+      ) );
       dispatch( loadingUsersWhoHasAccess( false ) );
     } );
 };
@@ -46,7 +48,9 @@ export const sendAccessUsersForCheckList = ( idCheckList: string, emails: Array<
       } )
       .catch( ( error: any ) => {
         windowBlocking( false )( dispatch );
-        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+        dispatch( addNotificationAction(
+          createNotification( error.message + ' sendAccessUsersForCheckList', EnumNotificationType.Danger )
+        ) );
       } );
   };
 
@@ -57,7 +61,9 @@ export const providePublicAccess = ( idList: string, isPublic: boolean ) => ( di
       dispatch( providePublicAccessAction( idList, isPublic ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' providePublicAccess', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -68,7 +74,9 @@ export const getAutocompletedListUsers = ( userName: string ) => ( dispatch: IDi
       dispatch( getAutocompletedListUsersAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' getAutocompletedListUsers', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -83,7 +91,9 @@ export const removeAccessUserForList = ( sharingId: string ) => ( dispatch: IDis
       dispatch( removeAccessUserForListAction( sharingId ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' removeAccessUserForList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 

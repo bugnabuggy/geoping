@@ -3,7 +3,7 @@ import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import {
   createGeoNewPoint,
-  getChecksStatisticsForList,
+  getCheckInStatisticsForListByFilter,
   getGeoPointsForList,
   removeGeoPoint,
   updateGeoPoint
@@ -134,11 +134,11 @@ export default class MarkerService implements IMarkerServiceType {
     return new Promise( resolve => '' );
   }
 
-  getChecksStatisticsForList( listId: string, userId: string, dateFrom: string, dateTo: string ) {
+  getChecksStatisticsForList( listId: string, data: any ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
       this.communicator.get(
-        getChecksStatisticsForList.replace( '%listid%', listId ) +
-        `/?UserId=${userId}&DatePeriodFrom=${dateFrom}&DatePeriodTo=${dateTo}`
+        getCheckInStatisticsForListByFilter.replace( '%listid%', listId ) +
+        `?UserId=${data.UserId}&DatePeriodFrom=${data.DatePeriodFrom}&DatePeriodTo=${data.DatePeriodTo}`
       )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );

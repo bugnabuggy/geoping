@@ -2,7 +2,7 @@ import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { isRedirect, windowBlocking } from './windowAction';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import StaticStorage from '../services/staticStorage';
-import { loginUrl, registerUrl, tokenError } from '../constants/routes';
+import { dashboardUrl, loginUrl, registerUrl, tokenError } from '../constants/routes';
 import { createNotification } from '../services/helper';
 import { addNotificationAction } from './notificationsAction';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
@@ -33,21 +33,23 @@ export const removeToken = ( token: string ) => ( dispatch: IDispatchFunction ) 
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
       dispatch( addNotificationAction(
-        createNotification( error.message, EnumNotificationType.Danger )
+        createNotification( error.message + ' removeToken', EnumNotificationType.Danger )
       ) );
     } );
 };
 
 const tokenType: any = {
   Sharing: ( response: any, userId: string, token: string, dispatch: IDispatchFunction ) => {
-    if ( response.userId === userId ) {
-      // isRedirect( dashboardUrl )( dispatch );
-      removeToken( token )( dispatch );
-    } else {
-      signOutUser()( dispatch );
-      windowBlocking( false )( dispatch );
-      isRedirect( loginUrl )( dispatch );
-    }
+    // if ( response.userId === userId ) {
+    //   // isRedirect( dashboardUrl )( dispatch );
+    //   removeToken( token )( dispatch );
+    // } else {
+    //   signOutUser()( dispatch );
+    //   windowBlocking( false )( dispatch );
+    //   isRedirect( loginUrl )( dispatch );
+    // }
+    isRedirect( dashboardUrl )( dispatch );
+    windowBlocking( false )( dispatch );
   },
   SharingInvite: ( response: any, userId: string, token: string, dispatch: IDispatchFunction ) => {
     signOutUser()( dispatch );

@@ -26,14 +26,14 @@ export const confirmEmail = ( userId: string, token: string ) => ( dispatch: IDi
           error.response.data.messages.forEach( ( message: string ) => {
             dispatch( addNotificationAction(
               createNotification(
-                message,
+                message + ' confirmEmail',
                 EnumNotificationType.Danger
               ) ) );
           } );
         } else {
           dispatch( addNotificationAction(
             createNotification(
-              error.message,
+              error.message + ' confirmEmail',
               EnumNotificationType.Danger
             ) ) );
         }

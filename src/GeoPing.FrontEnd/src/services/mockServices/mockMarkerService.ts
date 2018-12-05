@@ -65,7 +65,7 @@ export default class MockMarkerService implements IMarkerServiceType {
     } );
   }
 
-  getChecksStatisticsForList( listId: string, userId: string, dateFrom: string, dateTo: string ) {
+  getChecksStatisticsForList( listId: string, data: any ) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {
