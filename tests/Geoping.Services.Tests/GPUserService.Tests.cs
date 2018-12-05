@@ -22,7 +22,7 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoPingUser> _gpUserRepo;
         private Mock<IOptions<ApplicationSettings>> _settings;
 
-        private IGPUserService _sut;
+        private IGeopingUserService _sut;
 
         private IServiceProvider _services;
 
@@ -45,7 +45,7 @@ namespace GeoPing.Services.Tests
                     }
                 });
 
-            _sut = new GPUserService(_gpUserRepo, _settings.Object);
+            _sut = new GeopingUserService(_gpUserRepo, _settings.Object);
         }
 
         [Test]
