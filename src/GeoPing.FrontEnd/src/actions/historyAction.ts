@@ -24,7 +24,9 @@ export const loadHistory = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadingAction( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadHistory', EnumNotificationType.Danger )
+      ) );
       dispatch( loadingAction( false ) );
     } );
 };
@@ -34,7 +36,9 @@ export const filterHistory = () => ( dispatch: IDispatchFunction ) => {
       dispatch( filterHistoryAction( true ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' filterHistory', EnumNotificationType.Danger )
+      ) );
     } );
 
 };
@@ -48,7 +52,9 @@ export const saveHistory = ( idUser: string, historyData: IHistoryDataDTO ) => (
       dispatch( saveHistoryAction( historyData ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' saveHistory', EnumNotificationType.Danger )
+      ) );
     } );
 };
 

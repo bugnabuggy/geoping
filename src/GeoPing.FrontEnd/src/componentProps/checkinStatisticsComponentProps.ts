@@ -8,8 +8,7 @@ export default interface ICheckinStatisticsComponentProps {
   listId: string;
 
   loadUsers: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
-  loadPoints: ( listId: string, userId: string, dateFrom: string, dateTo: string ) =>
-    ( dispatch: IDispatchFunction ) => void;
+  loadPoints: ( listId: string, data: any ) => ( dispatch: IDispatchFunction ) => void;
   getAllCheckForList: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
   clearGeoPoint: () => ( dispatch: IDispatchFunction ) => void;
 }

@@ -49,11 +49,15 @@ export const checkGEOPosition = () => ( dispatch: IDispatchFunction ) => {
           // dispatch( addPointAction( marker ) );
         } )
         .catch( ( error: any ) => {
-          dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+          dispatch( addNotificationAction(
+            createNotification( error.message + ' checkGEOPosition', EnumNotificationType.Danger )
+          ) );
         } );
     },
     ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' checkGEOPosition', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -65,7 +69,9 @@ export const createCheckList = ( nameChecklist: string ) => ( dispatch: IDispatc
       dispatch( addNotificationAction( createNotification( 'Check List creating', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' createCheckList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 export const filterCheckLists = () => ( dispatch: IDispatchFunction ) => {
@@ -74,7 +80,9 @@ export const filterCheckLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( filterCheckListsAction( true ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' filterCheckLists', EnumNotificationType.Danger )
+      ) );
     } );
 };
 export const closeFilterCheckLists = () => ( dispatch: IDispatchFunction ) => {
@@ -88,7 +96,9 @@ export const updateNameCheckList = ( newNameCheckList: string ) => ( dispatch: I
       dispatch( addNotificationAction( createNotification( 'List name changed', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' updateNameCheckList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -103,7 +113,9 @@ export const updateCheckList = ( idCheckList: string, checkList: IGeoListForUpda
       } )
       .catch( ( error: any ) => {
         dispatch( windowBlockingAction( false ) );
-        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+        dispatch( addNotificationAction(
+          createNotification( error.message + ' updateCheckList', EnumNotificationType.Danger )
+        ) );
       } );
   };
 
@@ -146,7 +158,9 @@ export const loadCheckListData = ( idCheckList: string ) => ( dispatch: IDispatc
       dispatch( loadMarkersForCheckListAction( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadCheckListData', EnumNotificationType.Danger )
+      ) );
       dispatch( loadMarkersForCheckListAction( false ) );
     } );
 };

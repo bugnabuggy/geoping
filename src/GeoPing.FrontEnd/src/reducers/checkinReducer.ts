@@ -6,7 +6,9 @@ import {
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST,
   LOADING_CHECK_LISTS,
-  LOADING_GEO_POINTS
+  LOADING_GEO_POINTS,
+  SET_TIMER_COUNT,
+  START_TIMER
 } from '../constantsForReducer/checkin';
 import { ADD_DISTANCE_BETWEEN_POINTS, SELECT_MARKER } from '../constantsForReducer/googleMap';
 
@@ -20,6 +22,8 @@ export default function checkinReducer( state: ICheckinStateType = checkinState,
     [ LOADING_CHECK_LISTS ]: loadingCheckLIst,
     [ LOADING_GEO_POINTS ]: loadingGeoPoints,
     [ CHECK_IN_CLEAR ]: clear,
+    [ START_TIMER ]: startTimer,
+    [ SET_TIMER_COUNT ]: setTimerCount,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -81,5 +85,19 @@ function loadingGeoPoints( state: ICheckinStateType, action: any ): ICheckinStat
 function clear( state: ICheckinStateType, action: any ): ICheckinStateType {
   return {
     ...checkinState,
+  };
+}
+
+function startTimer( state: ICheckinStateType, action: any ): ICheckinStateType {
+  return {
+    ...state,
+    isStartTimer: action.isStartTimer,
+  };
+}
+
+function setTimerCount( state: ICheckinStateType, action: any ): ICheckinStateType {
+  return {
+    ...state,
+    countTimer: action.countTimer,
   };
 }

@@ -1,4 +1,5 @@
 import ICheckinStateType from '../types/stateTypes/checkinStateType';
+import { ETimer } from '../enums/timerEnum';
 
 export const checkinState: ICheckinStateType = {
   selectList: [],
@@ -7,4 +8,6 @@ export const checkinState: ICheckinStateType = {
   selectedListId: '',
   isListLoading: false,
   isPointLoading: false,
+  isStartTimer: ETimer.None,
+  countTimer: 0,
 };

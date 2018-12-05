@@ -33,7 +33,7 @@ export const removeToken = ( token: string ) => ( dispatch: IDispatchFunction ) 
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
       dispatch( addNotificationAction(
-        createNotification( error.message, EnumNotificationType.Danger )
+        createNotification( error.message + ' removeToken', EnumNotificationType.Danger )
       ) );
     } );
 };

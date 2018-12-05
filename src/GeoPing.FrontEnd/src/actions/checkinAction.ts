@@ -6,7 +6,9 @@ import {
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST,
   LOADING_CHECK_LISTS,
-  LOADING_GEO_POINTS
+  LOADING_GEO_POINTS,
+  SET_TIMER_COUNT,
+  START_TIMER
 } from '../constantsForReducer/checkin';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
@@ -16,17 +18,26 @@ import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import { addListPointsAction } from './googleMapAction';
 import { ICheckInDTO } from '../DTO/checkInDTO';
+import { ETimer } from '../enums/timerEnum';
 
-export const checkIn = ( idList: string, idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => {
+export const setTimer = ( isStartTimer: ETimer ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( setTimerAction( isStartTimer ) );
+};
+
+export const checkIn = ( idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.addCheckIn( idList, idPoint, data )
+  checkListService.addCheckIn( idPoint, data )
     .then( ( response: any ) => {
       const geoPoint: Array<any> = [ response ];
       dispatch( getAllChecksForUserAndListAction( geoPoint ) );
       dispatch( addNotificationAction( createNotification( 'Point marked', EnumNotificationType.Success ) ) );
+      setTimer( ETimer.Start )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' checkIn', EnumNotificationType.Danger )
+      ) );
+      setTimer( ETimer.Start )( dispatch );
     } );
 };
 
@@ -40,7 +51,9 @@ export const loadLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadingCheckLists( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadLists', EnumNotificationType.Danger )
+      ) );
       dispatch( loadingCheckLists( false ) );
     } );
 };
@@ -59,7 +72,9 @@ export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) 
       dispatch( loadingGeoPoints( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadPoints', EnumNotificationType.Danger )
+      ) );
       dispatch( loadingGeoPoints( false ) );
     } );
 };
@@ -83,13 +98,19 @@ export const getAllChecksForUserAndList = ( idList: string ) => ( dispatch: IDis
       dispatch( getAllChecksForUserAndListAction( checkInGeoPoint ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' getAllChecksForUserAndList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectedListAction( idList ) );
   // getAllChecksForUserAndList( idList )( dispatch );
+};
+
+export const timerAccount = ( countTimer: number ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( timerAccountAction( countTimer ) );
 };
 
 /* Actions */
@@ -120,4 +141,12 @@ function checkInClearAction(): { type: string } {
 function getAllChecksForUserAndListAction( checkInGeoPoint: Array<any> ):
   { type: string, checkInGeoPoint: Array<any> } {
   return { type: CHECK_IN_GEO_POINTS, checkInGeoPoint };
+}
+
+function setTimerAction( isStartTimer: ETimer ) {
+  return { type: START_TIMER, isStartTimer };
+}
+
+function timerAccountAction( countTimer: number ) {
+  return { type: SET_TIMER_COUNT, countTimer };
 }

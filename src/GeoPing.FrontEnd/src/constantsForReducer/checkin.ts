@@ -5,3 +5,5 @@ export const LOADING_CHECK_LISTS: string = 'LOADING_CHECK_LISTS';
 export const LOADING_GEO_POINTS: string = 'LOADING_GEO_POINTS';
 export const CHECK_IN_CLEAR: string = 'CHECK_IN_CLEAR';
 export const CHECK_IN_GEO_POINTS: string = 'CHECK_IN_GEO_POINTS';
+export const START_TIMER: string = 'START_TIMER';
+export const SET_TIMER_COUNT: string = 'SET_TIMER_COUNT';

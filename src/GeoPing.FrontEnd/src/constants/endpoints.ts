@@ -36,14 +36,15 @@ export const loadUserData: string = `${endpointBaseUrl}/account/profile/short`;
 export const updateAvatar: string = `${endpointBaseUrl}/account/profile/avatar`;
 
 /* endpoints for check in */
-export const addCheckIn: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%/check`;
-export const getCheckInForUserAndGivenPoint: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%/check`;
-export const getAllChecksInForUserAndGivenList: string = `${endpointBaseUrl}/api/geolist/%listid%/check`;
+export const addCheckIn: string = `${endpointBaseUrl}/api/check/geopoint/%id%`;
+export const getCheckInForUserAndGivenPoint: string = `${endpointBaseUrl}/api/check/geopoint/%id%`;
+export const getAllChecksInForUserAndGivenList: string = `${endpointBaseUrl}/api/check/geolist/%listid%`;
 export const getChecksStatisticsForList: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
 
 /* endpoints for check in statistics */
 export const getGeoListStatistics: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
-export const getUserAccessedToList: string = `${endpointBaseUrl}/api/sharing/%listid%/allowed-users`;
+export const getUserAccessedToList: string = `${endpointBaseUrl}/api/statistics/geolist/%listid%/users`;
+export const getCheckInStatisticsForListByFilter: string = `${endpointBaseUrl}/api/statistics/geolist/%listid%`;
 
 /* endpoints for tables */
 export const getHistory: string = `${endpointBaseUrl}/api/history`;

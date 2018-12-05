@@ -141,11 +141,15 @@ function iconUserGeoPoint( timeout: number ) {
     lng: _that.props.googleMap.position.lng,
     idForMap: idUserMarker,
   };
+  const image = {
+    ...createMarkerImage( iconUserGeoPointUrl ),
+    anchor: new _googleLib.maps.Point(25, 42),
+  };
   setTimeout(
     () => {
       createGeoPoint(
         userGeoPoint,
-        createMarkerImage( iconUserGeoPointUrl ),
+        image,
         false
       );
     },
@@ -250,12 +254,14 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     } );
     circle.bindTo( 'center', marker, 'position' );
     _circles.push( circle );
+
+    // const latLng: any = {
+    //   lat: geoPoint.lat,
+    //   lng: geoPoint.lng,
+    // };
+    // _that.props.setAddressGeoPoint( latLng );
   }
-  const latLng: any = {
-    lat: geoPoint.lat,
-    lng: geoPoint.lng,
-  };
-  _that.props.setAddressGeoPoint( latLng );
+
   marker.addListener( 'click', ( e: any ) => {
     handleGeoPointClick( e, geoPoint );
   } );
