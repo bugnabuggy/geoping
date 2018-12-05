@@ -45,9 +45,15 @@ namespace GeoPing.Services
 
         public async Task<OperationResult> RegisterAsync(RegisterUserDTO registerUser)
         {
+            _logger.LogInformation($"Try to register user with user name = [{registerUser.UserName}]" +
+                                   $"and email = [{registerUser.Email}].");
+
             // Checking if there is another user with given Email and UserName
             if (IsUserExists(registerUser, out string item))
             {
+                _logger.LogInformation($"Registration {registerUser.Email}::{registerUser.UserName}" +
+                                       $"failed cause of user with the same {item} exists.");
+
                 return new OperationResult
                 {
                     Data = registerUser,
@@ -73,14 +79,19 @@ namespace GeoPing.Services
 
                 var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
 
+                _logger.LogDebug($"Geoping user was created for {user.Email} - {gpUser.Id}");
+
                 // Token actions
 
                 if (registerUser.Token != null)
                 {
                     var token = _tokenSrv.GetToken(registerUser.Token);
-
+                    
                     if (token != null)
                     {
+                        _logger.LogDebug($"Using token while registration: " +
+                                         $"Token = [{token.Token}], Type = [{token.Type}]");
+
                         switch (token.Type)
                         {
                             case "SharingInvite":
@@ -94,6 +105,8 @@ namespace GeoPing.Services
                                 }
                         }
                     }
+
+                    _logger.LogDebug($"Using invalid token while registration: Token = [{registerUser.Token}]");
                 }
 
                 var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
