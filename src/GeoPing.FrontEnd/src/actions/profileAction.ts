@@ -17,7 +17,9 @@ export const loadProfileData = ( idUser: string ) => ( dispatch: IDispatchFuncti
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadProfileData', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };
@@ -32,7 +34,9 @@ export const changePassword = ( password: string, newPassword: string ) => ( dis
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' changePassword', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };
@@ -47,7 +51,9 @@ export const updateProfileData = ( data: any ) => ( dispatch: IDispatchFunction 
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' updateProfileData', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };
@@ -73,7 +79,9 @@ export const saveAvatar = ( avatar: string ) => ( dispatch: IDispatchFunction ) 
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' saveAvatar', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };

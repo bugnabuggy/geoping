@@ -22,7 +22,9 @@ export const loadCheckLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadingAction( false ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadCheckLists', EnumNotificationType.Danger )
+      ) );
       dispatch( loadingAction( false ) );
     } );
 };
@@ -38,7 +40,9 @@ export const deleteCheckList = ( idCheckList: string ) => ( dispatch: IDispatchF
       dispatch( deleteCheckListAction( idCheckList ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' deleteCheckList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 

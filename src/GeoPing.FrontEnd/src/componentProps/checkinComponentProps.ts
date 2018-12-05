@@ -6,6 +6,7 @@ import IHistoryDataDTO from '../DTO/historyDataDTO';
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 import { ICheckInDTO } from '../DTO/checkInDTO';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
+import { ETimer } from '../enums/timerEnum';
 
 export default interface ICheckinComponentProps {
   checkin: ICheckinStateType;
@@ -22,6 +23,9 @@ export interface ICheckinFunctions {
   getMyAddress: () => (dispatch: IDispatchFunction) => void;
   saveHistory: (idUser: string, historyData: IHistoryDataDTO) => ( dispatch: IDispatchFunction ) => void;
   clearGeoPoint: () => ( dispatch: IDispatchFunction ) => void;
-  checkIn: ( idList: string, idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => void;
+  checkIn: ( idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => void;
   messagesForUser: ( message: string, type: EnumNotificationType ) => ( dispatch: IDispatchFunction ) => void;
+  setTimer: ( isStartTimer: ETimer ) => ( dispatch: IDispatchFunction ) => void;
+  timerAccount: ( countTimer: number ) => ( dispatch: IDispatchFunction ) => void;
+  addDistance: ( distance: number ) => ( dispatch: IDispatchFunction ) => void;
 }

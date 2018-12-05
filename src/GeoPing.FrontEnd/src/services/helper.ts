@@ -9,9 +9,11 @@ import {
   checkInStatistics,
   checkInUrl,
   checkListUrl,
-  dashboardUrl, loginUrl,
+  dashboardUrl,
+  loginUrl,
   profileUrl,
 } from '../constants/routes';
+import { ETimer } from '../enums/timerEnum';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {
@@ -75,5 +77,33 @@ export function checkLocation( location: string, callbackRedirect: any ) {
   if ( redirect ) {
     sessionStorage.setItem( 'url_for_redirect', location );
     callbackRedirect( loginUrl );
+  }
+}
+
+export function timer( functions: any ) {
+  let count: number = 3;
+  const intervalId = setInterval(
+    () => {
+      functions.timerAccount( count );
+      if ( !count ) {
+        clearInterval( intervalId );
+        functions.setTimer( ETimer.Stop );
+      }
+      count -= 1;
+    },
+    1000 );
+}
+
+export function dateTypeDefinition( listId: string ) {
+  if ( listId === 'none' ) {
+    return {
+      typeDate: 'weeks',
+      count: 2,
+    };
+  } else {
+    return {
+      typeDate: 'day',
+      count: 1,
+    };
   }
 }
