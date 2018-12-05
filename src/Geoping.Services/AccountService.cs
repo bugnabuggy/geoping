@@ -98,7 +98,7 @@ namespace GeoPing.Services
 
                 var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                var code = _tokenSrv.CreateConfirmationToken(user.Id, aspnetToken).Token;
+                var code = _tokenSrv.CreateConfirmationEmailToken(user.Id, aspnetToken).Token;
 
                 if (_settings.EmailSender.IsEmailConfirmEnable)
                 {
@@ -168,7 +168,7 @@ namespace GeoPing.Services
 
             var aspnetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var code = _tokenSrv.CreateConfirmationToken(user.Id, aspnetToken).Token;
+            var code = _tokenSrv.CreateConfirmationResetToken(user.Id, aspnetToken).Token;
 
             SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 

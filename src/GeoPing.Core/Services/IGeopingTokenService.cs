@@ -13,7 +13,8 @@ namespace GeoPing.Core.Services
         OperationResult<TokenInfoDTO> ExamineToken(string token);
         OperationResult MarkAsUsed(string token);
         void DeleteSharingTokens(string sharingId);
-        GeoPingToken CreateConfirmationToken(string userId, string aspnetToken);
+        GeoPingToken CreateConfirmationEmailToken(string userId, string aspnetToken);
+        GeoPingToken CreateConfirmationResetToken(string userId, string aspnetToken);
         string ValidateGPToken(GeoPingToken gpToken);
         bool TryGetToken(string token, out GeoPingToken geoPingToken);
     }

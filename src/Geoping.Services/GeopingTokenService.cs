@@ -64,13 +64,28 @@ namespace GeoPing.Services
             _tokenRepo.Delete(tokens);
         }
 
-        public GeoPingToken CreateConfirmationToken(string userId, string aspnetToken)
+        public GeoPingToken CreateConfirmationEmailToken(string userId, string aspnetToken)
         {
             var value = $"{userId},{aspnetToken}";
 
             var result = _tokenRepo.Add(new GeoPingToken
             {
-                Type = "Email",
+                Type = "ConfirmEmail",
+                Created = DateTime.UtcNow,
+                Value = value,
+                Token = _secSrv.GetSHA256HashString(value)
+            });
+
+            return result;
+        }
+
+        public GeoPingToken CreateConfirmationResetToken(string userId, string aspnetToken)
+        {
+            var value = $"{userId},{aspnetToken}";
+
+            var result = _tokenRepo.Add(new GeoPingToken
+            {
+                Type = "ConfirmReset",
                 Created = DateTime.UtcNow,
                 Value = value,
                 Token = _secSrv.GetSHA256HashString(value)
