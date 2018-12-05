@@ -6,5 +6,6 @@ namespace GeoPing.Core.Models.DTO
     {
         public string TokenType { get; set; }
         public Guid? UserId { get; set; }
+        public string UserData { get; set; }
     }
 }
