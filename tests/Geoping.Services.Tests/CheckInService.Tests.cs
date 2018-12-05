@@ -32,6 +32,8 @@ namespace GeoPing.Services.Tests
             _pointSrv = _services.GetRequiredService<IGeopointService>();
             _checkInRepo = _services.GetRequiredService<IRepository<CheckIn>>();
 
+            _mockSecuritySrv = new Mock<ISecurityService>();
+
             _sut = new CheckInService(_listSrv, _pointSrv, _checkInRepo, _mockSecuritySrv.Object);
         }
 
