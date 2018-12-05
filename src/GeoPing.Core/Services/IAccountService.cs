@@ -14,7 +14,6 @@ namespace GeoPing.Core.Services
         bool IsUserExists(string userId);
         Task<OperationResult> ConfirmEmailAsync(string token);
         Task<OperationResult> ConfirmResetAsync(string token, string newPassword);
-        Task ConfirmAccountWithoutEmailAsync(string userEmail);
         OperationResult<GeoPingUser> GetProfile(Guid gpUserId);
         OperationResult<ShortUserInfoDTO> GetShortProfile(Guid userId);
         OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);

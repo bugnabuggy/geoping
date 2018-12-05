@@ -79,18 +79,18 @@ namespace GeoPing.Services
 
                 var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
 
-                _logger.LogDebug($"Geoping user was created for {user.Email} - {gpUser.Id}");
+                _logger.LogDebug($"Geoping user was created for {user.Email} - {gpUser.Id}.");
 
                 // Token actions
 
                 if (registerUser.Token != null)
                 {
                     var token = _tokenSrv.GetToken(registerUser.Token);
-                    
+
                     if (token != null)
                     {
                         _logger.LogDebug($"Using token while registration: " +
-                                         $"Token = [{token.Token}], Type = [{token.Type}]");
+                                         $"Token = [{token.Token}], Type = [{token.Type}].");
 
                         switch (token.Type)
                         {
@@ -106,22 +106,30 @@ namespace GeoPing.Services
                         }
                     }
 
-                    _logger.LogDebug($"Using invalid token while registration: Token = [{registerUser.Token}]");
+                    _logger.LogDebug($"Using invalid token while registration.");
                 }
 
                 var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                var code = _tokenSrv.CreateConfirmationEmailToken(user.Id, aspnetToken).Token;
-
                 if (_settings.EmailSender.IsEmailConfirmEnable)
                 {
+                    var code = _tokenSrv.CreateConfirmationEmailToken(user.Id, aspnetToken).Token;
+
                     SendSecurityEmail(user, code, "ConfirmEmail", "Registration on GeoPing.info");
+
+                    _logger.LogInformation($"User {user.Email}::{user.Id} was successfully registered" +
+                                           $"and now there is awaited email confirmation by him.");
                 }
                 else
                 {
+                    _logger.LogInformation($"User account {user.Email}::{user.Id} was successfully registered" +
+                                           $"and now there is awaited automatic confirmation.");
+
                     await _userManager.ConfirmEmailAsync(user, aspnetToken);
 
-                    await ConfirmAccountWithoutEmailAsync(registerUser.Email);
+                    _gpUserSrv.ActivateUser(user.Id);
+
+                    _logger.LogInformation($"User account {user.Email}::{user.Id} was automatically confirmed.");
                 }
 
                 return new OperationResult
@@ -132,11 +140,14 @@ namespace GeoPing.Services
                 };
             }
 
+            _logger.LogError($"An error was occured while user registration " +
+                             $"{user.Email}::{user.UserName}: ", result.Errors);
+
             // If we got this far, something failed
             return new OperationResult
             {
-                Success = false,
-                Messages = new[] { "Something was failed while user registration" }
+                Data = result.Errors,
+                Messages = new[] { "Something was failed while user registration." }
             };
         }
 
@@ -144,34 +155,57 @@ namespace GeoPing.Services
         {
             var user = await _userManager.FindByIdAsync(identityUserId);
 
+            _logger.LogDebug($"User {user.Email}::{user.Id} has invoked password change.");
+
             var result = await _userManager.ChangePasswordAsync
                 (user, changePassword.OldPassword, changePassword.NewPassword);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
+                _logger.LogError("An error was occured while changing password by user " +
+                                 $"{user.Email}::{user.Id}: ", result.Errors);
+
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "Password was changed successfully" }
+                    Data = result.Errors,
+                    Messages = new[] { "There was fault while changing password. Check if the old password is correct" }
                 };
             }
+
+            _logger.LogDebug($"User {user.Email}::{user.Id} has changed his password successfully.");
+
             return new OperationResult
             {
-                Success = false,
-                Messages = new[] { "There was fault while changing password. Check if the old password is correct" }
+                Success = true,
+                Messages = new[] { "Password was changed successfully" }
             };
         }
 
         public async Task<OperationResult> ResetPassword(ResetPasswordDTO form)
         {
-            var user = await _userManager.FindByEmailAsync(form.UserData);
+            _logger.LogDebug($"Someone has invoked password reset for user [{form.UserData}].");
+
+            AppIdentityUser user = null;
+
+            try
+            {
+                user = await _userManager.FindByEmailAsync(form.UserData);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"There is now registered user with email = [{form.UserData}].", ex);
+            }
 
             if (user == null)
             {
-                user = await _userManager.FindByNameAsync(form.UserData);
-
-                if (user == null)
+                try
                 {
+                    user = await _userManager.FindByNameAsync(form.UserData);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning($"There is now registered user with email = [{form.UserData}].", ex);
+
                     return new OperationResult
                     {
                         Messages = new[] { "There is no user with given login or email" }
@@ -185,19 +219,26 @@ namespace GeoPing.Services
 
             SendSecurityEmail(user, code, "ConfirmReset", "Password reset");
 
+            _logger.LogDebug($"User {user.Email}::{user.Id} has requested password reset.");
+
             return new OperationResult
             {
                 Success = true,
-                Messages = new[] { "A password reset confirmation email has been sent to email address you specified" }
+                Messages = new[] { "A password reset confirmation email has been sent " +
+                                   "to email address you specified" }
             };
         }
 
         public async Task<OperationResult> ConfirmEmailAsync(string token)
         {
+            _logger.LogDebug("Someone has invoked email confirmation by token.");
+
             var isTokenExist = _tokenSrv.TryGetToken(token, out GeoPingToken gpToken);
 
             if (!isTokenExist)
             {
+                _logger.LogWarning("Represented email confirmation token is invalid.");
+
                 return new OperationResult
                 {
                     Messages = new[] { "Invalid token" }
@@ -207,6 +248,8 @@ namespace GeoPing.Services
             var tokenValidationResult = _tokenSrv.ValidateGPToken(gpToken);
             if (tokenValidationResult != null)
             {
+                _logger.LogWarning($"Represented email confirmation token is {tokenValidationResult.ToLower()}.");
+
                 return new OperationResult
                 {
                     Messages = new[] { $"{tokenValidationResult} token" }
@@ -224,9 +267,17 @@ namespace GeoPing.Services
             };
             // END OF CRAP
 
-            var user = await _userManager.FindByIdAsync(data.UserId);
-            if (user == null)
+            AppIdentityUser user = null;
+
+            try
             {
+                user = await _userManager.FindByIdAsync(data.UserId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Token contains information about user with id = [{data.UserId}], " +
+                                 $"but user doesn`t exists.");
+
                 return new OperationResult
                 {
                     Data = data.UserId,
@@ -238,6 +289,10 @@ namespace GeoPing.Services
 
             if (!result.Succeeded)
             {
+                _logger.LogError
+                    ($"An error occured while email confirmation of user with id = [{user.Id}]: ",
+                    result.Errors);
+
                 return new OperationResult
                 {
                     Data = result.Errors,
@@ -249,6 +304,8 @@ namespace GeoPing.Services
 
             _tokenSrv.MarkAsUsed(data.Token);
 
+            _logger.LogInformation($"User {user.Email}::{user.Id} has confirmed his account successfully.");
+
             return new OperationResult
             {
                 Success = true,
@@ -258,10 +315,14 @@ namespace GeoPing.Services
 
         public async Task<OperationResult> ConfirmResetAsync(string token, string newPassword)
         {
+            _logger.LogDebug("Someone has invoked password reset confirmation by token.");
+
             var isTokenExist = _tokenSrv.TryGetToken(token, out GeoPingToken gpToken);
 
             if (!isTokenExist)
             {
+                _logger.LogWarning("Represented email confirmation token is invalid.");
+
                 return new OperationResult
                 {
                     Messages = new[] { "Invalid token" }
@@ -271,6 +332,8 @@ namespace GeoPing.Services
             var tokenValidationResult = _tokenSrv.ValidateGPToken(gpToken);
             if (tokenValidationResult != null)
             {
+                _logger.LogWarning($"Represented email confirmation token is {tokenValidationResult.ToLower()}.");
+
                 return new OperationResult
                 {
                     Messages = new[] { $"{tokenValidationResult} token" }
@@ -288,9 +351,17 @@ namespace GeoPing.Services
             };
             // END OF CRAP
 
-            var user = await _userManager.FindByIdAsync(data.UserId);
-            if (user == null)
+            AppIdentityUser user = null;
+
+            try
             {
+                user = await _userManager.FindByIdAsync(data.UserId);
+            }
+            catch (Exception)
+            {
+                _logger.LogError($"Token contains information about user with id = [{data.UserId}], " +
+                                 $"but user doesn`t exists.");
+
                 return new OperationResult
                 {
                     Data = data.UserId,
@@ -302,8 +373,13 @@ namespace GeoPing.Services
 
             if (!result.Succeeded)
             {
+                _logger.LogError
+                    ($"An error occured while email confirmation of user with id = [{user.Id}]: ",
+                    result.Errors);
+
                 return new OperationResult
                 {
+                    Data = result.Errors,
                     Messages = new[] { "Something went wrong while password reset. Try again later" }
                 };
             }
@@ -312,6 +388,8 @@ namespace GeoPing.Services
 
             _tokenSrv.MarkAsUsed(data.Token);
 
+            _logger.LogInformation($"User {user.Email}::{user.Id} has reset his password successfully .");
+
             return new OperationResult
             {
                 Success = true,
@@ -319,26 +397,24 @@ namespace GeoPing.Services
             };
         }
 
-        public async Task ConfirmAccountWithoutEmailAsync(string userEmail)
-        {
-            var user = await _userManager.FindByEmailAsync(userEmail);
-
-            user.EmailConfirmed = true;
-
-            _gpUserSrv.ActivateUser(user.Id);
-        }
-
         public OperationResult<GeoPingUser> GetProfile(Guid gpUserId)
         {
+            _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] was requested.");
+
             var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
 
             if (result == null)
             {
+                _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] request was failed: " +
+                                 $"user was not found.");
+
                 return new OperationResult<GeoPingUser>
                 {
                     Messages = new[] { "User was not found" }
                 };
             }
+
+            _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] request was successful.");
 
             return new OperationResult<GeoPingUser>
             {
@@ -350,15 +426,23 @@ namespace GeoPing.Services
 
         public OperationResult<ShortUserInfoDTO> GetShortProfile(Guid gpUserId)
         {
+            _logger.LogDebug($"Short profile info of Geoping user with id = [{gpUserId}] was requested.");
+
             var result = _gpUserSrv.GetUserNameAndAvatar(x => x.Id == gpUserId);
 
             if (result == null)
             {
+                _logger.LogDebug($"Short profile info of Geoping user with id = [{gpUserId}] " +
+                                 $"request was failed: user was not found.");
+
                 return new OperationResult<ShortUserInfoDTO>
                 {
                     Messages = new[] { "User was not found" }
                 };
             }
+
+            _logger.LogDebug($"Short profile info of Geoping user with id = [{gpUserId}] request was successful.");
+
             return new OperationResult<ShortUserInfoDTO>
             {
                 Data = result,
@@ -369,55 +453,71 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> EditProfile(Guid userId, GeoPingUserDTO userData)
         {
+            _logger.LogDebug($"Geoping user with id = [{userId}] has requested profile editing.");
+
             var user = _gpUserSrv.GetUser(x => x.Id == userId);
 
             user.FirstName = userData.FirstName;
             user.LastName = userData.LastName;
             user.Birthday = userData.Birthday;
             user.PhoneNumber = userData.PhoneNumber;
+            user.Country = userData.Country;
 
-            var result = _gpUserSrv.EditUser(user);
+            var result = new OperationResult<GeoPingUser>();
 
-            if (result.Success)
+            try
             {
+                result = _gpUserSrv.EditUser(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occured while editing profile of Geoping user with id = [{userId}].", ex);
+
                 return new OperationResult<GeoPingUser>
                 {
-                    Data = user,
-                    Success = true,
-                    Messages = new[] { "Your profile was edited successfully" }
+                    Messages = new[] { "Something went wrong while editing profile.", ex.Message }
                 };
             }
 
+            _logger.LogDebug($"Profile of Geoping user with id = [{userId}] has been edited.");
+
             return new OperationResult<GeoPingUser>
             {
-                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
+                Data = user,
+                Success = true,
+                Messages = new[] { "Your profile was edited successfully" }
             };
         }
 
         public OperationResult<GeoPingUser> EditProfileAvatar(Guid userId, ProfileAvatarDTO item)
         {
-            if (item != null)
-            {
-                var user = _gpUserSrv.GetUser(x => x.Id == userId);
+            _logger.LogDebug($"Geoping user with id = [{userId}] has requested avatar editing.");
 
+            var result = new OperationResult<GeoPingUser>();
+
+            var user = _gpUserSrv.GetUser(x => x.Id == userId);
+
+            try
+            {
                 user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
 
-                var result = _gpUserSrv.EditUser(user);
+                result = _gpUserSrv.EditUser(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occured while editing avatar of Geoping user with id = [{userId}].", ex);
 
-                if (result.Success)
+                return new OperationResult<GeoPingUser>
                 {
-                    return new OperationResult<GeoPingUser>
-                    {
-                        Data = user,
-                        Success = true,
-                        Messages = new[] { "Your profile avatar was edited successfully" }
-                    };
-                }
+                    Messages = new[] { "Something went wrong while avatar editing.", ex.Message }
+                };
             }
 
             return new OperationResult<GeoPingUser>
             {
-                Messages = new[] { "Profile you are trying to edit is not yours or something went wrong while editing" }
+                Data = user,
+                Success = true,
+                Messages = new[] { "Your profile avatar was edited successfully" }
             };
         }
 
@@ -451,8 +551,6 @@ namespace GeoPing.Services
         {
             // TODO: CAN I MAKE THIS PART BETTER WITHOUT SPEED LOSS?
             //====================================================================================
-            var baseUrl = _settings.Urls.SiteUrl;
-
             string actionEndpoint = null;
 
             switch (action)
@@ -466,24 +564,33 @@ namespace GeoPing.Services
                     break;
             }
 
-            string callbackUrl = $"{baseUrl}/{actionEndpoint}?Token={code}";
+            string callbackUrl = $"{_settings.Urls.SiteUrl}/" +
+                                 $"{actionEndpoint}" +
+                                 $"?Token={code}";
             //====================================================================================
 
-            _emailSrv.Send(new EmailMessage
+            try
             {
-                FromAddress = new EmailAddress
+                _emailSrv.Send(new EmailMessage
                 {
-                    Name = "GeopingTeam",
-                    Address = _settings.EmailSender.SmtpUserName
-                },
-                ToAddress = new EmailAddress
-                {
-                    Name = user.UserName,
-                    Address = user.Email
-                },
-                Subject = subject,
-                Content = _emailSrv.GetConfirmationMail(user.UserName, callbackUrl)
-            });
+                    FromAddress = new EmailAddress
+                    {
+                        Name = "GeopingTeam",
+                        Address = _settings.EmailSender.SmtpUserName
+                    },
+                    ToAddress = new EmailAddress
+                    {
+                        Name = user.UserName,
+                        Address = user.Email
+                    },
+                    Subject = subject,
+                    Content = _emailSrv.GetConfirmationMail(user.UserName, callbackUrl)
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occured while sending confirmation email to [{user.Email}].", ex);
+            }
         }
     }
 }
