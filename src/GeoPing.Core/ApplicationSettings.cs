@@ -21,13 +21,17 @@ namespace GeoPing.Core
     {
         public int Sharing { get; set; }
         public int SharingInvite { get; set; }
+        public int ConfirmEmail { get; set; }
+        public int ConfirmReset { get; set; }
 
         public int GetValue(string type)
         {
             var value = new Dictionary<string, int>
             {
                 { "Sharing", Sharing },
-                { "SharingInvite", SharingInvite}
+                { "SharingInvite", SharingInvite },
+                { "ConfirmEmail", ConfirmEmail },
+                { "ConfirmReset", ConfirmReset }
             };
 
             return value[type];

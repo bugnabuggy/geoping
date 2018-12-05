@@ -24,7 +24,7 @@ namespace GeoPing.Services
         private ISecurityService _securitySrv;
         private IGeolistService _listSrv;
         private IGeopingTokenService _tokenSrv;
-        private IGPUserService _gpUserSrv;
+        private IGeopingUserService _gpUserSrv;
         private UserManager<AppIdentityUser> _userManager;
         private IValidationService _validator;
         private IEmailService _emailSvc;
@@ -36,7 +36,7 @@ namespace GeoPing.Services
             ISecurityService securitySrv,
             IGeolistService listSrv,
             IGeopingTokenService tokenSrv,
-            IGPUserService gpUserSrv,
+            IGeopingUserService gpUserSrv,
             UserManager<AppIdentityUser> userManager,
             IValidationService validator,
             IEmailService emailSvc,
