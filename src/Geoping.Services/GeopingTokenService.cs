@@ -64,6 +64,36 @@ namespace GeoPing.Services
             _tokenRepo.Delete(tokens);
         }
 
+        public GeoPingToken CreateConfirmationEmailToken(string userId, string aspnetToken)
+        {
+            var value = $"{userId},{aspnetToken}";
+
+            var result = _tokenRepo.Add(new GeoPingToken
+            {
+                Type = "ConfirmEmail",
+                Created = DateTime.UtcNow,
+                Value = value,
+                Token = _secSrv.GetSHA256HashString(value)
+            });
+
+            return result;
+        }
+
+        public GeoPingToken CreateConfirmationResetToken(string userId, string aspnetToken)
+        {
+            var value = $"{userId},{aspnetToken}";
+
+            var result = _tokenRepo.Add(new GeoPingToken
+            {
+                Type = "ConfirmReset",
+                Created = DateTime.UtcNow,
+                Value = value,
+                Token = _secSrv.GetSHA256HashString(value)
+            });
+
+            return result;
+        }
+
         public OperationResult<TokenInfoDTO> ExamineToken(string token)
         {
             var gpToken = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
@@ -152,7 +182,7 @@ namespace GeoPing.Services
             };
         }
 
-        private string ValidateGPToken(GeoPingToken gpToken)
+        public string ValidateGPToken(GeoPingToken gpToken)
         {
             if (gpToken != null)
             {
@@ -169,6 +199,13 @@ namespace GeoPing.Services
             }
 
             return null;
+        }
+
+        public bool TryGetToken(string token, out GeoPingToken geoPingToken)
+        {
+            geoPingToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token); ;
+
+            return geoPingToken != null;
         }
     }
 }
