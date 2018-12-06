@@ -313,7 +313,7 @@ namespace GeoPing.Services
 
                 SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
 
-                return null;
+                return pastSharing;
             }
 
             // TODO: CAN I SOMEHOW UNITE CONDITION IF INVITEDUSER != NULL WITHOUT EXTRALARGE CODELINES
@@ -424,38 +424,19 @@ namespace GeoPing.Services
 
         private IEnumerable<UserListWasSharedWithDTO> GetUsersListWasSharedWithInfo(IQueryable<ListSharing> sharings)
         {
-            //var users = _gpUserSrv.GetUsers(x => sharings.Any(y => x.Id == y.UserId));
-
-            //ICollection<UserListWasSharedWithDTO> result = new List<UserListWasSharedWithDTO>();
-
-            //foreach (var sh in sharings)
-            //{
-            //    var user = users.FirstOrDefault(x => x.Id == sh.UserId);
-            //    result.Add(new UserListWasSharedWithDTO()
-            //    {
-            //        UserId = user?.Id ?? null,
-            //        UserName = user?.Login ?? sh.Email,
-            //        FirstName = user?.FirstName ?? null,
-            //        LastName = user?.LastName ?? null,
-            //        SharingId = sh.Id,
-            //        SharingDate = sh.InvitationDate.ToUniversalTime(),
-            //        SharingStatus = sh.Status
-            //    });
-            //}
-
             var result =
                 from sh in sharings
                 join u in _gpUserSrv.GetUsers(x => true) on sh.UserId equals u.Id into data
                 from x in data.DefaultIfEmpty()
-                select new UserListWasSharedWithDTO
+                select new UserListWasSharedWithDTO()
                 {
-                    UserId = x.Id,
-                    UserName = x.Login ?? sh.Email,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
                     SharingId = sh.Id,
-                    SharingDate = sh.InvitationDate.ToUniversalTime(),
-                    SharingStatus = sh.Status
+                    SharingDate = sh.InvitationDate,
+                    SharingStatus = sh.Status,
+                    UserId = x != null ? x.Id : (Guid?)null,
+                    UserName = x != null ? x.Login : sh.Email,
+                    FirstName = x != null ? x.FirstName : null,
+                    LastName = x != null ? x.LastName : null,
                 };
 
             return result;
