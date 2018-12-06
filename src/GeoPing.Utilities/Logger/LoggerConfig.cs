@@ -27,55 +27,60 @@ namespace GeoPing.Utilities.Logger
             // Configuration object
             var config = new LoggingConfiguration();
 
-            var syslogTargetCommon = new SyslogTarget
+            if (settings.SyslogCommon.IsEnable)
             {
-                Name = "sysLogCommon",
-                MessageCreation = new MessageBuilderConfig
+                var syslogTargetCommon = new SyslogTarget
                 {
-                    Facility = Facility.Local7
-                },
-                MessageSend = new MessageTransmitterConfig
-                {
-                    Protocol = ProtocolType.Tcp,
-                    Tcp = new TcpConfig
+                    Name = "sysLogCommon",
+                    MessageCreation = new MessageBuilderConfig
                     {
-                        Server = settings.SyslogCommon.Server,
-                        Port = settings.SyslogCommon.Port,
-                        Tls = new TlsConfig
+                        Facility = Facility.Local7
+                    },
+                    MessageSend = new MessageTransmitterConfig
+                    {
+                        Protocol = ProtocolType.Tcp,
+                        Tcp = new TcpConfig
                         {
-                            Enabled = true
+                            Server = settings.SyslogCommon.Server,
+                            Port = settings.SyslogCommon.Port,
+                            Tls = new TlsConfig
+                            {
+                                Enabled = true
+                            }
                         }
                     }
-                }
+                };
+                config.AddTarget(syslogTargetCommon);
+                config.AddRule(LogLevel.FromString(settings.SyslogCommon.Level), LogLevel.Warn, syslogTargetCommon); 
+            }
 
-            };
-            config.AddTarget(syslogTargetCommon);
-            config.AddRule(LogLevel.FromString(settings.SyslogCommon.Level), LogLevel.Warn, syslogTargetCommon);
-
-            var syslogTargetError = new SyslogTarget
+            if (settings.SyslogError.IsEnable)
             {
-                Name = "sysLogError",
-                MessageCreation = new MessageBuilderConfig
+                var syslogTargetError = new SyslogTarget
                 {
-                    Facility = Facility.Local7
-                },
-                MessageSend = new MessageTransmitterConfig
-                {
-                    Protocol = ProtocolType.Tcp,
-                    Tcp = new TcpConfig
+                    Name = "sysLogError",
+                    MessageCreation = new MessageBuilderConfig
                     {
-                        Server = settings.SyslogError.Server,
-                        Port = settings.SyslogError.Port,
-                        Tls = new TlsConfig
+                        Facility = Facility.Local7
+                    },
+                    MessageSend = new MessageTransmitterConfig
+                    {
+                        Protocol = ProtocolType.Tcp,
+                        Tcp = new TcpConfig
                         {
-                            Enabled = true
+                            Server = settings.SyslogError.Server,
+                            Port = settings.SyslogError.Port,
+                            Tls = new TlsConfig
+                            {
+                                Enabled = true
+                            }
                         }
                     }
-                }
 
-            };
-            config.AddTarget(syslogTargetError);
-            config.AddRule(LogLevel.FromString(settings.SyslogError.Level), LogLevel.Fatal, syslogTargetError);
+                };
+                config.AddTarget(syslogTargetError);
+                config.AddRule(LogLevel.FromString(settings.SyslogError.Level), LogLevel.Fatal, syslogTargetError); 
+            }
 
             // FileTarget object
             var fileTarget = new FileTarget("fileLogger")

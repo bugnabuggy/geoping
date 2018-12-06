@@ -74,6 +74,7 @@ namespace GeoPing.Core
 
     public class SyslogTargetSettings
     {
+        public bool IsEnable { get; set; }
         public string Server { get; set; }
         public int Port { get; set; }
         public string Level { get; set; }
