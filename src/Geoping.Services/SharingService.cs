@@ -88,20 +88,23 @@ namespace GeoPing.Services
             };
         }
 
-        public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
+        public void ConfirmSharingsWithRegistration(string sharingId, Guid userId, string email)
         {
-            var sharing = _sharingRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+            var sharing = _sharingRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
 
-            if (sharing != null)
+            if (sharing == null) return;
+
+            if (sharing.Email != email) return;
+
+            var sharings = _sharingRepo.Data.Where(x => x.Email == email);
+
+            foreach (var sh in sharings)
             {
-                if (sharing.Email == email)
-                {
-                    sharing.UserId = userId;
-                    sharing.Status = "pending";
-
-                    _sharingRepo.Update(sharing);
-                }
+                sh.UserId = userId;
+                sh.Status = "pending";
             }
+
+            _sharingRepo.Update(sharings);
         }
 
         // Send sharing invitations to users in list

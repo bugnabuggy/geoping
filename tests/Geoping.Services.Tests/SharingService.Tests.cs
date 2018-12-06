@@ -264,7 +264,7 @@ namespace GeoPing.Services.Tests
         {
             Assert.AreEqual(null, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault().UserId);
 
-            _sut.ConfirmSharingWithRegistration(_sharingId3, _userId1, "test1@test.com");
+            _sut.ConfirmSharingsWithRegistration(_sharingId3, _userId1, "test1@test.com");
 
             Assert.AreEqual(_userId1, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault().UserId);
         }
