@@ -47,4 +47,9 @@ export const googleMapState: IGoogleMapStateType = {
   idDeleteMarker: '',
   isGeoPointListIsCreated: false,
   checkInGeoPoint: [],
+  isDataPointEditing: false,
+  isShowWarningModal: false,
+  validationPoint: {
+    isNamePointError: false,
+  },
 };

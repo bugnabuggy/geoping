@@ -13,10 +13,11 @@ import {
   PERMISSION_TO_ADD,
   SAVE_GEO_POINT,
   SELECT_GEO_POINT,
-  SET_ADDRESS_GEO_POINT
+  SET_ADDRESS_GEO_POINT,
+  VALIDATION_POINT
 } from '../constantsForReducer/googleMap';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { IPosition } from '../types/stateTypes/googleMapStateType';
+import { IPosition, IValidationPoint } from '../types/stateTypes/googleMapStateType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
@@ -213,6 +214,10 @@ export const clearGeoPoint = () => ( dispatch: IDispatchFunction ) => {
   dispatch( clearGeoPointAction() );
 };
 
+export const validationPoint = ( validation: IValidationPoint ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( validationPointAction( validation ) );
+};
+
 /* Actions */
 
 export function addListPointsAction( geoPoints: Array<IGeoPoint> ): { type: string, geoPoints: Array<IGeoPoint> } {
@@ -275,4 +280,8 @@ function clearGeoPointAction(): { type: any } {
 
 function setAddressGeoPointAction( address: string ) {
   return { type: SET_ADDRESS_GEO_POINT, address };
+}
+
+function validationPointAction( validation: IValidationPoint ) {
+  return { type: VALIDATION_POINT, validation };
 }
