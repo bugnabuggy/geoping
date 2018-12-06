@@ -21,8 +21,9 @@ import {
   deleteGeoPoint,
   permissionAdd,
   saveGeoPoint,
-  selectPoint
+  selectPoint, validationPoint
 } from '../actions/googleMapAction';
+import { ModalWarningSavePointComponent } from '../components/modalComponents/modalWarningSavePointComponent';
 
 class CheckListComponentContainer extends React.Component<ICheckListComponentContainerProps, any> {
   componentDidMount() {
@@ -54,6 +55,7 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
             saveGeoPoint={this.props.saveGeoPoint}
             changeDataGeoPoint={this.props.changeDataGeoPoint}
             cancelGeoPoint={this.props.cancelGeoPoint}
+            validationPoint={this.props.validationPoint}
           />
         </div>
         <div className="check-list-points-list">
@@ -65,6 +67,15 @@ class CheckListComponentContainer extends React.Component<ICheckListComponentCon
             deleteGeoPoint={this.props.deleteGeoPoint}
           />
         </div>
+        <ModalWarningSavePointComponent
+          show={this.props.googleMap.isShowWarningModal}
+          googleMap={this.props.googleMap}
+          checkList={this.props.checkList}
+
+          saveGeoPoint={this.props.saveGeoPoint}
+          cancelGeoPoint={this.props.cancelGeoPoint}
+          validationPoint={this.props.validationPoint}
+        />
       </React.Fragment>
     );
   }
@@ -93,6 +104,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       loadCheckListData,
       clearStateCheckList,
       isCheckListPage,
+      validationPoint,
     },
     dispath );
 

@@ -17,7 +17,7 @@ export const confirmEmail = ( userId: string, token: string ) => ( dispatch: IDi
       dispatch( addNotificationAction(
         createNotification(
           'Email Confirm',
-          EnumNotificationType.Danger
+          EnumNotificationType.Success
         ) ) );
     } )
     .catch( ( error: any ) => {

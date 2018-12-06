@@ -30,12 +30,6 @@ import {
 import { ERoleUser } from '../types/stateTypes/userStateType';
 
 export class HeaderComponent extends React.Component<IHeaderComponentProps, any> {
-  handleToggle = () => {
-    this.setState( {
-      showMenu: !this.state.showMenu,
-    } );
-  };
-
   constructor( props: any ) {
     super( props );
     this.state = ( {
@@ -43,7 +37,14 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
     } );
   }
 
+  handleToggle = () => {
+    this.setState( {
+      showMenu: !this.state.showMenu,
+    } );
+  };
+
   render() {
+    const userRole: ERoleUser = this.props.user.roles.find( ( item: string ) => item === ERoleUser.Admin );
     return (
       <React.Fragment>
         <Navbar color="light" light={true} expand="md">
@@ -72,19 +73,21 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                     <DropdownMenu right={true}>
                       <ul>
                         <NavItem>
-                          <Link to={profileUrl} className="nav-link">Profile</Link>
+                          <Link to={profileUrl} className="nav-link header-dropdown-link">Profile</Link>
                         </NavItem>
-                        {this.props.user.roleUser === ERoleUser.Admin ?
+                        {!!userRole ?
                           (
                             <NavItem>
-                              <Link to={adminDashboardUrl} className="nav-link">Admin Dashboard</Link>
+                              <Link to={adminDashboardUrl} className="nav-link header-dropdown-link">
+                                Admin Dashboard
+                              </Link>
                             </NavItem>
                           )
                           :
                           null}
                         <DropdownItem divider={true}/>
                         <NavItem>
-                          <Link to={logOutUrl} className="nav-link">Sign out</Link>
+                          <Link to={logOutUrl} className="nav-link header-dropdown-link">Sign out</Link>
                         </NavItem>
                       </ul>
                     </DropdownMenu>

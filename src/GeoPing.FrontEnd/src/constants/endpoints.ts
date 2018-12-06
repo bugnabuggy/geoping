@@ -3,9 +3,9 @@ export const endpointBaseUrl: string = process.env.REACT_APP_API_BASE_URL;
 export const getToken: string = `${endpointBaseUrl}/connect/token`;
 export const registration: string = `${endpointBaseUrl}/account/register`;
 export const confirmEmail: string = `${endpointBaseUrl}/account/confirm-email?UserId=%userId%&Token=%token%`;
-export const sendLoginOrEmail: string = `${endpointBaseUrl}/account/reset-password?LoginOrEmail=%login%`;
+export const sendLoginOrEmail: string = `${endpointBaseUrl}/account/reset-password`;
 export const resetPassword: string =
-  `${endpointBaseUrl}/account/confirm-reset?UserId=%id%&Token=%token%&NewPassword=%pass%`;
+  `${endpointBaseUrl}/account/confirm-reset?UserId=%id%&Token=%token%`;
 
 /* endpoints for geo lists */
 export const getAllGeoLists: string = `${endpointBaseUrl}/api/geolist`;

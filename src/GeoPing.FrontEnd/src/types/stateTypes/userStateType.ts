@@ -2,7 +2,7 @@ export default interface IUserStateType {
   userName: string;
   avatar: string;
   authorized: boolean;
-  roleUser: ERoleUser;
+  roles: Array<ERoleUser>;
   redirectDashboard: boolean;
   userId: string;
 }
