@@ -44,6 +44,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
   };
 
   render() {
+    const userRole: ERoleUser = this.props.user.roles.find( ( item: string ) => item === ERoleUser.Admin );
     return (
       <React.Fragment>
         <Navbar color="light" light={true} expand="md">
@@ -74,7 +75,7 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
                         <NavItem>
                           <Link to={profileUrl} className="nav-link header-dropdown-link">Profile</Link>
                         </NavItem>
-                        {this.props.user.roleUser === ERoleUser.Admin ?
+                        {!!userRole ?
                           (
                             <NavItem>
                               <Link to={adminDashboardUrl} className="nav-link header-dropdown-link">

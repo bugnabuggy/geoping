@@ -77,7 +77,7 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         />
         <Routes
           isTokenVerified={!!localStorage.getItem( 'token' )}
-          roleUser={this.props.user.roleUser}
+          userRoles={this.props.user.roles}
           path={this.props.location}
         />
 
