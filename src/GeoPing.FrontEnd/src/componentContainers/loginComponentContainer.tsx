@@ -22,7 +22,6 @@ class LoginComponentContainer extends React.Component<ILoginComponentContainerPr
         <LoginComponent
           path={this.props.location.pathname}
           userAuthorization={this.props.userAuthorization}
-          roleUser={this.props.roleUser}
 
           authorizationUser={this.props.authorizationUser}
           signOutUser={this.props.signOutUser}
@@ -39,7 +38,6 @@ const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     location: state.router.location,
     userAuthorization: state.user.authorized,
-    roleUser: state.user.roleUser,
   };
 };
 const mapDispatchToProps = ( dispath: any ) =>

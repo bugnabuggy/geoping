@@ -92,10 +92,13 @@ import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 //   }
 // }
 
-const AdminRoute = ( { isAllowed, roleUser, ...props }: any ) => isAllowed && ERoleUser.Admin === roleUser ?
-  <Route {...props}/>
-  :
-  <Redirect to={dashboardUrl}/>;
+const AdminRoute = ( { isAllowed, userRoles, ...props }: any ) => {
+  const userRole: ERoleUser = userRoles.find( ( item: string ) => item === ERoleUser.Admin );
+  return isAllowed && !!userRole ?
+    <Route {...props}/>
+    :
+    <Redirect to={dashboardUrl}/>;
+};
 
 const ProtectedRoute = ( { isAllowed, ...props }: any ) => isAllowed ?
   <Route {...props}/>
@@ -178,21 +181,21 @@ export const Routes = ( props: any ) =>
           />
           <AdminRoute
             isAllowed={props.isTokenVerified}
-            roleUser={props.roleUser}
+            userRoles={props.userRoles}
             exact={true}
             path={adminDashboardUrl}
             component={AdminDashboardPage}
           />
           <AdminRoute
             isAllowed={props.isTokenVerified}
-            roleUser={props.roleUser}
+            userRoles={props.userRoles}
             exact={true}
             path={adminAllUsersUrl}
             component={AdminAllUsersPage}
           />
           <AdminRoute
             isAllowed={props.isTokenVerified}
-            roleUser={props.roleUser}
+            userRoles={props.userRoles}
             exact={true}
             path={adminAllCheckLists}
             component={AdminAllChecklistPage}
