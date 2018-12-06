@@ -133,6 +133,8 @@ namespace GeoPing.Services
                 // Try to find user by username one by one
                 var user = await _userManager.FindByNameAsync(userData);
 
+                ListSharing sharing;
+
                 if (user == null)
                 {
                     // Check if recieved data may be an email. Data will be skipped if it may not.
@@ -149,7 +151,13 @@ namespace GeoPing.Services
                     // In case of user wasn`t found, invite goes to recieved email data
                     if (user == null)
                     {
-                        sharings.Add(InviteUser(actingUserId, list.Id, userData, null));
+                        sharing = InviteUser(actingUserId, list.Id, userData, null);
+
+                        if (sharing != null)
+                        {
+                            sharings.Add(sharing);
+                        }
+
                         messages.Add($"The user [{userData}] was invited.");
                         continue;
                     }
@@ -163,13 +171,18 @@ namespace GeoPing.Services
                     continue;
                 }
 
-                sharings.Add(InviteUser(actingUserId, list.Id, user.Email, invitedGPUser));
+                sharing = InviteUser(actingUserId, list.Id, user.Email, invitedGPUser);
+
+                if (sharing != null)
+                {
+                    sharings.Add(sharing);
+                }
+
                 messages.Add($"The user [{userData}] was invited.");
+                continue;
             }
 
-            var success = sharings.Any()
-                ? true
-                : false;
+            var success = sharings.Any();
 
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
@@ -199,10 +212,10 @@ namespace GeoPing.Services
             return GetSharedListsInfo(sharings);
         }
 
-        public OperationResult<IEnumerable<UserListWasSharedWithDTO>> 
+        public OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             GetUsersListWasSharedWith(Guid userId, string listId)
         {
-            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list); 
+            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
 
             if (list == null)
             {
@@ -221,7 +234,7 @@ namespace GeoPing.Services
             }
 
             var result = GetUsersListWasSharedWithInfo(_sharingRepo.Get(x => x.ListId == list.Id));
-            
+
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
                 Success = true,
@@ -307,13 +320,13 @@ namespace GeoPing.Services
             // Check if user was invited. Send one more mail, if he was
             if (IsUserHasBeenInvitedEarlier(invitedUserEmail, listId, out var pastSharing))
             {
-                var newGPToken = pastSharing.UserId == null 
-                    ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString()) 
+                var newGPToken = pastSharing.UserId == null
+                    ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString())
                     : _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
 
                 SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
 
-                return pastSharing;
+                return null;
             }
 
             // TODO: CAN I SOMEHOW UNITE CONDITION IF INVITEDUSER != NULL WITHOUT EXTRALARGE CODELINES
