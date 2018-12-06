@@ -70,8 +70,6 @@ export default class UserService implements IUser {
 
   sendLoginOrEmail( loginOrEmail: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      // const formData: FormData = new FormData();
-      // formData.append( 'UserData', loginOrEmail );
       this.communicator.post( sendLoginOrEmail, {'UserData': loginOrEmail } )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
