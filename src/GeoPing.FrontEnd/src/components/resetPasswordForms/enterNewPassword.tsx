@@ -90,6 +90,7 @@ export class EnterNewPassword extends React.Component<IEnterNewPasswordProps, an
           <div className="reset-password-form1-button-container">
             <Button
               onClick={this.handleSendPassword}
+              color="primary"
             >
               Set password
             </Button>

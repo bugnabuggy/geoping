@@ -141,6 +141,10 @@ select.form-control:not([size]):not([multiple]) {
   margin: 0 5px 0 5px;
 }
 
+.header-dropdown-link {
+  padding-left: 20px;
+}
+
 /*login ************************************************/
 .login-page {
   height: 100%;
