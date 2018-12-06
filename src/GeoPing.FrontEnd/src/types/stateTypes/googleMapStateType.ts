@@ -8,6 +8,10 @@ export interface IPosition {
   address: string;
 }
 
+export interface IValidationPoint {
+  isNamePointError: boolean;
+}
+
 export interface IGoogleMapStateType {
   geoPoints: Array<IGeoPoint>;
   selectedGeoPoint: IGeoPoint;
@@ -18,4 +22,7 @@ export interface IGoogleMapStateType {
   moveStartMarker: { lat: number, lng: number };
   isGeoPointListIsCreated: boolean;
   checkInGeoPoint: Array<ICheckInGeoPointDTO>;
+  isDataPointEditing: boolean;
+  isShowWarningModal: boolean;
+  validationPoint: IValidationPoint;
 }

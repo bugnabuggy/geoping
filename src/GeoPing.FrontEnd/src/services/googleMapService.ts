@@ -143,7 +143,7 @@ function iconUserGeoPoint( timeout: number ) {
   };
   const image = {
     ...createMarkerImage( iconUserGeoPointUrl ),
-    anchor: new _googleLib.maps.Point(25, 42),
+    anchor: new _googleLib.maps.Point( 25, 42 ),
   };
   setTimeout(
     () => {
@@ -330,10 +330,19 @@ function handleMapListener( event: any ) {
 }
 
 function handleGeoPointClick( e: any, geoPoint: IGeoPoint ) {
-  if ( !_that.props.googleMap.selectedGeoPoint.idForMap ) {
+  // if ( !_that.props.googleMap.selectedGeoPoint.idForMap ) {
+  //   _that.props.selectPoint( geoPoint );
+  // } else if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
+  //   _that.props.selectPoint( defaultMarker );
+  // }
+  if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
+    if ( !_that.props.googleMap.isDataPointEditing ) {
+      _that.props.selectPoint( defaultMarker );
+    } else {
+      _that.props.selectPoint( geoPoint );
+    }
+  } else {
     _that.props.selectPoint( geoPoint );
-  } else if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
-    _that.props.selectPoint( defaultMarker );
   }
 }
 
@@ -374,6 +383,12 @@ export function settingPointsByCoordinates( geoPoints: Array<IGeoPoint> ) {
       };
       // marker.setPosition( latLng );
       setPosition( marker, latLng );
+    }
+    const circle: any = findCircles( geoPoint.idForMap );
+    if ( circle ) {
+      circle.setOptions( {
+        radius: geoPoint.radius,
+      } );
     }
   } );
 }

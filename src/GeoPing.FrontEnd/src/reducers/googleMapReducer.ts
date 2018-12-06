@@ -13,7 +13,9 @@ import {
   GEO_POINT_LIST_IS_CREATED,
   PERMISSION_TO_ADD,
   SAVE_GEO_POINT,
-  SELECT_GEO_POINT, SET_ADDRESS_GEO_POINT
+  SELECT_GEO_POINT,
+  SET_ADDRESS_GEO_POINT,
+  VALIDATION_POINT
 } from '../constantsForReducer/googleMap';
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
@@ -43,6 +45,7 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ CLEAR_GEO_POINT ]: clearGeoPoint,
     [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
     [ SET_ADDRESS_GEO_POINT ]: setAddressGeoPoint,
+    [ VALIDATION_POINT ]: validationPoint,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -57,6 +60,13 @@ function addListPoints( state: IGoogleMapStateType, action: any ): IGoogleMapSta
 }
 
 function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  if ( state.isDataPointEditing ) {
+    return {
+      ...state,
+      isShowWarningModal: true,
+    };
+  }
+
   return {
     ...state,
     selectedGeoPoint: state.geoPoints.find( geoPoint => geoPoint.id === action.geoPoint.id ) || action.geoPoint,
@@ -80,6 +90,7 @@ function addNewGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
       radius: 50,
     },
     statusMarker: EnumStatusMarker.New,
+    isDataPointEditing: true,
   };
 }
 
@@ -119,6 +130,7 @@ function changeMovingGeoPoint( state: IGoogleMapStateType, action: any ): IGoogl
       ...state.selectedGeoPoint,
       ...action.geoPoint,
     },
+    isDataPointEditing: true,
   };
 }
 
@@ -147,6 +159,8 @@ function saveGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStat
     ],
     selectedGeoPoint: googleMapState.selectedGeoPoint,
     statusMarker: EnumStatusMarker.None,
+    isShowWarningModal: false,
+    isDataPointEditing: false,
   };
 }
 
@@ -157,6 +171,11 @@ function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
       idDeleteMarker: state.selectedGeoPoint.id,
       selectedGeoPoint: googleMapState.selectedGeoPoint,
       statusMarker: EnumStatusMarker.None,
+      isShowWarningModal: false,
+      isDataPointEditing: false,
+      validationPoint: {
+        isNamePointError: false,
+      },
     };
   } else if ( state.statusMarker === EnumStatusMarker.Edit ) {
     let moveMarker: any = {};
@@ -180,6 +199,11 @@ function cancelGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSt
       ],
       selectedGeoPoint: googleMapState.selectedGeoPoint,
       statusMarker: EnumStatusMarker.None,
+      isShowWarningModal: false,
+      isDataPointEditing: false,
+      validationPoint: {
+        isNamePointError: false,
+      },
     };
   }
 }
@@ -191,6 +215,7 @@ function changeDataGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleM
       ...state.selectedGeoPoint,
       [ action.field ]: action.data,
     },
+    isDataPointEditing: true,
   };
 }
 
@@ -275,5 +300,16 @@ function setAddressGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleM
       ...state.selectedGeoPoint,
       description: action.address,
     },
+    isDataPointEditing: true
+  };
+}
+
+function validationPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    validationPoint: {
+      ...action.validation,
+    },
+    isShowWarningModal: false,
   };
 }
