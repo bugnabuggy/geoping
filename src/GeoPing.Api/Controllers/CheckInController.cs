@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GeoPing.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/geolist/{listId}")]
+    [Route("api/check")]
     [Authorize]
     public class CheckInController : Controller
     {
@@ -23,9 +24,9 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // GET api/geolist/{listId}/geopoint/check
+        // GET api/check/geolist/{listId}
         [HttpGet]
-        [Route("check")]
+        [Route("geolist/{listId}")]
         public IActionResult GetChecksIn(string listId)
         {
             var result = _checkInSrv.GetChecksIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
@@ -38,9 +39,9 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // GET api/geolist/{listId}/geopoint/{pointId}/check
+        // GET api/check/geopoint/{pointId}
         [HttpGet]
-        [Route("geopoint/{pointId}/check")]
+        [Route("geopoint/{pointId}")]
         public IActionResult GetCheckIn(string pointId)
         {
             var result = _checkInSrv.GetCheckIn(pointId, _helper.GetAppUserIdByClaims(User.Claims));
@@ -53,46 +54,27 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
-        // POST api/geolist/{listId}/geopoint/{pointId}/check
+        // POST api/check/geopoint/{pointId}
         [HttpPost]
-        [Route("geopoint/{pointId}/check")]
+        [Route("geopoint/{pointId}")]
         public IActionResult AddCheckIn(string pointId, [FromBody]CheckInDTO item)
         {
-            if (!_checkInSrv.IsPointExistWithThisId(pointId, out GeoPoint point))
+            if (pointId == "null")
             {
-                return BadRequest($"There is no point with Id = [{pointId}].");
+                pointId = null;
             }
 
-            Guid userId;
-
-            try
-            {
-                userId = _helper.GetAppUserIdByClaims(User.Claims);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            var checkIn = new CheckIn
-            {
-                Distance = item.Distance,
-                Latitude = item.Latitude,
-                Longitude = item.Longitude,
-                Ip = item.Ip,
-                DeviceId = item.DeviceId,
-                UserAgent = item.UserAgent,
-                Date = DateTime.UtcNow,
-                PointId = point.Id,
-                UserId = userId
-            };
-
-            var result = _checkInSrv.AddCheckIn(checkIn);
+            var result = _checkInSrv.AddCheckIn(_helper.GetAppUserIdByClaims(User.Claims), pointId, item);
 
             if (result.Success)
             {
                 return Ok(result);
             }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
+            }
+
             return BadRequest(result);
         }
     }

@@ -4,14 +4,16 @@ using GeoPing.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeoPing.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181204131654_CheckInNowUntiedFromPoint")]
+    partial class CheckInNowUntiedFromPoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +28,9 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<Guid?>("DeviceId");
+                    b.Property<Guid>("DeviceId");
 
-                    b.Property<double?>("Distance");
+                    b.Property<double>("Distance");
 
                     b.Property<string>("Ip");
 

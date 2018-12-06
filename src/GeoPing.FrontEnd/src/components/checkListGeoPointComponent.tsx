@@ -7,19 +7,17 @@ import ICheckListGeoPointComponentProps from '../componentProps/checkListGeoPoin
 import { EnumStatusMarker } from '../enums/statusMarker';
 import IGeoPoint from '../DTO/geoPointDTO';
 import { Card, CardBody, CardHeader, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
+import { IValidationPoint } from '../types/stateTypes/googleMapStateType';
 
 export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPointComponentProps, any> {
-  constructor( props: ICheckListGeoPointComponentProps ) {
-    super( props );
-    this.state = {
-      isNamePointError: false,
-    };
-  }
 
   handleChangeInput = ( e: any ) => {
     this.props.changeDataGeoPoint( e.target.name, e.target.value );
     if ( e.target.name === 'name' ) {
-      this.setState( { isNamePointError: false } );
+      const validationPoint: IValidationPoint = {
+        isNamePointError: false,
+      };
+      this.props.validationPoint( validationPoint );
     }
   };
 
@@ -42,7 +40,10 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
       };
       this.props.saveGeoPoint( newMarker );
     } else {
-      this.setState( { isNamePointError: true } );
+      const validationPoint: IValidationPoint = {
+        isNamePointError: true,
+      };
+      this.props.validationPoint( validationPoint );
     }
   };
 
@@ -69,7 +70,7 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <Input
                   name="name"
                   value={this.props.googleMap.selectedGeoPoint.name}
-                  invalid={this.state.isNamePointError}
+                  invalid={this.props.googleMap.validationPoint.isNamePointError}
                   onChange={this.handleChangeInput}
                   disabled={!this.props.checkList.isEditing}
                 />

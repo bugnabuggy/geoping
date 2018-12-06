@@ -13,10 +13,11 @@ import {
   PERMISSION_TO_ADD,
   SAVE_GEO_POINT,
   SELECT_GEO_POINT,
-  SET_ADDRESS_GEO_POINT
+  SET_ADDRESS_GEO_POINT,
+  VALIDATION_POINT
 } from '../constantsForReducer/googleMap';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
-import { IPosition } from '../types/stateTypes/googleMapStateType';
+import { IPosition, IValidationPoint } from '../types/stateTypes/googleMapStateType';
 import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
@@ -34,7 +35,9 @@ export const addListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFun
       dispatch( addListPointsAction( geoPoints ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' addListPoints', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -58,7 +61,9 @@ export const deleteGeoPoint = ( geoPoint: IGeoPoint, statusMarker: EnumStatusMar
           } )
           .catch( ( error: any ) => {
             windowBlocking( false )( dispatch );
-            dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+            dispatch( addNotificationAction(
+              createNotification( error.message + ' deleteGeoPoint', EnumNotificationType.Danger )
+            ) );
           } );
       } else {
         dispatch( deleteGeoPointAction( '' ) );
@@ -89,7 +94,9 @@ export const findGeoPosition = () => ( dispatch: IDispatchFunction ) => {
           'Please allow access to browser geo location',
           EnumNotificationType.Danger ) ) );
       } else {
-        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+        dispatch( addNotificationAction(
+          createNotification( error.message + ' findGeoPosition', EnumNotificationType.Danger )
+        ) );
       }
     } );
 };
@@ -112,11 +119,15 @@ export const getMyAddress = () => ( dispatch: IDispatchFunction ) => {
           dispatch( findGeoPositionAction( position ) );
         } )
         .catch( ( error: any ) => {
-          dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+          dispatch( addNotificationAction(
+            createNotification( error.message + ' getMyAddress', EnumNotificationType.Danger )
+          ) );
         } );
     },
     ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' getMyAddress', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -126,7 +137,9 @@ export const setAddressGeoPoint = ( latLng: any ) => ( dispatch: IDispatchFuncti
       dispatch( setAddressGeoPointAction( address ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' setAddressGeoPoint', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -146,7 +159,9 @@ export const createGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunc
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' createGeoPoint', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };
@@ -159,7 +174,9 @@ export const updateGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunc
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' updateGeoPoint', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };
@@ -186,7 +203,7 @@ export const geoPointListIsCreate = ( isGeoPointListIsCreated: boolean ) => ( di
 };
 
 export const addDistance = ( distance: number ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( addDistanceAction( Math.round( distance ) ) );
+  dispatch( addDistanceAction( distance ? Math.round( distance ) : null ) );
 };
 
 export const clearStateGoogleMap = () => ( dispatch: IDispatchFunction ) => {
@@ -195,6 +212,10 @@ export const clearStateGoogleMap = () => ( dispatch: IDispatchFunction ) => {
 
 export const clearGeoPoint = () => ( dispatch: IDispatchFunction ) => {
   dispatch( clearGeoPointAction() );
+};
+
+export const validationPoint = ( validation: IValidationPoint ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( validationPointAction( validation ) );
 };
 
 /* Actions */
@@ -259,4 +280,8 @@ function clearGeoPointAction(): { type: any } {
 
 function setAddressGeoPointAction( address: string ) {
   return { type: SET_ADDRESS_GEO_POINT, address };
+}
+
+function validationPointAction( validation: IValidationPoint ) {
+  return { type: VALIDATION_POINT, validation };
 }

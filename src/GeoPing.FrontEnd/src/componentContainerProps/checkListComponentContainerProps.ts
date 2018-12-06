@@ -3,7 +3,7 @@ import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import ICheckListStateType from '../types/stateTypes/checkListStateType';
 import IGeoPoint from '../DTO/geoPointDTO';
 import { EnumStatusMarker } from '../enums/statusMarker';
-import { IGoogleMapStateType } from '../types/stateTypes/googleMapStateType';
+import { IGoogleMapStateType, IValidationPoint } from '../types/stateTypes/googleMapStateType';
 
 export default interface ICheckListComponentContainerProps {
   checkList: ICheckListStateType;
@@ -25,4 +25,5 @@ export default interface ICheckListComponentContainerProps {
   loadCheckListData: ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => void;
   clearStateCheckList: () => ( dispatch: IDispatchFunction ) => void;
   isCheckListPage: ( isCheckList: boolean ) => ( dispatch: IDispatchFunction ) => void;
+  validationPoint: ( validation: IValidationPoint ) => ( dispatch: IDispatchFunction ) => void;
 }

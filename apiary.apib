@@ -375,7 +375,7 @@ for everyone and watch, how many people go through that list and what is their o
             ],
             "data": null
         }
-    
+        
         
 ## Geopoints collection [/api/geolist/{ListId}/geopoint]
 
@@ -590,9 +590,9 @@ for everyone and watch, how many people go through that list and what is their o
         }
       
         
-## Check in [/api/geolist/{ListId}/check]
+## Check In [/api/check]
 
-### Get all checks in for user and given list [GET]
+### Get all checks in for user and given list [GET /api/check/geolist/{ListId}]
 
 + Parameters
     + ListId (string) - Id of the list - storage of points
@@ -632,10 +632,9 @@ for everyone and watch, how many people go through that list and what is their o
             ]
         }
     
-### Get check in for user and given point [GET /api/geolist/{ListId}/geopoint/{PointId}/check]
+### Get check in for user and given point [GET /api/check/geopoint/{PointId}]
 
 + Parameters
-    + ListId (string) - Id of the list - storage of points
     + PointId (string) - Id of the point
     
 + Response 200 (application/json)
@@ -659,12 +658,22 @@ for everyone and watch, how many people go through that list and what is their o
             }
         }
     
-### Add check in for user and given point [POST /api/geolist/{ListId}/geopoint/{PointId}/check]
+### Add check in for user and given point [POST /api/check/geopoint/{PointId}]
 
 + Parameters
-    + ListId (string) - Id of the list - storage of points
     + PointId (string) - Id of the point
     
++ Request (application/json)
+
+        {
+            "Latitude" : 55,
+            "Longitude" : 75,
+            "Distance" : 10,
+            "DeviceId" : null,
+            "Ip" : "127.0.0.1",
+            "UserAgent" : nul
+        }
+
 + Response 200 (application/json)
 
         {
@@ -676,14 +685,42 @@ for everyone and watch, how many people go through that list and what is their o
                 "id": "1c65f215-66fc-46ca-924d-08d63ff6c4e1",
                 "userId": "346df0c8-d73d-4157-0cd1-08d63ff494d4",
                 "pointId": "810f6cff-6687-48a4-fae2-08d63ff69767",
-                "latitude": null,
-                "longitude": "465468",
+                "latitude": 55,
+                "longitude": 75,
                 "distance": 10,
                 "date": "2018-11-01T12:42:04.7054003Z",
                 "deviceId": "00000000-0000-0000-0000-000000000000",
-                "ip": null,
+                "ip": "127.0.0.1",
                 "userAgent": null
             }
+        }
+        
+
+## Check In statistics [/api/statistics]
+
+### Get users who are able to check in points of list [GET /api/statistics/geolist/{listId}/users]
+
++ Parameters 
+    + listId - Id of list statistics looking for
+    
++ Response 200 (application/json)
+
+        {
+            "some":"thing"
+        }
+
+### Get check in statistics for list by filter [GET /api/statistics/geolist/{listId}?UserId={UserId}&DatePeriodFrom={DatePeriodFrom}&DatePeriodTo={DatePeriodTo}]
+
++ Parameters
+    + listId (string) - Id of list statistics requested for
+    + UserId (string) - Id of user whose statistics is looking for. Statistics use data of every allowed user if this field is null
+    + DatePeriodFrom (string) - The first date of filter period
+    + DatePeriodTo (string) - The last date of filter period
+    
++ Response 200 (application/json)
+
+        {
+            "some":"thing"
         }
 
 
@@ -705,7 +742,7 @@ for everyone and watch, how many people go through that list and what is their o
             {
                 "userName": "shefard55r",
                 "email": "shefard55r@yandex.ru",
-                "fullName": null
+                "fullName": ""
             },
             {
                 "userName": "shefard2",
@@ -720,7 +757,7 @@ for everyone and watch, how many people go through that list and what is their o
             {
                 "userName": "alxshef",
                 "email": "shefard@test.ru",
-                "fullName": null
+                "fullName": ""
             }
         ]
 
@@ -1093,10 +1130,9 @@ for everyone and watch, how many people go through that list and what is their o
                 "avatar" : "veryverylongstringthatrepresentstheusersavatar"
         }
 
-### Confirm email [GET /account/confirm-email?UserId={UserId}&Token={Token}]
+### Confirm email [GET /account/confirm-email?Token={Token}]
 
 + Parameters
-    + UserId (string) - Identity id of user
     + Token (string) - Token got by user to confirm his email
 
 + Response 200 (application/json)
@@ -1109,10 +1145,9 @@ for everyone and watch, how many people go through that list and what is their o
             "data": []
         }
         
-### Confirm password reset [POST /account/confirm-reset?UserId={UserId}&Token={Token}]
+### Confirm password reset [POST /account/confirm-reset?Token={Token}]
 
 + Parameters
-    + UserId (string) - Identity id of user
     + Token (string) - Token got by user to confirm his email
     
 + Request (application/json)

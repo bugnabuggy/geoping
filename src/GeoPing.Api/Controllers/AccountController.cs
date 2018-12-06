@@ -125,15 +125,15 @@ namespace GeoPing.Api.Controllers
         // GET /account/profile/short
         [HttpGet]
         [Route("profile/short")]
-        public IActionResult GetShortProfile()
+        public async Task<IActionResult> GetShortProfile()
         {
-            var userId = _helper.GetAppUserIdByClaims(User.Claims);
-            var result = _accountSrv.GetShortProfile(userId);
+            var result = await _accountSrv.GetShortProfile(_helper.GetIdentityUserIdByClaims(User.Claims));
 
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -141,14 +141,9 @@ namespace GeoPing.Api.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string token)
         {
-            if (userId == null || token == null)
-            {
-                return BadRequest("There is no given validation data");
-            }
-
-            var result = await _accountSrv.ConfirmEmailAsync(userId, token);
+            var result = await _accountSrv.ConfirmEmailAsync(token);
 
             if (result.Success)
             {
@@ -161,14 +156,9 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("confirm-reset")]
-        public async Task<IActionResult> ConfirmReset(string userId, string token, [FromBody]NewPasswordDTO item)
+        public async Task<IActionResult> ConfirmReset(string token, [FromBody]NewPasswordDTO item)
         {
-            if (userId == null || token == null)
-            {
-                return BadRequest("There is no given validation data");
-            }
-
-            var result = await _accountSrv.ConfirmResetAsync(userId, token, item.NewPassword);
+            var result = await _accountSrv.ConfirmResetAsync(token, item.NewPassword);
 
             if (result.Success)
             {

@@ -18,15 +18,15 @@ const redColor: string = 'AA0000';
 const blueColor: string = '70aae9';
 const pinColor: string = '26b430';
 const pinColorCheckInSelected: string = 'fbd661';
-// const iconSelectedGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
+// const iconSelectedGeoPointUrl: string = 'https://chart.apis.google.com/chart' +
 //   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColor}|0000FF`;
-// const iconSelectedCheckInGeoPointUrl: string = 'http://chart.apis.google.com/chart' +
+// const iconSelectedCheckInGeoPointUrl: string = 'https://chart.apis.google.com/chart' +
 //   `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${pinColorCheckInSelected}|0000FF`;
 const iconUserGeoPointUrl: string = '/assets/images/card-pin.png';
 const defaultTimeForAnimateMarkers: number = 300;
 
 function getIconGeoPointUrl( color: string ) {
-  return 'http://chart.apis.google.com/chart' +
+  return 'https://chart.apis.google.com/chart' +
     `?chst=d_map_pin_letter_withshadow&chld=%E2%80%A2|${color}|0000FF`;
 }
 
@@ -141,11 +141,15 @@ function iconUserGeoPoint( timeout: number ) {
     lng: _that.props.googleMap.position.lng,
     idForMap: idUserMarker,
   };
+  const image = {
+    ...createMarkerImage( iconUserGeoPointUrl ),
+    anchor: new _googleLib.maps.Point( 25, 42 ),
+  };
   setTimeout(
     () => {
       createGeoPoint(
         userGeoPoint,
-        createMarkerImage( iconUserGeoPointUrl ),
+        image,
         false
       );
     },
@@ -250,12 +254,14 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
     } );
     circle.bindTo( 'center', marker, 'position' );
     _circles.push( circle );
+
+    // const latLng: any = {
+    //   lat: geoPoint.lat,
+    //   lng: geoPoint.lng,
+    // };
+    // _that.props.setAddressGeoPoint( latLng );
   }
-  const latLng: any = {
-    lat: geoPoint.lat,
-    lng: geoPoint.lng,
-  };
-  _that.props.setAddressGeoPoint( latLng );
+
   marker.addListener( 'click', ( e: any ) => {
     handleGeoPointClick( e, geoPoint );
   } );
@@ -324,10 +330,19 @@ function handleMapListener( event: any ) {
 }
 
 function handleGeoPointClick( e: any, geoPoint: IGeoPoint ) {
-  if ( !_that.props.googleMap.selectedGeoPoint.idForMap ) {
+  // if ( !_that.props.googleMap.selectedGeoPoint.idForMap ) {
+  //   _that.props.selectPoint( geoPoint );
+  // } else if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
+  //   _that.props.selectPoint( defaultMarker );
+  // }
+  if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
+    if ( !_that.props.googleMap.isDataPointEditing ) {
+      _that.props.selectPoint( defaultMarker );
+    } else {
+      _that.props.selectPoint( geoPoint );
+    }
+  } else {
     _that.props.selectPoint( geoPoint );
-  } else if ( _that.props.googleMap.selectedGeoPoint.idForMap === geoPoint.idForMap ) {
-    _that.props.selectPoint( defaultMarker );
   }
 }
 
@@ -368,6 +383,12 @@ export function settingPointsByCoordinates( geoPoints: Array<IGeoPoint> ) {
       };
       // marker.setPosition( latLng );
       setPosition( marker, latLng );
+    }
+    const circle: any = findCircles( geoPoint.idForMap );
+    if ( circle ) {
+      circle.setOptions( {
+        radius: geoPoint.radius,
+      } );
     }
   } );
 }

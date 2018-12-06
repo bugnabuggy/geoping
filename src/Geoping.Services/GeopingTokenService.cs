@@ -14,18 +14,21 @@ namespace GeoPing.Services
     {
         private IRepository<GeoPingToken> _tokenRepo;
         private IRepository<ListSharing> _sharingRepo;
-        private ISecurityService _secSrv;
+        private IGeopingUserService _userSrv;
+        private ISecurityService _secutitySrv;
         private ApplicationSettings _settings;
 
         public GeopingTokenService
             (IRepository<GeoPingToken> tokenRepo,
             IRepository<ListSharing> sharingRepo,
-            ISecurityService secSrv,
-            IOptions<ApplicationSettings> settings)
+            ISecurityService securitySrv,
+            IOptions<ApplicationSettings> settings,
+            IGeopingUserService userSrv)
         {
             _tokenRepo = tokenRepo;
             _sharingRepo = sharingRepo;
-            _secSrv = secSrv;
+            _userSrv = userSrv;
+            _secutitySrv = securitySrv;
             _settings = settings.Value;
         }
 
@@ -37,7 +40,7 @@ namespace GeoPing.Services
                 Type = "SharingInvite",
                 Created = DateTime.UtcNow,
                 Value = value,
-                Token = _secSrv.GetSHA256HashString(value)
+                Token = _secutitySrv.GetSHA256HashString(value)
             });
 
             return result;
@@ -51,7 +54,7 @@ namespace GeoPing.Services
                 Type = "Sharing",
                 Created = DateTime.UtcNow,
                 Value = value,
-                Token = _secSrv.GetSHA256HashString(value)
+                Token = _secutitySrv.GetSHA256HashString(value)
             });
 
             return result;
@@ -62,6 +65,36 @@ namespace GeoPing.Services
             var tokens = _tokenRepo.Data.Where(x => x.Value == sharingId).AsEnumerable();
 
             _tokenRepo.Delete(tokens);
+        }
+
+        public GeoPingToken CreateConfirmationEmailToken(string userId, string aspnetToken)
+        {
+            var value = $"{userId},{aspnetToken}";
+
+            var result = _tokenRepo.Add(new GeoPingToken
+            {
+                Type = "ConfirmEmail",
+                Created = DateTime.UtcNow,
+                Value = value,
+                Token = _secutitySrv.GetSHA256HashString(value)
+            });
+
+            return result;
+        }
+
+        public GeoPingToken CreateConfirmationResetToken(string userId, string aspnetToken)
+        {
+            var value = $"{userId},{aspnetToken}";
+
+            var result = _tokenRepo.Add(new GeoPingToken
+            {
+                Type = "ConfirmReset",
+                Created = DateTime.UtcNow,
+                Value = value,
+                Token = _secutitySrv.GetSHA256HashString(value)
+            });
+
+            return result;
         }
 
         public OperationResult<TokenInfoDTO> ExamineToken(string token)
@@ -82,26 +115,24 @@ namespace GeoPing.Services
             {
                 return new OperationResult<TokenInfoDTO>
                 {
-                    Messages = new[] { validationResult }
+                    Messages = new[] { $"{validationResult} token." }
                 };
             }
 
-            Guid? targetUserId = null;
+            var sharing = _sharingRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value));
 
-            switch (gpToken.Type)
+            if (sharing == null)
             {
-                case "Sharing":
-                    targetUserId = _sharingRepo.Get()
-                        .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
-                        .UserId;
-                    break;
-
-                case "SharingInvite":
-                    targetUserId = _sharingRepo.Get()
-                        .FirstOrDefault(x => x.Id == Guid.Parse(gpToken.Value))
-                        .UserId;
-                    break;
+                return new OperationResult<TokenInfoDTO>()
+                {
+                    Messages = new[] { "List sharing doesn`t exist." }
+                };
             }
+
+            var targetUserId = sharing.UserId;
+            var userData = gpToken.Type == "SharingInvite"
+                ? sharing.Email
+                : _userSrv.GetUser(x => x.Email == sharing.Email).Login;
 
             MarkAsUsed(token);
 
@@ -112,7 +143,8 @@ namespace GeoPing.Services
                 Data = new TokenInfoDTO
                 {
                     TokenType = gpToken.Type,
-                    UserId = targetUserId
+                    UserId = targetUserId,
+                    UserData = userData
                 }
             };
         }
@@ -152,7 +184,7 @@ namespace GeoPing.Services
             };
         }
 
-        private string ValidateGPToken(GeoPingToken gpToken)
+        public string ValidateGPToken(GeoPingToken gpToken)
         {
             if (gpToken != null)
             {
@@ -165,10 +197,17 @@ namespace GeoPing.Services
                     _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
                 {
                     return "Expired";
-                } 
+                }
             }
 
             return null;
+        }
+
+        public bool TryGetToken(string token, out GeoPingToken geoPingToken)
+        {
+            geoPingToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token); ;
+
+            return geoPingToken != null;
         }
     }
 }

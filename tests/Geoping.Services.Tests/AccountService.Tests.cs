@@ -24,7 +24,7 @@ namespace GeoPing.Services.Tests
         private IAccountService _accountSrv;
         private UserManager<AppIdentityUser> _userManager;
         private ILogger<AccountService> _logger;
-        private IGPUserService _gpUserSrv;
+        private IGeopingUserService _gpUserSrv;
         private IRepository<GeoPingUser> _gpUserRepo;
         private IGeopingTokenService _tokenSrv;
         private ISharingService _sharingSrv;
@@ -40,7 +40,7 @@ namespace GeoPing.Services.Tests
             _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
             _userManager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
             _logger = _services.GetRequiredService<ILogger<AccountService>>();
-            _gpUserSrv = _services.GetRequiredService<IGPUserService>();
+            _gpUserSrv = _services.GetRequiredService<IGeopingUserService>();
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
             _tokenSrv = _services.GetRequiredService<IGeopingTokenService>();
             _sharingSrv = _services.GetRequiredService<ISharingService>();

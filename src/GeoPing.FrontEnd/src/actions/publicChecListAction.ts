@@ -26,7 +26,9 @@ export const loadPublicLists = () => ( dispatch: IDispatchFunction ) => {
     } )
     .catch( ( error: any ) => {
       try {
-        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+        dispatch( addNotificationAction(
+          createNotification( error.message + ' loadPublicLists', EnumNotificationType.Danger )
+        ) );
       } catch ( e ) {
         dispatch( addNotificationAction( createNotification( 'Error loading lists', EnumNotificationType.Danger ) ) );
       }
@@ -40,7 +42,9 @@ export const filterPublicCheckLists = ( filters: any ) => ( dispatch: IDispatchF
       dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' filterPublicCheckLists', EnumNotificationType.Danger )
+      ) );
     } );
 };
 

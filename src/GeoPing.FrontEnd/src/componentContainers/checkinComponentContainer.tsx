@@ -12,10 +12,10 @@ import {
   loadLists,
   loadPoints,
   messagesForUser,
-  selectList
+  selectList, setTimer, timerAccount
 } from '../actions/checkinAction';
 import { ICheckinFunctions } from '../componentProps/checkinComponentProps';
-import { clearGeoPoint, getMyAddress, selectPoint } from '../actions/googleMapAction';
+import { addDistance, clearGeoPoint, getMyAddress, selectPoint } from '../actions/googleMapAction';
 import { saveHistory } from '../actions/historyAction';
 import { loadCheckLists } from '../actions/myCheckListsAction';
 
@@ -44,6 +44,9 @@ class CheckinComponentContainer extends React.Component<ICheckinComponentContain
       clearGeoPoint: this.props.clearGeoPoint,
       checkIn: this.props.checkIn,
       messagesForUser: this.props.messagesForUser,
+      setTimer: this.props.setTimer,
+      timerAccount: this.props.timerAccount,
+      addDistance: this.props.addDistance,
     };
 
     return (
@@ -82,6 +85,9 @@ const mapDispatchToProps = ( dispath: any ) =>
       clearGeoPoint,
       checkIn,
       messagesForUser,
+      setTimer,
+      timerAccount,
+      addDistance,
     },
     dispath );
 

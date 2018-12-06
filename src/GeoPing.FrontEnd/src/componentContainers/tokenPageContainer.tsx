@@ -7,12 +7,19 @@ import { Card, CardBody } from 'reactstrap';
 import { verifyToken } from '../actions/tokenAction';
 
 class TokenPageContainer extends React.Component<ITokenPageContainerProps, any> {
-
-  componentDidUpdate( prevProps: Readonly<ITokenPageContainerProps>, prevState: Readonly<any>, snapshot?: any ): void {
-    if ( !prevProps.userId && this.props.userId ) {
-      this.props.verifyToken( this.props.match.params.token, this.props.userId );
-    }
+  componentDidMount(): void {
+    this.props.verifyToken( this.props.match.params.token, '' );
   }
+
+  // componentDidUpdate(
+  // prevProps: Readonly<ITokenPageContainerProps>,
+  // prevState: Readonly<any>,
+  // snapshot?: any
+  // ): void {
+  //   if ( !prevProps.userId && this.props.userId ) {
+  //     this.props.verifyToken( this.props.match.params.token, this.props.userId );
+  //   }
+  // }
 
   render() {
     return (

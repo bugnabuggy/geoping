@@ -6,8 +6,13 @@ import { Card, CardBody } from 'reactstrap';
 
 export class ListPointItemComponent extends React.Component<IListPointItemComponentProps, any> {
   handleSelectPoint = () => {
+
     if ( this.props.geoPoint.id === this.props.googleMap.selectedGeoPoint.id ) {
-      this.props.selectPoint( defaultMarker );
+      if ( !this.props.googleMap.isDataPointEditing ) {
+        this.props.selectPoint( defaultMarker );
+      } else {
+        this.props.selectPoint( this.props.geoPoint );
+      }
     } else {
       this.props.selectPoint( this.props.geoPoint );
     }
@@ -25,15 +30,15 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
     return (
       <React.Fragment>
         <Card
-          className={`
-        ${ this.props.googleMap.selectedGeoPoint.idForMap &&
-          this.props.googleMap.selectedGeoPoint.idForMap !== this.props.geoPoint.idForMap ?
-            ' check-list-point-item-disable ' : ''}`}
+          //   className={`
+          // ${ this.props.googleMap.selectedGeoPoint.idForMap &&
+          //   this.props.googleMap.selectedGeoPoint.idForMap !== this.props.geoPoint.idForMap ?
+          //     ' check-list-point-item-disable ' : ''}`}
           onClick={this.handleSelectPoint}
         >
           <CardBody
             className={`check-list-point-item cursor-pointer
-          ${ this.props.googleMap.selectedGeoPoint.idForMap === this.props.geoPoint.idForMap &&
+          ${this.props.googleMap.selectedGeoPoint.idForMap === this.props.geoPoint.idForMap &&
             'check-list-point-item-action'}
           `}
           >

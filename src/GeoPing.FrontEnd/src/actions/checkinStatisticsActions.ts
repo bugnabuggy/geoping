@@ -26,7 +26,9 @@ export const loadLists = () => ( dispatch: IDispatchFunction ) => {
       dispatch( loadListsAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadLists', EnumNotificationType.Danger )
+      ) );
     } );
 
 };
@@ -38,22 +40,26 @@ export const loadUsers = ( idList: string ) => ( dispatch: IDispatchFunction ) =
       dispatch( loadUsersAction( response ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadUsers', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
-export const loadPoints = ( listId: string, userId: string, dateFrom: string, dateTo: string ) =>
+export const loadPoints = ( listId: string, data: any ) =>
   ( dispatch: IDispatchFunction ) => {
     dispatch( windowBlockingAction( true ) );
     const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-    markerService.getChecksStatisticsForList( listId, userId, dateFrom, dateTo )
+    markerService.getChecksStatisticsForList( listId, data )
       .then( ( response: any ) => {
         dispatch( windowBlockingAction( false ) );
         dispatch( loadPointsAction( response ) );
       } )
       .catch( ( error: any ) => {
         dispatch( windowBlockingAction( false ) );
-        dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+        dispatch( addNotificationAction(
+          createNotification( error.message + ' loadPoints', EnumNotificationType.Danger )
+        ) );
       } );
   };
 
@@ -68,7 +74,9 @@ export const getAllCheckForList = ( idList: string ) => ( dispatch: IDispatchFun
       console.info( response );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' getAllCheckForList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 

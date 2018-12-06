@@ -49,7 +49,7 @@ export const registrationUser = ( registrationUserData: IRegistrationUserType ) 
       dispatch( windowBlockingAction( false ) );
       dispatch( addNotificationAction(
         createNotification(
-          error.response.data.messages[ 0 ],
+          error.response.data.messages[ 0 ] + ' authorizationUser',
           EnumNotificationType.Danger
         ) ) );
     } );
@@ -93,7 +93,7 @@ export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
         } else {
           dispatch( addNotificationAction(
             createNotification(
-              error.message,
+              error.message + ' loadUserData',
               EnumNotificationType.Danger
             ) ) );
         }

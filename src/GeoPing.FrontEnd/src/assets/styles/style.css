@@ -1266,6 +1266,27 @@ header nav {
   margin-right: 20px;
 }
 
+.save-point-buttons-container {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.save-point-buttons-check {
+  margin-right: 30px;
+  color: rgb(70, 195, 127);
+}
+
+.save-point-buttons-times {
+  margin-left: 30px;
+  color: #a4575b;
+}
+
+.question-save-changes {
+  display: flex;
+  justify-content: center;
+}
+
 /*************************************************************************************/
 
 /* Admin dashboard */

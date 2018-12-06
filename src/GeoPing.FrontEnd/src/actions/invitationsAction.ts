@@ -25,7 +25,9 @@ export const filterInvitations = () => ( dispatch: IDispatchFunction ) => {
       dispatch( filterInvitationsAction( true ) );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' filterInvitations', EnumNotificationType.Danger )
+      ) );
     } );
 };
 export const closeFilterInvitations = () => ( dispatch: IDispatchFunction ) => {
@@ -42,7 +44,9 @@ export const loadAllNewSharedList = () => ( dispatch: IDispatchFunction ) => {
     } )
     .catch( ( error: any ) => {
       dispatch( newSharingListsLoadingAction( false ) );
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadAllNewSharedList', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -56,7 +60,9 @@ export const loadAllAcceptedSharedLists = () => ( dispatch: IDispatchFunction ) 
     } )
     .catch( ( error: any ) => {
       dispatch( acceptSharingListsLoadingAction( false ) );
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' loadAllAcceptedSharedLists', EnumNotificationType.Danger )
+      ) );
     } );
 };
 
@@ -69,7 +75,9 @@ export const deleteListSharing = ( sharingId: string ) => ( dispatch: IDispatchF
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' deleteListSharing', EnumNotificationType.Danger )
+      ) );
       windowBlocking( false )( dispatch );
     } );
 };
