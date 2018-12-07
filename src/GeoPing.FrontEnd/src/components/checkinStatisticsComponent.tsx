@@ -39,8 +39,8 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     if ( e ) {
       const data = {
         UserId: e.value,
-        DatePeriodFrom: this.state.startDate.format( this.formatDate ),
-        DatePeriodTo: this.state.endDate.format( this.formatDate ),
+        DatePeriodFrom: this.state.startDate.toString(),
+        DatePeriodTo: this.state.endDate.toString(),
       };
       this.props.loadPoints( this.props.listId, data ),
         this.setState( { selectUser: e.value } );
@@ -66,8 +66,8 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
   handleSelectStart = ( date: any ) => {
     const data = {
       UserId: this.state.selectUser,
-      DatePeriodFrom: date.format( this.formatDate ),
-      DatePeriodTo: this.state.endDate.format( this.formatDate ),
+      DatePeriodFrom: date.toString(),
+      DatePeriodTo: this.state.endDate.toString(),
     };
     this.props.loadPoints(
       this.props.listId, data );
@@ -79,8 +79,8 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
   handleSelectEnd = ( date: any ) => {
     const data = {
       UserId: this.state.selectUser,
-      DatePeriodFrom: this.state.startDate.format( this.formatDate ),
-      DatePeriodTo: date.format( this.formatDate ),
+      DatePeriodFrom: this.state.startDate.toString(),
+      DatePeriodTo: date.toString(),
     };
     this.props.loadPoints(
       this.props.listId, data );

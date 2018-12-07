@@ -30,6 +30,17 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
   handleChangeSlider = ( value: number ) => {
     this.props.changeDataGeoPoint( 'radius', value );
   };
+  handleChangeRadius = ( e: any ) => {
+    let radius: number = 0;
+    if ( Number( e.target.value ) < 0 ) {
+      radius = 0;
+    } else if ( Number( e.target.value ) > 500 ) {
+      radius = 500;
+    } else {
+      radius = Number( e.target.value );
+    }
+    this.props.changeDataGeoPoint( 'radius', radius );
+  };
 
   handleClickOk = ( e: any ) => {
     e.stopPropagation();
@@ -122,9 +133,18 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 <div
                   className="check-list-geo-point-form-label-distance"
                 >
-                  <Label>
-                    {this.props.googleMap.selectedGeoPoint.radius}m
-                  </Label>
+                  <div className="check-list-geo-point-form-label-distance-input">
+                    <Input
+                      type="number"
+                      max={500}
+                      min={0}
+                      value={this.props.googleMap.selectedGeoPoint.radius}
+                      style={{ width: '70px' }}
+                      disabled={!this.props.checkList.isEditing}
+                      onChange={this.handleChangeRadius}
+                    />
+                    m
+                  </div>
                 </div>
               </FormGroup>
               <div

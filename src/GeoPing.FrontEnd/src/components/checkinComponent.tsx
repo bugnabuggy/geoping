@@ -98,6 +98,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         isCheckIn: false,
       } );
       this.props.functions.clearGeoPoint();
+      this.props.functions.selectList( '' );
     }
   };
 
@@ -279,9 +280,13 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
             lat: {this.props.googleMap.position.lat}; long: {this.props.googleMap.position.lng}
           </Label>
           <FormGroup>
-            <Label className={`text-${validationState !== 'primary' ? validationState : ''}`}>
-              Difference: {this.props.checkin.difference && `${this.props.checkin.difference}m`}
-            </Label>
+            {this.props.checkin.selectedListId !== null &&
+            (
+              <Label className={`text-${validationState !== 'primary' ? validationState : ''}`}>
+                Difference: {this.props.checkin.difference && `${this.props.checkin.difference}m`}
+              </Label>
+            )
+            }
           </FormGroup>
         </div>
         <CongratulationsModalComponent
