@@ -13,6 +13,7 @@ import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { ICheckInGeoPointDTO } from '../DTO/geoPointDTO';
 import { ETimer } from '../enums/timerEnum';
 import { timer } from '../services/helper';
+import { TableCheckInStatistics } from './tableComponents/tableCheckInStatistics';
 
 export class CheckinComponent extends React.Component<ICheckinComponentProps, any> {
   constructor( props: ICheckinComponentProps ) {
@@ -294,6 +295,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           title="Congratulations!"
           onClose={this.closeModal}
         />
+        <TableCheckInStatistics/>
       </React.Fragment>
     );
   }
