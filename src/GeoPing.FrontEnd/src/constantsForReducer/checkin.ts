@@ -7,3 +7,4 @@ export const CHECK_IN_CLEAR: string = 'CHECK_IN_CLEAR';
 export const CHECK_IN_GEO_POINTS: string = 'CHECK_IN_GEO_POINTS';
 export const START_TIMER: string = 'START_TIMER';
 export const SET_TIMER_COUNT: string = 'SET_TIMER_COUNT';
+export const GET_GEO_LIST_MY_AND_HAS_ACCESS: string = 'GET_GEO_LIST_MY_AND_HAS_ACCESS';
