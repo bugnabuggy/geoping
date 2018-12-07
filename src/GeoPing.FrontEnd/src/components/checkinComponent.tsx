@@ -31,6 +31,9 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
     ) {
       timer( this.props.functions );
     }
+    if ( !!prevProps.checkin.selectedListId && !!!this.props.checkin.selectedListId ) {
+      this.props.functions.setTimer( ETimer.None );
+    }
   }
 
   disableButtonCheckIn = () => {
@@ -80,7 +83,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         this.setState( {
           isCheckIn: false,
         } );
-        this.props.functions.selectList( e.value );
+
         this.props.functions.loadPoints( e.value );
       } else {
         this.setState( {
@@ -89,6 +92,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         this.props.functions.clearGeoPoint();
         this.props.functions.addDistance( null );
       }
+      this.props.functions.selectList( e.value );
     } else {
       this.setState( {
         isCheckIn: false,
@@ -169,7 +173,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         label: '- None -'
       }
     ];
-    this.props.checkList.checkLists.forEach( ( item: any ) => {
+    this.props.checkList.checkInLists.forEach( ( item: any ) => {
       options.push( {
         value: item.id,
         label: item.name,

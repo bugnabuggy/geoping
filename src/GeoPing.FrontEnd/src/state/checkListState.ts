@@ -31,4 +31,5 @@ export const checkListState: ICheckListStateType = {
   checkListPublic: [],
   acceptedSharedLists: [],
   newSharedLists: [],
+  checkInLists: [],
 };
