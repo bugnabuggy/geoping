@@ -1,4 +1,3 @@
-import IRegistrationUserType from '../types/actionsType/registrationUserDataType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   LOAD_USER_NAME,
@@ -14,6 +13,7 @@ import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { isRedirect, redirectOnSignInForm, windowBlocking, windowBlockingAction } from './windowAction';
 import IUser from '../types/serviceTypes/userServiceType';
 import { dashboardUrl } from '../constants/routes';
+import IRegistrationUserDTO from '../DTO/registrationUserDTO';
 
 export const authorizationUser = ( email: string, password: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
@@ -36,14 +36,16 @@ export const authorizationUser = ( email: string, password: string ) => ( dispat
     } );
 };
 
-export const registrationUser = ( registrationUserData: IRegistrationUserType ) => ( dispatch: IDispatchFunction ) => {
+export const registrationUser = ( registrationUserData: IRegistrationUserDTO ) => ( dispatch: IDispatchFunction ) => {
   dispatch( windowBlockingAction( true ) );
   const authorizeService: IAuthorization = StaticStorage.serviceLocator.get( 'IAuthorization' );
   authorizeService.registrationUser( registrationUserData )
     .then( ( response: any ) => {
       dispatch( windowBlockingAction( false ) );
       dispatch( addNotificationAction( createNotification( 'You registered', EnumNotificationType.Success ) ) );
-      authorizationUser( registrationUserData.login, registrationUserData.password )( dispatch );
+      localStorage.removeItem( 'sharing_token' );
+      localStorage.removeItem( 'user_data' );
+      authorizationUser( registrationUserData.UserName, registrationUserData.Password )( dispatch );
     } )
     .catch( ( error: any ) => {
       dispatch( windowBlockingAction( false ) );

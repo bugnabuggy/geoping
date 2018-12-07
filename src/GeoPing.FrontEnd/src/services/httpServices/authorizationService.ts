@@ -2,7 +2,7 @@ import IAuthorization from '../../types/serviceTypes/authorizationServiceType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import { getToken, registration } from '../../constants/endpoints';
-import IRegistrationUserType from '../../types/actionsType/registrationUserDataType';
+import IRegistrationUserDTO from '../../DTO/registrationUserDTO';
 
 export default class AuthorizationService implements IAuthorization {
   private communicator: IHttpCommunicator;
@@ -37,14 +37,9 @@ export default class AuthorizationService implements IAuthorization {
     } );
   }
 
-  registrationUser( registrationUserData: IRegistrationUserType ) {
-    const user: any = {
-      UserName: registrationUserData.login,
-      Email: registrationUserData.email,
-      Password: registrationUserData.password,
-    };
+  registrationUser( registrationUserData: IRegistrationUserDTO ) {
 
-    return this.communicator.post( registration, user );
+    return this.communicator.post( registration, registrationUserData );
   }
 
 }
