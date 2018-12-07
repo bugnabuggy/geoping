@@ -40,7 +40,7 @@ namespace GeoPing.Services
                 Type = "SharingInvite",
                 Created = DateTime.UtcNow,
                 Value = value,
-                Token = _secutitySrv.GetSHA256HashString(value)
+                Token = _secutitySrv.GetSHA256HashString($"{value}{Guid.NewGuid()}")
             });
 
             return result;
@@ -54,7 +54,7 @@ namespace GeoPing.Services
                 Type = "Sharing",
                 Created = DateTime.UtcNow,
                 Value = value,
-                Token = _secutitySrv.GetSHA256HashString(value)
+                Token = _secutitySrv.GetSHA256HashString($"{value}{Guid.NewGuid()}")
             });
 
             return result;
@@ -147,18 +147,6 @@ namespace GeoPing.Services
             };
         }
 
-        public GeoPingToken GetToken(string token)
-        {
-            var result = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
-
-            if (ValidateGPToken(result) == null)
-            {
-                return result;
-            }
-
-            return null;
-        }
-
         public OperationResult MarkAsUsed(string token)
         {
             var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
@@ -212,3 +200,4 @@ namespace GeoPing.Services
         }
     }
 }
+ 
