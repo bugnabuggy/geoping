@@ -327,7 +327,7 @@ namespace GeoPing.Services
                     ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString())
                     : _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
 
-                SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
+                SendSharingEmail(userId, invitedUser , pastSharing.Email, newGPToken.Token);
 
                 return null;
             }
@@ -355,7 +355,7 @@ namespace GeoPing.Services
                 ? _tokenSrv.CreateSharingToken(sharing.Id.ToString())
                 : _tokenSrv.CreateSharingInviteToken(sharing.Id.ToString());
 
-            SendSharingEmail(userId, sharing.Email, gpToken.Token);
+            SendSharingEmail(userId, invitedUser, sharing.Email, gpToken.Token);
             return sharing;
         }
 
@@ -371,13 +371,29 @@ namespace GeoPing.Services
             return true;
         }
 
-        private void SendSharingEmail(Guid inviterId, string email, string code)
+        private void SendSharingEmail(Guid inviterId, GeoPingUser invitedUser, string email, string code)
         {
             var inviter = _gpUserSrv.GetUser(x => x.Id == inviterId);
 
             var callbackUrl = $"{_settings.Urls.SiteUrl}/" +
                               $"{_settings.Urls.ActionsUrl.ByToken}/" +
                               $"{code}";
+            
+            string subject;
+
+            if (invitedUser == null)
+            {
+                subject = email;
+            }
+            else
+            {
+                var fullName = ($"{invitedUser.FirstName} {invitedUser.LastName}").Trim();
+
+                subject = ($"{fullName} \"{invitedUser.Login}\"").TrimStart();
+            }
+
+            subject = $"{subject}, user {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} " +
+                      "shared a geolist with you.";
 
             var message = new EmailMessage
             {
@@ -391,7 +407,7 @@ namespace GeoPing.Services
                     Name = email,
                     Address = email
                 },
-                Subject = $"User {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} shared a geolist with you.",
+                Subject = subject,
                 Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
             };
 
