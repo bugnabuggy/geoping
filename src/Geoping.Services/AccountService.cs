@@ -81,17 +81,11 @@ namespace GeoPing.Services
 
                     if (token != null)
                     {
-                        switch (token.Type)
+                        if (token.Type == "SharingInvite")
                         {
-                            case "SharingInvite":
-                                {
-                                    _sharingSrv.ConfirmSharingWithRegistration
-                                        (token.Value, gpUser.Id, user.Email);
+                            _sharingSrv.ConfirmSharingsWithRegistration(token.Value, gpUser.Id, user.Email);
 
-                                    _tokenSrv.MarkAsUsed(token.Token);
-
-                                    break;
-                                }
+                            _tokenSrv.MarkAsUsed(token.Token); 
                         }
                     }
                 }

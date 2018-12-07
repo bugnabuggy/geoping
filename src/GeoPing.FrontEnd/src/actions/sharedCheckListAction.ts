@@ -6,6 +6,8 @@ import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import IUserWithAccessDTO from '../DTO/userWitchAccessDTO';
 import {
+  CHANGE_COUNT_USER,
+  CHANGE_USER_DATA,
   CLEAR_AUTOCOMPLETE_LIST_USERS,
   CLEAR_SHARED_CHECK_LIST,
   GET_AUTOCOMPLETED_LIST_USERS,
@@ -16,6 +18,7 @@ import {
   SEND_SHARE_CHECK_LIST_FOR_USERS
 } from '../constantsForReducer/sharedCheckList';
 import { windowBlocking } from './windowAction';
+import { IUsersDataList } from '../types/stateTypes/sharedCheckListStateType';
 
 export const loadUsersForShared = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( loadingUsersWhoHasAccess( true ) );
@@ -67,11 +70,11 @@ export const providePublicAccess = ( idList: string, isPublic: boolean ) => ( di
     } );
 };
 
-export const getAutocompletedListUsers = ( userName: string ) => ( dispatch: IDispatchFunction ) => {
+export const getAutocompletedListUsers = ( userName: string, id: string ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getAutocompletedListUsers( userName )
     .then( ( response: any ) => {
-      dispatch( getAutocompletedListUsersAction( response ) );
+      dispatch( getAutocompletedListUsersAction( response, id ) );
     } )
     .catch( ( error: any ) => {
       dispatch( addNotificationAction(
@@ -95,6 +98,14 @@ export const removeAccessUserForList = ( sharingId: string ) => ( dispatch: IDis
         createNotification( error.message + ' removeAccessUserForList', EnumNotificationType.Danger )
       ) );
     } );
+};
+
+export const changeCountUser = ( usersDataList: Array<IUsersDataList> ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( changeCountUserAction( usersDataList ) );
+};
+
+export const changeUserData = ( usersDataList: IUsersDataList ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( changeUserDataAction( usersDataList ) );
 };
 
 /* Actions */
@@ -121,8 +132,8 @@ function loadingUsersWhoHasAccess( isLoading: boolean ): { type: string, isLoadi
   return { type: LOADING_USERS_WHO_HAS_ACCESS, isLoading };
 }
 
-function getAutocompletedListUsersAction( users: Array<any> ) {
-  return { type: GET_AUTOCOMPLETED_LIST_USERS, users };
+function getAutocompletedListUsersAction( users: Array<any>, id: string ) {
+  return { type: GET_AUTOCOMPLETED_LIST_USERS, users, id };
 }
 
 function clearAutocompleteListUsersAction() {
@@ -131,4 +142,12 @@ function clearAutocompleteListUsersAction() {
 
 function removeAccessUserForListAction( sharingId: string ) {
   return { type: REMOVE_ACCESS_USER_FOR_LIST, sharingId };
+}
+
+function changeCountUserAction( usersDataList: Array<IUsersDataList> ) {
+  return { type: CHANGE_COUNT_USER, usersDataList };
+}
+
+function changeUserDataAction( usersData: IUsersDataList ) {
+  return { type: CHANGE_USER_DATA, usersData };
 }

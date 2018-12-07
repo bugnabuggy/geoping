@@ -110,29 +110,6 @@ namespace GeoPing.Services.Tests
                 _mockSettings.Object);
         }
 
-        //[Test]
-        //public void Should_return_autocompleted_users_list()
-        //{
-        //    string query;
-        //    IEnumerable<UserAutoCompleteDTO> data;
-
-        //    query = "te";
-        //    data = _sut.GetAutoCompletedUsersList(query);
-        //    Assert.AreEqual(null, data);
-
-        //    query = "test";
-        //    data = _sut.GetAutoCompletedUsersList(query);
-        //    Assert.AreEqual(4, data.Count());
-
-        //    query = "testuser";
-        //    data = _sut.GetAutoCompletedUsersList(query);
-        //    Assert.AreEqual(2, data.Count());
-
-        //    query = "TestUser@test.com";
-        //    data = _sut.GetAutoCompletedUsersList(query);
-        //    Assert.AreEqual(1, data.Count());
-        //}
-
         [Test]
         public async Task Shouldnt_invite_user_because_list_doesnt_exist()
         {
@@ -287,7 +264,7 @@ namespace GeoPing.Services.Tests
         {
             Assert.AreEqual(null, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault().UserId);
 
-            _sut.ConfirmSharingWithRegistration(_sharingId3, _userId1, "test1@test.com");
+            _sut.ConfirmSharingsWithRegistration(_sharingId3, _userId1, "test1@test.com");
 
             Assert.AreEqual(_userId1, _sharingRepo.Get(x => x.Id == Guid.Parse(_sharingId3)).FirstOrDefault().UserId);
         }
