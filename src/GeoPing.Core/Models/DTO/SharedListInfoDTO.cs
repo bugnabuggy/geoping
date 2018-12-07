@@ -14,5 +14,7 @@ namespace GeoPing.Core.Models.DTO
         public bool ListIsPublic { get; set; }
         public string ShareStatus { get; set; }
         public DateTime ShareInvitationDate { get; set; }
+        public string OwnerUserName { get; set; }
+        public string OwnerFullName { get; set; }
     }
 }
