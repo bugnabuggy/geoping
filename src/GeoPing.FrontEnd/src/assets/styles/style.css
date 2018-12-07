@@ -797,6 +797,11 @@ header nav {
   position: relative;
 }
 
+.field-to-share-list-container {
+  display: flex;
+  margin-bottom: 30px;
+}
+
 .field-to-share-list-autocompleted-users {
   position: absolute;
   border: 2px solid #171c71;
@@ -2061,3 +2066,55 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 /**/
+
+/* autocomplete component*/
+.autocomplete-container {
+  width: calc(100% - 100px);
+  position: relative;
+}
+
+.autocomplete-list-container {
+  position: absolute;
+  width: 100%;
+  max-height: 150px;
+  overflow: auto;
+  z-index: 1;
+  border: 1px solid #ced4da;
+  background: white;
+  border-radius: 5px;
+}
+
+.autocomplete-list-item {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 30px;
+  border-bottom: 1px solid #ced4da;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.autocomplete-list-item:hover {
+  background: #b2b2ba;
+}
+
+.autocomplete-list-item:last-child {
+  border-bottom: 0;
+}
+
+.autocomplete-pill-item {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  margin: 5px 30px 5px 5px;
+  position: relative;
+}
+
+.autocomplete-pill-item-icon {
+  position: absolute;
+  right: -30px;
+  color: black;
+}
+/*******************************************************************************************/
