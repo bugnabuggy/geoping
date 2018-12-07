@@ -111,7 +111,7 @@ namespace GeoPing.Services
         public async Task<OperationResult<IEnumerable<UserListWasSharedWithDTO>>> InviteUsersByList(Guid actingUserId, string listId, string[] usersData)
         {
             // Checks if list is exists
-            if (!_listSrv.IsListExistWithThisId(listId, out var list))
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
                 return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
@@ -218,9 +218,7 @@ namespace GeoPing.Services
         public OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             GetUsersListWasSharedWith(Guid userId, string listId)
         {
-            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
-
-            if (list == null)
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
                 return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {

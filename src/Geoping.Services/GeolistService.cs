@@ -264,22 +264,34 @@ namespace GeoPing.Services
             };
         }
 
-        public bool IsListExistWithThisId(string id, out GeoList list)
+        public bool IsListExistWithId(string listId)
         {
-            var isListId = Guid.TryParse(id, out Guid listId);
-            list = null;
-            if (!isListId)
+            var isId = Guid.TryParse(listId, out var id);
+
+            if (!isId)
             {
                 return false;
             }
 
-            list = Get().FirstOrDefault(x => x.Id == listId);
-            if (list == null)
+            var list = Get().FirstOrDefault(x => x.Id == id);
+
+            return list != null;
+        }
+
+        public bool TryGetListWithId(string listId, out GeoList list)
+        {
+            var isId = Guid.TryParse(listId, out var id);
+
+            if (!isId)
             {
+                list = null;
+
                 return false;
             }
 
-            return true;
+            list = _geolistRepo.Data.FirstOrDefault(x => x.Id == id);
+
+            return list != null;
         }
 
         private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
