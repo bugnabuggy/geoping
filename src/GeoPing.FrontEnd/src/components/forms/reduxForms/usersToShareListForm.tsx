@@ -27,8 +27,9 @@ function component( props: any ) {
     _debounce( input.value, props.autocompletedListUsers );
   }
   const getSuggestionValue = ( suggestion: any ) => {
-    input.onChange( suggestion.fullName.trim() || suggestion.userName );
-    return suggestion.fullName.trim() || suggestion.userName;
+    console.info( 'getSuggestionValue', suggestion );
+    input.onChange( suggestion.fullName || suggestion.userName );
+    return suggestion.fullName || suggestion.userName;
   };
   const onSuggestionsFetchRequested = ( sug: any ) => {
     console.info( 'onSuggestionsFetchRequested', sug );
@@ -62,7 +63,6 @@ function component( props: any ) {
           renderSuggestion={renderAutocompleteItem}
           suggestions={props.autocompleteUsers}
         />
-        {/*}*/}
         {touched && error && <FormText className="field-to-share-list-error">{error}</FormText>}
         {( visited && !active ) && valid ? (
             <div>
