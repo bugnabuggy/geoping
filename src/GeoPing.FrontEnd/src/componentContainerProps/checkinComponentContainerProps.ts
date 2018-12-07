@@ -28,4 +28,5 @@ export default interface ICheckinComponentContainerProps {
   setTimer: ( isStartTimer: ETimer ) => ( dispatch: IDispatchFunction ) => void;
   timerAccount: ( countTimer: number ) => ( dispatch: IDispatchFunction ) => void;
   addDistance: ( distance: number ) => ( dispatch: IDispatchFunction ) => void;
+  getGeoListMyAndHasAccess: () => ( dispatch: IDispatchFunction ) => void;
 }

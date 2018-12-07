@@ -88,20 +88,23 @@ namespace GeoPing.Services
             };
         }
 
-        public void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email)
+        public void ConfirmSharingsWithRegistration(string sharingId, Guid userId, string email)
         {
-            var sharing = _sharingRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
+            var sharing = _sharingRepo.Get().FirstOrDefault(x => x.Id == Guid.Parse(sharingId));
 
-            if (sharing != null)
+            if (sharing == null) return;
+
+            if (sharing.Email != email) return;
+
+            var sharings = _sharingRepo.Data.Where(x => x.Email == email);
+
+            foreach (var sh in sharings)
             {
-                if (sharing.Email == email)
-                {
-                    sharing.UserId = userId;
-                    sharing.Status = "pending";
-
-                    _sharingRepo.Update(sharing);
-                }
+                sh.UserId = userId;
+                sh.Status = "pending";
             }
+
+            _sharingRepo.Update(sharings);
         }
 
         // Send sharing invitations to users in list
@@ -133,6 +136,8 @@ namespace GeoPing.Services
                 // Try to find user by username one by one
                 var user = await _userManager.FindByNameAsync(userData);
 
+                ListSharing sharing;
+
                 if (user == null)
                 {
                     // Check if recieved data may be an email. Data will be skipped if it may not.
@@ -149,7 +154,13 @@ namespace GeoPing.Services
                     // In case of user wasn`t found, invite goes to recieved email data
                     if (user == null)
                     {
-                        sharings.Add(InviteUser(actingUserId, list.Id, userData, null));
+                        sharing = InviteUser(actingUserId, list.Id, userData, null);
+
+                        if (sharing != null)
+                        {
+                            sharings.Add(sharing);
+                        }
+
                         messages.Add($"The user [{userData}] was invited.");
                         continue;
                     }
@@ -163,13 +174,18 @@ namespace GeoPing.Services
                     continue;
                 }
 
-                sharings.Add(InviteUser(actingUserId, list.Id, user.Email, invitedGPUser));
+                sharing = InviteUser(actingUserId, list.Id, user.Email, invitedGPUser);
+
+                if (sharing != null)
+                {
+                    sharings.Add(sharing);
+                }
+
                 messages.Add($"The user [{userData}] was invited.");
+                continue;
             }
 
-            var success = sharings.Any()
-                ? true
-                : false;
+            var success = sharings.Any();
 
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
@@ -199,10 +215,10 @@ namespace GeoPing.Services
             return GetSharedListsInfo(sharings);
         }
 
-        public OperationResult<IEnumerable<UserListWasSharedWithDTO>> 
+        public OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             GetUsersListWasSharedWith(Guid userId, string listId)
         {
-            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list); 
+            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
 
             if (list == null)
             {
@@ -221,7 +237,7 @@ namespace GeoPing.Services
             }
 
             var result = GetUsersListWasSharedWithInfo(_sharingRepo.Get(x => x.ListId == list.Id));
-            
+
             return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             {
                 Success = true,
@@ -307,13 +323,13 @@ namespace GeoPing.Services
             // Check if user was invited. Send one more mail, if he was
             if (IsUserHasBeenInvitedEarlier(invitedUserEmail, listId, out var pastSharing))
             {
-                var newGPToken = pastSharing.UserId == null 
-                    ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString()) 
+                var newGPToken = pastSharing.UserId == null
+                    ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString())
                     : _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
 
-                SendSharingEmail(userId, pastSharing.Email, newGPToken.Token);
+                SendSharingEmail(userId, invitedUser , pastSharing.Email, newGPToken.Token);
 
-                return pastSharing;
+                return null;
             }
 
             // TODO: CAN I SOMEHOW UNITE CONDITION IF INVITEDUSER != NULL WITHOUT EXTRALARGE CODELINES
@@ -339,7 +355,7 @@ namespace GeoPing.Services
                 ? _tokenSrv.CreateSharingToken(sharing.Id.ToString())
                 : _tokenSrv.CreateSharingInviteToken(sharing.Id.ToString());
 
-            SendSharingEmail(userId, sharing.Email, gpToken.Token);
+            SendSharingEmail(userId, invitedUser, sharing.Email, gpToken.Token);
             return sharing;
         }
 
@@ -355,13 +371,29 @@ namespace GeoPing.Services
             return true;
         }
 
-        private void SendSharingEmail(Guid inviterId, string email, string code)
+        private void SendSharingEmail(Guid inviterId, GeoPingUser invitedUser, string email, string code)
         {
             var inviter = _gpUserSrv.GetUser(x => x.Id == inviterId);
 
             var callbackUrl = $"{_settings.Urls.SiteUrl}/" +
                               $"{_settings.Urls.ActionsUrl.ByToken}/" +
                               $"{code}";
+            
+            string subject;
+
+            if (invitedUser == null)
+            {
+                subject = email;
+            }
+            else
+            {
+                var fullName = ($"{invitedUser.FirstName} {invitedUser.LastName}").Trim();
+
+                subject = ($"{fullName} \"{invitedUser.Login}\"").TrimStart();
+            }
+
+            subject = $"{subject}, user {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} " +
+                      "shared a geolist with you.";
 
             var message = new EmailMessage
             {
@@ -375,7 +407,7 @@ namespace GeoPing.Services
                     Name = email,
                     Address = email
                 },
-                Subject = $"User {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} shared a geolist with you.",
+                Subject = subject,
                 Content = _emailSvc.GetConfirmationMail(email, callbackUrl)
             };
 
@@ -403,8 +435,9 @@ namespace GeoPing.Services
         private IEnumerable<SharedListInfoDTO> GetSharedListsInfo(IQueryable<ListSharing> sharings)
         {
             var result =
-                from s in sharings
-                join l in _listRepo.Get() on s.ListId equals l.Id
+                from sh in sharings
+                join l in _listRepo.Get() on sh.ListId equals l.Id
+                join u in _gpUserSrv.GetUsers(x => true) on l.OwnerId equals u.Id
                 select new SharedListInfoDTO
                 {
                     ListId = l.Id,
@@ -414,9 +447,11 @@ namespace GeoPing.Services
                     ListCreated = l.Created,
                     ListEdited = l.Edited,
                     ListIsPublic = l.IsPublic,
-                    ShareId = s.Id,
-                    ShareStatus = s.Status,
-                    ShareInvitationDate = s.InvitationDate.ToUniversalTime()
+                    ShareId = sh.Id,
+                    ShareStatus = sh.Status,
+                    ShareInvitationDate = sh.InvitationDate.ToUniversalTime(),
+                    OwnerUserName = u.Login,
+                    OwnerFullName = ($"{u.FirstName} {u.LastName}").Trim()
                 };
 
             return result.AsEnumerable();

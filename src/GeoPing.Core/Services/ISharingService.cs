@@ -11,7 +11,7 @@ namespace GeoPing.Core.Services
     public interface ISharingService
     {
         OperationResult AcceptSharing(Guid actingUserId, string sharingId);
-        void ConfirmSharingWithRegistration(string sharingId, Guid userId, string email);
+        void ConfirmSharingsWithRegistration(string sharingId, Guid userId, string email);
         IEnumerable<UserAutoCompleteDTO> GetAutoCompletedUsersList(string query);
         IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId);
         IEnumerable<SharedListInfoDTO> GetListsSharedWith(Guid userId, string sharingStatus);

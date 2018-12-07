@@ -103,7 +103,7 @@ namespace GeoPing.Services
                 }
 
                 if (!_securitySrv.IsUserHasAccessToWatchList
-                    (userId, _geolistSrv.Get(x => x.Id == point.ListId).FirstOrDefault()))
+                    (userId, _geolistSrv.Get().FirstOrDefault(x => x.Id == point.ListId)))
                 {
                     return new OperationResult<CheckIn>()
                     {
