@@ -35,6 +35,50 @@ namespace GeoPing.Services
             _securitySrv = securitySrv;
         }
 
+        public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersLists
+            (Guid ownerId, CheckInStatFilterDTO filter, out int totalItems)
+        {
+            _listSrv.GetAllowedLists(ownerId);
+
+            var points = _pointSrv.Get(p => _listSrv.GetAllowedLists(ownerId).Any(l => p.ListId == l.Id));
+
+            var checks = GetFilteredData(_checksRepo.Get(), filter)
+                .OrderByDescending(x => x.Date)
+                .GroupBy(x => x.PointId)
+                .Select(x => x.FirstOrDefault());
+
+            var data = GetCheckInStat(points, checks);
+
+            totalItems = data.Count();
+
+            filter.PageNumber = filter.PageNumber ?? 0;
+
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            {
+                var orderExpression = _orderBys[filter.OrderBy];
+
+                data = filter.IsDesc
+                    ? data.OrderByDescending(orderExpression)
+                    : data.OrderBy(orderExpression);
+            }
+
+            if (filter.PageSize != null)
+            {
+                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
+                           .Take((int)filter.PageSize);
+            }
+
+            return new WebResult<IQueryable<CheckInStatsDTO>>
+            {
+                Data = data,
+                Success = true,
+                Messages = new[] { $"There are all checks in for points of lists are accessible"},
+                PageNumber = filter.PageNumber,
+                PageSize = filter.PageSize,
+                TotalItems = totalItems
+            };
+        }
+
         public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersList
             (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
         {
@@ -54,7 +98,7 @@ namespace GeoPing.Services
             {
                 return new WebResult<IQueryable<CheckInStatsDTO>>
                 {
-                    Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]" }
+                    Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]", "Unauthorized" }
                 };
             }
 
@@ -65,36 +109,8 @@ namespace GeoPing.Services
                 .GroupBy(x => x.PointId)
                 .Select(x => x.FirstOrDefault());
 
-            var data = from p in points
-                       join ch in checks on p.Id equals ch.PointId into stat
-                       from x in stat.DefaultIfEmpty()
-                       select new CheckInStatsDTO
-                       {
-                           Point = new CheckInStatPointDTO
-                           {
-                               Id = p.Id,
-                               Name = p.Name,
-                               Description = p.Description,
-                               Latitude = p.Latitude,
-                               Longitude = p.Longitude,
-                               Radius = p.Radius,
-                               Address = p.Address
-                           },
-                           Check = x != null
-                           ? new CheckInStatCheckDTO
-                               {
-                               UserId = x.UserId,
-                               PointId = x.PointId,
-                               Latitude = x.Latitude,
-                               Longitude = x.Longitude,
-                               Distance = x.Distance,
-                               Date = x.Date.ToUniversalTime(),
-                               Ip = x.Ip,
-                               DeviceId = x.DeviceId,
-                               UserAgent = x.UserAgent
-                           }
-                           : new CheckInStatCheckDTO()
-                       };
+            var data = GetCheckInStat(points, checks);
+
             totalItems = data.Count();
 
             filter.PageNumber = filter.PageNumber ?? 0;
@@ -185,6 +201,42 @@ namespace GeoPing.Services
             data = isDatePeriodTo
                 ? data.Where(x => x.Date <= periodTo)
                 : data;
+
+            return data;
+        }
+
+        private IQueryable<CheckInStatsDTO> GetCheckInStat(IQueryable<GeoPoint> points, IQueryable<CheckIn> checks)
+        {
+            var data = from p in points
+                join ch in checks on p.Id equals ch.PointId into stat
+                from x in stat.DefaultIfEmpty()
+                select new CheckInStatsDTO
+                {
+                    Point = new CheckInStatPointDTO
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Description = p.Description,
+                        Latitude = p.Latitude,
+                        Longitude = p.Longitude,
+                        Radius = p.Radius,
+                        Address = p.Address
+                    },
+                    Check = x != null
+                        ? new CheckInStatCheckDTO
+                        {
+                            UserId = x.UserId,
+                            PointId = x.PointId,
+                            Latitude = x.Latitude,
+                            Longitude = x.Longitude,
+                            Distance = x.Distance,
+                            Date = x.Date.ToUniversalTime(),
+                            Ip = x.Ip,
+                            DeviceId = x.DeviceId,
+                            UserAgent = x.UserAgent
+                        }
+                        : new CheckInStatCheckDTO()
+                };
 
             return data;
         }
