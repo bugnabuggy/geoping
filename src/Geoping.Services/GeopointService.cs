@@ -167,23 +167,63 @@ namespace GeoPing.Services
             };
         }
 
-        public bool IsPointExistWithThisId(string id, Guid listId, out GeoPoint point)
+        public bool IsPointExistWithId(string pointId)
         {
-            var isPointId = Guid.TryParse(id, out Guid pointId);
-            point = null;
-            if (!isPointId)
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
             {
                 return false;
             }
 
-            point = Get().FirstOrDefault(x => x.ListId == listId && 
-                                              x.Id == pointId);
-            if (point == null)
+            var point = Get().FirstOrDefault(x => x.Id == id);
+            return point != null;
+        }
+
+        public bool IsPointExistWithId(string pointId, Guid listId)
+        {
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
             {
                 return false;
             }
 
-            return true;
+            var point = Get().FirstOrDefault(x => x.ListId == listId &&
+                                                  x.Id == id);
+            return point != null;
+        }
+
+        public bool TryGetPointWithId(string pointId, out GeoPoint point)
+        {
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
+            {
+                point = null;
+
+                return false;
+            }
+
+            point = _pointRepo.Data.FirstOrDefault(x => x.Id == id);
+
+            return point != null;
+        }
+
+        public bool TryGetPointWithId(string pointId, Guid listId, out GeoPoint point)
+        {
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
+            {
+                point = null;
+
+                return false;
+            }
+
+            point = _pointRepo.Data.FirstOrDefault(x => x.ListId == listId && 
+                                                        x.Id == id);
+            return point != null;
         }
     }
 }

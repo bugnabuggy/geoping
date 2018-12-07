@@ -40,7 +40,7 @@ namespace GeoPing.Services
         {
             totalItems = 0;
 
-            var isListExist = _listSrv.IsListExistWithThisId(listId, out var list);
+            var isListExist = _listSrv.TryGetListWithId(listId, out var list);
 
             if (!isListExist)
             {
@@ -127,7 +127,7 @@ namespace GeoPing.Services
 
         public OperationResult<IEnumerable<UserAutoCompleteDTO>> GetAllowedUsers(Guid userId, string listId)
         {
-            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
+            var isListExists = _listSrv.TryGetListWithId(listId, out var list);
 
             if (list == null)
             {
