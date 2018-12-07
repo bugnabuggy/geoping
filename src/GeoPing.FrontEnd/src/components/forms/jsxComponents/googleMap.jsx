@@ -11,10 +11,11 @@ import {
   getDistance,
   selectMarkerAPI,
   setCenterMap,
+  setCoordinatesForMarker,
   setCoordinatesForUserMarker,
+  setIconCheckInGeoPoint,
   setRadiusMarker,
   settingPointsByCoordinates,
-  setIconCheckInGeoPoint,
 } from '../../../services/googleMapService';
 import {EnumStatusMarker} from "../../../enums/statusMarker";
 import {defaultMarker} from '../../../constants/defaultMarker';
@@ -101,6 +102,11 @@ class GoogleMap extends React.Component {
     if (prevProps.googleMap.position.lat !== this.props.googleMap.position.lat ||
       prevProps.googleMap.position.lng !== this.props.googleMap.position.lng) {
       setCoordinatesForUserMarker(this.props.googleMap.position);
+    }
+
+    if (prevProps.googleMap.selectedGeoPoint.lat !== this.props.googleMap.selectedGeoPoint.lat ||
+      prevProps.googleMap.selectedGeoPoint.lng !== this.props.googleMap.selectedGeoPoint.lng) {
+      setCoordinatesForMarker(this.props.googleMap.selectedGeoPoint);
     }
 
     if (this.props.googleMap.selectedGeoPoint.radius !== prevProps.googleMap.selectedGeoPoint.radius) {

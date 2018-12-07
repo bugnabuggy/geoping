@@ -100,6 +100,17 @@ export function setCoordinatesForUserMarker( coordinates: any ) {
   }
 }
 
+export function setCoordinatesForMarker( geoPoint: IGeoPoint ) {
+  const marker: any = findGeoPoint( geoPoint.idForMap );
+  if ( marker ) {
+    const latLng: any = {
+      lat: geoPoint.lat,
+      lng: geoPoint.lng,
+    };
+    setPosition( marker, latLng );
+  }
+}
+
 function createMap( htmlElement: any ) {
   _googleMap = new _googleLib.maps.Map( htmlElement, _options );
   _googleMap.addListener( 'click', handleMapListener );

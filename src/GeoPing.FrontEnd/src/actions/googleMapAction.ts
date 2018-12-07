@@ -203,7 +203,7 @@ export const geoPointListIsCreate = ( isGeoPointListIsCreated: boolean ) => ( di
 };
 
 export const addDistance = ( distance: number ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( addDistanceAction( distance ? Math.round( distance ) : null ) );
+  dispatch( addDistanceAction( distance > -1 ? Math.round( distance ) : null ) );
 };
 
 export const clearStateGoogleMap = () => ( dispatch: IDispatchFunction ) => {

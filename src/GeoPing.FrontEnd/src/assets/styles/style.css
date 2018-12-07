@@ -1162,9 +1162,16 @@ header nav {
 
 .check-list-geo-point-form-label-distance {
   margin-left: 20px;
-  min-width: 40px;
+  min-width: 90px;
   display: flex;
   justify-content: flex-end;
+}
+
+.check-list-geo-point-form-label-distance-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .check-list-geo-point-form-text-area {

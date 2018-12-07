@@ -60,7 +60,7 @@ const renderAvatar = ( props: any ) => {
 };
 
 const renderDate = ( props: any ) => {
-  const date: moment.Moment = moment( props.input.value );
+  const date: moment.Moment = !!props.input.value ? moment( props.input.value ) : moment();
   return (
     <FormGroup>
       <ControlLabel className="control-profile-label">{props.labelName}</ControlLabel>
@@ -70,6 +70,7 @@ const renderDate = ( props: any ) => {
           locale="ru"
           onChange={props.input.onChange}
           className="form-control"
+          placeholderText="Click to select a date"
         />
       </div>
     </FormGroup>
@@ -128,7 +129,13 @@ function profileForm( props: any ): any {
         name="phoneNumber"
         labelName="Mobile Phone"
         type="tel"
-        placeholder="xxx-xxx-xxxx"
+      />
+      <Field
+        component={renderInput}
+        name="country"
+        labelName="Country"
+        type="text"
+        placeholder=""
       />
       <Field
         component={renderInput}
