@@ -16,4 +16,6 @@ export default interface IUserType {
 export interface IAutocompleteUsersDTO {
   userName: string;
   email: string;
+  fullName: string;
+  userId: string;
 }

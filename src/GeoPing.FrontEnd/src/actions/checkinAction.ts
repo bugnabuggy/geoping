@@ -5,6 +5,7 @@ import {
   CHECK_IN_GEO_POINTS,
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST,
+  GET_GEO_LIST_MY_AND_HAS_ACCESS,
   LOADING_CHECK_LISTS,
   LOADING_GEO_POINTS,
   SET_TIMER_COUNT,
@@ -19,6 +20,7 @@ import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import { addListPointsAction } from './googleMapAction';
 import { ICheckInDTO } from '../DTO/checkInDTO';
 import { ETimer } from '../enums/timerEnum';
+import { IGeoListPublickDTO, IGeoListSharingDTO } from '../DTO/geoListDTO';
 
 export const setTimer = ( isStartTimer: ETimer ) => ( dispatch: IDispatchFunction ) => {
   dispatch( setTimerAction( isStartTimer ) );
@@ -113,6 +115,19 @@ export const timerAccount = ( countTimer: number ) => ( dispatch: IDispatchFunct
   dispatch( timerAccountAction( countTimer ) );
 };
 
+export const getGeoListMyAndHasAccess = () => ( dispatch: IDispatchFunction ) => {
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+  checkListService.getGeoListMyAndHasAccess()
+    .then( ( checkInLists: Array<IGeoListPublickDTO | IGeoListSharingDTO | any> ) => {
+      dispatch( getGeoListMyAndHasAccessAction( checkInLists ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' getGeoListMyAndHasAccess', EnumNotificationType.Danger )
+      ) );
+    } );
+};
+
 /* Actions */
 function loadListsAction( lists: Array<any> ): Object {
   return { type: CHECK_IN_LOAD_LISTS, lists };
@@ -149,4 +164,8 @@ function setTimerAction( isStartTimer: ETimer ) {
 
 function timerAccountAction( countTimer: number ) {
   return { type: SET_TIMER_COUNT, countTimer };
+}
+
+function getGeoListMyAndHasAccessAction( checkInLists: Array<IGeoListPublickDTO | IGeoListSharingDTO | any> ) {
+  return { type: GET_GEO_LIST_MY_AND_HAS_ACCESS, checkInLists };
 }

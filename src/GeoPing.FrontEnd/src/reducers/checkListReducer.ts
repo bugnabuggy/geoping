@@ -26,6 +26,7 @@ import { CLOSE_FILTER_CHECKLIST, FILTER_CHECKLIST_LIST, } from '../constantsForR
 import { CANCEL_GEO_POINT, SAVE_GEO_POINT, SELECT_GEO_POINT } from '../constantsForReducer/googleMap';
 import { CLOSE_MODAL_SHARE } from '../constantsForReducer/modal';
 import { PUBLIC_LIST_LOAD_LISTS } from '../constantsForReducer/publicCheckList';
+import { GET_GEO_LIST_MY_AND_HAS_ACCESS } from '../constantsForReducer/checkin';
 
 export default function checkListReducer( state: ICheckListStateType = checkListState, action: any ) {
   const reduceObject: any = {
@@ -58,7 +59,8 @@ export default function checkListReducer( state: ICheckListStateType = checkList
     [ LOAD_ALL_ACCEPTED_SHARED_LISTS ]: loadAllAcceptedSharedLists,
     [ DELETE_LIST_SHARING ]: deleteListSharing,
     [ CANCEL_ACCEPT_NEW_SHARING_LIST ]: cancelAcceptNewSharingList,
-    [ACCEPT_LIST_SHARING_INVITE]: acceptListSharingInvite,
+    [ ACCEPT_LIST_SHARING_INVITE ]: acceptListSharingInvite,
+    [ GET_GEO_LIST_MY_AND_HAS_ACCESS ]: checkListForCheckIn,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -283,5 +285,12 @@ function acceptListSharingInvite( state: ICheckListStateType, action: any ): ICh
     newSharedLists: [
       ...state.newSharedLists.filter( item => item.shareId !== action.sharingId )
     ],
+  };
+}
+
+function checkListForCheckIn( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    checkInLists: action.checkInLists,
   };
 }

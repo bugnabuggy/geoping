@@ -34,4 +34,5 @@ export default interface ICheckListServiceType {
   removeToken: ( token: string ) => Promise<any>;
 
   removeAccessUserForList: ( sharingId: string ) => Promise<any>;
+  getGeoListMyAndHasAccess: () => Promise<any>;
 }

@@ -75,7 +75,7 @@ namespace GeoPing.Services
 
                 // Token actions
 
-                if (registerUser.Token != null)
+                if (!string.IsNullOrEmpty(registerUser.Token))
                 {
                     var token = _tokenSrv.GetToken(registerUser.Token);
 

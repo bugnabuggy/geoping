@@ -8,11 +8,14 @@ import { CheckinComponent } from '../components/checkinComponent';
 import {
   checkIn,
   checkInClear,
-  checkinFlag, getAllChecksForUserAndList,
+  checkinFlag,
+  getGeoListMyAndHasAccess,
   loadLists,
   loadPoints,
   messagesForUser,
-  selectList, setTimer, timerAccount
+  selectList,
+  setTimer,
+  timerAccount
 } from '../actions/checkinAction';
 import { ICheckinFunctions } from '../componentProps/checkinComponentProps';
 import { addDistance, clearGeoPoint, getMyAddress, selectPoint } from '../actions/googleMapAction';
@@ -21,15 +24,13 @@ import { loadCheckLists } from '../actions/myCheckListsAction';
 
 class CheckinComponentContainer extends React.Component<ICheckinComponentContainerProps, any> {
   componentDidMount() {
-    this.props.loadCheckLists();
-    // this.props.loadLists( 'gggf5df-fj8y5dg-df54sdfg-f4d5' );
+    this.props.getGeoListMyAndHasAccess();
     if ( !this.props.checkin.isCheckIn ) {
       this.props.checkinFlag( true );
     }
   }
 
   componentWillUnmount() {
-    // this.props.checkinFlag( false );
     this.props.checkInClear();
   }
 
@@ -88,6 +89,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       setTimer,
       timerAccount,
       addDistance,
+      getGeoListMyAndHasAccess,
     },
     dispath );
 

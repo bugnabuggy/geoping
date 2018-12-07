@@ -13,7 +13,6 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
   }
 
   handleChange = ( e: any ) => {
-    // this.props.providePublicAccess(this.props.myCheckList.idCheckListShow, e.target.checked);
     const checkList: IGeoListForUpdateDTO = {
       IsPublic: e.target.checked,
       Description: this.props.checkList.selectedGeoList.description,
@@ -22,8 +21,7 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
     this.props.updateCheckList( this.props.checkList.selectedGeoList.id, checkList );
   };
 
-  handleSubmit = ( e: any ) => {
-    const users: Array<string> = e.users.map( ( item: any ) => item.email );
+  handleSubmit = ( users: Array<string> ) => {
     this.props.sendAccessUsersForCheckList( this.props.myCheckList.idCheckListShow, users );
   };
 
@@ -37,7 +35,6 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
 
   render() {
     const checked: boolean = this.props.checkList.selectedGeoList.isPublic;
-    // .find( item => item.id === this.props.myCheckList.idCheckListShow).public;
     return (
       <ModalComponent
         show={this.props.myCheckList.isShowModalShare}
@@ -60,6 +57,8 @@ export class ShareCheckListModalComponent extends React.Component<IShareCheckLis
           handleSubmit={this.handleSubmit}
           getAutocompletedListUsers={this.props.getAutocompletedListUsers}
           clearAutocompleteListUsers={this.props.clearAutocompleteListUsers}
+          changeCountUser={this.props.changeCountUser}
+          changeUserData={this.props.changeUserData}
         />
         <hr/>
         <span>Users who has access:</span>

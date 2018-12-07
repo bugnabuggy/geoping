@@ -435,8 +435,9 @@ namespace GeoPing.Services
         private IEnumerable<SharedListInfoDTO> GetSharedListsInfo(IQueryable<ListSharing> sharings)
         {
             var result =
-                from s in sharings
-                join l in _listRepo.Get() on s.ListId equals l.Id
+                from sh in sharings
+                join l in _listRepo.Get() on sh.ListId equals l.Id
+                join u in _gpUserSrv.GetUsers(x => true) on l.OwnerId equals u.Id
                 select new SharedListInfoDTO
                 {
                     ListId = l.Id,
@@ -446,9 +447,11 @@ namespace GeoPing.Services
                     ListCreated = l.Created,
                     ListEdited = l.Edited,
                     ListIsPublic = l.IsPublic,
-                    ShareId = s.Id,
-                    ShareStatus = s.Status,
-                    ShareInvitationDate = s.InvitationDate.ToUniversalTime()
+                    ShareId = sh.Id,
+                    ShareStatus = sh.Status,
+                    ShareInvitationDate = sh.InvitationDate.ToUniversalTime(),
+                    OwnerUserName = u.Login,
+                    OwnerFullName = ($"{u.FirstName} {u.LastName}").Trim()
                 };
 
             return result.AsEnumerable();

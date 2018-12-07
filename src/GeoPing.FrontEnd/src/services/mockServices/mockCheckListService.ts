@@ -227,4 +227,10 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
+  getGeoListMyAndHasAccess() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve( 'ok' );
+    } );
+  }
+
 }
