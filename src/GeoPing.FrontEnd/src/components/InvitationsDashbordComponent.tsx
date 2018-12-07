@@ -55,7 +55,7 @@ export class InvitationsDashbordComponent extends React.Component<IInvitationsDa
     return this.props.checkList.acceptedSharedLists.map( item => {
       const date = moment( item.shareInvitationDate ).format( 'L' );
       return (
-        <React.Fragment key={`${item.shareId}_accept`}>
+        <div key={`${item.shareId}_accept`} style={{ position: 'relative' }}>
           <Link
             to={checkListUrl.replace( '([a-z0-9-]+)', item.listId )}
             className="invitations-accept-lists-link"
@@ -72,19 +72,19 @@ export class InvitationsDashbordComponent extends React.Component<IInvitationsDa
                 <span>
                   {date}
                 </span>
-                <div
-                  className="cursor-pointer invitations-accept-lists-icon-container"
-                  onClick={() => {
-                    this.onCancelList( item.shareId );
-                  }}
-                >
-                  <FontAwesomeIcon icon="times"/>
-                </div>
-
+                <div style={{ width: '20px' }}/>
               </CardBody>
             </Card>
           </Link>
-        </React.Fragment>
+          <div
+            className="cursor-pointer invitations-accept-lists-icon-container"
+            onClick={() => {
+              this.onCancelList( item.shareId );
+            }}
+          >
+            <FontAwesomeIcon icon="times"/>
+          </div>
+        </div>
       );
     } );
   };
