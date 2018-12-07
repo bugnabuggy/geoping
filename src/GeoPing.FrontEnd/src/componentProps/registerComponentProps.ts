@@ -1,6 +1,6 @@
-import IRegistrationUserType from '../types/actionsType/registrationUserDataType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import IRegistrationUserDTO from '../DTO/registrationUserDTO';
 
 export default interface IRegisterComponentProps {
-  registrationUser: ( registrationUserData: IRegistrationUserType ) => ( dispatch: IDispatchFunction ) => void;
+  registrationUser: ( registrationUserData: IRegistrationUserDTO ) => ( dispatch: IDispatchFunction ) => void;
 }

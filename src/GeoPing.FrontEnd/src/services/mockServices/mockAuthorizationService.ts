@@ -1,6 +1,6 @@
 import IAuthorization from '../../types/serviceTypes/authorizationServiceType';
 import * as testUser from '../../mocks/testUser.json';
-import IRegistrationUserType from '../../types/actionsType/registrationUserDataType';
+import IRegistrationUserDTO from '../../DTO/registrationUserDTO';
 
 export default class MockAuthorizationService implements IAuthorization {
   getVirtualDatabase() {
@@ -8,7 +8,7 @@ export default class MockAuthorizationService implements IAuthorization {
       setTimeout(
         () => {
           sessionStorage.setItem( 'localDB', JSON.stringify( testUser ) );
-          resolve( 'ok');
+          resolve( 'ok' );
         },
         1000
       );
@@ -21,20 +21,20 @@ export default class MockAuthorizationService implements IAuthorization {
         () => {
           this.getVirtualDatabase()
             .then( ( response: any ) => {
-              const token: string = JSON.parse(sessionStorage.getItem('localDB')).token;
-              localStorage.setItem('token', token);
+              const token: string = JSON.parse( sessionStorage.getItem( 'localDB' ) ).token;
+              localStorage.setItem( 'token', token );
               resolve( token );
-            })
+            } )
             .catch( ( error: any ) => {
-              reject(error);
-            });
+              reject( error );
+            } );
         },
         1000
       );
     } );
   }
 
-  registrationUser( registrationUserData: IRegistrationUserType ) {
+  registrationUser( registrationUserData: IRegistrationUserDTO ) {
     return new Promise( ( resolve: any, reject: any ) => {
       setTimeout(
         () => {

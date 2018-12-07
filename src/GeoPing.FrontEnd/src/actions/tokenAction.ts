@@ -2,7 +2,7 @@ import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { isRedirect, windowBlocking } from './windowAction';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
 import StaticStorage from '../services/staticStorage';
-import { dashboardUrl, loginUrl, registerUrl, tokenError } from '../constants/routes';
+import { dashboardUrl, registerUrl, tokenError } from '../constants/routes';
 import { createNotification } from '../services/helper';
 import { addNotificationAction } from './notificationsAction';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
@@ -28,7 +28,7 @@ export const removeToken = ( token: string ) => ( dispatch: IDispatchFunction ) 
   checkListService.removeToken( token )
     .then( ( response: any ) => {
       windowBlocking( false )( dispatch );
-      dispatch(messageForActivateTokenAction('Your token verified'));
+      dispatch( messageForActivateTokenAction( 'Your token verified' ) );
     } )
     .catch( ( error: any ) => {
       windowBlocking( false )( dispatch );
@@ -53,6 +53,8 @@ const tokenType: any = {
   },
   SharingInvite: ( response: any, userId: string, token: string, dispatch: IDispatchFunction ) => {
     signOutUser()( dispatch );
+    localStorage.setItem( 'sharing_token', token );
+    localStorage.setItem( 'user_data', response.userData );
     isRedirect( registerUrl )( dispatch );
     windowBlocking( false )( dispatch );
   },
@@ -60,7 +62,7 @@ const tokenType: any = {
 
 export const verifyToken = ( token: string, userId: string ) => ( dispatch: IDispatchFunction ) => {
   windowBlocking( true )( dispatch );
-  dispatch(messageForActivateTokenAction('Please wait we verifying your token'));
+  dispatch( messageForActivateTokenAction( 'Please wait we verifying your token' ) );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getInfoAboutToken( token )
     .then( ( response: any ) => {
