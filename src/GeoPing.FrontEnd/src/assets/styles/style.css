@@ -1620,7 +1620,9 @@ select.form-control:not([size]):not([multiple]) {
   font-size: 25px;
   height: 25px;
   display: flex;
-  margin-left: 10px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 
 /*****************************************************************************************/

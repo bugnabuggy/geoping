@@ -272,6 +272,9 @@ function cancelAcceptNewSharingList( state: ICheckListStateType, action: any ): 
     newSharedLists: [
       ...state.newSharedLists.filter( item => item.shareId !== action.sharingId )
     ],
+    acceptedSharedLists: [
+      ...state.acceptedSharedLists.filter( item => item.shareId !== action.sharingId )
+    ],
   };
 }
 
