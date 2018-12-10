@@ -22,12 +22,43 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
+        // GET api/statistics
+        [HttpGet]
+        public IActionResult GetCheckInStatistics(CheckInStatFilterDTO filter)
+        {
+            var result = _statSrv.GetStatOfLists
+                (_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // GET api/statistics/geolist
+        [HttpGet]
+        [Route("geolist")]
+        public IActionResult GetFreeChecksInStatistics(CheckInStatFilterDTO filter)
+        {
+            var result = _statSrv.GetFreeChecksInStat
+                (_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         // GET api/statistics/geolist/{listId}
         [HttpGet]
         [Route("geolist/{listId}")]
-        public IActionResult GetCheckInStatistics(string listId, CheckInStatFilterDTO filter)
+        public IActionResult GetCheckInStatisticsForList(string listId, CheckInStatFilterDTO filter)
         {
-            var result = _statSrv.GetStatOfUsersList
+            var result = _statSrv.GetStatOfList
                 (_helper.GetAppUserIdByClaims(User.Claims), listId, filter, out int totalItems);
 
             if (result.Success)
