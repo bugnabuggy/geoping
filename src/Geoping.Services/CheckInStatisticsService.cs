@@ -12,11 +12,18 @@ namespace GeoPing.Services
 {
     public class CheckInStatisticsService : ICheckInStatisticsService
     {
-        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> _orderBys =
+        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> _orderStatBys =
             new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>
             {
-                {"pointName", x => x.Point.Name},
-                {"date", x => x.Check.Date}
+                {"pointName", x => x.Name},
+                {"date", x => x.CheckInDate}
+            };
+
+        private Dictionary<string, Expression<Func<CheckInHistoryDTO, object>>> _orderHistoryBys =
+            new Dictionary<string, Expression<Func<CheckInHistoryDTO, object>>>
+            {
+                {"listName", x => x.ListName},
+                {"date", x => x.CheckInDate}
             };
 
         private IRepository<CheckIn> _checksRepo;
@@ -24,10 +31,11 @@ namespace GeoPing.Services
         private IGeopointService _pointSrv;
         private ISecurityService _securitySrv;
 
-        public CheckInStatisticsService(IRepository<CheckIn> checksRepo,
-                                        IGeolistService listSrv,
-                                        IGeopointService pointSrv,
-                                        ISecurityService securitySrv)
+        public CheckInStatisticsService
+            (IRepository<CheckIn> checksRepo,
+            IGeolistService listSrv,
+            IGeopointService pointSrv,
+            ISecurityService securitySrv)
         {
             _checksRepo = checksRepo;
             _listSrv = listSrv;
@@ -53,9 +61,9 @@ namespace GeoPing.Services
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderBys[filter.OrderBy];
+                var orderExpression = _orderStatBys[filter.OrderBy];
 
                 data = filter.IsDesc
                     ? data.OrderByDescending(orderExpression)
@@ -115,9 +123,9 @@ namespace GeoPing.Services
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderBys[filter.OrderBy];
+                var orderExpression = _orderStatBys[filter.OrderBy];
 
                 data = filter.IsDesc
                     ? data.OrderByDescending(orderExpression)
@@ -141,35 +149,32 @@ namespace GeoPing.Services
             };
         }
 
-        public WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat(Guid userId, CheckInStatFilterDTO filter, out int totalItems)
+        public WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat
+            (Guid userId, CheckInStatFilterDTO filter, out int totalItems)
         {
-            var checks = GetFilteredData(_checksRepo.Get(x => x.UserId == userId), filter)
+            var checks = GetFilteredData(_checksRepo.Get(x => x.UserId == userId && x.PointId == null), filter)
                 .OrderByDescending(x => x.Date);
 
             var data =
                 from ch in checks
                 select new CheckInStatsDTO
                 {
-                    Point = new CheckInStatPointDTO(),
-                    Check = new CheckInStatCheckDTO
-                    {
-                        UserId = ch.UserId,
-                        Latitude = ch.Latitude,
-                        Longitude = ch.Longitude,
-                        Date = ch.Date.ToUniversalTime(),
-                        Ip = ch.Ip,
-                        DeviceId = ch.DeviceId,
-                        UserAgent = ch.UserAgent
-                    }
+                    Address = ch.Description,
+                    CheckInDate = ch.Date,
+                    Distance = ch.Distance,
+                    Latitude = ch.Latitude,
+                    Longitude = ch.Longitude,
+                    Type = CheckInType.FreeCheck,
+                    UserId = userId
                 };
 
             totalItems = data.Count();
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderBys[filter.OrderBy];
+                var orderExpression = _orderStatBys[filter.OrderBy];
 
                 data = filter.IsDesc
                     ? data.OrderByDescending(orderExpression)
@@ -188,6 +193,56 @@ namespace GeoPing.Services
                 Data = data,
                 Success = true,
                 Messages = new[] { $"There are all free checks-in for user Id = [{userId}]" },
+                PageNumber = filter.PageNumber,
+                PageSize = filter.PageSize,
+                TotalItems = totalItems
+            };
+        }
+
+        public WebResult<IEnumerable<CheckInHistoryDTO>> GetChecksInHistory
+            (Guid userId, CheckInHistoryFilterDTO filter)
+        {
+            var checksIn = GetFilteredData(_checksRepo.Get(x => x.UserId == userId)
+                .OrderByDescending(x => x.Date), filter);
+
+            var data = 
+                from ch in checksIn
+                join p in _pointSrv.Get() on ch.PointId equals p.Id
+                into history
+                from h in history.DefaultIfEmpty(new GeoPoint() { Geolist = new GeoList() })
+                select new CheckInHistoryDTO
+                {
+                    CheckInDate = ch.Date,
+                    LatLng = $"{ch.Latitude}/{ch.Longitude}",
+                    ListName = h.Geolist.Name ?? null,
+                    Info = h.Address ?? ch.Description
+                };
+
+            var totalItems = data.Count();
+
+            filter.PageNumber = filter.PageNumber ?? 0;
+
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
+            {
+                var orderExpression = _orderHistoryBys[filter.OrderBy];
+
+                data = filter.IsDesc
+                    ? data.OrderByDescending(orderExpression)
+                    : data.OrderBy(orderExpression);
+            }
+
+            if (filter.PageSize != null)
+            {
+                data = data
+                    .Skip((int)filter.PageSize * (int)filter.PageNumber)
+                    .Take((int)filter.PageSize);
+            }
+
+            return new WebResult<IEnumerable<CheckInHistoryDTO>>
+            {
+                Data = data,
+                Success = true,
+                Messages = new[] { $"There is checks-in history for user Id = [{userId}]" },
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
                 TotalItems = totalItems
@@ -258,6 +313,23 @@ namespace GeoPing.Services
             return data;
         }
 
+        private IQueryable<CheckIn> GetFilteredData
+            (IQueryable<CheckIn> data, CheckInHistoryFilterDTO filter)
+        {
+            var isDatePeriodFrom = DateTime.TryParse(filter.DatePeriodFrom, out var periodFrom);
+            var isDatePeriodTo = DateTime.TryParse(filter.DatePeriodTo, out var periodTo);
+
+            data = isDatePeriodFrom
+                ? data.Where(x => x.Date >= periodFrom)
+                : data;
+
+            data = isDatePeriodTo
+                ? data.Where(x => x.Date <= periodTo)
+                : data;
+
+            return data;
+        }
+
         private IQueryable<CheckInStatsDTO> GetCheckInStat(IQueryable<GeoPoint> points, IQueryable<CheckIn> checks)
         {
             var data = from p in points
@@ -265,30 +337,16 @@ namespace GeoPing.Services
                        from x in stat.DefaultIfEmpty()
                        select new CheckInStatsDTO
                        {
-                           Point = new CheckInStatPointDTO
-                           {
-                               Id = p.Id,
-                               Name = p.Name,
-                               Description = p.Description,
-                               Latitude = p.Latitude,
-                               Longitude = p.Longitude,
-                               Radius = p.Radius,
-                               Address = p.Address
-                           },
-                           Check = x != null
-                               ? new CheckInStatCheckDTO
-                               {
-                                   UserId = x.UserId,
-                                   PointId = x.PointId,
-                                   Latitude = x.Latitude,
-                                   Longitude = x.Longitude,
-                                   Distance = x.Distance,
-                                   Date = x.Date.ToUniversalTime(),
-                                   Ip = x.Ip,
-                                   DeviceId = x.DeviceId,
-                                   UserAgent = x.UserAgent
-                               }
-                               : new CheckInStatCheckDTO()
+                           Address = p.Address,
+                           Name = p.Name,
+                           PointId = p.Id,
+                           Radius = p.Radius,
+                           CheckInDate = x != null ? (DateTime?)x.Date : null,
+                           Distance = x != null ? x.Distance : null,
+                           Latitude = x != null ? (double?)x.Latitude : null,
+                           Longitude = x != null ? (double?)x.Longitude : null,
+                           Type = x != null ? CheckInType.CheckedPoint : CheckInType.UncheckedPoint,
+                           UserId = x != null ? (Guid?)x.UserId : null,
                        };
 
             return data;
