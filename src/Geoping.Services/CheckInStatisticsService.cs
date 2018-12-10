@@ -205,18 +205,17 @@ namespace GeoPing.Services
             var checksIn = GetFilteredData(_checksRepo.Get(x => x.UserId == userId)
                 .OrderByDescending(x => x.Date), filter);
 
-            var data =
+            var data = 
                 from ch in checksIn
                 join p in _pointSrv.Get() on ch.PointId equals p.Id
-                    into history
-                from h in history.DefaultIfEmpty()
-                join l in _listSrv.Get() on h.ListId equals l.Id
+                into history
+                from h in history.DefaultIfEmpty(new GeoPoint() { Geolist = new GeoList() })
                 select new CheckInHistoryDTO
                 {
                     CheckInDate = ch.Date,
                     LatLng = $"{ch.Latitude}/{ch.Longitude}",
-                    ListName = h != null ? l.Name : null,
-                    Info = h != null ? h.Address : ch.Description
+                    ListName = h.Geolist.Name ?? null,
+                    Info = h.Address ?? ch.Description
                 };
 
             var totalItems = data.Count();
