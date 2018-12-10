@@ -91,5 +91,20 @@ namespace GeoPing.Api.Controllers
 
             return BadRequest(result);
         }
+
+        // GET api/statistics/history
+        [HttpGet]
+        [Route("history")]
+        public IActionResult GetChecksInHistory(CheckInHistoryFilterDTO filter)
+        {
+            var result = _statSrv.GetChecksInHistory(_helper.GetAppUserIdByClaims(User.Claims), filter);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }
