@@ -39,7 +39,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -63,7 +63,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -85,7 +85,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -120,7 +120,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -156,7 +156,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -181,7 +181,7 @@ namespace GeoPing.Api.Controllers
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
