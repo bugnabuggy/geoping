@@ -28,7 +28,7 @@ namespace GeoPing.Services
             _securitySrv = securitySrv;
         }
 
-        public OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId)
+        public OperationResult<CheckIn> GetCheckIn(Guid userId, string pointId)
         {
             var isPointExist = _pointSrv.IsPointExistWithId(pointId);
 
@@ -61,7 +61,7 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<IEnumerable<CheckIn>> GetChecksIn(string listId, Guid userId)
+        public OperationResult<IEnumerable<CheckIn>> GetChecksIn(Guid userId, string listId)
         {
             var isListExist = _geolistSrv.IsListExistWithId(listId);
 
@@ -72,7 +72,7 @@ namespace GeoPing.Services
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
                 };
             }
-
+            
             var points = _pointSrv.Get(x => x.ListId == Guid.Parse(listId));
 
             var data = from ch in _checkInRepo.Get()

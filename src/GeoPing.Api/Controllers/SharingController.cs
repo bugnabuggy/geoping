@@ -72,6 +72,11 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
+            }
+
             return BadRequest(result);
         }
 
@@ -105,6 +110,10 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
+            }
 
             return BadRequest(result);
         }
@@ -119,6 +128,10 @@ namespace GeoPing.Api.Controllers
             if (result.Success)
             {
                 return Ok(result);
+            }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
             }
 
             return BadRequest(result);

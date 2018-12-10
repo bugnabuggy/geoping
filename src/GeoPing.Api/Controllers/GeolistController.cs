@@ -35,6 +35,7 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetListsByFilter(UsersGeolistFilterDTO filter)
         {
             var result = _geolistSrv.GetByFilter(_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -78,14 +79,17 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
         {
             var isId = Guid.TryParse(userId, out Guid ownerId);
-            var result = new WebResult<IQueryable<PublicListDTO>> { Messages = new[] { "Unvalid user identifier" } };
-            if (isId)
+
+            if (!isId)
             {
-                result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
+                return BadRequest("Unvalid user identifier");
+            }
+
+            var result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
+
+            if (result.Success)
+            {
+                return Ok(result);
             }
 
             return BadRequest(result);
@@ -155,6 +159,10 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
+            }
 
             return BadRequest(result);
         }
@@ -168,6 +176,10 @@ namespace GeoPing.Api.Controllers
             if (result.Success)
             {
                 return Ok(result);
+            }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
             }
 
             return BadRequest(result);
