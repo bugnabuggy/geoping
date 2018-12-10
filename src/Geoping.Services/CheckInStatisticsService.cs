@@ -159,12 +159,13 @@ namespace GeoPing.Services
                 from ch in checks
                 select new CheckInStatsDTO
                 {
+                    CheckInId = ch.Id,
                     Address = ch.Description,
                     CheckInDate = ch.Date,
                     Distance = ch.Distance,
                     Latitude = ch.Latitude,
                     Longitude = ch.Longitude,
-                    Type = CheckInType.FreeCheck,
+                    Type = CheckInType.FreeCheck.ToString(),
                     UserId = userId
                 };
 
@@ -340,12 +341,13 @@ namespace GeoPing.Services
                            Address = p.Address,
                            Name = p.Name,
                            PointId = p.Id,
+                           Latitude = p.Latitude,
+                           Longitude = p.Longitude,
                            Radius = p.Radius,
+                           CheckInId = x != null ? (Guid?)x.Id : null,
                            CheckInDate = x != null ? (DateTime?)x.Date : null,
                            Distance = x != null ? x.Distance : null,
-                           Latitude = x != null ? (double?)x.Latitude : null,
-                           Longitude = x != null ? (double?)x.Longitude : null,
-                           Type = x != null ? CheckInType.CheckedPoint : CheckInType.UncheckedPoint,
+                           Type = x != null ? CheckInType.Checked.ToString() : CheckInType.Unchecked.ToString(),
                            UserId = x != null ? (Guid?)x.UserId : null,
                        };
 
