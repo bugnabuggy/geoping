@@ -35,7 +35,7 @@ namespace GeoPing.Services
             _securitySrv = securitySrv;
         }
 
-        public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersLists
+        public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfLists
             (Guid ownerId, CheckInStatFilterDTO filter, out int totalItems)
         {
             _listSrv.GetAllowedLists(ownerId);
@@ -68,18 +68,18 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
-            return new WebResult<IQueryable<CheckInStatsDTO>>
+            return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
                 Data = data,
                 Success = true,
-                Messages = new[] { $"There are all checks in for points of lists are accessible"},
+                Messages = new[] { $"There are all checks in for points of lists are accessible" },
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
                 TotalItems = totalItems
             };
         }
 
-        public WebResult<IQueryable<CheckInStatsDTO>> GetStatOfUsersList
+        public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfList
             (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
         {
             totalItems = 0;
@@ -88,7 +88,7 @@ namespace GeoPing.Services
 
             if (!isListExist)
             {
-                return new WebResult<IQueryable<CheckInStatsDTO>>
+                return new WebResult<IEnumerable<CheckInStatsDTO>>
                 {
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
                 };
@@ -96,7 +96,7 @@ namespace GeoPing.Services
 
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, list))
             {
-                return new WebResult<IQueryable<CheckInStatsDTO>>
+                return new WebResult<IEnumerable<CheckInStatsDTO>>
                 {
                     Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]", "Unauthorized" }
                 };
@@ -119,8 +119,8 @@ namespace GeoPing.Services
             {
                 var orderExpression = _orderBys[filter.OrderBy];
 
-                data = filter.IsDesc 
-                    ? data.OrderByDescending(orderExpression) 
+                data = filter.IsDesc
+                    ? data.OrderByDescending(orderExpression)
                     : data.OrderBy(orderExpression);
             }
 
@@ -130,11 +130,64 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
-            return new WebResult<IQueryable<CheckInStatsDTO>>
+            return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
                 Data = data,
                 Success = true,
                 Messages = new[] { $"There are all checks in for points of list with Id = [{listId}]" },
+                PageNumber = filter.PageNumber,
+                PageSize = filter.PageSize,
+                TotalItems = totalItems
+            };
+        }
+
+        public WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat(Guid userId, CheckInStatFilterDTO filter, out int totalItems)
+        {
+            var checks = GetFilteredData(_checksRepo.Get(x => x.UserId == userId), filter)
+                .OrderByDescending(x => x.Date);
+
+            var data =
+                from ch in checks
+                select new CheckInStatsDTO
+                {
+                    Point = new CheckInStatPointDTO(),
+                    Check = new CheckInStatCheckDTO
+                    {
+                        UserId = ch.UserId,
+                        Latitude = ch.Latitude,
+                        Longitude = ch.Longitude,
+                        Date = ch.Date.ToUniversalTime(),
+                        Ip = ch.Ip,
+                        DeviceId = ch.DeviceId,
+                        UserAgent = ch.UserAgent
+                    }
+                };
+
+            totalItems = data.Count();
+
+            filter.PageNumber = filter.PageNumber ?? 0;
+
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            {
+                var orderExpression = _orderBys[filter.OrderBy];
+
+                data = filter.IsDesc
+                    ? data.OrderByDescending(orderExpression)
+                    : data.OrderBy(orderExpression);
+            }
+
+            if (filter.PageSize != null)
+            {
+                data = data
+                    .Skip((int)filter.PageSize * (int)filter.PageNumber)
+                    .Take((int)filter.PageSize);
+            }
+
+            return new WebResult<IEnumerable<CheckInStatsDTO>>
+            {
+                Data = data,
+                Success = true,
+                Messages = new[] { $"There are all free checks-in for user Id = [{userId}]" },
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
                 TotalItems = totalItems
@@ -162,7 +215,7 @@ namespace GeoPing.Services
             }
 
             var users = _securitySrv.GetUsersHaveAccessToWatchList(list);
-            
+
             var result = users
                 .Select(x => new UserAutoCompleteDTO()
                 {
@@ -208,35 +261,35 @@ namespace GeoPing.Services
         private IQueryable<CheckInStatsDTO> GetCheckInStat(IQueryable<GeoPoint> points, IQueryable<CheckIn> checks)
         {
             var data = from p in points
-                join ch in checks on p.Id equals ch.PointId into stat
-                from x in stat.DefaultIfEmpty()
-                select new CheckInStatsDTO
-                {
-                    Point = new CheckInStatPointDTO
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Description = p.Description,
-                        Latitude = p.Latitude,
-                        Longitude = p.Longitude,
-                        Radius = p.Radius,
-                        Address = p.Address
-                    },
-                    Check = x != null
-                        ? new CheckInStatCheckDTO
-                        {
-                            UserId = x.UserId,
-                            PointId = x.PointId,
-                            Latitude = x.Latitude,
-                            Longitude = x.Longitude,
-                            Distance = x.Distance,
-                            Date = x.Date.ToUniversalTime(),
-                            Ip = x.Ip,
-                            DeviceId = x.DeviceId,
-                            UserAgent = x.UserAgent
-                        }
-                        : new CheckInStatCheckDTO()
-                };
+                       join ch in checks on p.Id equals ch.PointId into stat
+                       from x in stat.DefaultIfEmpty()
+                       select new CheckInStatsDTO
+                       {
+                           Point = new CheckInStatPointDTO
+                           {
+                               Id = p.Id,
+                               Name = p.Name,
+                               Description = p.Description,
+                               Latitude = p.Latitude,
+                               Longitude = p.Longitude,
+                               Radius = p.Radius,
+                               Address = p.Address
+                           },
+                           Check = x != null
+                               ? new CheckInStatCheckDTO
+                               {
+                                   UserId = x.UserId,
+                                   PointId = x.PointId,
+                                   Latitude = x.Latitude,
+                                   Longitude = x.Longitude,
+                                   Distance = x.Distance,
+                                   Date = x.Date.ToUniversalTime(),
+                                   Ip = x.Ip,
+                                   DeviceId = x.DeviceId,
+                                   UserAgent = x.UserAgent
+                               }
+                               : new CheckInStatCheckDTO()
+                       };
 
             return data;
         }

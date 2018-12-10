@@ -22,12 +22,27 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
+        // GET api/statistics
+        [HttpGet]
+        public IActionResult GetCheckInStatistics(CheckInStatFilterDTO filter)
+        {
+            var result = _statSrv.GetStatOfLists
+                (_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         // GET api/statistics/geolist
         [HttpGet]
         [Route("geolist")]
-        public IActionResult GetCheckInStatistics(CheckInStatFilterDTO filter)
+        public IActionResult GetFreeChecksInStatistics(CheckInStatFilterDTO filter)
         {
-            var result = _statSrv.GetStatOfUsersLists
+            var result = _statSrv.GetFreeChecksInStat
                 (_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
 
             if (result.Success)
@@ -43,7 +58,7 @@ namespace GeoPing.Api.Controllers
         [Route("geolist/{listId}")]
         public IActionResult GetCheckInStatisticsForList(string listId, CheckInStatFilterDTO filter)
         {
-            var result = _statSrv.GetStatOfUsersList
+            var result = _statSrv.GetStatOfList
                 (_helper.GetAppUserIdByClaims(User.Claims), listId, filter, out int totalItems);
 
             if (result.Success)
