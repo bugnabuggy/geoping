@@ -87,10 +87,12 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetProfile()
         {
             var result = _accountSrv.GetProfile(_helper.GetAppUserIdByClaims(User.Claims));
+
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -105,6 +107,7 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 

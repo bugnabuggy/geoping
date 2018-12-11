@@ -28,9 +28,9 @@ namespace GeoPing.Services
             _securitySrv = securitySrv;
         }
 
-        public OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId)
+        public OperationResult<CheckIn> GetCheckIn(Guid userId, string pointId)
         {
-            var isPointExist = IsPointExistWithThisId(pointId, out var point);
+            var isPointExist = _pointSrv.IsPointExistWithId(pointId);
 
             if (!isPointExist)
             {
@@ -43,27 +43,27 @@ namespace GeoPing.Services
             var result = _checkInRepo
                 .Get()
                 .OrderByDescending(x => x.Date)
-                .FirstOrDefault(x => x.PointId == point.Id && x.UserId == userId);
+                .FirstOrDefault(x => x.PointId == Guid.Parse(pointId) && x.UserId == userId);
 
             if (result == null)
             {
                 return new OperationResult<CheckIn>
                 {
-                    Messages = new[] { $"User didn`t check in point with Id = [{point.Id}]" }
+                    Messages = new[] { $"User didn`t check in point with Id = [{pointId}]" }
                 };
             }
 
             return new OperationResult<CheckIn>
             {
                 Data = result,
-                Messages = new[] { $"User checked in point with Id = [{point.Id}]" },
+                Messages = new[] { $"User checked in point with Id = [{pointId}]" },
                 Success = true
             };
         }
 
-        public OperationResult<IEnumerable<CheckIn>> GetChecksIn(string listId, Guid userId)
+        public OperationResult<IEnumerable<CheckIn>> GetChecksIn(Guid userId, string listId)
         {
-            var isListExist = IsListExistWithThisId(listId, out var list);
+            var isListExist = _geolistSrv.IsListExistWithId(listId);
 
             if (!isListExist)
             {
@@ -72,8 +72,8 @@ namespace GeoPing.Services
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
                 };
             }
-
-            var points = _pointSrv.Get(x => x.ListId == list.Id);
+            
+            var points = _pointSrv.Get(x => x.ListId == Guid.Parse(listId));
 
             var data = from ch in _checkInRepo.Get()
                        from p in points
@@ -83,7 +83,7 @@ namespace GeoPing.Services
             return new OperationResult<IEnumerable<CheckIn>>
             {
                 Data = data,
-                Messages = new[] { $"User checked in following points of list with Id = [{list.Id}]" },
+                Messages = new[] { $"User checked in following points of list with Id = [{listId}]" },
                 Success = true
             };
         }
@@ -94,7 +94,7 @@ namespace GeoPing.Services
 
             if (pointId != null)
             {
-                if (!IsPointExistWithThisId(pointId, out GeoPoint point))
+                if (!_pointSrv.TryGetPointWithId(pointId, out var point))
                 {
                     return new OperationResult<CheckIn>()
                     {
@@ -133,38 +133,6 @@ namespace GeoPing.Services
                 Messages = new[] { $"User was successfully checked in point with id = [{pointId}]" },
                 Success = true
             };
-        }
-
-        public bool IsListExistWithThisId(string id, out GeoList list)
-        {
-            var result = _geolistSrv.IsListExistWithThisId(id, out GeoList data);
-            list = data;
-            return result;
-        }
-
-        public bool IsPointExistWithThisId(string id, Guid listId, out GeoPoint point)
-        {
-            var result = _pointSrv.IsPointExistWithThisId(id, listId, out GeoPoint data);
-            point = data;
-            return result;
-        }
-
-        public bool IsPointExistWithThisId(string id, out GeoPoint point)
-        {
-            var isPointId = Guid.TryParse(id, out Guid pointId);
-            point = null;
-            if (!isPointId)
-            {
-                return false;
-            }
-
-            point = _pointSrv.Get().FirstOrDefault(x => x.Id == pointId);
-            if (point == null)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

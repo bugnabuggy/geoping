@@ -29,7 +29,7 @@ namespace GeoPing.Api.Controllers
         [Route("geolist/{listId}")]
         public IActionResult GetChecksIn(string listId)
         {
-            var result = _checkInSrv.GetChecksIn(listId, _helper.GetAppUserIdByClaims(User.Claims));
+            var result = _checkInSrv.GetChecksIn(_helper.GetAppUserIdByClaims(User.Claims), listId);
 
             if (result.Success)
             {
@@ -44,7 +44,7 @@ namespace GeoPing.Api.Controllers
         [Route("geopoint/{pointId}")]
         public IActionResult GetCheckIn(string pointId)
         {
-            var result = _checkInSrv.GetCheckIn(pointId, _helper.GetAppUserIdByClaims(User.Claims));
+            var result = _checkInSrv.GetCheckIn(_helper.GetAppUserIdByClaims(User.Claims), pointId);
 
             if (result.Success)
             {

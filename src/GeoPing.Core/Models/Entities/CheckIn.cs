@@ -13,6 +13,7 @@ namespace GeoPing.Core.Models.Entities
         public Guid? DeviceId { get; set; }
         public string Ip { get; set; }
         public string UserAgent { get; set; }
+        public string Description { get; set; }
 
         // Relational fields
         public Guid? PointId { get; set; }

@@ -40,7 +40,7 @@ namespace GeoPing.Services
                 Type = "SharingInvite",
                 Created = DateTime.UtcNow,
                 Value = value,
-                Token = _secutitySrv.GetSHA256HashString(value)
+                Token = _secutitySrv.GetSHA256HashString($"{value}{Guid.NewGuid()}")
             });
 
             return result;
@@ -54,7 +54,7 @@ namespace GeoPing.Services
                 Type = "Sharing",
                 Created = DateTime.UtcNow,
                 Value = value,
-                Token = _secutitySrv.GetSHA256HashString(value)
+                Token = _secutitySrv.GetSHA256HashString($"{value}{Guid.NewGuid()}")
             });
 
             return result;
@@ -134,8 +134,6 @@ namespace GeoPing.Services
                 ? sharing.Email
                 : _userSrv.GetUser(x => x.Email == sharing.Email).Login;
 
-            MarkAsUsed(token);
-
             return new OperationResult<TokenInfoDTO>
             {
                 Success = true,
@@ -149,55 +147,46 @@ namespace GeoPing.Services
             };
         }
 
-        public GeoPingToken GetToken(string token)
-        {
-            var result = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
-
-            if (ValidateGPToken(result) == null)
-            {
-                return result;
-            }
-
-            return null;
-        }
-
         public OperationResult MarkAsUsed(string token)
         {
             var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
 
-            if (gpToken != null)
+            if (gpToken == null)
             {
-                gpToken.IsUsed = true;
-
-                _tokenRepo.Update(gpToken);
-
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "Token is used now" }
+                    Messages = new[] {"Token is invalid"}
                 };
+
             }
+
+            gpToken.IsUsed = true;
+
+            _tokenRepo.Update(gpToken);
 
             return new OperationResult
             {
-                Messages = new[] { "Token is invalid" }
+                Success = true,
+                Messages = new[] { "Token is used now" }
             };
         }
 
         public string ValidateGPToken(GeoPingToken gpToken)
         {
-            if (gpToken != null)
+            if (gpToken == null)
             {
-                if (gpToken.IsUsed)
-                {
-                    return "Used";
-                }
+                return null;
+            }
 
-                if ((DateTime.UtcNow - gpToken.Created).Seconds >
-                    _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
-                {
-                    return "Expired";
-                }
+            if (gpToken.IsUsed)
+            {
+                return "Used";
+            }
+
+            if ((DateTime.UtcNow - gpToken.Created).Seconds >
+                _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
+            {
+                return "Expired";
             }
 
             return null;
@@ -211,3 +200,4 @@ namespace GeoPing.Services
         }
     }
 }
+ 

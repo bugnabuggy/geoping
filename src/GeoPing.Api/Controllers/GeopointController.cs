@@ -1,4 +1,5 @@
-﻿using GeoPing.Api.Interfaces;
+﻿using System;
+using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
@@ -14,14 +15,18 @@ namespace GeoPing.Api.Controllers
     {
         private IGeopointService _geopointSrv;
         private IGeolistService _geolistSrv;
+        private ISecurityService _securitySrv;
         private IClaimsHelper _helper;
 
-        public GeopointController(IGeopointService geopointSrv,
-                                  IGeolistService geolistSrv,
-                                  IClaimsHelper helper)
+        public GeopointController
+            (IGeopointService geopointSrv,
+            IGeolistService geolistSrv,
+            ISecurityService securitySrv,
+            IClaimsHelper helper)
         {
             _geopointSrv = geopointSrv;
             _geolistSrv = geolistSrv;
+            _securitySrv = securitySrv;
             _helper = helper;
         }
 
@@ -29,12 +34,17 @@ namespace GeoPing.Api.Controllers
         [HttpGet]
         public IActionResult GetPointsByFilter(string listId, GeopointFilterDTO filter)
         {
-            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
+            if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            var result = _geopointSrv.GetByFilter(list.Id, filter, out int totalItems);
+            if (!_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            {
+                return Unauthorized();
+            }
+
+            var result = _geopointSrv.GetByFilter(Guid.Parse(listId), filter, out int totalItems);
 
             if (result.Success)
             {
@@ -48,12 +58,17 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult GetPoint(string listId, string id)
         {
-            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
+            if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_geopointSrv.IsPointExistWithThisId(id, list.Id, out GeoPoint point))
+            if (!_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            {
+                return Unauthorized();
+            }
+
+            if (!_geopointSrv.TryGetPointWithId(id, Guid.Parse(listId), out var point))
             {
                 return BadRequest($"There is no point with Id = [{id}] in list with Id = [{listId}].");
             }
@@ -65,9 +80,14 @@ namespace GeoPing.Api.Controllers
         [HttpPost]
         public IActionResult AddPoint(string listId, [FromBody]GeopointDTO item)
         {
-            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
+            if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
+            }
+
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            {
+                return Unauthorized();
             }
 
             var point = new GeoPoint
@@ -78,7 +98,7 @@ namespace GeoPing.Api.Controllers
                 Longitude = item.Longitude,
                 Name = item.Name,
                 Radius = item.Radius,
-                ListId = list.Id
+                ListId = Guid.Parse(listId)
             };
 
             var result = _geopointSrv.Add(point);
@@ -95,12 +115,17 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult EditPoint(string listId, string id, [FromBody]GeopointDTO item)
         {
-            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
+            if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_geopointSrv.IsPointExistWithThisId(id, list.Id, out GeoPoint point))
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            {
+                return Unauthorized();
+            }
+
+            if (!_geopointSrv.TryGetPointWithId(id, Guid.Parse(listId), out var point))
             {
                 return BadRequest($"There is no point with Id = [{id}] in list with Id = [{listId}].");
             }
@@ -126,9 +151,14 @@ namespace GeoPing.Api.Controllers
         [HttpDelete]
         public IActionResult RemovePoints(string listId, string ids)
         {
-            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
+            if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
+            }
+
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            {
+                return Unauthorized();
             }
 
             var result = _geopointSrv.Delete(ids);
@@ -146,12 +176,17 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult RemovePoint(string listId, string id)
         {
-            if (!_geolistSrv.IsListExistWithThisId(listId, out GeoList list))
+            if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_geopointSrv.IsPointExistWithThisId(id, list.Id, out GeoPoint point))
+            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            {
+                return Unauthorized();
+            }
+
+            if (!_geopointSrv.TryGetPointWithId(id, Guid.Parse(listId), out var point))
             {
                 return BadRequest($"There is no point with Id = [{id}] in list with Id = [{listId}].");
             }
@@ -162,6 +197,7 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
     }

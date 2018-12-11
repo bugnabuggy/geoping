@@ -65,59 +65,53 @@ namespace GeoPing.Services
 
             var result = await _userManager.CreateAsync(user, registerUser.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                _logger.LogInformation("User created a new account: " +
-                                       $"Email = [{user.Email}], " +
-                                       $"Username = [{user.UserName}].");
-
-                var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
-
-                // Token actions
-
-                if (!string.IsNullOrEmpty(registerUser.Token))
-                {
-                    var token = _tokenSrv.GetToken(registerUser.Token);
-
-                    if (token != null)
-                    {
-                        if (token.Type == "SharingInvite")
-                        {
-                            _sharingSrv.ConfirmSharingsWithRegistration(token.Value, gpUser.Id, user.Email);
-
-                            _tokenSrv.MarkAsUsed(token.Token); 
-                        }
-                    }
-                }
-
-                var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                var code = _tokenSrv.CreateConfirmationEmailToken(user.Id, aspnetToken).Token;
-
-                if (_settings.EmailSender.IsEmailConfirmEnable)
-                {
-                    SendSecurityEmail(user, code, "ConfirmEmail", "Registration on GeoPing.info");
-                }
-                else
-                {
-                    await _userManager.ConfirmEmailAsync(user, aspnetToken);
-
-                    await ConfirmAccountWithoutEmailAsync(registerUser.Email);
-                }
-
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "User was successfully registered, now he should validate his " +
-                                       "account according instructions were sent to provided email address" }
+                    Data = result.Errors,
+                    Messages = new[] { "Something was failed while user registration" }
                 };
             }
 
-            // If we got this far, something failed
+            _logger.LogInformation("User created a new account: " +
+                                   $"Email = [{user.Email}], " +
+                                   $"Username = [{user.UserName}].");
+
+            var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+
+            // Token actions
+
+            if (_tokenSrv.TryGetToken(registerUser.Token, out var token))
+            {
+                if (token.Type == "SharingInvite")
+                {
+                    _sharingSrv.ConfirmSharingsWithRegistration(token.Value, gpUser.Id, user.Email);
+
+                    _tokenSrv.MarkAsUsed(token.Token);
+                }
+            }
+
+            var aspnetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var code = _tokenSrv.CreateConfirmationEmailToken(user.Id, aspnetToken).Token;
+
+            if (_settings.EmailSender.IsEmailConfirmEnable)
+            {
+                SendSecurityEmail(user, code, "ConfirmEmail", "Registration on GeoPing.info");
+            }
+            else
+            {
+                await _userManager.ConfirmEmailAsync(user, aspnetToken);
+
+                await ConfirmAccountWithoutEmailAsync(registerUser.Email);
+            }
+
             return new OperationResult
             {
-                Success = false,
-                Messages = new[] { "Something was failed while user registration" }
+                Success = true,
+                Messages = new[] { "User was successfully registered, now he should validate his " +
+                                   "account according instructions were sent to provided email address" }
             };
         }
 
