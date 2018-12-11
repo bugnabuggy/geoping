@@ -392,23 +392,7 @@ namespace GeoPing.Services
 
             subject = $"{subject}, user {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} " +
                       "shared a geolist with you.";
-
-            string subject;
-
-            if (invitedUser == null)
-            {
-                subject = email;
-            }
-            else
-            {
-                var fullName = ($"{invitedUser.FirstName} {invitedUser.LastName}").Trim();
-
-                subject = ($"{fullName} \"{invitedUser.Login}\"").TrimStart();
-            }
-
-            subject = $"{subject}, user {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} " +
-                      "shared a geolist with you.";
-
+                      
             var message = new EmailMessage
             {
                 FromAddress = new EmailAddress
