@@ -62,7 +62,7 @@ namespace GeoPing.Services.Tests
             var expectedItemId = Guid.Parse("10000000-0000-0000-0000-000000000002");
             var expectedPointId = "10000000-0000-0000-0000-000000000001";
 
-            var data = _sut.GetCheckIn(expectedPointId, _expectedUserId);
+            var data = _sut.GetCheckIn(_expectedUserId, expectedPointId);
 
             Assert.That(data.Success);
             Assert.That(data.Data != null);
@@ -75,7 +75,7 @@ namespace GeoPing.Services.Tests
             var expectedItemId = Guid.Parse("10000000-0000-0000-0000-000000000002");
             var expectedListId = "10000000-0000-0000-0000-000000000001";
 
-            var data = _sut.GetChecksIn(expectedListId, _expectedUserId);
+            var data = _sut.GetChecksIn(_expectedUserId, expectedListId);
 
             Assert.That(data.Success);
             Assert.That(data.Data != null);

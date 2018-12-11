@@ -24,6 +24,8 @@ namespace GeoPing.Api.Controllers
 
             if (result.Success)
             {
+                _gpTokenSrv.MarkAsUsed(token);
+
                 return Ok(result);
             }
 
