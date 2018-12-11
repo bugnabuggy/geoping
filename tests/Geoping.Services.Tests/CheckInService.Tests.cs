@@ -6,6 +6,7 @@ using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -21,6 +22,7 @@ namespace GeoPing.Services.Tests
         private IGeolistService _listSrv;
         private IGeopointService _pointSrv;
         private Mock<ISecurityService> _mockSecuritySrv;
+        private Mock<ILogger<CheckInService>> _mockLogger;
 
         private Guid _expectedUserId = Guid.Parse("10000000-0000-0000-0000-000000000002");
 
@@ -33,8 +35,9 @@ namespace GeoPing.Services.Tests
             _checkInRepo = _services.GetRequiredService<IRepository<CheckIn>>();
 
             _mockSecuritySrv = new Mock<ISecurityService>();
-
-            _sut = new CheckInService(_listSrv, _pointSrv, _checkInRepo, _mockSecuritySrv.Object);
+            _mockLogger = new Mock<ILogger<CheckInService>>();
+            
+            _sut = new CheckInService(_listSrv, _pointSrv, _checkInRepo, _mockSecuritySrv.Object, _mockLogger.Object);
         }
 
         //[Test]
