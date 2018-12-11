@@ -167,7 +167,7 @@ namespace GeoPing.Services
             {
                 return new OperationResult<GeoList>
                 {
-                    Messages = new[] { "You have no rights to maniputale this list" }
+                    Messages = new[] { "Unauthorized", "You have no rights to manipulate this list" }
                 };
             }
 
@@ -200,7 +200,7 @@ namespace GeoPing.Services
             {
                 return new OperationResult<GeoList>
                 {
-                    Messages = new[] { $"You have no rights to manipulate list with Id = [{item.Id}]." }
+                    Messages = new[] { "Unauthorized", $"You have no rights to manipulate list with Id = [{item.Id}]." }
                 };
             }
 

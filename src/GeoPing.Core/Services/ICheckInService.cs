@@ -8,8 +8,8 @@ namespace GeoPing.Core.Services
 {
     public interface ICheckInService
     {
-        OperationResult<CheckIn> GetCheckIn(string pointId, Guid userId);
-        OperationResult<IEnumerable<CheckIn>> GetChecksIn(string listId, Guid userId);
+        OperationResult<CheckIn> GetCheckIn(Guid userId, string pointId);
+        OperationResult<IEnumerable<CheckIn>> GetChecksIn(Guid userId, string listId);
         OperationResult<CheckIn> AddCheckIn(Guid userId, string pointId, CheckInDTO item);
     }
 }
