@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Models.Enums;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 
