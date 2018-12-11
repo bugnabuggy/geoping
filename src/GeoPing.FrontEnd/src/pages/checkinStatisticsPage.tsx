@@ -11,6 +11,7 @@ export default class CheckinStatisticsPage extends React.Component<ICheckinStati
         <div className="check-in-statistics-container">
           <CheckinStatisticsComponentContainer
             listId={this.props.match.params.listId}
+            userId={this.props.match.params.userId}
           />
         </div>
         <div className="">

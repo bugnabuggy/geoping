@@ -1320,8 +1320,10 @@ header nav {
   display: grid;
   padding: 10px;
   height: 100%;
-  grid-template-rows: [row1] 50px [row2] minmax(200px, 1fr);
-  grid-template-columns: [col1] minmax(500px, 1fr) [col2] minmax(250px, 350px);
+  /*width: 1000px;*/
+  grid-template-rows: [row1] 50px [row2] max-content [row3] 1fr;
+  /*grid-template-columns: [col1] minmax(500px, 1fr) [col2] minmax(250px, 350px);*/
+  grid-template-columns: [col1] 1fr;
   grid-gap: 5px;
 }
 
@@ -1331,7 +1333,7 @@ header nav {
 
 .admin-all-users-container h3 {
   grid-column-start: col1;
-  grid-column-end: col2;
+  grid-column-end: col1;
   grid-row-start: row1;
   grid-row-end: row1;
 }
@@ -1342,9 +1344,9 @@ header nav {
   justify-content: center;
   border: black 1px solid;
   /*height: max-content;*/
-  max-height: 600px;
-  grid-column-start: col2;
-  grid-column-end: col2;
+  /*max-height: 600px;*/
+  grid-column-start: col1;
+  grid-column-end: col1;
   grid-row-start: row2;
   grid-row-end: row2;
 }
@@ -1355,8 +1357,8 @@ header nav {
 
   grid-column-start: col1;
   grid-column-end: col1;
-  grid-row-start: row2;
-  grid-row-end: row2;
+  grid-row-start: row3;
+  grid-row-end: row3;
 }
 
 .test {
@@ -1365,15 +1367,25 @@ header nav {
 
 .filter-users-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.filter-users-field-name, .filter-users-field-data, .filter-users-field-list-count, .filter-users-field-status,
+.filter-users-field-data, .filter-users-field-list-count,
 .filter-users-field-official, .filter-users-field-admin, .filter-users-field-buttons {
-  width: 100%;
+  /*width: 100%;*/
   padding: 10px;
+  display: flex;
+}
+
+.filter-users-field-status, .filter-users-field-name {
+  padding: 10px;
+}
+
+.filter-users-field-data-from, .filter-users-field-list-count-from {
+  margin-right: 10px;
 }
 
 .react-datepicker-wrapper, .react-datepicker__input-container {
@@ -1391,6 +1403,20 @@ header nav {
 
 .filter-users-field-official label:first-child, .filter-users-field-admin label:first-child {
   margin-right: 10px;
+}
+
+.admin-all-users-table-icon-container {
+  display: flex;
+  font-size: 20px;
+  justify-content: space-around;
+}
+
+.admin-all-users-table-icon-delete {
+  color: var(--danger-color, #a4575b);
+}
+
+.admin-all-users-table-icon-edit {
+  color: var(--success-color, #128D15);
 }
 
 /*************************************************************************************/
@@ -1466,14 +1492,14 @@ header nav {
   display: grid;
   padding: 10px;
   height: 100%;
-  grid-template-rows: [row1] 50px [row2] minmax(500px, 1fr);
-  grid-template-columns: [col1] 1fr [col2] minmax(250px, 350px);
+  grid-template-rows: [row1] 50px [row2] max-content [row3] 1fr;
+  grid-template-columns: [col1] 1fr;
   grid-gap: 5px;
 }
 
 .admin-checklist-filter-container {
-  grid-column-start: col2;
-  grid-column-end: col2;
+  grid-column-start: col1;
+  grid-column-end: col1;
   grid-row-start: row2;
   grid-row-end: row2;
 }
@@ -1481,8 +1507,8 @@ header nav {
 .admin-checklist-table {
   grid-column-start: col1;
   grid-column-end: col1;
-  grid-row-start: row2;
-  grid-row-end: row2;
+  grid-row-start: row3;
+  grid-row-end: row3;
 }
 
 .admin-checklist-filter {
@@ -1494,7 +1520,8 @@ header nav {
 
 .admin-checklist-filter-field-name, .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points,
 .admin-checklist-filter-field-users, .admin-checklist-filter-field-public, .admin-checklist-filter-field-button {
-  width: 100%;
+  /*width: 100%;*/
+  padding: 10px;
 }
 
 .admin-checklist-filter-field-created, .admin-checklist-filter-field-geo-points {
@@ -1520,9 +1547,18 @@ header nav {
   margin-left: 10px;
 }
 
-.admin-checklist-filter-field-button {
+/*.admin-checklist-filter-field-public {*/
+  /*dis*/
+/*}*/
+
+.admin-checklist-filter-field-button, .admin-checklist-filter-field-public {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.admin-checklist-filter-field-button div:first-child {
+  margin-right: 10px;
 }
 
 .react-datepicker-wrapper, .react-datepicker__input-container {
@@ -1921,6 +1957,7 @@ select.form-control:not([size]):not([multiple]) {
 
   .filter-users-field-data-from, .filter-users-field-list-count-from {
     padding-right: 10px;
+    margin-right: 0;
   }
 
   .filter-users-field-data-to, .filter-users-field-list-count-to {

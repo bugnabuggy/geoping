@@ -1,31 +1,41 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Toggle from 'react-toggle';
 
 import ITableUsersComponentProps from '../../componentProps/tableComponentProps/tableUsersComponentProps';
 
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class TableUsersComponent extends React.Component<ITableUsersComponentProps, any> {
+  constructor( props: any ) {
+    super( props );
+    this.state = {
+      sortName: [],
+      sortOrder: [],
+    };
+  }
+
   changeEmployee = ( e: any ) => {
-    this.props.changeEmployee ( Number ( e.target.id ), e.target.checked );
+    this.props.changeEmployee( Number( e.target.id ), e.target.checked );
   };
 
   handleSort = ( name: any, order: any ) => {
-    const sortName: Array<any> = [name];
-    const sortOrder: Array<any> = [order];
+    const sortName: Array<any> = [ name ];
+    const sortOrder: Array<any> = [ order ];
 
-    this.state.sortName.forEach ( ( item: string, index: number ) => {
+    this.state.sortName.forEach( ( item: string, index: number ) => {
       if ( item !== name ) {
-        sortName.push ( item );
-        sortOrder.push ( this.state.sortOrder[index] );
+        sortName.push( item );
+        sortOrder.push( this.state.sortOrder[ index ] );
       }
-      if ( this.state.sortOrder[index] === 'asc' ) {
-        sortName.splice ( index, 1 );
-        sortOrder.splice ( index, 1 );
+      if ( this.state.sortOrder[ index ] === 'asc' ) {
+        sortName.splice( index, 1 );
+        sortOrder.splice( index, 1 );
       }
     } );
 
-    this.setState ( {
+    this.setState( {
       sortName: sortName,
       sortOrder: sortOrder,
     } );
@@ -33,23 +43,34 @@ export class TableUsersComponent extends React.Component<ITableUsersComponentPro
 
   renderCheckBox = ( props: any, row: any ) => {
     return (
-      <input
-        id={row.id}
-        type="checkbox"
-        className=""
-        checked={props}
-        onChange={this.changeEmployee}
+      <Toggle
+        defaultChecked={props}
       />
     );
   };
 
-  constructor( props: any ) {
-    super ( props );
-    this.state = {
-      sortName: [],
-      sortOrder: [],
-    };
-  }
+  renderIcon = ( props: any, row: any ) => {
+    return (
+      <div className="admin-all-users-table-icon-container">
+        <div
+          className="admin-all-users-table-icon-delete cursor-pointer"
+          onClick={() => {
+            console.info('row', row);
+          }}
+        >
+          <FontAwesomeIcon icon="trash-alt"/>
+        </div>
+        <div
+          className="admin-all-users-table-icon-edit cursor-pointer"
+          onClick={() => {
+            console.info('row', row);
+          }}
+        >
+          <FontAwesomeIcon icon="pencil-alt"/>
+        </div>
+      </div>
+    );
+  };
 
   render() {
     const options: any = {
@@ -68,7 +89,6 @@ export class TableUsersComponent extends React.Component<ITableUsersComponentPro
           hover={true}
           condensed={true}
           multiColumnSort={1}
-          maxHeight="600px"
         >
           <TableHeaderColumn
             isKey={true}
@@ -91,22 +111,63 @@ export class TableUsersComponent extends React.Component<ITableUsersComponentPro
             headerAlign="left"
             dataAlign="right"
           >
-            Age
+            Login
           </TableHeaderColumn>
           <TableHeaderColumn
             dataField="nickname"
             dataSort={true}
           >
-            Nickname
+            Email
           </TableHeaderColumn>
           <TableHeaderColumn
             dataField="employee"
             dataSort={true}
             headerAlign="left"
             dataAlign="center"
+            // dataFormat={this.renderCheckBox}
+          >
+            Registration date
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="employee"
+            dataSort={true}
+            headerAlign="left"
+            dataAlign="center"
+            // dataFormat={this.renderCheckBox}
+          >
+            Checklist number
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="employee"
+            dataSort={true}
+            headerAlign="left"
+            dataAlign="center"
+            // dataFormat={this.renderCheckBox}
+          >
+            Status
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="employee"
+            dataSort={true}
+            headerAlign="left"
+            dataAlign="center"
+            // dataFormat={this.renderCheckBox}
+          >
+            Is official
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="employee"
+            dataAlign="center"
             dataFormat={this.renderCheckBox}
           >
-            Employee
+            Is admin
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="employee"
+            dataAlign="center"
+            dataFormat={this.renderIcon}
+          >
+            Delete/Edit
           </TableHeaderColumn>
         </BootstrapTable>
       </React.Fragment>

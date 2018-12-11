@@ -1,3 +1,5 @@
+import { EStatusCheckedEnum } from '../enums/statusCheckedEnum';
+
 export default interface IGeoPoint {
   id: string;
   idList: string;
@@ -30,4 +32,5 @@ export interface ICheckInGeoPointDTO {
   pointId: string;
   userAgent: any;
   userId: string;
+  status: EStatusCheckedEnum;
 }
