@@ -67,24 +67,24 @@ namespace GeoPing.Services
                 };
             }
 
-            if (sharing.UserId == actingUserId)
+            if (sharing.UserId != actingUserId)
             {
-                sharing.Status = "accepted";
-
-                _sharingRepo.Update(sharing);
-
-                _tokenSrv.DeleteSharingTokens(sharingId);
-
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "The share invite was accepted." }
+                    Messages = new[] { "Unauthorized" }
                 };
             }
 
+            sharing.Status = "accepted";
+
+            _sharingRepo.Update(sharing);
+
+            _tokenSrv.DeleteSharingTokens(sharingId);
+
             return new OperationResult
             {
-                Messages = new[] { "Unauthorized" }
+                Success = true,
+                Messages = new[] { "The share invite was accepted." }
             };
         }
 
@@ -111,7 +111,7 @@ namespace GeoPing.Services
         public async Task<OperationResult<IEnumerable<UserListWasSharedWithDTO>>> InviteUsersByList(Guid actingUserId, string listId, string[] usersData)
         {
             // Checks if list is exists
-            if (!_listSrv.IsListExistWithThisId(listId, out var list))
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
                 return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
@@ -124,7 +124,7 @@ namespace GeoPing.Services
             {
                 return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
-                    Messages = new[] { "You are not allowed to do this" }
+                    Messages = new[] { "Unauthorized", "You are not allowed to do this" }
                 };
             }
 
@@ -218,9 +218,7 @@ namespace GeoPing.Services
         public OperationResult<IEnumerable<UserListWasSharedWithDTO>>
             GetUsersListWasSharedWith(Guid userId, string listId)
         {
-            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
-
-            if (list == null)
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
                 return new OperationResult<IEnumerable<UserListWasSharedWithDTO>>
                 {
@@ -260,20 +258,20 @@ namespace GeoPing.Services
 
             var isUserAllowed = actingUserId == sharing.UserId;
 
-            if (actingUserId == sharing.UserId)
+            if (actingUserId != sharing.UserId)
             {
-                _sharingRepo.Delete(sharing);
-
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "You successfully refuse the sharing list." }
+                    Messages = new[] { "Unauthorized", "You are not allowed to do this." }
                 };
             }
 
+            _sharingRepo.Delete(sharing);
+
             return new OperationResult
             {
-                Messages = new[] { "You are not allowed to do this." }
+                Success = true,
+                Messages = new[] { "You successfully refuse the sharing list." }
             };
         }
 
@@ -303,7 +301,7 @@ namespace GeoPing.Services
             {
                 return new OperationResult
                 {
-                    Messages = new[] { "You are not allowed to do this." }
+                    Messages = new[] { "Unauthorized", "You are not allowed to do this." }
                 };
             }
 
@@ -327,7 +325,7 @@ namespace GeoPing.Services
                     ? _tokenSrv.CreateSharingInviteToken(pastSharing.Id.ToString())
                     : _tokenSrv.CreateSharingToken(pastSharing.Id.ToString());
 
-                SendSharingEmail(userId, invitedUser , pastSharing.Email, newGPToken.Token);
+                SendSharingEmail(userId, invitedUser, pastSharing.Email, newGPToken.Token);
 
                 return null;
             }
@@ -378,7 +376,7 @@ namespace GeoPing.Services
             var callbackUrl = $"{_settings.Urls.SiteUrl}/" +
                               $"{_settings.Urls.ActionsUrl.ByToken}/" +
                               $"{code}";
-            
+
             string subject;
 
             if (invitedUser == null)

@@ -7,7 +7,6 @@ namespace GeoPing.Core.Services
 {
     public interface IGeopingTokenService
     {
-        GeoPingToken GetToken(string token);
         GeoPingToken CreateSharingToken(string value);
         GeoPingToken CreateSharingInviteToken(string value);
         OperationResult<TokenInfoDTO> ExamineToken(string token);
