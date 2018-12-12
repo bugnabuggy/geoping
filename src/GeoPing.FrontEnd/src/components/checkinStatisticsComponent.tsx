@@ -36,12 +36,19 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
 
   componentDidMount(): void {
     if ( this.props.listId !== 'none' ) {
-      const data = {
-        UserId: this.props.userId,
-        DatePeriodFrom: dateFormatter( this.state.startDate ),
-        DatePeriodTo: dateFormatter( this.state.endDate ),
-      };
-      this.props.loadPoints( this.props.listId, data );
+      if ( !!this.props.userId ) {
+        const data = {
+          UserId: this.props.userId,
+          DatePeriodFrom: dateFormatter( this.state.startDate ),
+          DatePeriodTo: dateFormatter( this.state.endDate ),
+        };
+        this.props.loadPoints( this.props.listId, data );
+      } else {
+        this.props.getFreeChecksInStatisticsByFilter(
+          dateFormatter( this.state.startDate ),
+          dateFormatter( this.state.endDate )
+        );
+      }
     } else {
       this.props.getFreeChecksInStatisticsByFilter(
         dateFormatter( this.state.startDate ),

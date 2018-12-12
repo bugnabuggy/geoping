@@ -16,10 +16,12 @@ export class TableMarkerStatisticsComponent extends React.Component<ITableMarker
   getData = () => {
     return this.props.googleMap.geoPoints.map( ( item, index: number ) => {
       const checkInGeoPoint: ICheckInGeoPointDTO = this.props.googleMap.checkInGeoPoint[ index ];
+      const user = this.props.checkinStatistics.selectUser
+        .find( userItem => userItem.userId === checkInGeoPoint.userId );
       return {
         id: item.idForMap,
-        userName: !!checkInGeoPoint.userId ?
-          this.props.checkinStatistics.selectUser.find( user => user.userId === checkInGeoPoint.userId ).userName
+        userName: !!checkInGeoPoint.userId && user ?
+          user.userName
           :
           '',
         check: checkInGeoPoint.status,

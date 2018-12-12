@@ -110,5 +110,5 @@ export function dateTypeDefinition( listId: string ) {
 }
 
 export function dateFormatter( date: moment.Moment ) {
-  return `${date.year()}-${date.month()}-${date.date()}T${date.hour()}:${date.minute()}:${date.second()}Z`;
+  return `${date.year()}-${date.month() + 1}-${date.date()}T${date.hour()}:${date.minute()}:${date.second()}Z`;
 }
