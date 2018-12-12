@@ -8,6 +8,8 @@ using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 
 namespace GeoPing.Services.Tests
@@ -16,6 +18,8 @@ namespace GeoPing.Services.Tests
     public class GeopointServiceTests
     {
         private IServiceProvider _services;
+        private Mock<ILogger<GeopointService>> _mockLogger;
+
         private IGeopointService _sut;
 
         private IRepository<GeoPoint> _geopointRepo;
@@ -27,8 +31,9 @@ namespace GeoPing.Services.Tests
             _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _geopointRepo = _services.GetRequiredService<IRepository<GeoPoint>>();
+            _mockLogger = new Mock<ILogger<GeopointService>>();
 
-            _sut = new GeopointService(_geopointRepo);
+            _sut = new GeopointService(_geopointRepo, _mockLogger.Object);
         }
         
         [Test]
