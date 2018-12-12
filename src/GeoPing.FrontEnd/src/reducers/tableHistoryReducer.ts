@@ -1,6 +1,6 @@
 import { ITableHistoryStateType } from '../types/stateTypes/tableHistoryStateType';
 import { tableHistoryState } from '../state/tableHistoryState';
-import { CLOSE_FILTER_HISTORY, FILTER_HISTORY_TABLE } from '../constantsForReducer/filters';
+import { FILTER_HISTORY_TABLE } from '../constantsForReducer/filters';
 import {
   CLEAR_TABLE_HISTORY,
   LOAD_LIST_HISTORY,
@@ -11,7 +11,6 @@ import {
 export default function tableHistoryReducer( state: ITableHistoryStateType = tableHistoryState, action: any ) {
   const reduceObject: any = {
     [ FILTER_HISTORY_TABLE ]: filterHistory,
-    [ CLOSE_FILTER_HISTORY ]: closeFilterHistory,
     [ LOAD_LIST_HISTORY ]: loadHistory,
     [ SAVE_RECORD_HISTORY ]: saveHistory,
     [ TABLE_HISTORY_LOADING ]: loadingHistory,
@@ -29,11 +28,6 @@ function loadHistory( state: ITableHistoryStateType, action: any ) {
 }
 
 function filterHistory( state: ITableHistoryStateType, action: any ) {
-  const newState: ITableHistoryStateType = Object.assign( {}, state, { showHistoryFilter: action.isShow } );
-  return newState;
-}
-
-function closeFilterHistory( state: ITableHistoryStateType, action: any ) {
   const newState: ITableHistoryStateType = Object.assign( {}, state, { showHistoryFilter: action.isShow } );
   return newState;
 }

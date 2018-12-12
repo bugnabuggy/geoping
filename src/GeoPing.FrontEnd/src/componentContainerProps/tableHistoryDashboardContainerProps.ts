@@ -6,9 +6,9 @@ export default interface ITableHistoryDashboardContainerProps {
   tableHistory: ITableHistoryStateType;
   user: IUserState;
 
-  filterHistory: () => ( dispatch: IDispatchFunction ) => void;
+  // filterHistory: ( filter: any ) => ( dispatch: IDispatchFunction ) => void;
   closeFilterHistory: () => ( dispatch: IDispatchFunction ) => void;
-  loadHistory: () => ( dispatch: IDispatchFunction ) => void;
+  loadHistory: ( filter?: any ) => ( dispatch: IDispatchFunction ) => void;
   clearTableHistory: () => ( dispatch: IDispatchFunction ) => void;
   redirectDashboard: ( isRedirect: boolean ) => (dispatch: IDispatchFunction) => void;
 }

@@ -117,7 +117,6 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
         dateFormatter( this.state.endDate )
       );
     }
-
     this.setState( {
       startDate: date,
     } );
@@ -138,7 +137,6 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
         dateFormatter( date )
       );
     }
-
     this.setState( {
       endDate: date,
     } );
