@@ -45,7 +45,10 @@ class MyCheckListsContainer extends React.Component<IMyCheckListsContainerProps,
           <h4>My Check lists</h4>
 
           <div
-            className="dashboard-check-list-icon-pluse dashboard-check-list-icon-pluse-container cursor-pointer"
+            className="dashboard-check-list-icon-pluse
+            dashboard-check-list-icon-pluse-container
+            cursor-pointer
+            plus-circle-icon"
             onClick={this.props.openModalForCreateCheckList}
           >
             <FontAwesomeIcon icon="plus-circle"/>

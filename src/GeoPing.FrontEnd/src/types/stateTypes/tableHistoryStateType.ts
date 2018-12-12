@@ -5,8 +5,12 @@ export interface ITableHistoryStateType {
 }
 
 export interface ITableHistoryType {
-  dateTime: string;
+  // dateTime: string;
+  // latLng: string;
+  // checkList: string;
+  // apporxAddress: string;
+  checkInDate: string;
   latLng: string;
-  checkList: string;
-  apporxAddress: string;
+  listName: string;
+  info: string;
 }

@@ -62,7 +62,7 @@ export class ShareUserToList extends React.Component<IShareUserToListProps, any>
                 getAutocompletedListUsers={this.props.getAutocompletedListUsers}
               />
               <React.Fragment>
-                <FontAwesomeIcon icon="user-plus" className="field-to-share-list-icon cursor-pointer"/>
+                <FontAwesomeIcon icon="user-plus" className="field-to-share-list-icon"/>
               </React.Fragment>
             </div>
           </div>

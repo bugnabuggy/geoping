@@ -4,6 +4,7 @@ import { ModalComponent } from './checklist/modalComponent';
 import { Button, FormGroup, Label } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import { CustomDateComponent } from '../customDateComponent';
+import { dateFormatter } from '../../services/helper';
 import moment = require('moment');
 
 export class ModalFilterHistoryComponent extends React.Component<IModalFilterHistoryComponentProps, any> {
@@ -11,8 +12,8 @@ export class ModalFilterHistoryComponent extends React.Component<IModalFilterHis
     super( props );
     this.state = {
       filterName: '',
-      startDate: moment(),
-      endDate: moment(),
+      startDate: moment().utcOffset( 'H' ).startOf( 'day' ),
+      endDate: moment().utcOffset( 'H' ).endOf( 'day' ),
     };
   }
 
@@ -34,8 +35,8 @@ export class ModalFilterHistoryComponent extends React.Component<IModalFilterHis
 
   filterHistory = () => {
     const filter: any = {
-      DatePeriodFrom: this.state.startDate.toString(),
-      DatePeriodTo: this.state.endDate.toString(),
+      DatePeriodFrom: dateFormatter( this.state.startDate ),
+      DatePeriodTo: dateFormatter( this.state.endDate ),
     };
     this.props.loadHistory( filter );
     this.props.closeFilterHistory();

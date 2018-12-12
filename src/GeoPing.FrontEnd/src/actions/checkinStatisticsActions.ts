@@ -80,16 +80,19 @@ export const getAllCheckForList = ( idList: string ) => ( dispatch: IDispatchFun
 
 export const getFreeChecksInStatisticsByFilter = ( dateFrom: string, dateTo: string ) =>
   ( dispatch: IDispatchFunction ) => {
+    dispatch( windowBlockingAction( true ) );
     const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
     checkListService.getFreeChecksInStatisticsByFilter( dateFrom, dateTo )
       .then( ( points: any ) => {
         // console.log( 'response', response );
         dispatch( loadFreeChecksAction( points ) );
+        dispatch( windowBlockingAction( false ) );
       } )
       .catch( ( error: any ) => {
         dispatch( addNotificationAction(
           createNotification( error.message + ' getFreeChecksInStatisticsByFilter', EnumNotificationType.Danger )
         ) );
+        dispatch( windowBlockingAction( false ) );
       } );
   };
 
