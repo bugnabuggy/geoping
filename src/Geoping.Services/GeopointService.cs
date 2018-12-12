@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -180,8 +180,6 @@ namespace GeoPing.Services
 
             if (!isId)
             {
-                point = null;
-
                 return false;
             }
 
@@ -195,8 +193,6 @@ namespace GeoPing.Services
 
             if (!isId)
             {
-                point = null;
-
                 return false;
             }
 
