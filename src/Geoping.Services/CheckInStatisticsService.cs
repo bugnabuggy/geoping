@@ -103,9 +103,7 @@ namespace GeoPing.Services
 
             totalItems = 0;
 
-            var isListExist = _listSrv.TryGetListWithId(listId, out var list);
-
-            if (!isListExist)
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
                 _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
                                  $"by user with Id = [{userId}] was failed: list doesn`t exist");
