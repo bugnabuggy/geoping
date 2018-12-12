@@ -7,6 +7,7 @@ using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace GeoPing.Services
 {
@@ -41,33 +42,42 @@ namespace GeoPing.Services
         private IRepository<GeoPingUser> _gpUserRepo;
         private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _securitySrv;
+        private ILogger<GeolistService> _logger;
 
         public GeolistService
             (IRepository<GeoList> geolistRepo, 
             IRepository<PublicList> publicGeolistRepo, 
             IRepository<GeoPingUser> gpUserRepo, 
             ISecurityService securitySrv,
-            IRepository<ListSharing> sharingRepo)
+            IRepository<ListSharing> sharingRepo,
+            ILogger<GeolistService> logger)
         {
             _geolistRepo = geolistRepo;
             _publicGeolistRepo = publicGeolistRepo;
             _gpUserRepo = gpUserRepo;
             _securitySrv = securitySrv;
             _sharingRepo = sharingRepo;
+            _logger = logger;
         }
 
         public IQueryable<GeoList> Get()
         {
+            _logger.LogDebug("Getting all of geolist");
+
             return _geolistRepo.Get();
         }
 
         public IQueryable<GeoList> Get(Expression<Func<GeoList, bool>> func)
         {
+            _logger.LogDebug($"Getting geolists by query {func.Body.ToString()}");
+
             return _geolistRepo.Get(func);
         }
 
         public IQueryable<GeoList> GetAllowedLists(Guid userId)
         {
+            _logger.LogDebug($"Getting allowed geolists for user Id = [{userId}]");
+
             var sharings = _sharingRepo.Get(x => x.UserId == userId &&
                                                  x.Status == "accepted");
 
@@ -79,6 +89,8 @@ namespace GeoPing.Services
 
         public WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems)
         {
+            _logger.LogDebug($"Getting owned geolists by filter for user Id = [{userId}]");
+
             var data = _geolistRepo.Get(x => x.OwnerId == userId);
 
             // Filtering by public status. There is no filtering if isPublic field in filter is null
@@ -105,6 +117,8 @@ namespace GeoPing.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems)
         {
+            _logger.LogDebug($"Getting public geolist is owned by user by filter.");
+
             var data = _geolistRepo.Get(x => x.IsPublic &&
                                              x.OwnerId == ownerId);
 
@@ -124,6 +138,8 @@ namespace GeoPing.Services
 
         public WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems)
         {
+            _logger.LogDebug($"Getting public geolists by filter.");
+
             var data = _geolistRepo.Get(x => x.IsPublic);
 
             var result = GetPublicByFilter(data, filter);
@@ -142,6 +158,9 @@ namespace GeoPing.Services
 
         public OperationResult<GeoList> Add(GeoList item)
         {
+            _logger.LogInformation($"Creating new list: Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}].");
+
             var result = _geolistRepo.Add(item);
 
             if (item.IsPublic)
@@ -163,8 +182,15 @@ namespace GeoPing.Services
 
         public OperationResult<GeoList> Update(Guid userId, GeoList item)
         {
+            _logger.LogInformation($"Editing list: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
+
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
+                _logger.LogWarning($"An error was occured while editing geolist id = [{item.Id}]: " +
+                                       $"user Id = [{userId}] has no rights to do this.");
+
                 return new OperationResult<GeoList>
                 {
                     Messages = new[] { "Unauthorized", "You have no rights to manipulate this list" }
@@ -183,7 +209,12 @@ namespace GeoPing.Services
                     });
                 }
             }
+
             var result = _geolistRepo.Update(item);
+
+            _logger.LogInformation($"List was edited: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
 
             return new OperationResult<GeoList>
             {
@@ -196,8 +227,15 @@ namespace GeoPing.Services
         // Delete one of list
         public OperationResult<GeoList> Delete(Guid userId, GeoList item)
         {
+            _logger.LogInformation($"Deleting list: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
+
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
+                _logger.LogWarning($"An error was occured while deleting geolist id = [{item.Id}]: " +
+                                   $"user Id = [{userId}] has no rights to do this.");
+
                 return new OperationResult<GeoList>
                 {
                     Messages = new[] { "Unauthorized", $"You have no rights to manipulate list with Id = [{item.Id}]." }
@@ -206,12 +244,9 @@ namespace GeoPing.Services
 
             _geolistRepo.Delete(item);
 
-            var publicList = _publicGeolistRepo.Data.FirstOrDefault(x => x.ListId == item.Id);
-
-            if (publicList != null)
-            {
-                _publicGeolistRepo.Delete(publicList);
-            }
+            _logger.LogInformation($"List was deleted: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
 
             return new OperationResult<GeoList>
             {
@@ -238,17 +273,7 @@ namespace GeoPing.Services
 
             foreach (var id in ids)
             {
-                var isListId = Guid.TryParse(id, out Guid listId);
-
-                if (!isListId)
-                {
-                    messages.Add($"Given geolistId = [{id}] is not valid");
-                    continue;
-                }
-
-                var list = Get().FirstOrDefault(x => x.Id == listId);
-
-                if (list == null)
+                if (!TryGetListWithId(id, out var list))
                 {
                     messages.Add($"There are no geolist with given geolistId = [{id}]");
                     continue;
