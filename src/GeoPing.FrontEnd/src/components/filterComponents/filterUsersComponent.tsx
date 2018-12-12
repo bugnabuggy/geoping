@@ -9,25 +9,29 @@ import IFilterUsersComponentProps from '../../componentProps/filterComponentProp
 import 'react-datepicker/dist/react-datepicker.css';
 
 export class FilterUsersComponent extends React.Component<IFilterUsersComponentProps, any> {
+  constructor( props: IFilterUsersComponentProps ) {
+    super( props );
+  }
+
   handleChangeDateStart = ( date: moment.Moment ) => {
-    this.props.changeFilters ( 'startDate', date );
+    this.props.changeFilters( 'startDate', date );
   };
+
   handleChangeDateEnd = ( date: moment.Moment ) => {
-    this.props.changeFilters ( 'endDate', date );
+    this.props.changeFilters( 'endDate', date );
   };
+
   handleChangeInput = ( e: any ) => {
-    this.props.changeFilters ( e.target.name, e.target.value );
+    this.props.changeFilters( e.target.name, e.target.value );
   };
+
   handleClickFilter = () => {
     return '';
   };
+
   handleClickClearFilter = () => {
     return '';
   };
-
-  constructor( props: IFilterUsersComponentProps ) {
-    super ( props );
-  }
 
   render() {
     return (

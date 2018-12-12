@@ -5,23 +5,28 @@ import ITableMarkerStatisticsComponentProps
   from '../../componentProps/tableComponentProps/tableMarkerStatisticsComponentProps';
 
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import { EStatusCheckedEnum } from '../../enums/statusCheckedEnum';
+import { ICheckInGeoPointDTO } from '../../DTO/geoPointDTO';
 import moment = require('moment');
 
 export class TableMarkerStatisticsComponent extends React.Component<ITableMarkerStatisticsComponentProps, any> {
   rowClassNameFormat = ( row: any, rowIdx: any ) => {
-    return row.check ? 'statistics-table-check' : 'statistics-table-not-check';
+    return row.check === EStatusCheckedEnum.Unchecked ? 'statistics-table-not-check' : 'statistics-table-check';
   };
   getData = () => {
-    return this.props.googleMap.geoPoints.map( ( item: any, index: number ) => {
-      const checkIn: any = this.props.googleMap.checkInGeoPoint.find( ( check: any ) => check.pointId === item.id );
+    return this.props.googleMap.geoPoints.map( ( item, index: number ) => {
+      const checkInGeoPoint: ICheckInGeoPointDTO = this.props.googleMap.checkInGeoPoint[ index ];
       return {
-        id: index,
-        check: checkIn && !!checkIn.pointId,
+        id: item.idForMap,
+        userName: !!checkInGeoPoint.userId ?
+          this.props.checkinStatistics.selectUser.find( user => user.userId === checkInGeoPoint.userId ).userName
+          :
+          '',
+        check: checkInGeoPoint.status,
         name: item.name,
         coordsPoint: `${item.lat} / ${item.lng}`,
-        coordsUser: `${checkIn && checkIn.latitude + ' / ' + checkIn.longitude || ''}`,
-        distance: checkIn && checkIn.distance,
-        dateTime: checkIn && moment( checkIn.date ).format( 'LLL' ) || '',
+        distance: checkInGeoPoint.distance,
+        dateTime: moment( checkInGeoPoint.date ).format( 'LLL' ) || '',
       };
     } );
   };
@@ -34,10 +39,16 @@ export class TableMarkerStatisticsComponent extends React.Component<ITableMarker
         maxHeight="500px"
       >
         <TableHeaderColumn hidden={true} isKey={true} dataField="id">Id</TableHeaderColumn>
+        <TableHeaderColumn
+          hidden={this.props.listId === 'none' || !!this.props.userId}
+          dataField="userName"
+          tdStyle={{ whiteSpace: 'normal' }}
+        >
+          User name
+        </TableHeaderColumn>
         <TableHeaderColumn dataField="check" hidden={true}>check</TableHeaderColumn>
         <TableHeaderColumn dataField="name" tdStyle={{ whiteSpace: 'normal' }}>Name</TableHeaderColumn>
         <TableHeaderColumn dataField="coordsPoint" tdStyle={{ whiteSpace: 'normal' }}>Coords point</TableHeaderColumn>
-        <TableHeaderColumn dataField="coordsUser" tdStyle={{ whiteSpace: 'normal' }}>Coords user</TableHeaderColumn>
         <TableHeaderColumn dataField="distance" tdStyle={{ whiteSpace: 'normal' }}>Distance</TableHeaderColumn>
         <TableHeaderColumn dataField="dateTime" tdStyle={{ whiteSpace: 'normal' }}>Date time</TableHeaderColumn>
       </BootstrapTable>

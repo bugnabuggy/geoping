@@ -376,7 +376,7 @@ namespace GeoPing.Services
             var callbackUrl = $"{_settings.Urls.SiteUrl}/" +
                               $"{_settings.Urls.ActionsUrl.ByToken}/" +
                               $"{code}";
-
+            
             string subject;
 
             if (invitedUser == null)
@@ -392,7 +392,7 @@ namespace GeoPing.Services
 
             subject = $"{subject}, user {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} " +
                       "shared a geolist with you.";
-
+                      
             var message = new EmailMessage
             {
                 FromAddress = new EmailAddress
