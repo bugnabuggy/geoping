@@ -99,7 +99,6 @@ namespace GeoPing.Services
 
                     _tokenSrv.MarkAsUsed(token.Token);
                 }
-            }
 
                 _logger.LogDebug($"Used invalid token while registration.");
             }
