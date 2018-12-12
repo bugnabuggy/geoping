@@ -407,7 +407,7 @@ namespace GeoPing.Services
             var callbackUrl = $"{_settings.Urls.SiteUrl}/" +
                               $"{_settings.Urls.ActionsUrl.ByToken}/" +
                               $"{code}";
-            
+
             string subject;
 
             if (invitedUser == null)

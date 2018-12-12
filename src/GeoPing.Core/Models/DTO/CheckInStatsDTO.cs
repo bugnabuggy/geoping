@@ -16,4 +16,11 @@ namespace GeoPing.Core.Models.DTO
         public DateTime? CheckInDate { get; set; }
         public string Type { get; set; }
     }
+
+    public enum CheckInType
+    {
+        Unchecked,
+        Checked,
+        FreeCheck
+    }
 }

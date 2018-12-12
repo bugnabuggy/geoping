@@ -81,10 +81,20 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      {getRoutes()}
-    </ConnectedRouter>
-  </Provider>,
+  <React.Fragment>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        {getRoutes()}
+      </ConnectedRouter>
+    </Provider>
+    {JSON.parse( localStorage.getItem( 'personal_information' ) ) &&
+    (
+      <script>
+        const a = 's';
+        console.log('a', a);
+      </script>
+    )
+    }
+  </React.Fragment>,
   document.getElementById( 'app' )
 );

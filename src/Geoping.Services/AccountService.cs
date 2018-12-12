@@ -74,7 +74,6 @@ namespace GeoPing.Services
             {
                 _logger.LogError($"An error was occured while user registration " +
                                  $"{user.Email}::{user.UserName}: ", result.Errors);
-
                 return new OperationResult
                 {
                     Data = result.Errors,
@@ -100,6 +99,7 @@ namespace GeoPing.Services
 
                     _tokenSrv.MarkAsUsed(token.Token);
                 }
+            }
 
                 _logger.LogDebug($"Used invalid token while registration.");
             }

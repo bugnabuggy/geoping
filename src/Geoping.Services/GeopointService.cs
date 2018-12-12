@@ -180,6 +180,8 @@ namespace GeoPing.Services
 
             if (!isId)
             {
+                point = null;
+
                 return false;
             }
 
@@ -193,6 +195,8 @@ namespace GeoPing.Services
 
             if (!isId)
             {
+                point = null;
+
                 return false;
             }
 

@@ -45,7 +45,7 @@ export class ListPointItemComponent extends React.Component<IListPointItemCompon
             <span>{this.props.geoPoint.name}</span>
             <div className="check-list-point-item-image-container">
               <div
-                className="icon-hover-color cursor-pointer"
+                className="icon-hover-color cursor-pointer trash-alt-icon"
                 onClick={this.handleDeletePoint}
               >
                 <FontAwesomeIcon icon="trash-alt"/>

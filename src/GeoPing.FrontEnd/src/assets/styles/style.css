@@ -7,7 +7,6 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  /*min-width: 470px;*/
   width: 100%;
 }
 
@@ -66,6 +65,28 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.notification-personal-information-container {
+  position: absolute;
+  width: 100%;
+  height: max-content;
+  z-index: 2000;
+  background: #dfdfdf;
+  padding: 20px;
+}
+
+.notification-personal-information-container p {
+  text-align: justify;
+}
+
+.notification-personal-information-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-personal-information-button-container button:first-child {
+  margin-right: 20px;
 }
 
 .table-sort-icon {
@@ -424,16 +445,24 @@ header nav {
 }
 
 .dashboard-table-icon:hover, .dashboard-check-list-icon-filter:hover, .dashboard-check-list-icon-pluse:hover,
-.check-list-panel-item-icons:hover, .field-to-share-list-icon:hover, .field-to-share-list-icon-minus:hover,
+.check-list-panel-item-icons:hover, .field-to-share-list-icon-minus:hover,
 .add-user-to-share-list-icon:hover, .list-item-icon-globe:hover, .list-item-icon-plus-square:hover,
 .icon-hover-color:hover {
   color: blue;
 }
 
 .check-list-panel-item-icons {
-  width: 18px !important;
-  height: 16px;
+  /*width: 18px !important;*/
+  /*height: 16px;*/
   color: black;
+}
+
+.trash-alt-icon, .minus-circle {
+  color: var(--danger-color, #a4575b);
+}
+
+.plus-circle-icon {
+  color: var(--success-color, #128D15);
 }
 
 .dashboard-check-list-title {
@@ -476,7 +505,7 @@ header nav {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: calc(100% - 70px);
+  width: calc(100% - 90px);
 }
 
 /*.check-list-panel-item div:nth-child(2) {*/
@@ -497,13 +526,13 @@ header nav {
 .check-list-panel-link-container {
   position: absolute;
   display: flex;
-  top: 20px;
+  top: 15px;
   right: 10px;
   align-items: center;
-  font-size: 15px;
+  font-size: 20px;
   justify-content: space-between;
-  width: 70px;
-  height: 20px;
+  width: 90px;
+  height: 30px;
 }
 
 .dashboard-invitations-title {
@@ -1561,7 +1590,7 @@ header nav {
 }
 
 /*.admin-checklist-filter-field-public {*/
-  /*dis*/
+/*dis*/
 /*}*/
 
 .admin-checklist-filter-field-button, .admin-checklist-filter-field-public {
