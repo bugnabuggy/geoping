@@ -371,8 +371,21 @@ header nav {
   grid-row-end: row3;
 }
 
+.table-history-container {
+  height: calc(100% - 33px);
+}
+
 .table-responsive {
   overflow-x: unset;
+  height: 100%;
+}
+
+.table-history-td {
+  word-break: break-word;
+}
+
+.table-history-filter-date-container {
+  display: flex;
 }
 
 /*.dashboard-table div:last-child {*/
@@ -2167,4 +2180,5 @@ select.form-control:not([size]):not([multiple]) {
   right: -30px;
   color: black;
 }
+
 /*******************************************************************************************/

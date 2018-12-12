@@ -50,15 +50,19 @@ namespace GeoPing.Utilities.Logger
                         }
                     }
                 };
+
                 config.AddTarget(syslogTargetCommon);
-                config.AddRule(LogLevel.FromString(settings.SyslogCommon.Level), LogLevel.Warn, syslogTargetCommon); 
+                config.AddRule
+                    (LogLevel.FromString(settings.SyslogCommon.Level), 
+                    LogLevel.Warn, 
+                    syslogTargetCommon); 
             }
 
-            if (settings.SyslogError.IsEnable)
+            if (settings.SyslogBusiness.IsEnable)
             {
-                var syslogTargetError = new SyslogTarget
+                var syslogTargetBusiness = new SyslogTarget
                 {
-                    Name = "sysLogError",
+                    Name = "syslogBusiness",
                     MessageCreation = new MessageBuilderConfig
                     {
                         Facility = Facility.Local7
@@ -68,18 +72,22 @@ namespace GeoPing.Utilities.Logger
                         Protocol = ProtocolType.Tcp,
                         Tcp = new TcpConfig
                         {
-                            Server = settings.SyslogError.Server,
-                            Port = settings.SyslogError.Port,
+                            Server = settings.SyslogBusiness.Server,
+                            Port = settings.SyslogBusiness.Port,
                             Tls = new TlsConfig
                             {
                                 Enabled = true
                             }
                         }
                     }
-
                 };
-                config.AddTarget(syslogTargetError);
-                config.AddRule(LogLevel.FromString(settings.SyslogError.Level), LogLevel.Fatal, syslogTargetError); 
+
+                config.AddTarget(syslogTargetBusiness);
+                config.AddRule
+                    (LogLevel.FromString(settings.SyslogBusiness.Level), 
+                    LogLevel.Fatal, 
+                    syslogTargetBusiness, 
+                    nameof(GeoPing) + "*"); 
             }
 
             // FileTarget object
