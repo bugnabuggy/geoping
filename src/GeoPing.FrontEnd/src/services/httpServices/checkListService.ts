@@ -16,7 +16,9 @@ import {
   getAllPublicGeoLosts,
   getAllUsersForListShared,
   getAutocompletedListUsers,
-  getGeoListForId, getGeoListMyAndHasAccess,
+  getFreeChecksStatisticsByFilter,
+  getGeoListForId,
+  getGeoListMyAndHasAccess,
   getGeoListStatistics,
   getInfoAboutToken,
   inviteUsersToShareList,
@@ -273,25 +275,38 @@ export default class CheckListService implements ICheckListServiceType {
 
   removeAccessUserForList( sharingId: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.delete( deleteListSharing.replace('%sharingId%', sharingId))
+      this.communicator.delete( deleteListSharing.replace( '%sharingId%', sharingId ) )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
   }
 
   getGeoListMyAndHasAccess() {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.get(getGeoListMyAndHasAccess)
+      this.communicator.get( getGeoListMyAndHasAccess )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )
         .catch( ( error: any ) => {
           reject( error );
         } );
-    });
+    } );
+  }
+
+  getFreeChecksInStatisticsByFilter( dateFrom: string, dateTo: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getFreeChecksStatisticsByFilter +
+        `DatePeriodFrom=${dateFrom}&DatePeriodTo=${dateTo}` )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
   }
 }

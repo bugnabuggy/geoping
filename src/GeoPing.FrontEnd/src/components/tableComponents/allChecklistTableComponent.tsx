@@ -41,19 +41,25 @@ export class AllChecklistTableComponent extends React.Component<AllChecklistTabl
         id: 1,
         name: 'name',
         age: 40,
-        employee: false,
+        creationDate: 'false',
+        numberOfPoints: 5,
+        isPublic: true,
       },
       {
         id: 1,
         name: 'Mase',
         age: 38,
-        employee: false,
+        creationDate: 'false',
+        numberOfPoints: 5,
+        isPublic: true,
       },
       {
         id: 1,
         name: 'tukal',
         age: 50,
-        employee: false,
+        creationDate: 'false',
+        numberOfPoints: 5,
+        isPublic: false,
       }
     ];
     const options: any = {
@@ -70,10 +76,12 @@ export class AllChecklistTableComponent extends React.Component<AllChecklistTabl
           data={test}
           options={options}
         >
-          <TableHeaderColumn isKey={true} dataField="id">Id</TableHeaderColumn>
+          <TableHeaderColumn hidden={true} isKey={true} dataField="id">Id</TableHeaderColumn>
           <TableHeaderColumn dataField="name" dataSort={true}>Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="age" dataSort={true}>Age</TableHeaderColumn>
-          <TableHeaderColumn dataField="employee" dataSort={true}>Employee</TableHeaderColumn>
+          <TableHeaderColumn dataField="age" dataSort={true}>User</TableHeaderColumn>
+          <TableHeaderColumn dataField="creationDate" dataSort={true}>Creation date</TableHeaderColumn>
+          <TableHeaderColumn dataField="numberOfPoints" dataSort={true}>Number of points</TableHeaderColumn>
+          <TableHeaderColumn dataField="isPublic" dataSort={true}>Is public</TableHeaderColumn>
         </BootstrapTable>
       </React.Fragment>
     );

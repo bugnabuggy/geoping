@@ -4,14 +4,13 @@ import * as moment from 'moment';
 import { DurationInputObject } from 'moment';
 import DatePicker from 'react-datepicker';
 import Select from 'react-select';
-import { Redirect } from 'react-router-dom';
 
 import { CustomDateComponent } from './customDateComponent';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import ICheckinStatisticsComponentProps from '../componentProps/checkinStatisticsComponentProps';
 import { checkInStatistics } from '../constants/routes';
-import { dateTypeDefinition } from '../services/helper';
+import { dateFormatter, dateTypeDefinition } from '../services/helper';
 
 export class CheckinStatisticsComponent extends React.Component<ICheckinStatisticsComponentProps, any> {
   formatDate = 'MM/DD/YYYY';
@@ -28,62 +27,118 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       [ this.date.typeDate ]: this.date.count,
     };
     this.state = {
-      startDate: moment().subtract( this.durationInput ),
-      endDate: moment(),
+      startDate: moment().utcOffset( 'H' ).startOf( 'day' ).subtract( this.durationInput ),
+      endDate: moment().utcOffset( 'H' ).endOf( 'day' ),
       selectList: '',
       selectUser: '',
     };
+  }
+
+  componentDidMount(): void {
+    if ( this.props.listId !== 'none' ) {
+      const data = {
+        UserId: this.props.userId,
+        DatePeriodFrom: dateFormatter( this.state.startDate ),
+        DatePeriodTo: dateFormatter( this.state.endDate ),
+      };
+      this.props.loadPoints( this.props.listId, data );
+    } else {
+      this.props.getFreeChecksInStatisticsByFilter(
+        dateFormatter( this.state.startDate ),
+        dateFormatter( this.state.endDate )
+      );
+    }
   }
 
   handleSelectUser = ( e: any ) => {
     if ( e ) {
       const data = {
         UserId: e.value,
-        DatePeriodFrom: this.state.startDate.toString(),
-        DatePeriodTo: this.state.endDate.toString(),
+        DatePeriodFrom: dateFormatter( this.state.startDate ),
+        DatePeriodTo: dateFormatter( this.state.endDate ),
       };
-      this.props.loadPoints( this.props.listId, data ),
-        this.setState( { selectUser: e.value } );
+      this.props.loadPoints( this.props.listId, data );
+      this.setState( { selectUser: e.value } );
     } else {
       // this.props.loadPoints( this.state.selectList, '' );
       this.setState( { selectUser: '' } );
+      this.props.clearStatistic();
     }
+
+    this.props.goTo( checkInStatistics.replace( ':listId', this.props.listId ).replace( ':userId', e.value ) );
   };
 
   handleSelectList = ( e: any ) => {
     if ( e ) {
+      this.date = dateTypeDefinition( e.value );
+      this.durationInput = {
+        [ this.date.typeDate ]: this.date.count,
+      };
+      const newDate: moment.Moment = moment().utcOffset( 'H' ).startOf( 'day' ).subtract( this.durationInput );
+      this.setState( {
+        startDate: newDate,
+      } );
+
       if ( e.value !== 'none' ) {
         this.props.loadUsers( e.value );
+        const data = {
+          UserId: this.props.userId,
+          DatePeriodFrom: dateFormatter( this.state.startDate ),
+          DatePeriodTo: dateFormatter( this.state.endDate ),
+        };
+        this.props.loadPoints( e.value, data );
+      } else {
+        this.props.getFreeChecksInStatisticsByFilter(
+          dateFormatter( newDate ),
+          dateFormatter( this.state.endDate )
+        );
       }
       this.setState( { selectList: e.value } );
     } else {
       this.props.loadUsers( '' );
       this.setState( { selectList: '' } );
     }
+    this.props.goTo( checkInStatistics.replace( ':listId', e.value ).replace( '/:userId', '' ) );
+    this.props.clearStatistic();
     this.props.clearGeoPoint();
   };
 
   handleSelectStart = ( date: any ) => {
-    const data = {
-      UserId: this.state.selectUser,
-      DatePeriodFrom: date.toString(),
-      DatePeriodTo: this.state.endDate.toString(),
-    };
-    this.props.loadPoints(
-      this.props.listId, data );
+    if ( !!this.props.userId ) {
+      const data = {
+        UserId: this.props.userId,
+        DatePeriodFrom: dateFormatter( date ),
+        DatePeriodTo: dateFormatter( this.state.endDate ),
+      };
+      this.props.loadPoints( this.props.listId, data );
+    } else {
+      this.props.getFreeChecksInStatisticsByFilter(
+        dateFormatter( date ),
+        dateFormatter( this.state.endDate )
+      );
+    }
+
     this.setState( {
       startDate: date,
     } );
   };
 
-  handleSelectEnd = ( date: any ) => {
-    const data = {
-      UserId: this.state.selectUser,
-      DatePeriodFrom: this.state.startDate.toString(),
-      DatePeriodTo: date.toString(),
-    };
-    this.props.loadPoints(
-      this.props.listId, data );
+  handleSelectEnd = ( date: moment.Moment ) => {
+    if ( !!this.props.userId ) {
+      const data = {
+        UserId: this.props.userId,
+        DatePeriodFrom: dateFormatter( this.state.startDate ),
+        DatePeriodTo: dateFormatter( date ),
+      };
+      this.props.loadPoints(
+        this.props.listId, data );
+    } else {
+      this.props.getFreeChecksInStatisticsByFilter(
+        dateFormatter( this.state.startDate ),
+        dateFormatter( date )
+      );
+    }
+
     this.setState( {
       endDate: date,
     } );
@@ -133,7 +188,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
 
   selectOptionUser = () => {
     const user: any = this.props.checkinStatistics.selectUser.find(
-      ( item: any ) => item.userId === this.state.selectUser
+      ( item: any ) => item.userId === this.props.userId
     );
     return {
       value: user ? user.userId : '',
@@ -141,34 +196,15 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     };
   };
 
-  // componentDidMount() {
-  //   this.props.getAllCheckForList( this.props.listId );
-  // }
-
   componentDidUpdate( prevProps: ICheckinStatisticsComponentProps, prevState: any ) {
     if ( prevProps.listId !== this.props.listId ) {
       this.setState( { selectUser: '' } );
-    }
-    this.date = dateTypeDefinition( this.props.listId );
-    this.durationInput = {
-      [ this.date.typeDate ]: this.date.count,
-    };
-    if ( prevProps.listId !== 'none' && this.props.listId === 'none' ) {
-      this.setState( {
-        startDate: moment().subtract( this.durationInput ),
-      } );
-    } else if ( prevProps.listId === 'none' && this.props.listId !== 'none' ) {
-      this.setState( {
-        startDate: moment().subtract( this.durationInput ),
-      } );
     }
   }
 
   render() {
     return (
       <div className="check-in-statistics-form-container">
-        {this.state.selectList && this.props.listId !== this.state.selectList &&
-        <Redirect to={checkInStatistics.replace( ':listId', this.state.selectList )}/>}
         <h3>Check in statistics</h3>
         <FormGroup className="check-in-statistics-form-select">
           <ControlLabel className="check-in-statistics-form-label">Select List</ControlLabel>
@@ -187,7 +223,6 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
             className="check-in-statistics-form-input"
             onChange={this.handleSelectUser}
             hideSelectedOptions={true}
-            isClearable={true}
             value={this.selectOptionUser()}
           />
         </FormGroup> )

@@ -46,9 +46,10 @@ export const getGeoListMyAndHasAccess: string = `${endpointBaseUrl}/api/geolist/
 export const getGeoListStatistics: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
 export const getUserAccessedToList: string = `${endpointBaseUrl}/api/statistics/geolist/%listid%/users`;
 export const getCheckInStatisticsForListByFilter: string = `${endpointBaseUrl}/api/statistics/geolist/%listid%`;
+export const getFreeChecksStatisticsByFilter: string = `${endpointBaseUrl}/api/statistics/geolist?`;
 
 /* endpoints for tables */
-export const getHistory: string = `${endpointBaseUrl}/api/history`;
+export const getHistory: string = `${endpointBaseUrl}/api/statistics/history`;
 
 /* endpoints for sharing */
 export const inviteUsersToShareList: string = `${endpointBaseUrl}/api/sharing/%listid%`;

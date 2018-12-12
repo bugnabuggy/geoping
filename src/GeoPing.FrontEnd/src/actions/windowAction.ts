@@ -1,3 +1,5 @@
+import { push } from 'react-router-redux';
+
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import { BLOCKING_WINDOW_DURING_AN_ACTION, REDIRECT, REDIRECT_ON_SIGN_IN_FORM } from '../constantsForReducer/window';
 
@@ -12,6 +14,10 @@ export const redirectOnSignInForm = ( redirect: boolean ) => ( dispatch: IDispat
 
 export const isRedirect = ( redirect: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( isRedirectAction( redirect ) );
+};
+
+export const goTo = ( url: string ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( push( url ) );
 };
 
 /* Actions */

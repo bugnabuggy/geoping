@@ -37,7 +37,7 @@ export class CheckListComponent extends React.Component<ICheckListComponentProps
         <div className="check-list-panel-link-container">
           <Link
             className="check-list-panel-item-icons cursor-pointer"
-            to={checkInStatistics.replace( ':listId', this.props.checkList.id )}
+            to={checkInStatistics.replace( ':listId', this.props.checkList.id ).replace( '/:userId', '' )}
           >
             <FontAwesomeIcon icon="chart-bar" className=""/>
           </Link>

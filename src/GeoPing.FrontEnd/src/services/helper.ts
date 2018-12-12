@@ -14,6 +14,7 @@ import {
   profileUrl,
 } from '../constants/routes';
 import { ETimer } from '../enums/timerEnum';
+import * as moment from 'moment';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {
@@ -106,4 +107,8 @@ export function dateTypeDefinition( listId: string ) {
       count: 1,
     };
   }
+}
+
+export function dateFormatter( date: moment.Moment ) {
+  return `${date.year()}-${date.month()}-${date.date()}T${date.hour()}:${date.minute()}:${date.second()}Z`;
 }
