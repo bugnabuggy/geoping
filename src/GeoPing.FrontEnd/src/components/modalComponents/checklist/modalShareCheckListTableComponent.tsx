@@ -29,7 +29,7 @@ export class ModalShareCheckListTableComponent extends React.Component<IModalSha
                 this.props.removeAccessUserForList( item.sharingId );
               }}
             >
-              <FontAwesomeIcon icon="minus-circle" className="cursor-pointer"/>
+              <FontAwesomeIcon icon="minus-circle" className="cursor-pointer minus-circle"/>
             </div>
           </td>
         </tr>

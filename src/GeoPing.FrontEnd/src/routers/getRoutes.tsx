@@ -14,6 +14,9 @@ import { dashboardUrl, loginUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
 import { isRedirect, redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
+import {
+  NotificationPersonalInformationTrackingComponent
+} from '../components/notificationPersonalInformationTrackingComponent';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   constructor( props: IGetRoutesProps ) {
@@ -21,9 +24,16 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
     console.info( 'GetRoutes constructor', props );
     this.state = {
       isGetUserData: false,
+      showNotification: JSON.parse( localStorage.getItem( 'personal_information' ) ) === null,
     };
     // this.authorized();
   }
+
+  changeShowNotificationInfo = () => {
+    this.setState( {
+      showNotification: false,
+    } );
+  };
 
   authorized = () => {
     if ( !!localStorage.getItem( 'token' ) ) {
@@ -72,6 +82,11 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
   render() {
     return (
       <React.Fragment>
+        {this.state.showNotification &&
+        <NotificationPersonalInformationTrackingComponent
+          changeShowNotificationInfo={this.changeShowNotificationInfo}
+        />
+        }
         <WindowBlockingComponent
           isBlocking={this.props.window.isBlockingWindow}
         />

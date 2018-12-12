@@ -10,4 +10,5 @@ export const checkinState: ICheckinStateType = {
   isPointLoading: false,
   isStartTimer: ETimer.None,
   countTimer: 0,
+  tableRecordForCheckIn: [],
 };
