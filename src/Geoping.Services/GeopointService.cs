@@ -158,7 +158,7 @@ namespace GeoPing.Services
 
             foreach (var id in pointIds)
             {
-                if (TryGetPointWithId(id, out var point))
+                if (!TryGetPointWithId(id, out var point))
                 {
                     messages.Add($"There are no geopoint with given geopointId = [{id}]");
                     continue;
