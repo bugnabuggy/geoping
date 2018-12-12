@@ -68,6 +68,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         Latitude: this.props.googleMap.position.lat.toString(),
         Longitude: this.props.googleMap.position.lng.toString(),
         Distance: this.props.checkin.difference,
+        Description: this.props.googleMap.position.address,
         // Ip: '',
         // DeviceId: '',
         // UserAgent: '',
@@ -295,7 +296,13 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           title="Congratulations!"
           onClose={this.closeModal}
         />
-        <TableCheckInStatistics/>
+        {this.state.isCheckIn && this.props.googleMap.position.isSuccess &&
+        (
+          <TableCheckInStatistics
+            tableRecordForCheckIn={this.props.checkin.tableRecordForCheckIn}
+          />
+        )
+        }
       </React.Fragment>
     );
   }

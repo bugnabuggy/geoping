@@ -15,10 +15,10 @@ export class TableHistoryDashboard extends React.Component<ITableHistoryDashboar
           key={uuidV4()}
         >
           <tr>
-            <td>{item.dateTime}</td>
-            <td>{item.latLng}</td>
-            <td>{item.checkList}</td>
-            <td>{item.apporxAddress}</td>
+            <td className="table-history-td">{item.dateTime}</td>
+            <td className="table-history-td">{item.latLng}</td>
+            <td className="table-history-td">{item.checkList}</td>
+            <td className="table-history-td">{item.apporxAddress}</td>
           </tr>
         </React.Fragment>
       );
@@ -29,7 +29,7 @@ export class TableHistoryDashboard extends React.Component<ITableHistoryDashboar
 
   render() {
     return (
-      <React.Fragment>
+      <div className="table-history-container">
         <Table
           hover={true}
           condensed={true}
@@ -75,7 +75,7 @@ export class TableHistoryDashboard extends React.Component<ITableHistoryDashboar
           }
           </tbody>
         </Table>
-      </React.Fragment>
+      </div>
     );
   }
 }

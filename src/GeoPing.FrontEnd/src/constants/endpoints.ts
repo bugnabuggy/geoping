@@ -48,7 +48,7 @@ export const getUserAccessedToList: string = `${endpointBaseUrl}/api/statistics/
 export const getCheckInStatisticsForListByFilter: string = `${endpointBaseUrl}/api/statistics/geolist/%listid%`;
 
 /* endpoints for tables */
-export const getHistory: string = `${endpointBaseUrl}/api/history`;
+export const getHistory: string = `${endpointBaseUrl}/api/statistics/history`;
 
 /* endpoints for sharing */
 export const inviteUsersToShareList: string = `${endpointBaseUrl}/api/sharing/%listid%`;

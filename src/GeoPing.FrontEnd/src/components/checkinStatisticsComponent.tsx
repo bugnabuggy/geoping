@@ -69,8 +69,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       DatePeriodFrom: date.toString(),
       DatePeriodTo: this.state.endDate.toString(),
     };
-    this.props.loadPoints(
-      this.props.listId, data );
+    this.props.loadPoints( this.props.listId, data );
     this.setState( {
       startDate: date,
     } );
@@ -82,8 +81,7 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
       DatePeriodFrom: this.state.startDate.toString(),
       DatePeriodTo: date.toString(),
     };
-    this.props.loadPoints(
-      this.props.listId, data );
+    this.props.loadPoints( this.props.listId, data );
     this.setState( {
       endDate: date,
     } );

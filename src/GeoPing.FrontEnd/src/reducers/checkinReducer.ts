@@ -2,7 +2,7 @@ import ICheckinStateType from '../types/stateTypes/checkinStateType';
 import { checkinState } from '../state/checkinState';
 import {
   CHECK_IN_CLEAR,
-  CHECK_IN_FLAG_CHANGE,
+  CHECK_IN_FLAG_CHANGE, CHECK_IN_GEO_POINTS,
   CHECK_IN_LOAD_LISTS,
   CHECK_IN_SELECT_LIST,
   LOADING_CHECK_LISTS,
@@ -24,6 +24,7 @@ export default function checkinReducer( state: ICheckinStateType = checkinState,
     [ CHECK_IN_CLEAR ]: clear,
     [ START_TIMER ]: startTimer,
     [ SET_TIMER_COUNT ]: setTimerCount,
+    [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -99,5 +100,15 @@ function setTimerCount( state: ICheckinStateType, action: any ): ICheckinStateTy
   return {
     ...state,
     countTimer: action.countTimer,
+  };
+}
+
+function checkInGeoPoint( state: ICheckinStateType, action: any ): ICheckinStateType {
+  return {
+    ...state,
+    tableRecordForCheckIn: [
+      ...state.tableRecordForCheckIn,
+      ...action.checkInGeoPoint,
+    ],
   };
 }
