@@ -154,6 +154,7 @@ namespace GeoPing.Services
                 UserAgent = item.UserAgent,
                 Date = DateTime.UtcNow,
                 UserId = userId,
+                Description = item.Description,
                 PointId = pointId != null
                     ? (Guid?)Guid.Parse(pointId)
                     : null

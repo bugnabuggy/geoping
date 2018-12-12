@@ -10,5 +10,6 @@ namespace GeoPing.Core.Models.DTO
         public Guid DeviceId { get; set; }
         public string Ip { get; set; }
         public string UserAgent { get; set; }
+        public string Description { get; set; }
     }
 }

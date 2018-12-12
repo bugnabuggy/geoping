@@ -7,6 +7,8 @@ using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 
 namespace GeoPing.Services.Tests
@@ -22,6 +24,7 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoPingUser> _gpUserRepo;
         private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _securitySrv;
+        private Mock<ILogger<GeolistService>> _mockLogger;
 
         private Guid _expectedUserId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
         private Guid _expectedUserId2 = Guid.Parse("10000000-0000-0000-0000-000000000002");
@@ -39,8 +42,15 @@ namespace GeoPing.Services.Tests
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
             _sharingRepo = _services.GetRequiredService<IRepository<ListSharing>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
+            _mockLogger = new Mock<ILogger<GeolistService>>();
 
-            _sut = new GeolistService(_geolistRepo, _publicGeolistRepo, _gpUserRepo, _securitySrv, _sharingRepo);
+            _sut = new GeolistService
+                (_geolistRepo, 
+                _publicGeolistRepo,
+                _gpUserRepo,
+                _securitySrv,
+                _sharingRepo, 
+                _mockLogger.Object);
         }
 
 

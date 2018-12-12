@@ -14,6 +14,7 @@ using GeoPing.Utilities.EmailSender;
 using GeoPing.Utilities.EmailSender.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -24,7 +25,6 @@ namespace GeoPing.Services.Tests
     public class SharingServiceTests
     {
         private IRepository<ListSharing> _sharingRepo;
-        private IRepository<GeoList> _listRepo;
         private ISecurityService _securitySrv;
         private IGeolistService _listSrv;
         private IGeopingUserService _gpUserSrv;
@@ -33,6 +33,7 @@ namespace GeoPing.Services.Tests
         private IValidationService _validator;
         private Mock<IEmailService> _mockEmailSvc;
         private Mock<IOptions<ApplicationSettings>> _mockSettings;
+        private Mock<ILogger<SharingService>> _mockLogger;
 
         private IServiceProvider _services;
         private ISharingService _sut;
@@ -55,7 +56,6 @@ namespace GeoPing.Services.Tests
             _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _sharingRepo = _services.GetRequiredService<IRepository<ListSharing>>();
-            _listRepo = _services.GetRequiredService<IRepository<GeoList>>();
             _securitySrv = _services.GetRequiredService<ISecurityService>();
             _listSrv = _services.GetRequiredService<IGeolistService>();
             _gpUserSrv = _services.GetRequiredService<IGeopingUserService>();
@@ -64,8 +64,8 @@ namespace GeoPing.Services.Tests
             _validator = _services.GetRequiredService<IValidationService>();
             _mockEmailSvc = new Mock<IEmailService>();
             _mockSettings = new Mock<IOptions<ApplicationSettings>>();
-
-
+            _mockLogger = new Mock<ILogger<SharingService>>();
+            
             _mockTokenSrv
                 .Setup(x => x.CreateSharingInviteToken(It.IsAny<string>()))
                 .Returns(new GeoPingToken());
@@ -99,7 +99,6 @@ namespace GeoPing.Services.Tests
 
             _sut = new SharingService
                 (_sharingRepo,
-                _listRepo,
                 _securitySrv,
                 _listSrv,
                 _mockTokenSrv.Object,
@@ -107,7 +106,8 @@ namespace GeoPing.Services.Tests
                 _userManager,
                 _validator,
                 _mockEmailSvc.Object,
-                _mockSettings.Object);
+                _mockSettings.Object,
+                _mockLogger.Object);
         }
 
         [Test]
