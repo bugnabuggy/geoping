@@ -241,7 +241,7 @@ namespace GeoPing.Services
                 {
                     CheckInDate = ch.Date,
                     LatLng = $"{ch.Latitude} / {ch.Longitude}",
-                    ListName = h.Geolist.Name ?? null,
+                    ListName = h.Geolist.Name ?? "-Free check-",
                     Info = h.Address ?? ch.Description
                 };
 

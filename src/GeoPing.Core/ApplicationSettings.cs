@@ -56,7 +56,7 @@ namespace GeoPing.Core
         public InternalLogSettings InternalLog { get; set; }
         public FileTargetSettings File { get; set; }
         public SyslogTargetSettings SyslogCommon { get; set; }
-        public SyslogTargetSettings SyslogError { get; set; }
+        public SyslogTargetSettings SyslogBusiness { get; set; }
     }
 
     public class InternalLogSettings
