@@ -19,4 +19,5 @@ export default interface ICheckinStatisticsComponentContainerProps {
   getFreeChecksInStatisticsByFilter: ( dateFrom: string, dateTo: string ) => ( dispatch: IDispatchFunction ) => void;
   clearStatistic: () => ( dispatch: IDispatchFunction ) => void;
   goTo: ( url: string ) => ( dispatch: IDispatchFunction ) => void;
+  isCheckInStatistics: () => ( dispatch: IDispatchFunction ) => void;
 }

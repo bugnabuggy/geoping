@@ -56,6 +56,10 @@ class GoogleMap extends React.Component {
       deselectMarkerAPI(prevProps.googleMap.selectedGeoPoint);
     }
 
+    if (this.props.googleMap.checkInGeoPoint.length > 0) {
+      setIconCheckInGeoPoint();
+    }
+
     if (this.props.googleMap.selectedGeoPoint.idForMap &&
       this.props.googleMap.statusMarker === EnumStatusMarker.Edit) {
       selectMarkerAPI(this.props.googleMap.selectedGeoPoint);
@@ -112,10 +116,6 @@ class GoogleMap extends React.Component {
 
     if (this.props.googleMap.selectedGeoPoint.radius !== prevProps.googleMap.selectedGeoPoint.radius) {
       setRadiusMarker(this.props.googleMap.selectedGeoPoint);
-    }
-
-    if (this.props.googleMap.checkInGeoPoint.length > 0) {
-      setIconCheckInGeoPoint();
     }
   }
 

@@ -8,8 +8,11 @@ import ICheckinStatisticsComponentContainerProps
 import { CheckinStatisticsComponent } from '../components/checkinStatisticsComponent';
 import TableMarkerStatisticsComponentContainer from '../componentContainers/tableMarkerStatisticsComponentContainer';
 import {
-  checkInStatisticsClear, clearStatistic,
-  getAllCheckForList, getFreeChecksInStatisticsByFilter,
+  checkInStatisticsClear,
+  clearStatistic,
+  getAllCheckForList,
+  getFreeChecksInStatisticsByFilter,
+  isCheckInStatistics,
   loadLists,
   loadPoints,
   loadUsers
@@ -19,8 +22,9 @@ import { goTo } from '../actions/windowAction';
 
 class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatisticsComponentContainerProps, any> {
   componentDidMount() {
+    this.props.isCheckInStatistics();
     this.props.loadLists();
-    if ( this.props.listId !== 'none') {
+    if ( this.props.listId !== 'none' ) {
       this.props.loadUsers( this.props.listId );
     }
   }
@@ -75,6 +79,7 @@ const mapDispatchToProps = ( dispath: any ) =>
       getFreeChecksInStatisticsByFilter,
       clearStatistic,
       goTo,
+      isCheckInStatistics,
     },
     dispath );
 
