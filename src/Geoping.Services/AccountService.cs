@@ -85,6 +85,19 @@ namespace GeoPing.Services
                                    $"Email = [{user.Email}], " +
                                    $"Username = [{user.UserName}].");
 
+            try
+            {
+                string[] rolesByDefault = new[] { "user" };
+
+                await _userManager.AddToRolesAsync(user, rolesByDefault);
+
+                _logger.LogDebug($"User[{user.Id}] was added to roles: {string.Join(" | ", rolesByDefault)}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error was occured while addition user[{user.Id}] to roles: ", ex);
+            }
+
             var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
 
             _logger.LogInformation($"Geoping user was created for {user.Email}::{gpUser.Id}.");
