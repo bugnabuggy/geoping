@@ -110,5 +110,8 @@ export function dateTypeDefinition( listId: string ) {
 }
 
 export function dateFormatter( date: moment.Moment ) {
-  return `${date.year()}-${date.month()}-${date.date()}T${date.hour()}:${date.minute()}:${date.second()}Z`;
+  // debugger
+  // console.log(date.utc());
+  // return `${date.year()}-${date.month() + 1}-${date.date()}T${date.hours()}:${date.minutes()}:${date.seconds()}Z`;
+  return date.utc().startOf('day').format();
 }

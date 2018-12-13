@@ -259,7 +259,6 @@ function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogle
 }
 
 function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
-  // dashboardFil;
   return {
     ...state,
     geoPoints: action.points.map( ( item: any ) => {
@@ -277,7 +276,6 @@ function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogl
       return point;
     } ),
     checkInGeoPoint: action.points.map( ( item: any ) => {
-      // item.check
       return {
         date: item.checkInDate,
         deviceId: '',
@@ -341,7 +339,37 @@ function validationPoint( state: IGoogleMapStateType, action: any ): IGoogleMapS
 function loadFreeChecks( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    checkInGeoPoint: action.points.map( ( item: any ) => item.check ),
+    geoPoints: action.points.map( ( item: any ) => {
+      const id: string = uuidV4();
+      const point: IGeoPoint = {
+        id: id,
+        name: item.name,
+        radius: item.radius,
+        idList: '',
+        description: item.address,
+        lng: item.longitude,
+        lat: item.latitude,
+        idForMap: id,
+      };
+      return point;
+    } ),
+    checkInGeoPoint: action.points.map( ( item: any ) => {
+      return {
+        date: item.checkInDate,
+        deviceId: '',
+        distance: item.distance,
+        geopoint: '',
+        id: '',
+        ip: '',
+        latitude: item.latitude,
+        longitude: item.longitude,
+        pointId: item.pointId,
+        userAgent: '',
+        userId: item.userId,
+        status: item.type,
+      };
+    } ),
+    isGeoPointListIsCreated: false,
   };
 }
 
