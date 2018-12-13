@@ -274,7 +274,9 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
   }
 
   marker.addListener( 'click', ( e: any ) => {
-    handleGeoPointClick( e, geoPoint );
+    const point: IGeoPoint = _that.props.googleMap.geoPoints
+      .find( ( item: IGeoPoint ) => item.idForMap === geoPoint.idForMap );
+    handleGeoPointClick( e, point );
   } );
   marker.addListener( 'drag', ( e: any ) => {
     handleGeoPointDrag( e );

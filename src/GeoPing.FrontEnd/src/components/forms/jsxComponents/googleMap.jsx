@@ -59,6 +59,7 @@ class GoogleMap extends React.Component {
     if (this.props.googleMap.selectedGeoPoint.idForMap &&
       this.props.googleMap.statusMarker === EnumStatusMarker.Edit) {
       selectMarkerAPI(this.props.googleMap.selectedGeoPoint);
+      setCenterMap(this.props.googleMap.selectedGeoPoint.lat, this.props.googleMap.selectedGeoPoint.lng);
     }
 
     if (this.props.googleMap.idDeleteMarker) {

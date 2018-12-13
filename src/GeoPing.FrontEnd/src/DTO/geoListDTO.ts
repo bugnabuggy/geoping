@@ -43,4 +43,6 @@ export interface IGeoListSharingDTO {
   listIsPublic: boolean;
   shareStatus: string;
   shareInvitationDate: string;
+  ownerUserName: string;
+  ownerFullName: string;
 }
