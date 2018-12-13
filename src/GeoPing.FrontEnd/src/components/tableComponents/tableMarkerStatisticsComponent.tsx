@@ -28,7 +28,7 @@ export class TableMarkerStatisticsComponent extends React.Component<ITableMarker
         name: item.name,
         coordsPoint: `${item.lat} / ${item.lng}`,
         distance: checkInGeoPoint.distance,
-        dateTime: moment( checkInGeoPoint.date ).format( 'LLL' ) || '',
+        dateTime: !!checkInGeoPoint.date ? moment( checkInGeoPoint.date ).format( 'LLL' ) : '',
       };
     } );
   };
