@@ -72,7 +72,7 @@ export default class UserService implements IUser {
     return new Promise<any>( ( resolve: any, reject: any ) => {
       this.communicator.post( sendLoginOrEmail, {'UserData': loginOrEmail } )
         .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+          resolve( response );
         } )
         .catch( ( error: any ) => {
           reject( error );

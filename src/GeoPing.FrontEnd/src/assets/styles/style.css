@@ -163,7 +163,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .header-dropdown-link {
-  padding-left: 20px;
+  padding-left: 20px !important;
 }
 
 /*login ************************************************/
@@ -944,6 +944,12 @@ header nav {
 .user-access-table-container table tbody tr, .user-access-table-container table thead {
   display: table;
   table-layout: fixed;
+}
+
+.user-access-table-container td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*************************************************************************************/
