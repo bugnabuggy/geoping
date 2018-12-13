@@ -10,7 +10,7 @@ import { CustomDateComponent } from './customDateComponent';
 import 'react-datepicker/dist/react-datepicker.css';
 import ICheckinStatisticsComponentProps from '../componentProps/checkinStatisticsComponentProps';
 import { checkInStatistics } from '../constants/routes';
-import { dateFormatter, dateTypeDefinition } from '../services/helper';
+import { dateTypeDefinition } from '../services/helper';
 
 export class CheckinStatisticsComponent extends React.Component<ICheckinStatisticsComponentProps, any> {
   formatDate = 'MM/DD/YYYY';
@@ -38,14 +38,14 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     if ( this.props.listId !== 'none' ) {
       const data = {
         UserId: this.props.userId,
-        DatePeriodFrom: dateFormatter( this.state.startDate ),
-        DatePeriodTo: dateFormatter( this.state.endDate ),
+        DatePeriodFrom: this.state.startDate.utc().startOf( 'day' ).format(),
+        DatePeriodTo: this.state.endDate.utc().endOf( 'day' ).format(),
       };
       this.props.loadPoints( this.props.listId, data );
     } else {
       this.props.getFreeChecksInStatisticsByFilter(
-        dateFormatter( this.state.startDate ),
-        dateFormatter( this.state.endDate )
+        this.state.startDate.utc().startOf( 'day' ).format(),
+        this.state.endDate.utc().endOf( 'day' ).format()
       );
     }
   }
@@ -54,8 +54,8 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
     if ( e ) {
       const data = {
         UserId: e.value,
-        DatePeriodFrom: dateFormatter( this.state.startDate ),
-        DatePeriodTo: dateFormatter( this.state.endDate ),
+        DatePeriodFrom: this.state.startDate.utc().startOf( 'day' ).format(),
+        DatePeriodTo: this.state.endDate.utc().endOf( 'day' ).format(),
       };
       this.props.loadPoints( this.props.listId, data );
       this.setState( { selectUser: e.value } );
@@ -83,14 +83,14 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
         this.props.loadUsers( e.value );
         const data = {
           UserId: this.props.userId,
-          DatePeriodFrom: dateFormatter( this.state.startDate ),
-          DatePeriodTo: dateFormatter( this.state.endDate ),
+          DatePeriodFrom: this.state.startDate.utc().startOf( 'day' ).format(),
+          DatePeriodTo: this.state.endDate.utc().endOf( 'day' ).format(),
         };
         this.props.loadPoints( e.value, data );
       } else {
         this.props.getFreeChecksInStatisticsByFilter(
-          dateFormatter( newDate ),
-          dateFormatter( this.state.endDate )
+          newDate.utc().startOf( 'day' ).format(),
+          this.state.endDate.utc().endOf( 'day' ).format()
         );
       }
       this.setState( { selectList: e.value } );
@@ -104,39 +104,39 @@ export class CheckinStatisticsComponent extends React.Component<ICheckinStatisti
   };
 
   handleSelectStart = ( date: any ) => {
-    if ( !!this.props.userId ) {
-      const data = {
-        UserId: this.props.userId,
-        DatePeriodFrom: dateFormatter( date ),
-        DatePeriodTo: dateFormatter( this.state.endDate ),
-      };
-      this.props.loadPoints( this.props.listId, data );
-    } else {
-      this.props.getFreeChecksInStatisticsByFilter(
-        dateFormatter( date ),
-        dateFormatter( this.state.endDate )
-      );
-    }
+    // if ( !!this.props.userId ) {
+    const data = {
+      UserId: this.props.userId,
+      DatePeriodFrom: date.utc().startOf( 'day' ).format(),
+      DatePeriodTo: this.state.endDate.utc().endOf( 'day' ).format(),
+    };
+    this.props.loadPoints( this.props.listId, data );
+    // } else {
+    //   this.props.getFreeChecksInStatisticsByFilter(
+    //     dateFormatter( date ),
+    //     dateFormatter( this.state.endDate )
+    //   );
+    // }
     this.setState( {
       startDate: date,
     } );
   };
 
   handleSelectEnd = ( date: moment.Moment ) => {
-    if ( !!this.props.userId ) {
-      const data = {
-        UserId: this.props.userId,
-        DatePeriodFrom: dateFormatter( this.state.startDate ),
-        DatePeriodTo: dateFormatter( date ),
-      };
-      this.props.loadPoints(
-        this.props.listId, data );
-    } else {
-      this.props.getFreeChecksInStatisticsByFilter(
-        dateFormatter( this.state.startDate ),
-        dateFormatter( date )
-      );
-    }
+    // if ( !!this.props.userId ) {
+    const data = {
+      UserId: this.props.userId,
+      DatePeriodFrom: this.state.startDate.utc().startOf( 'day' ).format(),
+      DatePeriodTo: date.utc().endOf( 'day' ).format(),
+    };
+    this.props.loadPoints(
+      this.props.listId, data );
+    // } else {
+    //   this.props.getFreeChecksInStatisticsByFilter(
+    //     dateFormatter( this.state.startDate ),
+    //     dateFormatter( date )
+    //   );
+    // }
     this.setState( {
       endDate: date,
     } );
