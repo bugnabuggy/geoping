@@ -14,7 +14,7 @@ namespace GeoPing.Core.Services
         IQueryable<GeoPingUser> GetUsers(Expression<Func<GeoPingUser, bool>> func);
         GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func);
         Task<ShortUserInfoDTO> GetUserCommonInfo(string userId);
-        GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username);
+        GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username, string timeZone);
         OperationResult<GeoPingUser> EditUser(GeoPingUser user);
         void ActivateUser(string id);
         IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters);

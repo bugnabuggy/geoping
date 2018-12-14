@@ -12,6 +12,7 @@ namespace GeoPing.Core.Models.Entities
         public DateTime Birthday { get; set; }
         public string PhoneNumber { get; set; }
         public string Country { get; set; }
+        public string TimeZone { get; set; }
         public string AccountType { get; set; }
         public DateTime LastPaid { get; set; }
         public bool IsActivated { get; set; }
