@@ -1,6 +1,10 @@
 :root {
   --success-color: #5cb85c;
   --danger-color: #d9534f;
+  --marker-check-select-color: #b2c643;
+  --marker-not-check-select-color: #d97524;
+  --marker-free-check-color: #343ff9;
+  --marker-free-check-select-color: #c03ff9;
 }
 
 html, body {
@@ -1379,6 +1383,10 @@ header nav {
   width: 100%;
 }
 
+.react-bs-container-body {
+  /*max-height: 500px;*/
+}
+
 .admin-all-users-container h3 {
   grid-column-start: col1;
   grid-column-end: col1;
@@ -1529,9 +1537,26 @@ header nav {
   background: var(--success-color, #128D15);
   color: white;
 }
+.statistics-table-check-select {
+  background: var(--marker-check-select-color);
+}
 
 .statistics-table-not-check {
   background: var(--danger-color, #a4575b);
+  color: white;
+}
+
+.statistics-table-not-check-select {
+  background: var(--marker-not-check-select-color);
+}
+
+.statistics-table-free-check {
+  background: var(--marker-free-check-color);
+  color: white;
+}
+
+.statistics-table-free-check-select{
+  background: var(--marker-free-check-select-color);
   color: white;
 }
 

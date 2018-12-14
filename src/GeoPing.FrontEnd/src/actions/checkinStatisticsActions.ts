@@ -1,6 +1,7 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   CLEAR_STATISTIC,
+  PAGE_CHECK_IN_STATISTICS,
   STATISTICS_CLEAR,
   STATISTICS_LOAD_FREE_CHECKS,
   STATISTICS_LOAD_POINTS,
@@ -84,7 +85,6 @@ export const getFreeChecksInStatisticsByFilter = ( dateFrom: string, dateTo: str
     const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
     checkListService.getFreeChecksInStatisticsByFilter( dateFrom, dateTo )
       .then( ( points: any ) => {
-        // console.log( 'response', response );
         dispatch( loadFreeChecksAction( points ) );
         dispatch( windowBlockingAction( false ) );
       } )
@@ -98,6 +98,10 @@ export const getFreeChecksInStatisticsByFilter = ( dateFrom: string, dateTo: str
 
 export const clearStatistic = () => ( dispatch: IDispatchFunction ) => {
   dispatch( clearStatisticAction() );
+};
+
+export const isCheckInStatistics = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( isCheckInStatisticsAction() );
 };
 
 /* Actions*/
@@ -124,4 +128,8 @@ function loadFreeChecksAction( points: any ) {
 
 function clearStatisticAction() {
   return { type: CLEAR_STATISTIC };
+}
+
+function isCheckInStatisticsAction() {
+  return { type: PAGE_CHECK_IN_STATISTICS };
 }
