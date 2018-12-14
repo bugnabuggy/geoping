@@ -110,7 +110,7 @@ namespace GeoPing.Services
             };
         }
 
-        public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username)
+        public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username, string timeZone)
         {
             _logger.LogInformation($"Added GeoPingUser for identity User with Id = [{identityUserId}]");
 
@@ -119,6 +119,7 @@ namespace GeoPing.Services
                 IdentityId = identityUserId,
                 Email = email,
                 Login = username,
+                TimeZone = timeZone,
                 AccountType = "regular",
                 Avatar = DefaultUserSettings.AvatarImage
             });

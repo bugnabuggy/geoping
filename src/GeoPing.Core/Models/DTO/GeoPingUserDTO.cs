@@ -9,5 +9,6 @@ namespace GeoPing.Core.Models.DTO
         public DateTime Birthday { get; set; }
         public string PhoneNumber { get; set; }
         public string Country { get; set; }
+        public string TimeZone { get; set; }
     }
 }
