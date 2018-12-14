@@ -259,22 +259,23 @@ function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogle
 }
 
 function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const geoPoints: Array<IGeoPoint> = action.points.map( ( item: any ) => {
+    const id: string = uuidV4();
+    const point: IGeoPoint = {
+      id: item.pointId,
+      name: item.name,
+      radius: item.radius,
+      idList: '',
+      description: item.address,
+      lng: item.longitude,
+      lat: item.latitude,
+      idForMap: id,
+    };
+    return point;
+  } );
   return {
     ...state,
-    geoPoints: action.points.map( ( item: any ) => {
-      const id: string = uuidV4();
-      const point: IGeoPoint = {
-        id: id,
-        name: item.name,
-        radius: item.radius,
-        idList: '',
-        description: item.address,
-        lng: item.longitude,
-        lat: item.latitude,
-        idForMap: id,
-      };
-      return point;
-    } ),
+    geoPoints: geoPoints,
     checkInGeoPoint: action.points.map( ( item: any ) => {
       return {
         date: item.checkInDate,
@@ -288,6 +289,7 @@ function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogl
         pointId: item.pointId,
         userAgent: '',
         userId: item.userId,
+        idForMap: geoPoints.find( point => point.id === item.pointId ).idForMap,
         status: item.type,
       };
     } ),
@@ -337,23 +339,24 @@ function validationPoint( state: IGoogleMapStateType, action: any ): IGoogleMapS
 }
 
 function loadFreeChecks( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const geoPoints: Array<IGeoPoint> = action.points.map( ( item: any ) => {
+    const id: string = uuidV4();
+    const point: IGeoPoint = {
+      id: id,
+      name: item.name,
+      radius: item.radius,
+      idList: '',
+      description: item.address,
+      lng: item.longitude,
+      lat: item.latitude,
+      idForMap: id,
+    };
+    return point;
+  } );
   return {
     ...state,
-    geoPoints: action.points.map( ( item: any ) => {
-      const id: string = uuidV4();
-      const point: IGeoPoint = {
-        id: id,
-        name: item.name,
-        radius: item.radius,
-        idList: '',
-        description: item.address,
-        lng: item.longitude,
-        lat: item.latitude,
-        idForMap: id,
-      };
-      return point;
-    } ),
-    checkInGeoPoint: action.points.map( ( item: any ) => {
+    geoPoints: geoPoints,
+    checkInGeoPoint: action.points.map( ( item: any, index: number ) => {
       return {
         date: item.checkInDate,
         deviceId: '',
@@ -363,9 +366,10 @@ function loadFreeChecks( state: IGoogleMapStateType, action: any ): IGoogleMapSt
         ip: '',
         latitude: item.latitude,
         longitude: item.longitude,
-        pointId: item.pointId,
+        pointId: geoPoints[index].id,
         userAgent: '',
         userId: item.userId,
+        idForMap: geoPoints[index].idForMap,
         status: item.type,
       };
     } ),

@@ -2,6 +2,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { defaultMarker } from '../constants/defaultMarker';
 import IGeoPoint, { ICheckInGeoPointDTO } from '../DTO/geoPointDTO';
+import { EStatusCheckedEnum } from '../enums/statusCheckedEnum';
 
 let _googleLib: any;
 let _googleMap: any;
@@ -169,9 +170,9 @@ function iconUserGeoPoint( timeout: number ) {
 }
 
 export function setIconCheckInGeoPoint() {
-  _that.props.googleMap.checkInGeoPoint.forEach( ( checkInPoint: any ) => {
+  _that.props.googleMap.checkInGeoPoint.forEach( ( checkInPoint: ICheckInGeoPointDTO ) => {
     _that.props.googleMap.geoPoints.forEach( ( point: IGeoPoint ) => {
-      if ( point.id === checkInPoint.pointId ) {
+      if ( point.id === checkInPoint.pointId && checkInPoint.status === EStatusCheckedEnum.Checked) {
         const marker: any = findGeoPoint( point.idForMap );
         if ( marker ) {
           marker.setIcon( createMarkerImage(
@@ -187,9 +188,34 @@ function setIconSelectedGeoPoint( geoPoint: IGeoPoint ) {
   const marker: any = findGeoPoint( geoPoint.idForMap );
   // const circle: any = findCircles( geoPoint.idForMap );
   if ( marker ) {
-    marker.setIcon( createMarkerImage(
-      getIconGeoPointUrl( _that.props.isCheckIn ? pinColorCheckInSelected : pinColor )
-    ) );
+    if ( !_that.props.checkInStatistics.isCheckInStatistics ) {
+      marker.setIcon( createMarkerImage(
+        getIconGeoPointUrl( _that.props.isCheckIn ? pinColorCheckInSelected : pinColor )
+      ) );
+    } else {
+      const checkGroPoint: ICheckInGeoPointDTO = _that.props.googleMap.checkInGeoPoint
+        .find( ( item: ICheckInGeoPointDTO ) => item.idForMap === geoPoint.idForMap );
+      const check: any = {
+        [ EStatusCheckedEnum.Checked ]: () => {
+          marker.setIcon( createMarkerImage(
+            getIconGeoPointUrl( 'b2c643' )
+          ) );
+        },
+        [ EStatusCheckedEnum.Unchecked ]: () => {
+          marker.setIcon( createMarkerImage(
+            getIconGeoPointUrl( 'd97524' )
+          ) );
+        },
+        [ EStatusCheckedEnum.FreeCheck ]: () => {
+          marker.setIcon( createMarkerImage(
+            getIconGeoPointUrl( 'c03ff9' )
+          ) );
+        }
+      };
+      if ( !!checkGroPoint ) {
+        check[ checkGroPoint.status ]();
+      }
+    }
     // circle.setOptions( {
     //   fillColor: _that.props.isCheckIn ? `#${pinColorCheckInSelected}` : `#${pinColor}`,
     //   strokeColor: _that.props.isCheckIn ? `#${pinColorCheckInSelected}` : `#${pinColor}`
@@ -274,7 +300,9 @@ function createGeoPoint( geoPoint: IGeoPoint, imageMarker: any, draggable: any )
   }
 
   marker.addListener( 'click', ( e: any ) => {
-    handleGeoPointClick( e, geoPoint );
+    const point: IGeoPoint = _that.props.googleMap.geoPoints
+      .find( ( item: IGeoPoint ) => item.idForMap === geoPoint.idForMap );
+    handleGeoPointClick( e, point );
   } );
   marker.addListener( 'drag', ( e: any ) => {
     handleGeoPointDrag( e );

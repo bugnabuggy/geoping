@@ -34,7 +34,7 @@ namespace GeoPing.Utilities.Logger
                     Name = "sysLogCommon",
                     MessageCreation = new MessageBuilderConfig
                     {
-                        Facility = Facility.Local7
+                        Facility = Facility.Daemons
                     },
                     MessageSend = new MessageTransmitterConfig
                     {
@@ -65,7 +65,7 @@ namespace GeoPing.Utilities.Logger
                     Name = "syslogBusiness",
                     MessageCreation = new MessageBuilderConfig
                     {
-                        Facility = Facility.Local7
+                        Facility = Facility.Daemons
                     },
                     MessageSend = new MessageTransmitterConfig
                     {

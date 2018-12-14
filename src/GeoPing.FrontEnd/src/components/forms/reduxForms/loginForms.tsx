@@ -44,7 +44,7 @@ const renderInput = ( props: any ) => {
       {props.type === 'password' &&
       (
         <span className="psw-span">
-          <a href={resetPassword.replace( '/:idUser?/:token?', '' )}>forgot</a>
+          <a tabIndex={4} href={resetPassword.replace( '/:idUser?/:token?', '' )}>forgot</a>
         </span>
       )
       }
@@ -53,6 +53,7 @@ const renderInput = ( props: any ) => {
           {...props.input}
           type={props.type}
           placeholder={props.placeholder}
+          tabIndex={props.tabIndex}
         />
         <div className="tooltip_form-container">
           <div className="form-icon-container">
@@ -86,21 +87,24 @@ function LoginForms( props: any ): any {
           name="login"
           labelName="Login"
           type="text"
+          tabIndex={1}
         />
         <Field
           component={renderInput}
           name="password"
           labelName="Password"
           type="password"
+          tabIndex={2}
         />
         <div className="login-form-button-container">
           <span className="reg-span">
-            <a href={registerUrl}>register account</a>
+            <a tabIndex={5} href={registerUrl}>register account</a>
           </span>
           <Button
             bsStyle="primary"
             className="login-btn"
             type="submit"
+            tabIndex={3}
             onClick={handleSubmit}
           >
             Submit
