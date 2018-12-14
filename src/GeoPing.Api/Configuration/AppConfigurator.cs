@@ -13,6 +13,7 @@ using GeoPing.Services;
 using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using TimeZone = GeoPing.Core.Models.Entities.TimeZone;
 
 namespace GeoPing.Api.Configuration
 {
@@ -30,7 +31,8 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<ListSharing>, DbRepository<ListSharing>>();
             services.AddScoped<IRepository<SupportMessage>, DbRepository<SupportMessage>>();
             services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
-            services.AddScoped<IRepository<AppIdentityUser>, DbRepository<AppIdentityUser>>();
+            services.AddScoped<IRepository<TimeZone>, DbRepository<TimeZone>>();
+            services.AddScoped<IRepository<Country>, DbRepository<Country>>();
 
             services.AddTransient<IEmailService, EmailService>();
 
@@ -45,6 +47,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<ISharingService, SharingService>();
             services.AddScoped<IGeopingTokenService, GeopingTokenService>();
             services.AddScoped<IValidationService, ValidationService>();
+            services.AddScoped<IUtilityService, UtilityService>();
         }
 
         public void Initialize(IServiceProvider services)
@@ -104,6 +107,7 @@ namespace GeoPing.Api.Configuration
                         IsActivated = true,
                         Avatar = DefaultUserSettings.AvatarImage
                     });
+
                     ctx.SaveChanges();
                 }
             }
