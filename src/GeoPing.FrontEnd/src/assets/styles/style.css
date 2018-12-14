@@ -1781,6 +1781,46 @@ select.form-control:not([size]):not([multiple]) {
 }
 /*****************************************************************************************/
 
+/* Public check list info*/
+.public-check-list-info-container {
+  display: grid;
+  grid-template-rows: [row1] minmax(500px, 1fr);
+  grid-template-columns: [col1] 500px [col2] 1fr;
+  grid-gap: 5px;
+  height: 100%;
+}
+
+.public-list-info-container, .public-check-list-info-map-container {
+  padding: 10px;
+}
+
+.public-list-info-container {
+  max-height: 500px;
+}
+
+.point-item-card-subtitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.point-item-card-subtitle span {
+  width: calc(100% - 40px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.point-item-card-info-icon {
+  font-size: 20px;
+  color: #332bff;
+}
+
+.public-list-card-body-point-item {
+  max-height: 500px;
+  overflow: auto;
+}
+
+/*****************************************************************************************/
 /*  Media queries*/
 @media (max-width: 800px) {
   #app {
@@ -2173,6 +2213,18 @@ select.form-control:not([size]):not([multiple]) {
 
   .about-page-block-info-container {
     flex: 1;
+  }
+  /*****************************************************************************************/
+  /* public check list info*/
+  .public-check-list-info-container {
+    display: grid;
+    grid-template-rows: [row1] max-content [row2] 500px;
+    grid-template-columns: [col1] 100%;
+    grid-gap: 5px;
+    height: 100%;
+  }
+  .public-list-info-container {
+    max-height: max-content;
   }
   /*****************************************************************************************/
 }

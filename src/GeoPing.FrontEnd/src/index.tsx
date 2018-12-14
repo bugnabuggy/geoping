@@ -32,6 +32,7 @@ import {
   faTimes,
   faTrashAlt,
   faUserPlus,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCheckCircle, far, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
@@ -59,6 +60,7 @@ library.add(
   faSort,
   faSortUp,
   faSortDown,
+  faInfoCircle,
   far
 );
 
