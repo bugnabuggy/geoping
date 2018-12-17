@@ -1,6 +1,7 @@
 /* url for all users */
 export const baseUrl: string = '/';
 export const publicCheckListUrl: string = `${baseUrl}public_check_list`;
+export const publicCheckListInfoUrl: string = `${baseUrl}public_check_list/info/:listId`;
 export const notFoundUrl: string = `${baseUrl}not_found`;
 export const emailConfirm: string = `${baseUrl}email_confirm`;
 export const token: string = `${baseUrl}token/:token`;
