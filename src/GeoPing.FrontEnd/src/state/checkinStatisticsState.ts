@@ -8,4 +8,5 @@ export const checkinStatisticsState: ICheckinStatisticsStateType = {
     to: '',
   },
   isCheckInStatistics: false,
+  selectedUserId: '',
 };

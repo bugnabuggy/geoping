@@ -5,20 +5,22 @@ import { PulseLoader } from 'react-spinners';
 
 import ITableHistoryDashboardProps from '../../componentProps/tableComponentProps/tableHistoryDashboardProps';
 import { ITableHistoryType } from '../../types/stateTypes/tableHistoryStateType';
+import moment = require('moment');
 
 export class TableHistoryDashboard extends React.Component<ITableHistoryDashboardProps, any> {
 
   renderRowTable = () => {
     const rows: Array<any> = this.props.tableHistory.history.map( ( item: ITableHistoryType, index: number ) => {
+      const date: string = moment(item.checkInDate).format('LLL');
       return (
         <React.Fragment
           key={uuidV4()}
         >
           <tr>
-            <td>{item.dateTime}</td>
-            <td>{item.latLng}</td>
-            <td>{item.checkList}</td>
-            <td>{item.apporxAddress}</td>
+            <td className="table-history-td">{date}</td>
+            <td className="table-history-td">{item.latLng}</td>
+            <td className="table-history-td">{item.listName}</td>
+            <td className="table-history-td">{item.info}</td>
           </tr>
         </React.Fragment>
       );
@@ -29,7 +31,7 @@ export class TableHistoryDashboard extends React.Component<ITableHistoryDashboar
 
   render() {
     return (
-      <React.Fragment>
+      <div className="table-history-container">
         <Table
           hover={true}
           condensed={true}
@@ -75,7 +77,7 @@ export class TableHistoryDashboard extends React.Component<ITableHistoryDashboar
           }
           </tbody>
         </Table>
-      </React.Fragment>
+      </div>
     );
   }
 }

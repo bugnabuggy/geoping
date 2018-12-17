@@ -74,7 +74,6 @@ namespace GeoPing.Services
             {
                 _logger.LogError($"An error was occured while user registration " +
                                  $"{user.Email}::{user.UserName}: ", result.Errors);
-
                 return new OperationResult
                 {
                     Data = result.Errors,
@@ -86,7 +85,20 @@ namespace GeoPing.Services
                                    $"Email = [{user.Email}], " +
                                    $"Username = [{user.UserName}].");
 
-            var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName);
+            try
+            {
+                string[] rolesByDefault = new[] { "user" };
+
+                await _userManager.AddToRolesAsync(user, rolesByDefault);
+
+                _logger.LogDebug($"User[{user.Id}] was added to roles: {string.Join(" | ", rolesByDefault)}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error was occured while addition user[{user.Id}] to roles: ", ex);
+            }
+
+            var gpUser = _gpUserSrv.AddGPUserForIdentity(user.Id, user.Email, user.UserName, registerUser.TimeZone);
 
             _logger.LogInformation($"Geoping user was created for {user.Email}::{gpUser.Id}.");
 
@@ -446,12 +458,13 @@ namespace GeoPing.Services
             user.Birthday = userData.Birthday;
             user.PhoneNumber = userData.PhoneNumber;
             user.Country = userData.Country;
+            user.TimeZone = userData.TimeZone;
 
             var result = new OperationResult<GeoPingUser>();
 
             try
             {
-                result = _gpUserSrv.EditUser(user);
+                _gpUserSrv.EditUser(user);
             }
             catch (Exception ex)
             {

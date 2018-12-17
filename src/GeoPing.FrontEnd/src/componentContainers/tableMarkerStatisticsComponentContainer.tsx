@@ -13,6 +13,9 @@ class TableMarkerStatisticsComponentContainer extends React.Component<ITableMark
       <React.Fragment>
         <TableMarkerStatisticsComponent
           googleMap={this.props.googleMap}
+          checkinStatistics={this.props.checkinStatistics}
+          listId={this.props.listId}
+          userId={this.props.userId}
         />
       </React.Fragment>
     );
@@ -22,6 +25,7 @@ class TableMarkerStatisticsComponentContainer extends React.Component<ITableMark
 const mapStateToProps = ( state: IinitialStateType ) => {
   return {
     googleMap: state.googleMap,
+    checkinStatistics: state.checkinStatistics,
   };
 };
 

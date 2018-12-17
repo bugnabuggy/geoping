@@ -34,28 +34,26 @@ namespace GeoPing.Utilities.Logger
                     Name = "sysLogCommon",
                     MessageCreation = new MessageBuilderConfig
                     {
-                        Facility = Facility.Local7
+                        Facility = Facility.Daemons
                     },
                     MessageSend = new MessageTransmitterConfig
                     {
-                        Protocol = ProtocolType.Tcp,
-                        Tcp = new TcpConfig
+                        Protocol = ProtocolType.Udp,
+                        Udp = new UdpConfig()
                         {
                             Server = settings.SyslogCommon.Server,
                             Port = settings.SyslogCommon.Port,
-                            Tls = new TlsConfig
-                            {
-                                Enabled = true
-                            }
+                            ConnectionCheckTimeout = 10000,
+                            ReconnectInterval = 1000
                         }
                     }
                 };
 
                 config.AddTarget(syslogTargetCommon);
                 config.AddRule
-                    (LogLevel.FromString(settings.SyslogCommon.Level), 
-                    LogLevel.Warn, 
-                    syslogTargetCommon); 
+                    (LogLevel.FromString(settings.SyslogCommon.Level),
+                    LogLevel.Warn,
+                    syslogTargetCommon);
             }
 
             if (settings.SyslogBusiness.IsEnable)
@@ -65,29 +63,27 @@ namespace GeoPing.Utilities.Logger
                     Name = "syslogBusiness",
                     MessageCreation = new MessageBuilderConfig
                     {
-                        Facility = Facility.Local7
+                        Facility = Facility.Daemons
                     },
                     MessageSend = new MessageTransmitterConfig
                     {
-                        Protocol = ProtocolType.Tcp,
-                        Tcp = new TcpConfig
+                        Protocol = ProtocolType.Udp,
+                        Udp = new UdpConfig()
                         {
                             Server = settings.SyslogBusiness.Server,
                             Port = settings.SyslogBusiness.Port,
-                            Tls = new TlsConfig
-                            {
-                                Enabled = true
-                            }
+                            ConnectionCheckTimeout = 10000,
+                            ReconnectInterval = 1000
                         }
                     }
                 };
 
                 config.AddTarget(syslogTargetBusiness);
                 config.AddRule
-                    (LogLevel.FromString(settings.SyslogBusiness.Level), 
-                    LogLevel.Fatal, 
-                    syslogTargetBusiness, 
-                    nameof(GeoPing) + "*"); 
+                    (LogLevel.FromString(settings.SyslogBusiness.Level),
+                    LogLevel.Fatal,
+                    syslogTargetBusiness,
+                    nameof(GeoPing) + "*");
             }
 
             // FileTarget object

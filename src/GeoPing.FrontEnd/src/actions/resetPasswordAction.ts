@@ -15,7 +15,7 @@ export const sendLoginOrEmail = ( loginOrEmail: string ) => ( dispatch: IDispatc
     .then( ( response: any ) => {
       dispatch( windowBlockingAction( false ) );
       dispatch( addNotificationAction(
-        createNotification( response, EnumNotificationType.Success )
+        createNotification( response.data.messages[0], EnumNotificationType.Success )
       ) );
       isRedirect(loginUrl)(dispatch);
     } )

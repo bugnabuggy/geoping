@@ -113,7 +113,7 @@ namespace GeoPing.Services
 
         public OperationResult<TokenInfoDTO> ExamineSharingToken(string token)
         {
-            if (TryGetToken(token, out var gpToken))
+            if (!TryGetToken(token, out var gpToken))
             {
                 return new OperationResult<TokenInfoDTO>
                 {
@@ -218,3 +218,4 @@ namespace GeoPing.Services
         }
     }
 }
+ 

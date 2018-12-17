@@ -51,6 +51,21 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.ToTable("CheckIns");
                 });
 
+            modelBuilder.Entity("GeoPing.Core.Models.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("GeoPing.Core.Models.Entities.GeoList", b =>
                 {
                     b.Property<Guid>("Id")
@@ -121,6 +136,8 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.Property<string>("Login");
 
                     b.Property<string>("PhoneNumber");
+
+                    b.Property<string>("TimeZone");
 
                     b.HasKey("Id");
 
@@ -240,6 +257,23 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SupportMessages");
+                });
+
+            modelBuilder.Entity("GeoPing.Core.Models.Entities.TimeZone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abbreviation");
+
+                    b.Property<int>("GMTOffset");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeZones");
                 });
 
             modelBuilder.Entity("GeoPing.Core.Models.Entities.UserDevice", b =>

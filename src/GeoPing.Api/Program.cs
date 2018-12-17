@@ -38,7 +38,6 @@ namespace GeoPing.Api
                 }
             }
 
-
             host.Run();
         }
 

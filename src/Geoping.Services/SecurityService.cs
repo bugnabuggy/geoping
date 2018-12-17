@@ -5,7 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
+using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace GeoPing.Services
 {
@@ -13,20 +15,25 @@ namespace GeoPing.Services
     {
         private IRepository<ListSharing> _sharingRepo;
         private IRepository<GeoPingUser> _userRepo;
+        private UserManager<AppIdentityUser> _userManager;
 
-        public SecurityService(IRepository<ListSharing> sharingRepo,
-                               IRepository<GeoPingUser> userRepo)
+        public SecurityService
+            (IRepository<ListSharing> sharingRepo,
+            IRepository<GeoPingUser> userRepo,
+            UserManager<AppIdentityUser> userManager)
         {
             _sharingRepo = sharingRepo;
             _userRepo = userRepo;
+            _userManager = userManager;
         }
 
         public IEnumerable<GeoPingUser> GetUsersHaveAccessToWatchList(GeoList list)
         {
-            var data = _sharingRepo.Get(x => x.ListId == list.Id);
+            var sharings = _sharingRepo.Get(x => x.ListId == list.Id);
 
-            var result = _userRepo.Get(x => x.Id == list.OwnerId || data.Any(y => y.UserId == x.Id));
-
+            var result = _userRepo.Get(x => x.Id == list.OwnerId || 
+                                            sharings.Any(y => y.UserId == x.Id && 
+                                                              y.Status == "accepted"));
             return result;
         }
 
@@ -39,25 +46,16 @@ namespace GeoPing.Services
 
         public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
         {
-            ICollection<Guid?> allowedUsers =
-                _sharingRepo
-                    .Get(x => x.ListId == list.Id && 
-                              x.UserId != null && 
-                              x.Status == "accepted")
-                    .Select(x => x.UserId).ToList();
+            var users = GetUsersHaveAccessToWatchList(list);
 
-            allowedUsers.Add(list.OwnerId);
-
-            return allowedUsers.Contains(userId);
+            return users.Any(u => u.Id == userId);
         }
 
         public bool IsUserHasAccessToManipulateList(Guid userId, GeoList list)
         {
-            ICollection<Guid?> allowedUsers = new List<Guid?>();
+            var users = GetUsersHaveAccessToManipulateList(list);
 
-            allowedUsers.Add(list.OwnerId);
-
-            return allowedUsers.Contains(userId);
+            return users.Any(u => u.Id == userId);
         }
 
         public string GetSHA256HashString(string value)

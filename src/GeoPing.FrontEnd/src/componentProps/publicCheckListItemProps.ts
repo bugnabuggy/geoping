@@ -1,6 +1,9 @@
+import { IGeoListPublickDTO } from '../DTO/geoListDTO';
+
 export default interface IPublicCheckListItemProps {
-  nameList: string;
-  author: string;
-  subscribers: number;
-  raiting: number;
+  point: IGeoListPublickDTO;
+  // nameList: string;
+  // author: string;
+  // subscribers: number;
+  // raiting: number;
 }

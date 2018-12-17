@@ -5,26 +5,43 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import ITableHistoryDashboardContainerProps from '../componentContainerProps/tableHistoryDashboardContainerProps';
 import { TableHistoryDashboard } from '../components/tableComponents/tableHistoryDashboard';
-import { clearTableHistory, loadHistory } from '../actions/historyAction';
+import { clearTableHistory, filterHistory, loadHistory } from '../actions/historyAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
-import { filterHistory, closeFilterHistory } from '../actions/historyAction';
 import ModalFilterHistoryComponent from '../components/modalComponents/modalFilterHistoryComponent';
 import { redirectDashboard } from '../actions/userAction';
 
 class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashboardContainerProps, any> {
+  constructor( props: ITableHistoryDashboardContainerProps ) {
+    super( props );
+    this.state = {
+      showModalFilter: false,
+    };
+  }
+
   componentDidMount() {
     this.props.loadHistory();
-
   }
+
   componentWillUnmount() {
     this.props.clearTableHistory();
   }
-  componentDidUpdate(prevProps: ITableHistoryDashboardContainerProps) {
-    if ( this.props.user.redirectDashboard ) {
-      this.props.redirectDashboard(false);
-    }
 
+  componentDidUpdate( prevProps: ITableHistoryDashboardContainerProps ) {
+    if ( this.props.user.redirectDashboard ) {
+      this.props.redirectDashboard( false );
+    }
   }
+
+  openModal = () => {
+    this.setState( {
+      showModalFilter: true,
+    } );
+  };
+  closeModal = () => {
+    this.setState( {
+      showModalFilter: false,
+    } );
+  };
 
   render() {
     return (
@@ -33,14 +50,16 @@ class TableHistoryDashboardContainer extends React.Component<ITableHistoryDashbo
           <h4 className="">History</h4>
           <div
             className="dashboard-table-icon cursor-pointer"
-            onClick={this.props.filterHistory}
+            onClick={this.openModal}
           >
-            <FontAwesomeIcon icon="filter" />
+            <FontAwesomeIcon icon="filter"/>
           </div>
         </div>
         <ModalFilterHistoryComponent
-          show={this.props.tableHistory.showHistoryFilter}
-          closeFilterHistory={this.props.closeFilterHistory}
+          show={this.state.showModalFilter}
+          closeFilterHistory={this.closeModal}
+          // filterHistory={this.props.filterHistory}
+          loadHistory={this.props.loadHistory}
         />
         <TableHistoryDashboard
           tableHistory={this.props.tableHistory}
@@ -58,14 +77,14 @@ const mapStateToProps = ( state: IinitialStateType ) => {
 };
 
 const mapDispatchToProps = ( dispatch: any ) =>
-  bindActionCreators (
+  bindActionCreators(
     {
       filterHistory,
       loadHistory,
-      closeFilterHistory,
+      // closeFilterHistory,
       clearTableHistory,
       redirectDashboard,
-  },
+    },
     dispatch );
 
 export default connect<any, any, any>( mapStateToProps, mapDispatchToProps )( TableHistoryDashboardContainer );

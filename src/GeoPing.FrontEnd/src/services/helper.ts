@@ -14,6 +14,7 @@ import {
   profileUrl,
 } from '../constants/routes';
 import { ETimer } from '../enums/timerEnum';
+import * as moment from 'moment';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {
@@ -106,4 +107,11 @@ export function dateTypeDefinition( listId: string ) {
       count: 1,
     };
   }
+}
+
+export function dateFormatter( date: moment.Moment ) {
+  // debugger
+  // console.log(date.utc());
+  // return `${date.year()}-${date.month() + 1}-${date.date()}T${date.hours()}:${date.minutes()}:${date.seconds()}Z`;
+  return date.utc().startOf('day').format();
 }

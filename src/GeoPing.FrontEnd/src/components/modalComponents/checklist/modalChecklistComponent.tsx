@@ -5,20 +5,26 @@ import IModalChecklistComponentProps from '../../../componentProps/modalComponen
 
 export class ModalChecklistComponent extends React.Component<IModalChecklistComponentProps, any> {
   constructor( props: any ) {
-    super ( props );
+    super( props );
     this.state = {
       nameCheckList: '',
     };
   }
 
   handleChange = ( e: any ) => {
-    this.setState ( {
+    this.setState( {
       nameCheckList: e.target.value,
     } );
   };
+  handleKeyUp = ( e: any ) => {
+    if ( e.keyCode === 13 ) {
+      this.props.createCheckList( this.state.nameCheckList );
+      this.props.closeModalForCreateCheckList();
+    }
+  };
 
   createCheckList = () => {
-    this.props.createCheckList ( this.state.nameCheckList );
+    this.props.createCheckList( this.state.nameCheckList );
     this.props.closeModalForCreateCheckList();
   };
 
@@ -33,6 +39,7 @@ export class ModalChecklistComponent extends React.Component<IModalChecklistComp
           <FormGroup>
             <ControlLabel>Enter name check list</ControlLabel>
             <FormControl
+              onKeyUp={this.handleKeyUp}
               onChange={this.handleChange}
             />
           </FormGroup>

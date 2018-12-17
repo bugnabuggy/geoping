@@ -423,7 +423,7 @@ namespace GeoPing.Services
 
             subject = $"{subject}, user {inviter.FirstName} \"{inviter.Login}\" {inviter.LastName} " +
                       "shared a geolist with you.";
-
+                      
             var message = new EmailMessage
             {
                 FromAddress = new EmailAddress

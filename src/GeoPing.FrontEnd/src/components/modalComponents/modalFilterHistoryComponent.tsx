@@ -1,41 +1,82 @@
 import * as React from 'react';
 import IModalFilterHistoryComponentProps from '../../componentProps/modalFilterHistoryComponentProps';
 import { ModalComponent } from './checklist/modalComponent';
-import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, FormGroup, Label } from 'reactstrap';
+import DatePicker from 'react-datepicker';
+import { CustomDateComponent } from '../customDateComponent';
+import { dateFormatter } from '../../services/helper';
+import moment = require('moment');
+
 export class ModalFilterHistoryComponent extends React.Component<IModalFilterHistoryComponentProps, any> {
   constructor( props: any ) {
-    super ( props );
+    super( props );
     this.state = {
       filterName: '',
+      startDate: moment().utcOffset( 'H' ).startOf( 'day' ),
+      endDate: moment().utcOffset( 'H' ).endOf( 'day' ),
     };
   }
 
   handleChange = ( e: any ) => {
-    this.setState ( {
+    this.setState( {
       filterName: e.target.value,
+    } );
+  };
+  handleSelectStart = ( date: moment.Moment ) => {
+    this.setState( {
+      startDate: date,
+    } );
+  };
+  handleSelectEnd = ( date: moment.Moment ) => {
+    this.setState( {
+      endDate: date,
     } );
   };
 
   filterHistory = () => {
+    const filter: any = {
+      DatePeriodFrom: dateFormatter( this.state.startDate ),
+      DatePeriodTo: dateFormatter( this.state.endDate ),
+    };
+    this.props.loadHistory( filter );
     this.props.closeFilterHistory();
   };
 
-  render () {
+  render() {
     return (
       <ModalComponent
         show={this.props.show}
         close={this.props.closeFilterHistory}
-        title={'filter'}
+        title={'Filter table history'}
       >
         <FormGroup>
-          <ControlLabel>Enter filter pattern</ControlLabel>
-          <FormControl
-            onChange={this.handleChange}
-          />
+          <div className="table-history-filter-date-container">
+            <Label className="">From</Label>
+            <DatePicker
+              customInput={<CustomDateComponent/>}
+              selected={this.state.startDate}
+              selectsStart={true}
+              maxDate={this.state.endDate}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={this.handleSelectStart}
+            />
+            <Label className="">To</Label>
+            <DatePicker
+              customInput={<CustomDateComponent/>}
+              selected={this.state.endDate}
+              selectsEnd={true}
+              minDate={this.state.startDate}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={this.handleSelectEnd}
+            />
+          </div>
         </FormGroup>
         <div className="check-list-modal-buttons">
           <Button
             onClick={this.filterHistory}
+            color="primary"
           >
             Filter
           </Button>
@@ -49,4 +90,5 @@ export class ModalFilterHistoryComponent extends React.Component<IModalFilterHis
     );
   }
 }
+
 export default ModalFilterHistoryComponent;
