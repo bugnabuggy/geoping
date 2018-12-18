@@ -84,4 +84,26 @@ export default class MockUserService implements IUser {
     });
   }
 
+  getCountries() {
+    return new Promise( ( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          resolve('gfd');
+        },
+        1000
+      );
+    });
+  }
+
+  getTimeZones() {
+    return new Promise( ( resolve: any, reject: any ) => {
+      setTimeout(
+        () => {
+          resolve('ytr');
+        },
+        1000
+      );
+    });
+  }
+
 }

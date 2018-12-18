@@ -91,10 +91,7 @@ ReactDOM.render(
     </Provider>
     {JSON.parse( localStorage.getItem( 'personal_information' ) ) &&
     (
-      <script>
-        const a = 's';
-        console.log('a', a);
-      </script>
+     <div id="analitics"/>
     )
     }
   </React.Fragment>,

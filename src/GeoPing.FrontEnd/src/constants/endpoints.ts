@@ -18,7 +18,6 @@ export const removeGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
 // export const getUsersHasAccess: string = `${endpointBaseUrl}/api/sharing/%listid%`;
 
 /* endpoints for geo points */
-
 export const getGeoPointsForList: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint`;
 export const getGeoPointForList: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;
 export const createGeoNewPoint: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint`;
@@ -27,7 +26,6 @@ export const removeCollectionGeoPoints: string = `${endpointBaseUrl}/api/geolist
 export const removeGeoPoint: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%`;
 
 /* endpoints for user profile */
-
 export const loadUserProfile: string = `${endpointBaseUrl}/account/profile`;
 export const updateUserProfile: string = `${endpointBaseUrl}/account/profile`;
 export const changeUserPassword: string = `${endpointBaseUrl}/account/change-password`;
@@ -62,3 +60,7 @@ export const acceptListSharingInvite: string = `${endpointBaseUrl}/api/sharing/i
 export const getAutocompletedListUsers: string = `${endpointBaseUrl}/api/sharing/autocomplete?query=%query%`;
 export const getInfoAboutToken: string = `${endpointBaseUrl}/api/token/%token%`;
 export const removeToken: string = `${endpointBaseUrl}/api/token/%token%`;
+
+/* endpoints utility */
+export const getCountries: string = `${endpointBaseUrl}/api/utility/countries`;
+export const getTimeZones: string = `${endpointBaseUrl}/api/utility/timezones`;
