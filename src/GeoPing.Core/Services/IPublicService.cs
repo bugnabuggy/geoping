@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GeoPing.Core.Services
 {
-    public interface IPublicGeolistService
+    public interface IPublicService
     {
 
     }

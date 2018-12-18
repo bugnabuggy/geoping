@@ -5,7 +5,7 @@ using GeoPing.Core.Services;
 
 namespace GeoPing.Services
 {
-    public class PublicGeolistService: IPublicGeolistService
+    public class PublicService: IPublicService
     {
     }
 }

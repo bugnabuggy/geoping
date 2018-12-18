@@ -8,18 +8,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GeoPing.Api.Controllers
 {
-    public class PublicGeolistController: Controller
+    [Route("api/public")]
+    public class PublicController: Controller
     {
-        private IGeolistService _geolistSrv;
+        private IPublicService _publicSrv;
         private IClaimsHelper _helper;
         private ISecurityService _securitySrv;
 
-        public PublicGeolistController
-            (IGeolistService geolistSrv,
+        public PublicController
+            (IPublicService publicSrv,
             IClaimsHelper helper,
             ISecurityService securitySrv)
         {
-            _geolistSrv = geolistSrv;
+            _publicSrv = publicSrv;
             _helper = helper;
             _securitySrv = securitySrv;
         }
