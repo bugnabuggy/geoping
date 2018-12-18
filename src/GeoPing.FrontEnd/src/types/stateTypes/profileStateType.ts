@@ -9,6 +9,8 @@ export default interface IProfileStateType {
   email: string;
   phone: string;
   accountType: string;
+  timeZone: string;
+  country: string;
   avatar: string;
   lastPaid: string;
   isShowModal: boolean;

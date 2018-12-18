@@ -13,6 +13,8 @@ export const profileState: IProfileStateType = {
   birthday: '',
   accountType: '',
   lastPaid: '',
+  country: '',
+  timeZone: '',
   isShowModal: false,
-  isLoaded: false
+  isLoaded: false,
 };

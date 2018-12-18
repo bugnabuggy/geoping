@@ -14,9 +14,8 @@ import { dashboardUrl, loginUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
 import { isRedirect, redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
-import {
-  NotificationPersonalInformationTrackingComponent
-} from '../components/notificationPersonalInformationTrackingComponent';
+import { NotificationPersonalInformationTrackingComponent }
+from '../components/notificationPersonalInformationTrackingComponent';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   constructor( props: IGetRoutesProps ) {
@@ -64,6 +63,14 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
 
   componentDidMount() {
     this.authorized();
+    if ( JSON.parse( localStorage.getItem( 'personal_information' ) ) ) {
+      const script: any = document.createElement( 'script' );
+      script.onLoad = () => {
+        alert( 'Script' );
+      };
+
+      document.getElementById( 'analitics' ).appendChild( script );
+    }
   }
 
   componentDidUpdate( prevProps: IGetRoutesProps ) {

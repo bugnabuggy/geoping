@@ -2,11 +2,14 @@ import * as React from 'react';
 import RegisterReduxForm from './reduxForms/registerForm';
 import IRegisterComponentProps from '../../componentProps/registerComponentProps';
 import IRegistrationUserDTO from '../../DTO/registrationUserDTO';
+import * as momentTimeZone from 'moment-timezone';
 
 class RegisterComponent extends React.Component<IRegisterComponentProps, any> {
+  guess: string;
   constructor( props: any ) {
     super( props );
     this.handleRegistration = this.handleRegistration.bind( this );
+    this.guess = momentTimeZone.tz.guess();
   }
 
   handleRegistration( e: any ) {
@@ -22,10 +25,13 @@ class RegisterComponent extends React.Component<IRegisterComponentProps, any> {
   render() {
     const initialForm = {
       email: localStorage.getItem( 'user_data' ) || '',
+      timeZone: this.guess || 1,
     };
     return (
       <div className="sign-container">
         <RegisterReduxForm
+          timeZones={this.props.timeZones}
+
           initialValues={initialForm}
           onSubmit={this.handleRegistration}
         />

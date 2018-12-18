@@ -5,4 +5,6 @@ export const windowState: IWindowStateType = {
   redirectOnSignInForm: false,
   isConfirmEmail: false,
   redirect: '',
+  timeZones: [],
+  coutries: [],
 };

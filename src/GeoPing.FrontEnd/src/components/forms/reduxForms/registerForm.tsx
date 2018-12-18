@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { validate } from '../../../validations/registerFormValidate';
-import { Button, Checkbox, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { IconLookup } from '@fortawesome/fontawesome-svg-core';
+import { Button, FormGroup, Input, Label } from 'reactstrap';
+import { ITimeZoneDTO } from '../../../DTO/timeZoneDTO';
 
 const checkCircleIcon: IconLookup = { prefix: 'far', iconName: 'check-circle' };
 const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
@@ -12,9 +13,9 @@ const timesCircleIcon: IconLookup = { prefix: 'far', iconName: 'times-circle' };
 const renderInput = ( props: any ) => {
   return (
     <FormGroup>
-      <ControlLabel>{props.labelName}</ControlLabel>{' '}
+      <Label>{props.labelName}</Label>
       <div className="form-input-container">
-        <FormControl
+        <Input
           {...props.input}
           type={props.type}
           placeholder={props.placeholder}
@@ -40,16 +41,47 @@ const renderInput = ( props: any ) => {
     </FormGroup>
   );
 };
+const renderOptions = ( timeZones: Array<ITimeZoneDTO> ) => {
+  return timeZones.map( item => {
+    const utcTime: number = item.gmtOffset / 3600;
+    return (
+      <option
+        key={`${item.id}_timeZone`}
+        value={item.id}
+      >
+        {`${item.name} (UTC ${utcTime > 0 ? '+' + utcTime : utcTime})`}
+      </option>
+    );
+  } );
+};
+const renderSelect = ( props: any ) => {
+  return (
+    <FormGroup>
+      <Label>{props.labelName}</Label>
+      <div className="form-input-container">
+        <Input
+          {...props.input}
+          type={props.type}
+          style={{ flex: 2 }}
+        >
+          {renderOptions( props.options )}
+        </Input>
+        <div className="tooltip_form-container"/>
+      </div>
+    </FormGroup>
+  );
+};
 const termsOfService = ( props: any ) => {
   return (
     <div className="form-input-container">
-      <Checkbox
-        {...props.input}
-        type={props.type}
-        style={{ flex: 2 }}
-      >
+      <Label style={{ flex: 2, marginLeft: '20px' }}>
+        <Input
+          {...props.input}
+          type={props.type}
+
+        />
         {props.label}
-      </Checkbox>
+      </Label>
       <div className="tooltip_form-container">
         <div className="form-icon-container">
           {props.meta.touched ?
@@ -73,7 +105,7 @@ const termsOfService = ( props: any ) => {
 const recaptcha = ( props: any ) => {
   return (
     <div className="form-input-container">
-      <div style={{flex: 2}}>
+      <div style={{ flex: 2 }}>
         <ReCAPTCHA
           onChange={props.input.onChange}
           z-index="1"
@@ -129,6 +161,13 @@ function registerForms( props: any ): any {
         type="password"
       />
       <Field
+        component={renderSelect}
+        name="timeZone"
+        labelName="Time zone"
+        type="select"
+        options={props.timeZones}
+      />
+      <Field
         component={termsOfService}
         name="termsOfService"
         type="checkbox"
@@ -139,7 +178,7 @@ function registerForms( props: any ): any {
         name="captcha"
       />
       <Button
-        bsStyle="primary"
+        color="primary"
         type="submit"
         className="register-btn"
       >
