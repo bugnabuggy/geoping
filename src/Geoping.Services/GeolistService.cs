@@ -13,27 +13,13 @@ namespace GeoPing.Services
 {
     public class GeolistService : IGeolistService
     {
-        private readonly Dictionary<string, Expression<Func<GeoList, object>>> _orderCommonBys =
+        private readonly Dictionary<string, Expression<Func<GeoList, object>>> _orderBys =
             new Dictionary<string, Expression<Func<GeoList, object>>>
             {
             {"name", x => x.Name},
             {"dateCreated", x => x.Created},
             {"dateEdited", x => x.Edited},
             {"isPublic", x => x.IsPublic}
-        };
-
-        private Dictionary<string, Expression<Func<PublicListDTO, object>>> _orderPublicBys =
-            new Dictionary<string, Expression<Func<PublicListDTO, object>>>
-            {
-            {"name", x => x.Name},
-            {"author", x => x.OwnerName},
-            {"dateCreated", x => x.CreateDate},
-            {"dateEdited", x => x.EditDate},
-            {"datePublished", x => x.PublishDate},
-            {"rating", x => x.Rating},
-            {"subs", x => x.SubscribersNumber},
-            {"finihers", x => x.FinishersNumber},
-            {"isOfficial", x => x.IsOfficial}
         };
 
 
@@ -99,56 +85,15 @@ namespace GeoPing.Services
                 data = data.Where(x => x.IsPublic == filter.IsPublic);
             }
 
-            data = FilterListsByCommonFilter(data, filter);
+            data = FilterListsByFilter(data, filter);
 
             totalItems = data.Count();
 
-            data = PaginationByCommonFilter(data, filter);
+            data = PaginateByFilter(data, filter);
 
             return new WebResult<IQueryable<GeoList>>
             {
                 Data = data,
-                Success = true,
-                PageNumber = filter.PageNumber,
-                PageSize = filter.PageSize,
-                TotalItems = totalItems
-            };
-        }
-
-        public WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems)
-        {
-            _logger.LogDebug($"Getting public geolist is owned by user by filter.");
-
-            var data = _geolistRepo.Get(x => x.IsPublic &&
-                                             x.OwnerId == ownerId);
-
-            var result = GetPublicByFilter(data, filter);
-
-            totalItems = result.Count();
-
-            return new WebResult<IQueryable<PublicListDTO>>
-            {
-                Data = result,
-                Success = true,
-                PageNumber = filter.PageNumber,
-                PageSize = filter.PageSize,
-                TotalItems = totalItems
-            };
-        }
-
-        public WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems)
-        {
-            _logger.LogDebug($"Getting public geolists by filter.");
-
-            var data = _geolistRepo.Get(x => x.IsPublic);
-
-            var result = GetPublicByFilter(data, filter);
-
-            totalItems = result.Count();
-
-            return new WebResult<IQueryable<PublicListDTO>>
-            {
-                Data = result,
                 Success = true,
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize,
@@ -162,6 +107,8 @@ namespace GeoPing.Services
                                    $"Creator = [{item.OwnerId}].");
 
             var result = _geolistRepo.Add(item);
+
+            // TODO: REFACTOR THIS PART: MOVE CREATION AND CHECK FOR EXISTENCE PUBLIC PART TO PUBLIC SERVICE
 
             if (item.IsPublic)
             {
@@ -199,6 +146,8 @@ namespace GeoPing.Services
 
             if (item.IsPublic)
             {
+                // TODO: REFACTOR THIS PART: MOVE CREATION AND CHECK FOR EXISTENCE PUBLIC PART TO PUBLIC SERVICE
+
                 var wasPublic = _publicGeolistRepo.Get().Any(x => x.ListId == item.Id);
                 if (!wasPublic)
                 {
@@ -319,38 +268,7 @@ namespace GeoPing.Services
             return list != null;
         }
 
-        private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
-        {
-            data = FilterListsByCommonFilter(data, filter);
-
-            var publicData = from a in data
-                             from b in _publicGeolistRepo.Get()
-                             where a.Id == b.ListId
-                             select new PublicListDTO
-                             {
-                                 Id = a.Id,
-                                 Name = a.Name,
-                                 Description = a.Description,
-                                 OwnerId = a.OwnerId,
-                                 OwnerName = _gpUserRepo.Get().FirstOrDefault(x => x.Id == a.OwnerId).Login,
-                                 CreateDate = a.Created.ToUniversalTime(),
-                                 EditDate = a.Edited.ToUniversalTime(),
-                                 PublishDate = b.PublishDate.ToUniversalTime(),
-                                 Rating = b.Rating,
-                                 SubscribersNumber = b.SubscribersNumber,
-                                 FinishersNumber = b.FinishersNumber,
-                                 IsOfficial = b.IsOfficial
-                             };
-
-            publicData = FilterListsByPublicFilter(publicData, filter);
-
-            publicData = PaginationByPublicFilter(publicData, filter);
-
-            return publicData;
-        }
-
-        private IQueryable<GeoList> FilterListsByCommonFilter
-            (IQueryable<GeoList> data, GeolistFilterDTO filter)
+        public IQueryable<GeoList> FilterListsByFilter(IQueryable<GeoList> data, GeolistFilterDTO filter)
         {
             var isCreatedFrom = DateTime.TryParse(filter.DateCreatedFrom, out DateTime createdFrom);
             var isCreatedTo = DateTime.TryParse(filter.DateCreatedTo, out DateTime createdTo);
@@ -383,69 +301,13 @@ namespace GeoPing.Services
             return data;
         }
 
-        private IQueryable<PublicListDTO> FilterListsByPublicFilter
-            (IQueryable<PublicListDTO> data, PublicGeolistFilterDTO filter)
-        {
-            if (filter.IsOfficial != null)
-            {
-                data = data.Where(x => x.IsOfficial == filter.IsOfficial);
-            }
-
-            var isPublishedFrom = DateTime.TryParse(filter.DatePublishFrom, out DateTime publishedFrom);
-            var isPublishedTo = DateTime.TryParse(filter.DatePublishTo, out DateTime publishedTo);
-
-            // Filtering by publish date
-            data = isPublishedFrom
-                 ? data.Where(x => x.PublishDate >= publishedFrom)
-                 : data;
-
-            data = isPublishedTo
-                 ? data.Where(x => x.PublishDate <= publishedTo)
-                 : data;
-
-            // Filtering by author name
-            data = !string.IsNullOrEmpty(filter.Author)
-                     ? data.Where(x => x.OwnerName.Contains(filter.Author))
-                     : data;
-
-            // Filtering by rating
-            data = filter.RatingFrom != null
-                 ? data.Where(x => x.Rating >= filter.RatingFrom)
-                 : data;
-
-            data = filter.RatingTo != null
-                 ? data.Where(x => x.Rating <= filter.RatingTo)
-                 : data;
-
-            // Filtering by subscribers number 
-            data = filter.SubsFrom != null
-                 ? data.Where(x => x.SubscribersNumber >= filter.SubsFrom)
-                 : data;
-
-            data = filter.SubsTo != null
-                 ? data.Where(x => x.SubscribersNumber <= filter.SubsTo)
-                 : data;
-
-            // Filtering by finishers number 
-            data = filter.FinishersFrom != null
-                 ? data.Where(x => x.FinishersNumber >= filter.FinishersFrom)
-                 : data;
-
-            data = filter.FinishersTo != null
-                 ? data.Where(x => x.FinishersNumber <= filter.FinishersTo)
-                 : data;
-
-            return data;
-        }
-
-        private IQueryable<GeoList> PaginationByCommonFilter
-            (IQueryable<GeoList> data, GeolistFilterDTO filter)
+        private IQueryable<GeoList> PaginateByFilter(IQueryable<GeoList> data, StandartFilterDTO filter)
         {
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderCommonBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderCommonBys[filter.OrderBy];
+                var orderExpression = _orderBys[filter.OrderBy];
 
                 data = filter.IsDesc 
                     ? data.OrderByDescending(orderExpression) 
@@ -456,29 +318,6 @@ namespace GeoPing.Services
             {
                 data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
                     .Take((int)filter.PageSize);
-            }
-
-            return data;
-        }
-
-        private IQueryable<PublicListDTO> PaginationByPublicFilter
-            (IQueryable<PublicListDTO> data, PublicGeolistFilterDTO filter)
-        {
-            filter.PageNumber = filter.PageNumber ?? 0;
-
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderPublicBys.ContainsKey(filter.OrderBy))
-            {
-                var orderExpression = _orderPublicBys[filter.OrderBy];
-
-                data = filter.IsDesc 
-                    ? data.OrderByDescending(orderExpression) 
-                    : data.OrderBy(orderExpression);
-            }
-
-            if (filter.PageSize != null)
-            {
-                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
-                           .Take((int)filter.PageSize);
             }
 
             return data;
