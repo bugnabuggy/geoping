@@ -75,7 +75,7 @@ namespace GeoPing.Services
 
         public WebResult<IEnumerable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter)
         {
-            _logger.LogDebug($"Getting public geolists by filter are owned by user.");
+            _logger.LogDebug($"Getting public geolists of user::[{ownerId}] by filter.");
 
             var data = _geolistSrv.FilterListsByFilter
                 (_geolistSrv.Get(x => x.IsPublic && x.OwnerId == ownerId), filter);
@@ -87,7 +87,9 @@ namespace GeoPing.Services
             var totalItems = result.Count();
 
             result = PaginateByFilter(result, filter);
-            
+
+            _logger.LogDebug($"Public geolists of user::[{ownerId}] were successfully gotten by filter.");
+
             return new WebResult<IEnumerable<PublicListDTO>>
             {
                 Data = result,
@@ -100,6 +102,8 @@ namespace GeoPing.Services
 
         public PublicListDTO GetPublicList(Guid listId)
         {
+            _logger.LogDebug($"Getting public geolist::[{listId}].");
+
             var data = _geolistSrv.Get(x => x.Id == listId && x.IsPublic);
 
             return GetPublicListDTO(data).FirstOrDefault();
@@ -107,11 +111,15 @@ namespace GeoPing.Services
 
         public IEnumerable<GeoPoint> GetPointsOfPublicList(Guid listId)
         {
+            _logger.LogDebug($"Getting points of public geolist::[{listId}].");
+
             return _geopointSrv.Get(x => x.ListId == listId);
         }
 
         public GeoPoint GetPointOfPublicList(Guid listId, Guid pointId)
         {
+            _logger.LogDebug($"Getting point::[{pointId}] of public geolists::[{listId}].");
+
             return _geopointSrv.Get(x => x.ListId == listId && x.Id == pointId).FirstOrDefault();
         }
 
