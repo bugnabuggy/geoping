@@ -55,46 +55,6 @@ namespace GeoPing.Api.Controllers
             return Ok(result);
         }
 
-        // Get all public lists by filter
-        // GET api/geolist/public
-        [HttpGet]
-        [Route("public")]
-        [AllowAnonymous]
-        public IActionResult GetPublicListsByFilter(PublicGeolistFilterDTO filter)
-        {
-            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        // Get all public list of other user by filter
-        // GET api/geolist/public/{userId}
-        [HttpGet]
-        [Route("public/{userId}")]
-        [AllowAnonymous]
-        public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
-        {
-            var isId = Guid.TryParse(userId, out Guid ownerId);
-
-            if (!isId)
-            {
-                return BadRequest("Unvalid user identifier");
-            }
-
-            var result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
         // GET api/geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
