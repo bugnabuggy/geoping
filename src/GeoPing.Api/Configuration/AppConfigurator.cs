@@ -48,6 +48,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IGeopingTokenService, GeopingTokenService>();
             services.AddScoped<IValidationService, ValidationService>();
             services.AddScoped<IUtilityService, UtilityService>();
+            services.AddScoped<IPublicGeolistService, PublicGeolistService>();
         }
 
         public void Initialize(IServiceProvider services)
