@@ -122,24 +122,26 @@ namespace GeoPing.Services
 
         private IQueryable<PublicListDTO> GetPublicListDTO(IQueryable<GeoList> data)
         {
+            var owners = _userSrv.GetUsers(u => data.Any(gl => gl.OwnerId == u.Id));
+
             var result =
-                from a in data
-                from b in _publicListRepo.Get()
-                where a.Id == b.ListId
+                from gl in data
+                from pl in _publicListRepo.Get()
+                where gl.Id == pl.ListId
                 select new PublicListDTO
                 {
-                    Id = a.Id,
-                    Name = a.Name,
-                    Description = a.Description,
-                    OwnerId = a.OwnerId,
-                    OwnerName = _userSrv.GetUser(x => x.Id == a.OwnerId).Login,
-                    CreateDate = a.Created.ToUniversalTime(),
-                    EditDate = a.Edited.ToUniversalTime(),
-                    PublishDate = b.PublishDate.ToUniversalTime(),
-                    Rating = b.Rating,
-                    SubscribersNumber = b.SubscribersNumber,
-                    FinishersNumber = b.FinishersNumber,
-                    IsOfficial = b.IsOfficial
+                    Id = gl.Id,
+                    Name = gl.Name,
+                    Description = gl.Description,
+                    OwnerId = gl.OwnerId,
+                    OwnerName = owners.FirstOrDefault(u => u.Id == gl.OwnerId).Login,
+                    CreateDate = gl.Created.ToUniversalTime(),
+                    EditDate = gl.Edited.ToUniversalTime(),
+                    PublishDate = pl.PublishDate.ToUniversalTime(),
+                    Rating = pl.Rating,
+                    SubscribersNumber = pl.SubscribersNumber,
+                    FinishersNumber = pl.FinishersNumber,
+                    IsOfficial = pl.IsOfficial
                 };
 
             return result;
