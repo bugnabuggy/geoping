@@ -127,14 +127,16 @@ namespace GeoPing.Services
             var result =
                 from gl in data
                 from pl in _publicListRepo.Get()
-                where gl.Id == pl.ListId
+                from u in owners
+                where gl.Id == pl.ListId && 
+                      gl.OwnerId == u.Id
                 select new PublicListDTO
                 {
                     Id = gl.Id,
                     Name = gl.Name,
                     Description = gl.Description,
-                    OwnerId = gl.OwnerId,
-                    OwnerName = owners.FirstOrDefault(u => u.Id == gl.OwnerId).Login,
+                    OwnerId = u.Id,
+                    OwnerName = u.Login,
                     CreateDate = gl.Created.ToUniversalTime(),
                     EditDate = gl.Edited.ToUniversalTime(),
                     PublishDate = pl.PublishDate.ToUniversalTime(),
