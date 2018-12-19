@@ -34,7 +34,7 @@ namespace GeoPing.Services
 
         public OperationResult<CheckIn> GetCheckIn(Guid userId, string pointId)
         {
-            _logger.LogInformation($"User with Id = [{userId}] requested CheckIn for point with Id = [{pointId}]");
+            _logger.LogDebug($"User with Id = [{userId}] requested CheckIn for point with Id = [{pointId}]");
 
             var isPointExist = _pointSrv.IsPointExistWithId(pointId);
 
@@ -67,8 +67,8 @@ namespace GeoPing.Services
                 };
             }
 
-            _logger.LogInformation($"CheckIn for point with Id = [{pointId}]" +
-                                   $" of user with Id = [{userId}] has been requested successfully.");
+            _logger.LogDebug($"CheckIn for point with Id = [{pointId}]" +
+                             $" of user with Id = [{userId}] has been requested successfully.");
 
             return new OperationResult<CheckIn>
             {
@@ -80,7 +80,7 @@ namespace GeoPing.Services
 
         public OperationResult<IEnumerable<CheckIn>> GetChecksIn(Guid userId, string listId)
         {
-            _logger.LogInformation($"User with Id = [{userId}] requested ChecksIn for list with Id = [{listId}]");
+            _logger.LogDebug($"User with Id = [{userId}] requested ChecksIn for list with Id = [{listId}]");
 
             var isListExist = _geolistSrv.IsListExistWithId(listId);
 
@@ -103,8 +103,8 @@ namespace GeoPing.Services
                        where ch.PointId == p.Id && ch.UserId == userId
                        select ch;
 
-            _logger.LogInformation($"ChecksIn for list with Id = [{listId}]" +
-                                   $" of user with Id = [{userId}] has been requested successfully.");
+            _logger.LogDebug($"ChecksIn for list with Id = [{listId}]" +
+                             $" of user with Id = [{userId}] has been requested successfully.");
 
             return new OperationResult<IEnumerable<CheckIn>>
             {
