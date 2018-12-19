@@ -239,4 +239,10 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
+  getCertainPublicList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve( 'ok' );
+    } );
+  }
+
 }

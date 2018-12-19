@@ -10,7 +10,7 @@ export const resetPassword: string =
 /* endpoints for geo lists */
 export const getAllGeoLists: string = `${endpointBaseUrl}/api/geolist`;
 export const getGeoListForId: string = `${endpointBaseUrl}/api/geolist/%id%`;
-export const getAllPublicGeoLosts: string = `${endpointBaseUrl}/api/geolist/public`;
+export const getAllPublicGeoLosts: string = `${endpointBaseUrl}/api/publiclists`;
 export const createNewGeoList: string = `${endpointBaseUrl}/api/geolist`;
 export const updateGeoList: string = `${endpointBaseUrl}/api/geolist/%id%`;
 export const removeCollectionGeoLists: string = `${endpointBaseUrl}/api/geolist/%id%`;
@@ -64,3 +64,7 @@ export const removeToken: string = `${endpointBaseUrl}/api/token/%token%`;
 /* endpoints utility */
 export const getCountries: string = `${endpointBaseUrl}/api/utility/countries`;
 export const getTimeZones: string = `${endpointBaseUrl}/api/utility/timezones`;
+
+/* endpoints public lists */
+export const getCertainPublicList: string = `${endpointBaseUrl}/api/publiclists/%listid%`;
+export const getPointsForPublicList: string = `${endpointBaseUrl}/api/publiclists/%listid%/geopoints`;

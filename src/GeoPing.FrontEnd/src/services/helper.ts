@@ -15,6 +15,7 @@ import {
 } from '../constants/routes';
 import { ETimer } from '../enums/timerEnum';
 import * as moment from 'moment';
+import IGeoPoint from '../DTO/geoPointDTO';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {
@@ -114,4 +115,19 @@ export function dateFormatter( date: moment.Moment ) {
   // console.log(date.utc());
   // return `${date.year()}-${date.month() + 1}-${date.date()}T${date.hours()}:${date.minutes()}:${date.seconds()}Z`;
   return date.utc().startOf('day').format();
+}
+
+export function formattingGeoPoints( geoPoints: Array<any> ): Array<IGeoPoint> {
+  return geoPoints.map( ( item: any ) => {
+    return {
+      id: item.id,
+      name: item.name,
+      radius: item.radius,
+      lat: Number( item.latitude ),
+      lng: Number( item.longitude ),
+      description: item.description,
+      idList: item.listId,
+      idForMap: uuidV4(),
+    };
+  } );
 }

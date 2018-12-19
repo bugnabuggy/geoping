@@ -5,12 +5,14 @@ import { PublicListGeoPointItem } from './publicListGeoPointItem';
 
 export class PublicListGeoPointList extends React.Component<IPublicListGeoPointListProps, any> {
   _renderPointItem = () => {
-    const temp: any = [ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} ];
-    return temp.map( ( item: any, index: number ) => {
+    return this.props.googleMap.geoPoints.map( ( item, index: number ) => {
       return (
         <PublicListGeoPointItem
-          key={index}
-          tempId={`temp_${index}`}
+          key={item.id}
+          geoPoint={item}
+          selectedGeoPoint={this.props.googleMap.selectedGeoPoint}
+
+          selectPoint={this.props.selectPoint}
         />
       );
     } );
@@ -20,7 +22,7 @@ export class PublicListGeoPointList extends React.Component<IPublicListGeoPointL
     return (
       <Card>
         <CardHeader>
-          PointList
+          Point list
         </CardHeader>
         <CardBody className="p-2 public-list-card-body-point-item">
           {this._renderPointItem()}

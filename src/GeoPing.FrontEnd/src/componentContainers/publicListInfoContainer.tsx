@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import IPublicListInfoContainerProps from '../componentContainerProps/publicListInfoContainerProps';
 import { PublicListGeoPointList } from '../components/publicListGeoPointList';
 import { loadPublicCheckListInfo } from '../actions/publicChecListAction';
+import { selectPoint } from '../actions/googleMapAction';
 
 class PublicListInfoContainer extends React.Component<IPublicListInfoContainerProps, any> {
   componentDidMount(): void {
@@ -14,22 +15,36 @@ class PublicListInfoContainer extends React.Component<IPublicListInfoContainerPr
   render(): React.ReactNode {
     return (
       <div className="public-list-info-container">
-        <span>%listName%</span>
-        <p>Description</p>
-        <PublicListGeoPointList/>
+        <label><h3>{this.props.checkListInfo.name}</h3></label>
+        <p className="public-list-info-p">
+          <span><b>Author:</b> {this.props.checkListInfo.ownerName}</span>
+          <span><b>Rating:</b> {this.props.checkListInfo.rating}</span>
+          <span><b>Subscribers:</b> {this.props.checkListInfo.subscribersNumber}</span>
+        </p>
+        <h5>Description:</h5>
+        <p>{this.props.checkListInfo.description}</p>
+        <PublicListGeoPointList
+          googleMap={this.props.googleMap}
+
+          selectPoint={this.props.selectPoint}
+        />
       </div>
     );
   }
 }
 
 const mapStateToProps = ( state: IinitialStateType ) => {
-  return {};
+  return {
+    checkListInfo: state.checkList.checkListPublicInfo,
+    googleMap: state.googleMap,
+  };
 };
 
 const mapDispatchToProps = ( dispath: any ) =>
   bindActionCreators(
     {
       loadPublicCheckListInfo,
+      selectPoint,
     },
     dispath );
 

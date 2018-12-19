@@ -47,6 +47,10 @@ main {
   width: 100%;
 }
 
+#analitics {
+  display: none;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -1537,6 +1541,7 @@ header nav {
   background: var(--success-color, #128D15);
   color: white;
 }
+
 .statistics-table-check-select {
   background: var(--marker-check-select-color);
 }
@@ -1555,7 +1560,7 @@ header nav {
   color: white;
 }
 
-.statistics-table-free-check-select{
+.statistics-table-free-check-select {
   background: var(--marker-free-check-select-color);
   color: white;
 }
@@ -1779,6 +1784,7 @@ select.form-control:not([size]):not([multiple]) {
   flex: 1;
   text-align: justify;
 }
+
 /*****************************************************************************************/
 
 /* Public check list info*/
@@ -1795,7 +1801,12 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .public-list-info-container {
-  max-height: 500px;
+  /*max-height: 500px;*/
+}
+
+.public-list-info-p {
+  display: flex;
+  flex-direction: column;
 }
 
 .point-item-card-subtitle {
@@ -1803,6 +1814,7 @@ select.form-control:not([size]):not([multiple]) {
   justify-content: space-between;
   align-items: center;
 }
+
 .point-item-card-subtitle span {
   width: calc(100% - 40px);
   overflow: hidden;
@@ -1815,8 +1827,12 @@ select.form-control:not([size]):not([multiple]) {
   color: #332bff;
 }
 
+.point-item-card-container {
+  background: var(--success-color);
+}
+
 .public-list-card-body-point-item {
-  max-height: 500px;
+  max-height: 800px;
   overflow: auto;
 }
 
@@ -2214,6 +2230,7 @@ select.form-control:not([size]):not([multiple]) {
   .about-page-block-info-container {
     flex: 1;
   }
+
   /*****************************************************************************************/
   /* public check list info*/
   .public-check-list-info-container {
@@ -2223,9 +2240,15 @@ select.form-control:not([size]):not([multiple]) {
     grid-gap: 5px;
     height: 100%;
   }
+
   .public-list-info-container {
     max-height: max-content;
   }
+
+  .public-list-card-body-point-item {
+    max-height: 500px;
+  }
+
   /*****************************************************************************************/
 }
 

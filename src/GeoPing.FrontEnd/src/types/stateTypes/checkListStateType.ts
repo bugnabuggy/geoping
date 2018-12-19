@@ -21,4 +21,5 @@ export default interface ICheckListStateType {
   newSharedLists: Array<IGeoListSharingDTO>;
   acceptedSharedLists: Array<IGeoListSharingDTO>;
   checkInLists: Array<IGeoListPublickDTO | IGeoListSharingDTO | any>;
+  checkListPublicInfo: IGeoListPublickDTO;
 }
