@@ -19,6 +19,7 @@ import {
   logOutUrl,
   notFoundUrl,
   profileUrl,
+  publicCheckListInfoUrl,
   publicCheckListUrl,
   registerUrl,
   resetPassword,
@@ -42,6 +43,7 @@ import LogOutComponentContainer from '../componentContainers/logOutComponentCont
 import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
+import { PublicCheckListInfoPage } from '../pages/publicCheckListInfoPage';
 // import routersMap from '../mapForComponents/routersMap';
 // import LoginPage from '../pages/loginPage';
 // import { AboutComponent } from '../pages/aboutPage';
@@ -94,7 +96,7 @@ import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 
 const AdminRoute = ( { isAllowed, userRoles, ...props }: any ) => {
   const userRole: ERoleUser = userRoles.find( ( item: string ) => item === ERoleUser.Admin );
-  return isAllowed /*&& !!userRole */?
+  return isAllowed /*&& !!userRole */ ?
     <Route {...props}/>
     :
     <Redirect to={dashboardUrl}/>;
@@ -121,6 +123,7 @@ export const Routes = ( props: any ) =>
         <Switch>
           <Route exact={true} path={baseUrl} component={AboutComponent}/>
           <Route exact={true} path={publicCheckListUrl} component={PublicGEOCheckListsPage}/>
+          <Route exact={true} path={publicCheckListInfoUrl} component={PublicCheckListInfoPage}/>
           <Route exact={true} path={emailConfirm} component={EmailConfirmPage}/>
           <Route exact={true} path={token} component={TokenPageContainer}/>
           <Route exact={true} path={tokenError} component={TokenErrorContainer}/>

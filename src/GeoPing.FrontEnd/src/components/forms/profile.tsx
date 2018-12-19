@@ -31,6 +31,8 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
       birthday: e.birthday,
       phonenumber: e.phoneNumber,
       lastpaid: e.lastPaid,
+      country: e.country,
+      timeZone: e.timeZone,
       // avatar: e.avatar ? e.avatar : this.props.profileState.avatar,
     };
     this.props.updateProfileData( newProfileData );
@@ -45,6 +47,8 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
           {/*<label htmlFor="profile-form">Profile</label>*/}
           {this.props.profileState.isLoaded ?
             <ProfileReduxForm
+              window={this.props.window}
+
               onSubmit={this.submit}
               initialValues={this.props.profileState}
               showModalChangePassword={this.props.showModalChangePassword}

@@ -32,5 +32,6 @@ export interface ICheckInGeoPointDTO {
   pointId: string;
   userAgent: any;
   userId: string;
+  idForMap: string;
   status: EStatusCheckedEnum;
 }

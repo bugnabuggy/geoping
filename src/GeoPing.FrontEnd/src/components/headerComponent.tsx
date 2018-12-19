@@ -54,6 +54,11 @@ export class HeaderComponent extends React.Component<IHeaderComponentProps, any>
               <Collapse navbar={true} isOpen={this.state.showMenu}>
                 <Nav className="ml-auto" navbar={true}>
                   <NavItem>
+                    <LinkContainer exact={true} to={publicCheckListUrl}>
+                      <NavLink name="public">Public checklists</NavLink>
+                    </LinkContainer>
+                  </NavItem>
+                  <NavItem>
                     <LinkContainer exact={true} to={dashboardUrl}>
                       <NavLink>Dashboard</NavLink>
                     </LinkContainer>

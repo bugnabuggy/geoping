@@ -92,25 +92,25 @@ namespace GeoPing.Services.Tests
             Assert.AreEqual(3, result.Data.Where(x => x.OwnerId == _expectedUserId1).Count());
         }
         
-        [Test]
-        public void Should_get_public_lists()
-        {
-            var result = _sut.GetByFilter(new PublicGeolistFilterDTO(), out int totalItems);
-            Assert.That(result.Success);
-            Assert.AreEqual(2, result.Data.Count());
-            Assert.AreEqual(2, totalItems);
-            Assert.AreEqual(1, result.Data.Where(x => x.OwnerId == _expectedUserId1).Count());
-        }
+        //[Test]
+        //public void Should_get_public_lists()
+        //{
+        //    var result = _sut.GetByFilter(new PublicGeolistFilterDTO(), out int totalItems);
+        //    Assert.That(result.Success);
+        //    Assert.AreEqual(2, result.Data.Count());
+        //    Assert.AreEqual(2, totalItems);
+        //    Assert.AreEqual(1, result.Data.Where(x => x.OwnerId == _expectedUserId1).Count());
+        //}
         
-        [Test]
-        public void Should_get_public_users_lists()
-        {
-            var result = _sut.GetByFilter(_expectedUserId1, new PublicGeolistFilterDTO(), out int totalItems);
-            Assert.That(result.Success);
-            Assert.AreEqual(1, result.Data.Count());
-            Assert.AreEqual(1, totalItems);
-            Assert.AreEqual(0, result.Data.Where(x => x.OwnerId == _expectedUserId2).Count());
-        }
+        //[Test]
+        //public void Should_get_public_users_lists()
+        //{
+        //    var result = _sut.GetByFilter(_expectedUserId1, new PublicGeolistFilterDTO(), out int totalItems);
+        //    Assert.That(result.Success);
+        //    Assert.AreEqual(1, result.Data.Count());
+        //    Assert.AreEqual(1, totalItems);
+        //    Assert.AreEqual(0, result.Data.Where(x => x.OwnerId == _expectedUserId2).Count());
+        //}
 
         [Test]
         public void Should_remove_a_list()

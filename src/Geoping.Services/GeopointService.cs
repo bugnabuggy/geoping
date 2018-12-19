@@ -92,7 +92,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Add(GeoPoint item)
         {
-            _logger.LogInformation($"Creating geopoint of geolist with Id = [{item.ListId}] by filter.");
+            _logger.LogInformation($"Creating geopoint of geolist with Id = [{item.ListId}].");
 
             return new OperationResult<GeoPoint>
             {
@@ -105,7 +105,7 @@ namespace GeoPing.Services
         public OperationResult<GeoPoint> Update(GeoPoint item)
         {
             _logger.LogInformation($"Editing geopoint with Id = [{item.Id}] " +
-                                   $"of geolist with Id = [{item.ListId}] by filter.");
+                                   $"of geolist with Id = [{item.ListId}].");
 
             return new OperationResult<GeoPoint>
             {
@@ -118,7 +118,7 @@ namespace GeoPing.Services
         public OperationResult<GeoPoint> Delete(GeoPoint item)
         {
             _logger.LogInformation($"Deleting geopoint with Id = [{item.Id}] " +
-                                   $"of geolist with Id = [{item.ListId}] by filter.");
+                                   $"of geolist with Id = [{item.ListId}].");
 
             try
             {

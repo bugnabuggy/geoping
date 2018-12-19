@@ -137,6 +137,8 @@ namespace GeoPing.Infrastructure.Data.Migrations
 
                     b.Property<string>("PhoneNumber");
 
+                    b.Property<string>("TimeZone");
+
                     b.HasKey("Id");
 
                     b.ToTable("GPUsers");

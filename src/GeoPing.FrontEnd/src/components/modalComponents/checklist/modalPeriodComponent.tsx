@@ -53,6 +53,19 @@ export class ModalPeriodComponent extends React.Component<IModalPeriodComponentP
               <Radio
                 name="period"
                 className="check-list-modal-period-item-radio"
+                value="no"
+                defaultChecked={true}
+                onChange={this.handleRadioChange}
+              >
+                no
+              </Radio>
+            </FormGroup>
+            <FormGroup
+              className="check-list-modal-period-item"
+            >
+              <Radio
+                name="period"
+                className="check-list-modal-period-item-radio"
                 value="period"
                 onChange={this.handleRadioChange}
               >
@@ -66,8 +79,10 @@ export class ModalPeriodComponent extends React.Component<IModalPeriodComponentP
                   placeholder="select"
                   disabled={this.state.upPeriod === 'period' ? false : true}
                 >
-                  <option value="select">select</option>
-                  <option value="other">...</option>
+                  <option value="day">day</option>
+                  <option value="week">week</option>
+                  <option value="month">month</option>
+                  <option value="year">year</option>
                 </FormControl>
               </div>
             </FormGroup>
@@ -78,6 +93,7 @@ export class ModalPeriodComponent extends React.Component<IModalPeriodComponentP
                 name="period"
                 className="check-list-modal-period-item-radio"
                 value="custom"
+                disabled={true}
                 onChange={this.handleRadioChange}
               >
                 custom values
@@ -101,6 +117,7 @@ export class ModalPeriodComponent extends React.Component<IModalPeriodComponentP
                 name="period"
                 className="check-list-modal-period-item-radio"
                 value="format"
+                disabled={true}
                 onChange={this.handleRadioChange}
               >
                 cron format
@@ -119,15 +136,15 @@ export class ModalPeriodComponent extends React.Component<IModalPeriodComponentP
           >
             <div
               className="cursor-pointer"
-              onClick={this.handleClickCancel}
-            >
-              <FontAwesomeIcon icon="times"/>
-            </div>
-            <div
-              className="cursor-pointer"
               onClick={this.handleClickOk}
             >
               <FontAwesomeIcon icon="check"/>
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={this.handleClickCancel}
+            >
+              <FontAwesomeIcon icon="times"/>
             </div>
           </div>
         </ModalComponent>

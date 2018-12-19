@@ -32,6 +32,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<SupportMessage>, DbRepository<SupportMessage>>();
             services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
             services.AddScoped<IRepository<TimeZone>, DbRepository<TimeZone>>();
+            services.AddScoped<IRepository<Country>, DbRepository<Country>>();
 
             services.AddTransient<IEmailService, EmailService>();
 
@@ -47,6 +48,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IGeopingTokenService, GeopingTokenService>();
             services.AddScoped<IValidationService, ValidationService>();
             services.AddScoped<IUtilityService, UtilityService>();
+            services.AddScoped<IPublicService, PublicService>();
         }
 
         public void Initialize(IServiceProvider services)

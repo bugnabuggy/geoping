@@ -67,7 +67,7 @@ export class InvitationsDashbordComponent extends React.Component<IInvitationsDa
               </span>
 
                 <span>
-                  login
+                  {item.ownerFullName || item.ownerUserName}
                 </span>
                 <span>
                   {date}
