@@ -5,11 +5,12 @@ import {
   createGeoNewPoint,
   getCheckInStatisticsForListByFilter,
   getGeoPointsForList,
+  getPointsForPublicList,
   removeGeoPoint,
   updateGeoPoint
 } from '../../constants/endpoints';
 import IGeoPoint, { IGeoPintForCreateDTO } from '../../DTO/geoPointDTO';
-import { getDataFromResponse } from '../helper';
+import { formattingGeoPoints, getDataFromResponse } from '../helper';
 import { v4 as uuidV4 } from 'uuid';
 
 export default class MarkerService implements IMarkerServiceType {
@@ -74,19 +75,19 @@ export default class MarkerService implements IMarkerServiceType {
       this.communicator.get( getGeoPointsForList.replace( '%listid%', idCheckList ) )
         .then( ( response: any ) => {
 
-          const markers: Array<any> = getDataFromResponse( response ).map( ( item: any ) => {
-            return {
-              id: item.id,
-              name: item.name,
-              radius: item.radius,
-              lat: Number( item.latitude ),
-              lng: Number( item.longitude ),
-              description: item.description,
-              idList: item.listId,
-              idForMap: uuidV4(),
-            };
-          } );
-          resolve( markers );
+          // const markers: Array<any> = getDataFromResponse( response ).map( ( item: any ) => {
+          //   return {
+          //     id: item.id,
+          //     name: item.name,
+          //     radius: item.radius,
+          //     lat: Number( item.latitude ),
+          //     lng: Number( item.longitude ),
+          //     description: item.description,
+          //     idList: item.listId,
+          //     idForMap: uuidV4(),
+          //   };
+          // } );
+          resolve( formattingGeoPoints(getDataFromResponse( response )) );
         } )
         .catch( ( error: any ) => {
           reject( error );
@@ -149,4 +150,15 @@ export default class MarkerService implements IMarkerServiceType {
     } );
   }
 
+  getPointsForPublicList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getPointsForPublicList.replace( '%listid%', idList ) )
+        .then( ( response: any ) => {
+          resolve( formattingGeoPoints( getDataFromResponse( response ) ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
 }

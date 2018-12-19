@@ -32,4 +32,18 @@ export const checkListState: ICheckListStateType = {
   acceptedSharedLists: [],
   newSharedLists: [],
   checkInLists: [],
+  checkListPublicInfo: {
+    id: '',
+    name: '',
+    rating: null,
+    subscribersNumber: null,
+    ownerName: '',
+    createDate: '',
+    description: '',
+    editDate: '',
+    finishersNumber: null,
+    isOfficial: false,
+    ownerId: '',
+    publishDate: '',
+  },
 };

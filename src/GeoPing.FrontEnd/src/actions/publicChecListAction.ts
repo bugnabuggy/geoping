@@ -2,6 +2,7 @@ import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
   PUBLIC_LIST_CHANGE_FILTER,
   PUBLIC_LIST_CHANGE_PAGINATION,
+  PUBLIC_LIST_LOAD_INFO,
   PUBLIC_LIST_LOAD_LISTS
 } from '../constantsForReducer/publicCheckList';
 import ICheckListServiceType from '../types/serviceTypes/checkListServiceType';
@@ -10,6 +11,10 @@ import { addNotificationAction } from './notificationsAction';
 import { createNotification } from '../services/helper';
 import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { windowBlocking } from './windowAction';
+import { IGeoListPublickDTO } from '../DTO/geoListDTO';
+import { addListPointsAction } from './googleMapAction';
+import IGeoPoint from '../DTO/geoPointDTO';
+import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 
 export const changeFilter = ( nameFilter: string, value: string | number ) => ( dispatch: IDispatchFunction ) => {
   dispatch( changeFilterAction( { nameFilter, value } ) );
@@ -59,9 +64,14 @@ export const filterPublicCheckLists = ( filters: any ) => ( dispatch: IDispatchF
 export const loadPublicCheckListInfo = ( listId: string ) => ( dispatch: IDispatchFunction ) => {
   windowBlocking( true )( dispatch );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.loadMyCheckList( listId )
-    .then( ( response: any ) => {
-      console.info( 'response', response );
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
+  checkListService.getCertainPublicList( listId )
+    .then( ( listInfo: IGeoListPublickDTO ) => {
+      dispatch( loadPublicCheckListInfoAction( listInfo ) );
+      return markerService.getPointsForPublicList( listId );
+    } )
+    .then( ( geoPoints: Array<IGeoPoint> ) => {
+      dispatch( addListPointsAction( geoPoints ) );
       windowBlocking( false )( dispatch );
     } )
     .catch( ( error: any ) => {
@@ -83,4 +93,8 @@ function changePaginationAction( numberPage: string ): Object {
 
 function loadListsAction( lists: any ): Object {
   return { type: PUBLIC_LIST_LOAD_LISTS, lists };
+}
+
+function loadPublicCheckListInfoAction( listInfo: IGeoListPublickDTO ) {
+  return { type: PUBLIC_LIST_LOAD_INFO, listInfo };
 }

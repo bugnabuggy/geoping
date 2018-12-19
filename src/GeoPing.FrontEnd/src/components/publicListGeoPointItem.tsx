@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Card, CardBody, CardSubtitle, Popover, PopoverBody, PopoverHeader } from 'reactstrap';
 import IPublicListGeoPointItemProps from '../componentProps/publicListGeoPointItemProps';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { defaultMarker } from '../constants/defaultMarker';
 
 export class PublicListGeoPointItem extends React.Component<IPublicListGeoPointItemProps, any> {
   constructor( props: IPublicListGeoPointItemProps ) {
@@ -11,22 +12,36 @@ export class PublicListGeoPointItem extends React.Component<IPublicListGeoPointI
     };
   }
 
-  toggle = () => {
-    this.setState({
+  toggle = ( e?: any ) => {
+    e.stopPropagation();
+    this.setState( {
       popoverOpen: !this.state.popoverOpen,
-    });
+    } );
+  };
+  handleClick = () => {
+    if ( this.props.selectedGeoPoint.id === this.props.geoPoint.id ) {
+      this.props.selectPoint( defaultMarker );
+    } else {
+      this.props.selectPoint( this.props.geoPoint );
+    }
   };
 
   render() {
     return (
-      <Card>
+      <Card
+        className={
+          `cursor-pointer
+          ${this.props.selectedGeoPoint.id === this.props.geoPoint.id ? 'point-item-card-container' : ''}`
+        }
+        onClick={this.handleClick}
+      >
         <CardBody className="p-3">
           <CardSubtitle className="point-item-card-subtitle">
             <span>
-              fsdfsd4897687657654
+              {this.props.geoPoint.name}
             </span>
             <div
-              id={this.props.tempId}
+              id={`id_${this.props.geoPoint.id}`}
               className="cursor-pointer point"
               onClick={this.toggle}
             >
@@ -35,17 +50,17 @@ export class PublicListGeoPointItem extends React.Component<IPublicListGeoPointI
             <Popover
               isOpen={this.state.popoverOpen}
               placement="left"
-              target={this.props.tempId}
+              target={`id_${this.props.geoPoint.id}`}
               toggle={this.toggle}
             >
-              <PopoverHeader>%namePoint%</PopoverHeader>
+              <PopoverHeader>{this.props.geoPoint.name}</PopoverHeader>
               <PopoverBody>
-                <p><b>Coords:</b> 1984651 / 1654894564</p>
-                <p><b>Address:</b> fffffffsdfsdddddddddddddddddddgsdfgsdf44f5d</p>
-                <p><b>Radius:</b> 300</p>
-                <p><b>Period:</b> 1g5fd6s4g654</p>
-                <p><b>Raiting:</b> 1560</p>
-                <p><b>Subscribers:</b> 446511465</p>
+                <p><b>Coords:</b> {`${this.props.geoPoint.lat} / ${this.props.geoPoint.lng}`}</p>
+                <p><b>Address:</b> {this.props.geoPoint.description}</p>
+                <p><b>Radius:</b> {this.props.geoPoint.radius} m</p>
+                {/*<p><b>Period:</b> </p>*/}
+                {/*<p><b>Raiting:</b> </p>*/}
+                {/*<p><b>Subscribers:</b> 446511465</p>*/}
               </PopoverBody>
             </Popover>
           </CardSubtitle>

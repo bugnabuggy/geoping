@@ -16,6 +16,7 @@ import {
   getAllPublicGeoLosts,
   getAllUsersForListShared,
   getAutocompletedListUsers,
+  getCertainPublicList,
   getFreeChecksStatisticsByFilter,
   getGeoListForId,
   getGeoListMyAndHasAccess,
@@ -309,4 +310,17 @@ export default class CheckListService implements ICheckListServiceType {
         } );
     } );
   }
+
+  getCertainPublicList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getCertainPublicList.replace( '%listid%', idList ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
 }
