@@ -54,6 +54,11 @@ namespace GeoPing.Services
             _settings = settings.Value;
             _logger = logger;
         }
+        
+        public ListSharing Add(ListSharing sub)
+        {
+            return _sharingRepo.Add(sub);
+        }
 
         public OperationResult AcceptSharing(Guid actingUserId, string sharingId)
         {
@@ -442,17 +447,13 @@ namespace GeoPing.Services
 
             _emailSvc.Send(message);
         }
-
-        private bool IsSharingExists(string sharingId)
+        
+        public bool DoesSharingExist(Guid listId, string userEmail)
         {
-            var isId = Guid.TryParse(sharingId, out var id);
+            var sharing = _sharingRepo.Get()
+                .FirstOrDefault(sh => sh.ListId == listId && sh.Email == userEmail);
 
-            if (!isId)
-            {
-                return false;
-            }
-
-            return _sharingRepo.Data.Any(sh => sh.Id == id);
+            return sharing != null;
         }
 
         private bool TryGetSharing(string sharingId, out ListSharing sharing)
