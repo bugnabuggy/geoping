@@ -51,7 +51,7 @@ namespace GeoPing.Services
         public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfLists
             (Guid ownerId, CheckInStatFilterDTO filter, out int totalItems)
         {
-            _logger.LogInformation($"User with Id = [{ownerId}] requested statistics for his owned lists");
+            _logger.LogDebug($"User with Id = [{ownerId}] requested statistics for his owned lists");
 
             var lists = _listSrv.Get(l => l.OwnerId == ownerId);
 
@@ -83,7 +83,7 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
-            _logger.LogInformation($"Statistics request for owned lists by user with Id = [{ownerId}] was successful");
+            _logger.LogDebug($"Statistics request for owned lists by user with Id = [{ownerId}] was successful");
 
             return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
@@ -99,7 +99,7 @@ namespace GeoPing.Services
         public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfList
             (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
         {
-            _logger.LogInformation($"User with Id = [{userId}] requested statistics for list with Id = [{listId}]");
+            _logger.LogDebug($"User with Id = [{userId}] requested statistics for list with Id = [{listId}]");
 
             totalItems = 0;
 
@@ -153,8 +153,8 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
-            _logger.LogInformation($"Statistics request for list with Id = [{listId}] " +
-                                   $"by user with Id = [{userId}] was successful");
+            _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
+                             $"by user with Id = [{userId}] was successful");
 
             return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
@@ -170,7 +170,7 @@ namespace GeoPing.Services
         public WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat
             (Guid userId, CheckInStatFilterDTO filter, out int totalItems)
         {
-            _logger.LogInformation($"User with Id = [{userId}] requested statistics for his free checks-in");
+            _logger.LogDebug($"User with Id = [{userId}] requested statistics for his free checks-in");
 
             var checks = GetFilteredData(_checksRepo.Get(x => x.UserId == userId && x.PointId == null), filter)
                 .OrderByDescending(x => x.Date);
@@ -209,7 +209,7 @@ namespace GeoPing.Services
                     .Take((int)filter.PageSize);
             }
 
-            _logger.LogInformation($"Statistics request for free checks-in by user with Id = [{userId}] was successful");
+            _logger.LogDebug($"Statistics request for free checks-in by user with Id = [{userId}] was successful");
 
             return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
@@ -225,7 +225,7 @@ namespace GeoPing.Services
         public WebResult<IEnumerable<CheckInHistoryDTO>> GetChecksInHistory
             (Guid userId, CheckInHistoryFilterDTO filter)
         {
-            _logger.LogInformation($"User with Id = [{userId}] requested history for his checks-in");
+            _logger.LogDebug($"User with Id = [{userId}] requested history for his checks-in");
 
             var checksIn = GetFilteredData(_checksRepo.Get(x => x.UserId == userId)
                 .OrderByDescending(x => x.Date), filter);
@@ -263,7 +263,7 @@ namespace GeoPing.Services
                     .Take((int)filter.PageSize);
             }
 
-            _logger.LogInformation($"Statistics request for checks-in history by user with Id = [{userId}] was successful.");
+            _logger.LogDebug($"Statistics request for checks-in history by user with Id = [{userId}] was successful.");
 
             return new WebResult<IEnumerable<CheckInHistoryDTO>>
             {
@@ -278,8 +278,8 @@ namespace GeoPing.Services
 
         public OperationResult<IEnumerable<UserAutoCompleteDTO>> GetAllowedUsers(Guid userId, string listId)
         {
-            _logger.LogInformation($"User with Id = [{userId}] requested list of users allowed to watch " +
-                                   $"list with Id = [{listId}]");
+            _logger.LogDebug($"User with Id = [{userId}] requested list of users allowed to watch " +
+                             $"list with Id = [{listId}]");
 
             if (!_listSrv.TryGetListWithId(listId, out var list))
             {
@@ -316,7 +316,8 @@ namespace GeoPing.Services
                     Email = x.Email
                 });
 
-            _logger.LogInformation($"Request for list of users are allowed to watch geolist by user with Id = [{userId}] was successful.");
+            _logger.LogDebug("Request for list of users are allowed to watch geolist " +
+                             $"by user with Id = [{userId}] was successful.");
 
             return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
             {

@@ -27,6 +27,7 @@ namespace GeoPing.Utilities.Logger
             // Configuration object
             var config = new LoggingConfiguration();
 
+            // Syslog common target
             if (settings.SyslogCommon.IsEnable)
             {
                 var syslogTargetCommon = new SyslogTarget
@@ -56,6 +57,7 @@ namespace GeoPing.Utilities.Logger
                     syslogTargetCommon);
             }
 
+            // Syslog business target
             if (settings.SyslogBusiness.IsEnable)
             {
                 var syslogTargetBusiness = new SyslogTarget
@@ -86,15 +88,32 @@ namespace GeoPing.Utilities.Logger
                     nameof(GeoPing) + "*");
             }
 
-            // FileTarget object
-            var fileTarget = new FileTarget("fileLogger")
+            // File common target object
+            var fileCommonTarget = new FileTarget("fileCommonLogger")
             {
-                FileName = settings.File.Directory,
+                FileName = settings.FileCommon.Directory,
                 ArchiveAboveSize = 104857600,
                 MaxArchiveFiles = 1
             };
-            config.AddTarget(fileTarget);
-            config.AddRule(LogLevel.FromString(settings.File.Level), LogLevel.Fatal, fileTarget);
+            config.AddTarget(fileCommonTarget);
+            config.AddRule
+                (LogLevel.FromString(settings.FileCommon.Level), 
+                LogLevel.Fatal, 
+                fileCommonTarget);
+
+            // File business target object
+            var fileBusinessTarget = new FileTarget("fileBusinessLogger")
+            {
+                FileName = settings.FileBusiness.Directory,
+                ArchiveAboveSize = 104857600,
+                MaxArchiveFiles = 1
+            };
+            config.AddTarget(fileBusinessTarget);
+            config.AddRule
+                (LogLevel.FromString(settings.FileBusiness.Level), 
+                LogLevel.Fatal, 
+                fileBusinessTarget,
+                nameof(GeoPing) + "*");
 
             // Activate configuration object
             LogManager.Configuration = config;
