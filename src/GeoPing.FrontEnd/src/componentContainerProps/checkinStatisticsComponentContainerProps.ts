@@ -8,6 +8,7 @@ export default interface ICheckinStatisticsComponentContainerProps {
   checkList: ICheckListStateType;
   googleMap: IGoogleMapStateType;
   listId: string;
+  userId: string;
 
   loadLists: () => ( dispatch: IDispatchFunction ) => void;
   loadUsers: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
@@ -15,4 +16,8 @@ export default interface ICheckinStatisticsComponentContainerProps {
   checkInStatisticsClear: () => ( dispatch: IDispatchFunction ) => void;
   getAllCheckForList: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
   clearGeoPoint: () => ( dispatch: IDispatchFunction ) => void;
+  getFreeChecksInStatisticsByFilter: ( dateFrom: string, dateTo: string ) => ( dispatch: IDispatchFunction ) => void;
+  clearStatistic: () => ( dispatch: IDispatchFunction ) => void;
+  goTo: ( url: string ) => ( dispatch: IDispatchFunction ) => void;
+  isCheckInStatistics: () => ( dispatch: IDispatchFunction ) => void;
 }

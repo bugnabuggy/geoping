@@ -32,6 +32,7 @@ import {
   faTimes,
   faTrashAlt,
   faUserPlus,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faCheckCircle, far, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
@@ -59,6 +60,7 @@ library.add(
   faSort,
   faSortUp,
   faSortDown,
+  faInfoCircle,
   far
 );
 
@@ -81,10 +83,17 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      {getRoutes()}
-    </ConnectedRouter>
-  </Provider>,
+  <React.Fragment>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        {getRoutes()}
+      </ConnectedRouter>
+    </Provider>
+    {JSON.parse( localStorage.getItem( 'personal_information' ) ) &&
+    (
+     <div id="analitics"/>
+    )
+    }
+  </React.Fragment>,
   document.getElementById( 'app' )
 );

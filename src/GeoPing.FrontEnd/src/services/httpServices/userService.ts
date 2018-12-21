@@ -4,6 +4,8 @@ import StaticStorage from '../staticStorage';
 import {
   changeUserPassword,
   confirmEmail,
+  getCountries,
+  getTimeZones,
   getUserAccessedToList,
   loadUserData,
   resetPassword,
@@ -70,9 +72,9 @@ export default class UserService implements IUser {
 
   sendLoginOrEmail( loginOrEmail: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post( sendLoginOrEmail, {'UserData': loginOrEmail } )
+      this.communicator.post( sendLoginOrEmail, { 'UserData': loginOrEmail } )
         .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+          resolve( response );
         } )
         .catch( ( error: any ) => {
           reject( error );
@@ -100,6 +102,30 @@ export default class UserService implements IUser {
   confirmEmail( userId: string, token: string ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
       this.communicator.get( confirmEmail.replace( '%userId%', userId ).replace( '%token%', token ) )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  getCountries() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getCountries )
+        .then( ( response: any ) => {
+          resolve( getDataFromResponse( response ) );
+        } )
+        .catch( ( error: any ) => {
+          reject( error );
+        } );
+    } );
+  }
+
+  getTimeZones() {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      this.communicator.get( getTimeZones )
         .then( ( response: any ) => {
           resolve( getDataFromResponse( response ) );
         } )

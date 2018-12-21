@@ -9,11 +9,21 @@ import IAllChecklistsFilterComponentProps
   from '../../componentProps/filterComponentProps/allChecklistsFilterComponentProps';
 
 export class AllChecklistsFilterComponent extends React.Component<IAllChecklistsFilterComponentProps, any> {
+  constructor( props: IAllChecklistsFilterComponentProps ) {
+    super( props );
+    const date: any = moment();
+    this.state = {
+      startDate: date,
+      endDate: date.date( date.date() + 1 ),
+    };
+  }
+
   handleChangeStart = ( date: any ) => {
     this.setState( {
       startDate: date,
     } );
   };
+
   handleChangeEnd = ( date: any ) => {
     this.setState( {
       endDate: date,
@@ -24,15 +34,6 @@ export class AllChecklistsFilterComponent extends React.Component<IAllChecklists
     // this.props.changeFields( e.target.name, e.target.value);
     // console.log( e.target.name, e.target.value );
   };
-
-  constructor( props: IAllChecklistsFilterComponentProps ) {
-    super( props );
-    const date: any = moment();
-    this.state = {
-      startDate: date,
-      endDate: date.date( date.date() + 1 ),
-    };
-  }
 
   render() {
     return (
@@ -94,13 +95,24 @@ export class AllChecklistsFilterComponent extends React.Component<IAllChecklists
             <option value="other">...</option>
           </FormControl>
         </FormGroup>
+        <FormGroup className="admin-checklist-filter-field-name">
+          <ControlLabel>Username</ControlLabel>
+          <FormControl
+            name="Username"
+            onChange={this.handleChangeField}
+          />
+        </FormGroup>
         <FormGroup className="admin-checklist-filter-field-public">
           <ControlLabel>Is public</ControlLabel>
           <ControlLabel>not set</ControlLabel>
         </FormGroup>
         <FormGroup className="admin-checklist-filter-field-button">
-          <Button>Filter</Button>
-          <Button>Clear</Button>
+          <div>
+            <Button>Filter</Button>
+          </div>
+          <div>
+            <Button>Clear</Button>
+          </div>
         </FormGroup>
       </div>
     );

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,13 @@ namespace GeoPing.Api.Controllers
                                       c.Type,
                                       c.Value
                                   });
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        public IActionResult GetGuidFromUrl(Guid id)
+        {
+            return Ok(id);
         }
     }
 }

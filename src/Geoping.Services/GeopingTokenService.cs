@@ -6,6 +6,7 @@ using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace GeoPing.Services
@@ -17,44 +18,51 @@ namespace GeoPing.Services
         private IGeopingUserService _userSrv;
         private ISecurityService _secutitySrv;
         private ApplicationSettings _settings;
+        private ILogger<GeopingTokenService> _logger;
 
         public GeopingTokenService
             (IRepository<GeoPingToken> tokenRepo,
             IRepository<ListSharing> sharingRepo,
             ISecurityService securitySrv,
             IOptions<ApplicationSettings> settings,
-            IGeopingUserService userSrv)
+            IGeopingUserService userSrv,
+            ILogger<GeopingTokenService> logger)
         {
             _tokenRepo = tokenRepo;
             _sharingRepo = sharingRepo;
             _userSrv = userSrv;
             _secutitySrv = securitySrv;
             _settings = settings.Value;
+            _logger = logger;
         }
 
         // Value = ListSharing`s ID
-        public GeoPingToken CreateSharingInviteToken(string value)
+        public GeoPingToken CreateSharingInviteToken(string sharingId)
         {
+            _logger.LogDebug($"Creating new sharing-invite token for sharing with Id = [{sharingId}].");
+
             var result = _tokenRepo.Add(new GeoPingToken
             {
                 Type = "SharingInvite",
                 Created = DateTime.UtcNow,
-                Value = value,
-                Token = _secutitySrv.GetSHA256HashString(value)
+                Value = sharingId,
+                Token = _secutitySrv.GetSHA256HashString($"{sharingId}{Guid.NewGuid()}")
             });
 
             return result;
         }
 
         // Value = ListSharing`s ID
-        public GeoPingToken CreateSharingToken(string value)
+        public GeoPingToken CreateSharingToken(string sharingId)
         {
+            _logger.LogDebug($"Creating new sharing token for sharing with Id = [{sharingId}].");
+
             var result = _tokenRepo.Add(new GeoPingToken
             {
                 Type = "Sharing",
                 Created = DateTime.UtcNow,
-                Value = value,
-                Token = _secutitySrv.GetSHA256HashString(value)
+                Value = sharingId,
+                Token = _secutitySrv.GetSHA256HashString($"{sharingId}{Guid.NewGuid()}")
             });
 
             return result;
@@ -62,6 +70,8 @@ namespace GeoPing.Services
 
         public void DeleteSharingTokens(string sharingId)
         {
+            _logger.LogDebug($"Deleting sharing tokens for sharing with Id = [{sharingId}].");
+
             var tokens = _tokenRepo.Data.Where(x => x.Value == sharingId).AsEnumerable();
 
             _tokenRepo.Delete(tokens);
@@ -69,6 +79,8 @@ namespace GeoPing.Services
 
         public GeoPingToken CreateConfirmationEmailToken(string userId, string aspnetToken)
         {
+            _logger.LogDebug($"Creating new email confirmation token for user with Id = [{userId}].");
+
             var value = $"{userId},{aspnetToken}";
 
             var result = _tokenRepo.Add(new GeoPingToken
@@ -84,6 +96,8 @@ namespace GeoPing.Services
 
         public GeoPingToken CreateConfirmationResetToken(string userId, string aspnetToken)
         {
+            _logger.LogDebug($"Creating new password reset confirmation token for user with Id = [{userId}].");
+
             var value = $"{userId},{aspnetToken}";
 
             var result = _tokenRepo.Add(new GeoPingToken
@@ -97,11 +111,9 @@ namespace GeoPing.Services
             return result;
         }
 
-        public OperationResult<TokenInfoDTO> ExamineToken(string token)
+        public OperationResult<TokenInfoDTO> ExamineSharingToken(string token)
         {
-            var gpToken = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
-
-            if (gpToken == null)
+            if (!TryGetToken(token, out var gpToken))
             {
                 return new OperationResult<TokenInfoDTO>
                 {
@@ -109,10 +121,14 @@ namespace GeoPing.Services
                 };
             }
 
+            _logger.LogDebug($"Examination token: Token = [{gpToken.Token}], Type = [{gpToken.Type}].");
+
             var validationResult = ValidateGPToken(gpToken);
 
             if (validationResult != null)
             {
+                _logger.LogDebug($"Examined token = [{gpToken.Token}] is {validationResult}.");
+
                 return new OperationResult<TokenInfoDTO>
                 {
                     Messages = new[] { $"{validationResult} token." }
@@ -123,6 +139,8 @@ namespace GeoPing.Services
 
             if (sharing == null)
             {
+                _logger.LogWarning($"An error occured while examination sharing token: sharing doesn`t exist.");
+
                 return new OperationResult<TokenInfoDTO>()
                 {
                     Messages = new[] { "List sharing doesn`t exist." }
@@ -133,8 +151,6 @@ namespace GeoPing.Services
             var userData = gpToken.Type == "SharingInvite"
                 ? sharing.Email
                 : _userSrv.GetUser(x => x.Email == sharing.Email).Login;
-
-            MarkAsUsed(token);
 
             return new OperationResult<TokenInfoDTO>
             {
@@ -149,55 +165,46 @@ namespace GeoPing.Services
             };
         }
 
-        public GeoPingToken GetToken(string token)
-        {
-            var result = _tokenRepo.Get().FirstOrDefault(x => x.Token == token);
-
-            if (ValidateGPToken(result) == null)
-            {
-                return result;
-            }
-
-            return null;
-        }
-
         public OperationResult MarkAsUsed(string token)
         {
             var gpToken = _tokenRepo.Data.FirstOrDefault(x => x.Token == token);
 
-            if (gpToken != null)
+            if (gpToken == null)
             {
-                gpToken.IsUsed = true;
-
-                _tokenRepo.Update(gpToken);
-
                 return new OperationResult
                 {
-                    Success = true,
-                    Messages = new[] { "Token is used now" }
+                    Messages = new[] { "Token is invalid" }
                 };
+
             }
+
+            gpToken.IsUsed = true;
+
+            _tokenRepo.Update(gpToken);
 
             return new OperationResult
             {
-                Messages = new[] { "Token is invalid" }
+                Success = true,
+                Messages = new[] { "Token is used now" }
             };
         }
 
         public string ValidateGPToken(GeoPingToken gpToken)
         {
-            if (gpToken != null)
+            if (gpToken == null)
             {
-                if (gpToken.IsUsed)
-                {
-                    return "Used";
-                }
+                return null;
+            }
 
-                if ((DateTime.UtcNow - gpToken.Created).Seconds >
-                    _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
-                {
-                    return "Expired";
-                }
+            if (gpToken.IsUsed)
+            {
+                return "Used";
+            }
+
+            if ((DateTime.UtcNow - gpToken.Created).Seconds >
+                _settings.GeopingToken.TokenLifetime.GetValue(gpToken.Type))
+            {
+                return "Expired";
             }
 
             return null;
@@ -211,3 +218,4 @@ namespace GeoPing.Services
         }
     }
 }
+ 

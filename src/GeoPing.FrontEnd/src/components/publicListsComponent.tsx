@@ -12,10 +12,11 @@ export class PublicListsComponent extends React.Component<IPublicListsComponentP
       return (
         <PublicListItem
           key={uuidV4()}
-          author={item.ownerName}
-          nameList={item.name}
-          raiting={item.rating}
-          subscribers={item.subscribersNumber}
+          point={item}
+          // author={item.ownerName}
+          // nameList={item.name}
+          // raiting={item.rating}
+          // subscribers={item.subscribersNumber}
         />
       );
     } );

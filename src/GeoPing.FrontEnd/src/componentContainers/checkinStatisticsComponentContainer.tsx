@@ -9,17 +9,22 @@ import { CheckinStatisticsComponent } from '../components/checkinStatisticsCompo
 import TableMarkerStatisticsComponentContainer from '../componentContainers/tableMarkerStatisticsComponentContainer';
 import {
   checkInStatisticsClear,
+  clearStatistic,
   getAllCheckForList,
+  getFreeChecksInStatisticsByFilter,
+  isCheckInStatistics,
   loadLists,
   loadPoints,
   loadUsers
 } from '../actions/checkinStatisticsActions';
 import { clearGeoPoint } from '../actions/googleMapAction';
+import { goTo } from '../actions/windowAction';
 
 class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatisticsComponentContainerProps, any> {
   componentDidMount() {
+    this.props.isCheckInStatistics();
     this.props.loadLists();
-    if ( this.props.listId !== 'none') {
+    if ( this.props.listId !== 'none' ) {
       this.props.loadUsers( this.props.listId );
     }
   }
@@ -35,13 +40,20 @@ class CheckinStatisticsComponentContainer extends React.Component<ICheckinStatis
           checkinStatistics={this.props.checkinStatistics}
           checkList={this.props.checkList}
           listId={this.props.listId}
+          userId={this.props.userId}
 
           loadUsers={this.props.loadUsers}
           loadPoints={this.props.loadPoints}
           getAllCheckForList={this.props.getAllCheckForList}
           clearGeoPoint={this.props.clearGeoPoint}
+          getFreeChecksInStatisticsByFilter={this.props.getFreeChecksInStatisticsByFilter}
+          clearStatistic={this.props.clearStatistic}
+          goTo={this.props.goTo}
         />
-        <TableMarkerStatisticsComponentContainer/>
+        <TableMarkerStatisticsComponentContainer
+          listId={this.props.listId}
+          userId={this.props.userId}
+        />
       </React.Fragment>
     );
   }
@@ -64,6 +76,10 @@ const mapDispatchToProps = ( dispath: any ) =>
       checkInStatisticsClear,
       getAllCheckForList,
       clearGeoPoint,
+      getFreeChecksInStatisticsByFilter,
+      clearStatistic,
+      goTo,
+      isCheckInStatistics,
     },
     dispath );
 

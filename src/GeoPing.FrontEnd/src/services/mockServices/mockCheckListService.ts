@@ -233,4 +233,16 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
+  getFreeChecksInStatisticsByFilter( dateFrom: string, dateTo: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve( 'ok' );
+    } );
+  }
+
+  getCertainPublicList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve( 'ok' );
+    } );
+  }
+
 }

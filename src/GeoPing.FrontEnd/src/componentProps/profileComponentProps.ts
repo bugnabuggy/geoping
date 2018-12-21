@@ -1,9 +1,11 @@
 import IProfileStateType from '../types/stateTypes/profileStateType';
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
+import IWindowStateType from '../types/stateTypes/windowStateType';
 
 export  interface IProfileComponentProps {
   profileState: IProfileStateType;
   isShowModal: boolean;
+  window: IWindowStateType;
 
   loadProfileData: (idUser: string) => (dispatch: IDispatchFunction ) => void;
   updateProfileData: (data: any) => (dispatch: IDispatchFunction ) => void;

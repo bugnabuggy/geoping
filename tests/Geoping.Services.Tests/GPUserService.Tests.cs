@@ -12,6 +12,7 @@ using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -24,6 +25,7 @@ namespace GeoPing.Services.Tests
         private IRepository<GeoPingUser> _gpUserRepo;
         private Mock<IOptions<ApplicationSettings>> _settings;
         private UserManager<AppIdentityUser> _usermanager;
+        private Mock<ILogger<GeopingUserService>> _mockLogger;
 
         private IGeopingUserService _sut;
 
@@ -36,6 +38,7 @@ namespace GeoPing.Services.Tests
 
             _gpUserRepo = _services.GetRequiredService<IRepository<GeoPingUser>>();
             _usermanager = _services.GetRequiredService<UserManager<AppIdentityUser>>();
+            _mockLogger = new Mock<ILogger<GeopingUserService>>();
 
             _settings = new Mock<IOptions<ApplicationSettings>>();
             _settings
@@ -49,7 +52,7 @@ namespace GeoPing.Services.Tests
                     }
                 });
 
-            _sut = new GeopingUserService(_gpUserRepo, _settings.Object, _usermanager);
+            _sut = new GeopingUserService(_gpUserRepo, _settings.Object, _usermanager, _mockLogger.Object);
         }
 
         [Test]

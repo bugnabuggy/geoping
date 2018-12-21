@@ -5,42 +5,57 @@ using System.Linq.Expressions;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
+using GeoPing.Core.Models.Enums;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace GeoPing.Services
 {
     public class CheckInStatisticsService : ICheckInStatisticsService
     {
-        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> _orderBys =
+        private Dictionary<string, Expression<Func<CheckInStatsDTO, object>>> _orderStatBys =
             new Dictionary<string, Expression<Func<CheckInStatsDTO, object>>>
             {
-                {"pointName", x => x.Point.Name},
-                {"date", x => x.Check.Date}
+                {"pointName", x => x.Name},
+                {"date", x => x.CheckInDate}
+            };
+
+        private Dictionary<string, Expression<Func<CheckInHistoryDTO, object>>> _orderHistoryBys =
+            new Dictionary<string, Expression<Func<CheckInHistoryDTO, object>>>
+            {
+                {"listName", x => x.ListName},
+                {"date", x => x.CheckInDate}
             };
 
         private IRepository<CheckIn> _checksRepo;
         private IGeolistService _listSrv;
         private IGeopointService _pointSrv;
         private ISecurityService _securitySrv;
+        private ILogger<CheckInStatisticsService> _logger;
 
-        public CheckInStatisticsService(IRepository<CheckIn> checksRepo,
-                                        IGeolistService listSrv,
-                                        IGeopointService pointSrv,
-                                        ISecurityService securitySrv)
+        public CheckInStatisticsService
+            (IRepository<CheckIn> checksRepo,
+            IGeolistService listSrv,
+            IGeopointService pointSrv,
+            ISecurityService securitySrv,
+            ILogger<CheckInStatisticsService> logger)
         {
             _checksRepo = checksRepo;
             _listSrv = listSrv;
             _pointSrv = pointSrv;
             _securitySrv = securitySrv;
+            _logger = logger;
         }
 
         public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfLists
             (Guid ownerId, CheckInStatFilterDTO filter, out int totalItems)
         {
-            _listSrv.GetAllowedLists(ownerId);
+            _logger.LogDebug($"User with Id = [{ownerId}] requested statistics for his owned lists");
 
-            var points = _pointSrv.Get(p => _listSrv.GetAllowedLists(ownerId).Any(l => p.ListId == l.Id));
+            var lists = _listSrv.Get(l => l.OwnerId == ownerId);
+
+            var points = _pointSrv.Get(p => lists.Any(l => p.ListId == l.Id));
 
             var checks = GetFilteredData(_checksRepo.Get(), filter)
                 .OrderByDescending(x => x.Date)
@@ -53,9 +68,9 @@ namespace GeoPing.Services
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderBys[filter.OrderBy];
+                var orderExpression = _orderStatBys[filter.OrderBy];
 
                 data = filter.IsDesc
                     ? data.OrderByDescending(orderExpression)
@@ -67,6 +82,8 @@ namespace GeoPing.Services
                 data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
                            .Take((int)filter.PageSize);
             }
+
+            _logger.LogDebug($"Statistics request for owned lists by user with Id = [{ownerId}] was successful");
 
             return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
@@ -82,12 +99,15 @@ namespace GeoPing.Services
         public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfList
             (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
         {
+            _logger.LogDebug($"User with Id = [{userId}] requested statistics for list with Id = [{listId}]");
+
             totalItems = 0;
 
-            var isListExist = _listSrv.IsListExistWithThisId(listId, out var list);
-
-            if (!isListExist)
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
+                _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
+                                 $"by user with Id = [{userId}] was failed: list doesn`t exist");
+
                 return new WebResult<IEnumerable<CheckInStatsDTO>>
                 {
                     Messages = new[] { $"There is no list with Id = [{listId}]" }
@@ -96,9 +116,12 @@ namespace GeoPing.Services
 
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, list))
             {
+                _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
+                                 $"by user with Id = [{userId}] was failed: user has no rights to do this action.");
+
                 return new WebResult<IEnumerable<CheckInStatsDTO>>
                 {
-                    Messages = new[] { $"You have no rights to manipulate list with Id = [{listId}]", "Unauthorized" }
+                    Messages = new[] { "Unauthorized" }
                 };
             }
 
@@ -115,9 +138,9 @@ namespace GeoPing.Services
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderBys[filter.OrderBy];
+                var orderExpression = _orderStatBys[filter.OrderBy];
 
                 data = filter.IsDesc
                     ? data.OrderByDescending(orderExpression)
@@ -130,6 +153,9 @@ namespace GeoPing.Services
                            .Take((int)filter.PageSize);
             }
 
+            _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
+                             $"by user with Id = [{userId}] was successful");
+
             return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
                 Data = data,
@@ -141,35 +167,35 @@ namespace GeoPing.Services
             };
         }
 
-        public WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat(Guid userId, CheckInStatFilterDTO filter, out int totalItems)
+        public WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat
+            (Guid userId, CheckInStatFilterDTO filter, out int totalItems)
         {
-            var checks = GetFilteredData(_checksRepo.Get(x => x.UserId == userId), filter)
+            _logger.LogDebug($"User with Id = [{userId}] requested statistics for his free checks-in");
+
+            var checks = GetFilteredData(_checksRepo.Get(x => x.UserId == userId && x.PointId == null), filter)
                 .OrderByDescending(x => x.Date);
 
             var data =
                 from ch in checks
                 select new CheckInStatsDTO
                 {
-                    Point = new CheckInStatPointDTO(),
-                    Check = new CheckInStatCheckDTO
-                    {
-                        UserId = ch.UserId,
-                        Latitude = ch.Latitude,
-                        Longitude = ch.Longitude,
-                        Date = ch.Date.ToUniversalTime(),
-                        Ip = ch.Ip,
-                        DeviceId = ch.DeviceId,
-                        UserAgent = ch.UserAgent
-                    }
+                    CheckInId = ch.Id,
+                    Address = ch.Description,
+                    CheckInDate = ch.Date,
+                    Distance = ch.Distance,
+                    Latitude = ch.Latitude,
+                    Longitude = ch.Longitude,
+                    Type = CheckInType.FreeCheck.ToString(),
+                    UserId = userId
                 };
 
             totalItems = data.Count();
 
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderBys[filter.OrderBy];
+                var orderExpression = _orderStatBys[filter.OrderBy];
 
                 data = filter.IsDesc
                     ? data.OrderByDescending(orderExpression)
@@ -183,6 +209,8 @@ namespace GeoPing.Services
                     .Take((int)filter.PageSize);
             }
 
+            _logger.LogDebug($"Statistics request for free checks-in by user with Id = [{userId}] was successful");
+
             return new WebResult<IEnumerable<CheckInStatsDTO>>
             {
                 Data = data,
@@ -194,12 +222,70 @@ namespace GeoPing.Services
             };
         }
 
+        public WebResult<IEnumerable<CheckInHistoryDTO>> GetChecksInHistory
+            (Guid userId, CheckInHistoryFilterDTO filter)
+        {
+            _logger.LogDebug($"User with Id = [{userId}] requested history for his checks-in");
+
+            var checksIn = GetFilteredData(_checksRepo.Get(x => x.UserId == userId)
+                .OrderByDescending(x => x.Date), filter);
+
+            var data =
+                from ch in checksIn
+                join p in _pointSrv.Get() on ch.PointId equals p.Id
+                into history
+                from h in history.DefaultIfEmpty(new GeoPoint() { Geolist = new GeoList() })
+                select new CheckInHistoryDTO
+                {
+                    CheckInDate = ch.Date,
+                    LatLng = $"{ch.Latitude} / {ch.Longitude}",
+                    ListName = h.Geolist.Name ?? "-Free check-",
+                    Info = h.Address ?? ch.Description
+                };
+
+            var totalItems = data.Count();
+
+            filter.PageNumber = filter.PageNumber ?? 0;
+
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderStatBys.ContainsKey(filter.OrderBy))
+            {
+                var orderExpression = _orderHistoryBys[filter.OrderBy];
+
+                data = filter.IsDesc
+                    ? data.OrderByDescending(orderExpression)
+                    : data.OrderBy(orderExpression);
+            }
+
+            if (filter.PageSize != null)
+            {
+                data = data
+                    .Skip((int)filter.PageSize * (int)filter.PageNumber)
+                    .Take((int)filter.PageSize);
+            }
+
+            _logger.LogDebug($"Statistics request for checks-in history by user with Id = [{userId}] was successful.");
+
+            return new WebResult<IEnumerable<CheckInHistoryDTO>>
+            {
+                Data = data,
+                Success = true,
+                Messages = new[] { $"There is checks-in history for user Id = [{userId}]" },
+                PageNumber = filter.PageNumber,
+                PageSize = filter.PageSize,
+                TotalItems = totalItems
+            };
+        }
+
         public OperationResult<IEnumerable<UserAutoCompleteDTO>> GetAllowedUsers(Guid userId, string listId)
         {
-            var isListExists = _listSrv.IsListExistWithThisId(listId, out var list);
+            _logger.LogDebug($"User with Id = [{userId}] requested list of users allowed to watch " +
+                             $"list with Id = [{listId}]");
 
-            if (list == null)
+            if (!_listSrv.TryGetListWithId(listId, out var list))
             {
+                _logger.LogDebug($"Request for list of users allowed to watch list with Id = [{listId}] " +
+                                 $"by user with Id = [{userId}] was failed: list doesn`t exist");
+
                 return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
                 {
                     Messages = new[] { $"There is no list with id = [{listId}]" }
@@ -208,6 +294,9 @@ namespace GeoPing.Services
 
             if (!_securitySrv.IsUserHasAccessToWatchList(userId, list))
             {
+                _logger.LogDebug($"Request for list of users allowed to watch list with Id = [{listId}] " +
+                                 $"by user with Id = [{userId}] was failed: user has no rights to do this action.");
+
                 return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
                 {
                     Messages = new[] { "Unauthorized" }
@@ -226,6 +315,9 @@ namespace GeoPing.Services
                     UserName = x.Login,
                     Email = x.Email
                 });
+
+            _logger.LogDebug("Request for list of users are allowed to watch geolist " +
+                             $"by user with Id = [{userId}] was successful.");
 
             return new OperationResult<IEnumerable<UserAutoCompleteDTO>>
             {
@@ -258,6 +350,23 @@ namespace GeoPing.Services
             return data;
         }
 
+        private IQueryable<CheckIn> GetFilteredData
+            (IQueryable<CheckIn> data, CheckInHistoryFilterDTO filter)
+        {
+            var isDatePeriodFrom = DateTime.TryParse(filter.DatePeriodFrom, out var periodFrom);
+            var isDatePeriodTo = DateTime.TryParse(filter.DatePeriodTo, out var periodTo);
+
+            data = isDatePeriodFrom
+                ? data.Where(x => x.Date >= periodFrom)
+                : data;
+
+            data = isDatePeriodTo
+                ? data.Where(x => x.Date <= periodTo)
+                : data;
+
+            return data;
+        }
+
         private IQueryable<CheckInStatsDTO> GetCheckInStat(IQueryable<GeoPoint> points, IQueryable<CheckIn> checks)
         {
             var data = from p in points
@@ -265,30 +374,17 @@ namespace GeoPing.Services
                        from x in stat.DefaultIfEmpty()
                        select new CheckInStatsDTO
                        {
-                           Point = new CheckInStatPointDTO
-                           {
-                               Id = p.Id,
-                               Name = p.Name,
-                               Description = p.Description,
-                               Latitude = p.Latitude,
-                               Longitude = p.Longitude,
-                               Radius = p.Radius,
-                               Address = p.Address
-                           },
-                           Check = x != null
-                               ? new CheckInStatCheckDTO
-                               {
-                                   UserId = x.UserId,
-                                   PointId = x.PointId,
-                                   Latitude = x.Latitude,
-                                   Longitude = x.Longitude,
-                                   Distance = x.Distance,
-                                   Date = x.Date.ToUniversalTime(),
-                                   Ip = x.Ip,
-                                   DeviceId = x.DeviceId,
-                                   UserAgent = x.UserAgent
-                               }
-                               : new CheckInStatCheckDTO()
+                           Address = p.Address,
+                           Name = p.Name,
+                           PointId = p.Id,
+                           Latitude = p.Latitude,
+                           Longitude = p.Longitude,
+                           Radius = p.Radius,
+                           CheckInId = x != null ? (Guid?)x.Id : null,
+                           CheckInDate = x != null ? (DateTime?)x.Date : null,
+                           Distance = x != null ? x.Distance : null,
+                           Type = x != null ? CheckInType.Checked.ToString() : CheckInType.Unchecked.ToString(),
+                           UserId = x != null ? (Guid?)x.UserId : null,
                        };
 
             return data;

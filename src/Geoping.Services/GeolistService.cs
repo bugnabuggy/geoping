@@ -7,12 +7,13 @@ using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace GeoPing.Services
 {
     public class GeolistService : IGeolistService
     {
-        private readonly Dictionary<string, Expression<Func<GeoList, object>>> _orderCommonBys =
+        private readonly Dictionary<string, Expression<Func<GeoList, object>>> _orderBys =
             new Dictionary<string, Expression<Func<GeoList, object>>>
             {
             {"name", x => x.Name},
@@ -21,53 +22,48 @@ namespace GeoPing.Services
             {"isPublic", x => x.IsPublic}
         };
 
-        private Dictionary<string, Expression<Func<PublicListDTO, object>>> _orderPublicBys =
-            new Dictionary<string, Expression<Func<PublicListDTO, object>>>
-            {
-            {"name", x => x.Name},
-            {"author", x => x.OwnerName},
-            {"dateCreated", x => x.CreateDate},
-            {"dateEdited", x => x.EditDate},
-            {"datePublished", x => x.PublishDate},
-            {"rating", x => x.Rating},
-            {"subs", x => x.SubscribersNumber},
-            {"finihers", x => x.FinishersNumber},
-            {"isOfficial", x => x.IsOfficial}
-        };
-
 
         private IRepository<GeoList> _geolistRepo;
         private IRepository<PublicList> _publicGeolistRepo;
         private IRepository<GeoPingUser> _gpUserRepo;
         private IRepository<ListSharing> _sharingRepo;
         private ISecurityService _securitySrv;
+        private ILogger<GeolistService> _logger;
 
         public GeolistService
             (IRepository<GeoList> geolistRepo, 
             IRepository<PublicList> publicGeolistRepo, 
             IRepository<GeoPingUser> gpUserRepo, 
             ISecurityService securitySrv,
-            IRepository<ListSharing> sharingRepo)
+            IRepository<ListSharing> sharingRepo,
+            ILogger<GeolistService> logger)
         {
             _geolistRepo = geolistRepo;
             _publicGeolistRepo = publicGeolistRepo;
             _gpUserRepo = gpUserRepo;
             _securitySrv = securitySrv;
             _sharingRepo = sharingRepo;
+            _logger = logger;
         }
 
         public IQueryable<GeoList> Get()
         {
+            _logger.LogDebug("Getting all of geolist");
+
             return _geolistRepo.Get();
         }
 
         public IQueryable<GeoList> Get(Expression<Func<GeoList, bool>> func)
         {
+            _logger.LogDebug($"Getting geolists by query {func.Body.ToString()}");
+
             return _geolistRepo.Get(func);
         }
 
         public IQueryable<GeoList> GetAllowedLists(Guid userId)
         {
+            _logger.LogDebug($"Getting allowed geolists for user Id = [{userId}]");
+
             var sharings = _sharingRepo.Get(x => x.UserId == userId &&
                                                  x.Status == "accepted");
 
@@ -79,6 +75,8 @@ namespace GeoPing.Services
 
         public WebResult<IQueryable<GeoList>> GetByFilter(Guid userId, UsersGeolistFilterDTO filter, out int totalItems)
         {
+            _logger.LogDebug($"Getting owned geolists by filter for user Id = [{userId}]");
+
             var data = _geolistRepo.Get(x => x.OwnerId == userId);
 
             // Filtering by public status. There is no filtering if isPublic field in filter is null
@@ -87,11 +85,11 @@ namespace GeoPing.Services
                 data = data.Where(x => x.IsPublic == filter.IsPublic);
             }
 
-            data = FilterListsByCommonFilter(data, filter);
+            data = FilterListsByFilter(data, filter);
 
             totalItems = data.Count();
 
-            data = PaginationByCommonFilter(data, filter);
+            data = PaginateByFilter(data, filter);
 
             return new WebResult<IQueryable<GeoList>>
             {
@@ -103,46 +101,14 @@ namespace GeoPing.Services
             };
         }
 
-        public WebResult<IQueryable<PublicListDTO>> GetByFilter(Guid ownerId, PublicGeolistFilterDTO filter, out int totalItems)
-        {
-            var data = _geolistRepo.Get(x => x.IsPublic &&
-                                             x.OwnerId == ownerId);
-
-            var result = GetPublicByFilter(data, filter);
-
-            totalItems = result.Count();
-
-            return new WebResult<IQueryable<PublicListDTO>>
-            {
-                Data = result,
-                Success = true,
-                PageNumber = filter.PageNumber,
-                PageSize = filter.PageSize,
-                TotalItems = totalItems
-            };
-        }
-
-        public WebResult<IQueryable<PublicListDTO>> GetByFilter(PublicGeolistFilterDTO filter, out int totalItems)
-        {
-            var data = _geolistRepo.Get(x => x.IsPublic);
-
-            var result = GetPublicByFilter(data, filter);
-
-            totalItems = result.Count();
-
-            return new WebResult<IQueryable<PublicListDTO>>
-            {
-                Data = result,
-                Success = true,
-                PageNumber = filter.PageNumber,
-                PageSize = filter.PageSize,
-                TotalItems = totalItems
-            };
-        }
-
         public OperationResult<GeoList> Add(GeoList item)
         {
+            _logger.LogInformation($"Creating new list: Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}].");
+
             var result = _geolistRepo.Add(item);
+
+            // TODO: REFACTOR THIS PART: MOVE CREATION AND CHECK FOR EXISTENCE PUBLIC PART TO PUBLIC SERVICE
 
             if (item.IsPublic)
             {
@@ -163,16 +129,25 @@ namespace GeoPing.Services
 
         public OperationResult<GeoList> Update(Guid userId, GeoList item)
         {
+            _logger.LogInformation($"Editing list: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
+
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
+                _logger.LogWarning($"An error was occured while editing geolist id = [{item.Id}]: " +
+                                       $"user Id = [{userId}] has no rights to do this.");
+
                 return new OperationResult<GeoList>
                 {
-                    Messages = new[] { "You have no rights to maniputale this list" }
+                    Messages = new[] { "Unauthorized", "You have no rights to manipulate this list" }
                 };
             }
 
             if (item.IsPublic)
             {
+                // TODO: REFACTOR THIS PART: MOVE CREATION AND CHECK FOR EXISTENCE PUBLIC PART TO PUBLIC SERVICE
+
                 var wasPublic = _publicGeolistRepo.Get().Any(x => x.ListId == item.Id);
                 if (!wasPublic)
                 {
@@ -183,7 +158,12 @@ namespace GeoPing.Services
                     });
                 }
             }
+
             var result = _geolistRepo.Update(item);
+
+            _logger.LogInformation($"List was edited: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
 
             return new OperationResult<GeoList>
             {
@@ -196,22 +176,26 @@ namespace GeoPing.Services
         // Delete one of list
         public OperationResult<GeoList> Delete(Guid userId, GeoList item)
         {
+            _logger.LogInformation($"Deleting list: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
+
             if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
+                _logger.LogWarning($"An error was occured while deleting geolist id = [{item.Id}]: " +
+                                   $"user Id = [{userId}] has no rights to do this.");
+
                 return new OperationResult<GeoList>
                 {
-                    Messages = new[] { $"You have no rights to manipulate list with Id = [{item.Id}]." }
+                    Messages = new[] { "Unauthorized", $"You have no rights to manipulate list with Id = [{item.Id}]." }
                 };
             }
 
             _geolistRepo.Delete(item);
 
-            var publicList = _publicGeolistRepo.Data.FirstOrDefault(x => x.ListId == item.Id);
-
-            if (publicList != null)
-            {
-                _publicGeolistRepo.Delete(publicList);
-            }
+            _logger.LogInformation($"List was deleted: Id = [{item.Id}], " +
+                                   $"Name = [{item.Name}], " +
+                                   $"Creator = [{item.OwnerId}]");
 
             return new OperationResult<GeoList>
             {
@@ -238,17 +222,7 @@ namespace GeoPing.Services
 
             foreach (var id in ids)
             {
-                var isListId = Guid.TryParse(id, out Guid listId);
-
-                if (!isListId)
-                {
-                    messages.Add($"Given geolistId = [{id}] is not valid");
-                    continue;
-                }
-
-                var list = Get().FirstOrDefault(x => x.Id == listId);
-
-                if (list == null)
+                if (!TryGetListWithId(id, out var list))
                 {
                     messages.Add($"There are no geolist with given geolistId = [{id}]");
                     continue;
@@ -264,56 +238,37 @@ namespace GeoPing.Services
             };
         }
 
-        public bool IsListExistWithThisId(string id, out GeoList list)
+        public bool IsListExistWithId(string listId)
         {
-            var isListId = Guid.TryParse(id, out Guid listId);
-            list = null;
-            if (!isListId)
+            var isId = Guid.TryParse(listId, out var id);
+
+            if (!isId)
             {
                 return false;
             }
 
-            list = Get().FirstOrDefault(x => x.Id == listId);
-            if (list == null)
+            var list = Get().FirstOrDefault(x => x.Id == id);
+
+            return list != null;
+        }
+
+        public bool TryGetListWithId(string listId, out GeoList list)
+        {
+            var isId = Guid.TryParse(listId, out var id);
+
+            if (!isId)
             {
+                list = null;
+
                 return false;
             }
 
-            return true;
+            list = _geolistRepo.Data.FirstOrDefault(x => x.Id == id);
+
+            return list != null;
         }
 
-        private IQueryable<PublicListDTO> GetPublicByFilter(IQueryable<GeoList> data, PublicGeolistFilterDTO filter)
-        {
-            data = FilterListsByCommonFilter(data, filter);
-
-            var publicData = from a in data
-                             from b in _publicGeolistRepo.Get()
-                             where a.Id == b.ListId
-                             select new PublicListDTO
-                             {
-                                 Id = a.Id,
-                                 Name = a.Name,
-                                 Description = a.Description,
-                                 OwnerId = a.OwnerId,
-                                 OwnerName = _gpUserRepo.Get().FirstOrDefault(x => x.Id == a.OwnerId).Login,
-                                 CreateDate = a.Created.ToUniversalTime(),
-                                 EditDate = a.Edited.ToUniversalTime(),
-                                 PublishDate = b.PublishDate.ToUniversalTime(),
-                                 Rating = b.Rating,
-                                 SubscribersNumber = b.SubscribersNumber,
-                                 FinishersNumber = b.FinishersNumber,
-                                 IsOfficial = b.IsOfficial
-                             };
-
-            publicData = FilterListsByPublicFilter(publicData, filter);
-
-            publicData = PaginationByPublicFilter(publicData, filter);
-
-            return publicData;
-        }
-
-        private IQueryable<GeoList> FilterListsByCommonFilter
-            (IQueryable<GeoList> data, GeolistFilterDTO filter)
+        public IQueryable<GeoList> FilterListsByFilter(IQueryable<GeoList> data, GeolistFilterDTO filter)
         {
             var isCreatedFrom = DateTime.TryParse(filter.DateCreatedFrom, out DateTime createdFrom);
             var isCreatedTo = DateTime.TryParse(filter.DateCreatedTo, out DateTime createdTo);
@@ -346,69 +301,13 @@ namespace GeoPing.Services
             return data;
         }
 
-        private IQueryable<PublicListDTO> FilterListsByPublicFilter
-            (IQueryable<PublicListDTO> data, PublicGeolistFilterDTO filter)
-        {
-            if (filter.IsOfficial != null)
-            {
-                data = data.Where(x => x.IsOfficial == filter.IsOfficial);
-            }
-
-            var isPublishedFrom = DateTime.TryParse(filter.DatePublishFrom, out DateTime publishedFrom);
-            var isPublishedTo = DateTime.TryParse(filter.DatePublishTo, out DateTime publishedTo);
-
-            // Filtering by publish date
-            data = isPublishedFrom
-                 ? data.Where(x => x.PublishDate >= publishedFrom)
-                 : data;
-
-            data = isPublishedTo
-                 ? data.Where(x => x.PublishDate <= publishedTo)
-                 : data;
-
-            // Filtering by author name
-            data = !string.IsNullOrEmpty(filter.Author)
-                     ? data.Where(x => x.OwnerName.Contains(filter.Author))
-                     : data;
-
-            // Filtering by rating
-            data = filter.RatingFrom != null
-                 ? data.Where(x => x.Rating >= filter.RatingFrom)
-                 : data;
-
-            data = filter.RatingTo != null
-                 ? data.Where(x => x.Rating <= filter.RatingTo)
-                 : data;
-
-            // Filtering by subscribers number 
-            data = filter.SubsFrom != null
-                 ? data.Where(x => x.SubscribersNumber >= filter.SubsFrom)
-                 : data;
-
-            data = filter.SubsTo != null
-                 ? data.Where(x => x.SubscribersNumber <= filter.SubsTo)
-                 : data;
-
-            // Filtering by finishers number 
-            data = filter.FinishersFrom != null
-                 ? data.Where(x => x.FinishersNumber >= filter.FinishersFrom)
-                 : data;
-
-            data = filter.FinishersTo != null
-                 ? data.Where(x => x.FinishersNumber <= filter.FinishersTo)
-                 : data;
-
-            return data;
-        }
-
-        private IQueryable<GeoList> PaginationByCommonFilter
-            (IQueryable<GeoList> data, GeolistFilterDTO filter)
+        private IQueryable<GeoList> PaginateByFilter(IQueryable<GeoList> data, StandartFilterDTO filter)
         {
             filter.PageNumber = filter.PageNumber ?? 0;
 
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderCommonBys.ContainsKey(filter.OrderBy))
+            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderBys.ContainsKey(filter.OrderBy))
             {
-                var orderExpression = _orderCommonBys[filter.OrderBy];
+                var orderExpression = _orderBys[filter.OrderBy];
 
                 data = filter.IsDesc 
                     ? data.OrderByDescending(orderExpression) 
@@ -419,29 +318,6 @@ namespace GeoPing.Services
             {
                 data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
                     .Take((int)filter.PageSize);
-            }
-
-            return data;
-        }
-
-        private IQueryable<PublicListDTO> PaginationByPublicFilter
-            (IQueryable<PublicListDTO> data, PublicGeolistFilterDTO filter)
-        {
-            filter.PageNumber = filter.PageNumber ?? 0;
-
-            if (!string.IsNullOrWhiteSpace(filter.OrderBy) && _orderPublicBys.ContainsKey(filter.OrderBy))
-            {
-                var orderExpression = _orderPublicBys[filter.OrderBy];
-
-                data = filter.IsDesc 
-                    ? data.OrderByDescending(orderExpression) 
-                    : data.OrderBy(orderExpression);
-            }
-
-            if (filter.PageSize != null)
-            {
-                data = data.Skip((int)filter.PageSize * (int)filter.PageNumber)
-                           .Take((int)filter.PageSize);
             }
 
             return data;

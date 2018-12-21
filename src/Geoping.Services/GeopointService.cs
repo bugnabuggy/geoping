@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,6 +7,7 @@ using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace GeoPing.Services
 {
@@ -19,10 +20,14 @@ namespace GeoPing.Services
             };
 
         private IRepository<GeoPoint> _pointRepo;
+        private ILogger<GeopointService> _logger;
 
-        public GeopointService(IRepository<GeoPoint> pointRepo)
+        public GeopointService
+            (IRepository<GeoPoint> pointRepo,
+            ILogger<GeopointService> logger)
         {
             _pointRepo = pointRepo;
+            _logger = logger;
         }
 
         public IQueryable<GeoPoint> Get()
@@ -37,6 +42,8 @@ namespace GeoPing.Services
 
         public WebResult<IQueryable<GeoPoint>> GetByFilter(Guid listId, GeopointFilterDTO filter, out int totalItems)
         {
+            _logger.LogDebug($"Getting geopoints of geolist with Id = [{listId}] by filter.");
+
             var data = _pointRepo.Get(x => x.ListId == listId);
 
             // Filtering by name
@@ -85,6 +92,8 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Add(GeoPoint item)
         {
+            _logger.LogInformation($"Creating geopoint of geolist with Id = [{item.ListId}].");
+
             return new OperationResult<GeoPoint>
             {
                 Data = _pointRepo.Add(item),
@@ -95,6 +104,9 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Update(GeoPoint item)
         {
+            _logger.LogInformation($"Editing geopoint with Id = [{item.Id}] " +
+                                   $"of geolist with Id = [{item.ListId}].");
+
             return new OperationResult<GeoPoint>
             {
                 Data = _pointRepo.Update(item),
@@ -105,12 +117,17 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPoint> Delete(GeoPoint item)
         {
+            _logger.LogInformation($"Deleting geopoint with Id = [{item.Id}] " +
+                                   $"of geolist with Id = [{item.ListId}].");
+
             try
             {
                 _pointRepo.Delete(item);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An error occured while deleting geopoint.", ex);
+
                 return new OperationResult<GeoPoint>
                 {
                     Messages = new[] { ex.Message }
@@ -141,17 +158,7 @@ namespace GeoPing.Services
 
             foreach (var id in pointIds)
             {
-                var isPointId = Guid.TryParse(id, out Guid pointId);
-
-                if (!isPointId)
-                {
-                    messages.Add($"Given geopointId = [{id}] is not valid");
-                    continue;
-                }
-
-                var point = _pointRepo.Data.FirstOrDefault(x => x.Id == pointId);
-
-                if (point == null)
+                if (!TryGetPointWithId(id, out var point))
                 {
                     messages.Add($"There are no geopoint with given geopointId = [{id}]");
                     continue;
@@ -167,23 +174,63 @@ namespace GeoPing.Services
             };
         }
 
-        public bool IsPointExistWithThisId(string id, Guid listId, out GeoPoint point)
+        public bool IsPointExistWithId(string pointId)
         {
-            var isPointId = Guid.TryParse(id, out Guid pointId);
-            point = null;
-            if (!isPointId)
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
             {
                 return false;
             }
 
-            point = Get().FirstOrDefault(x => x.ListId == listId && 
-                                              x.Id == pointId);
-            if (point == null)
+            var point = Get().FirstOrDefault(x => x.Id == id);
+            return point != null;
+        }
+
+        public bool IsPointExistWithId(string pointId, Guid listId)
+        {
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
             {
                 return false;
             }
 
-            return true;
+            var point = Get().FirstOrDefault(x => x.ListId == listId &&
+                                                  x.Id == id);
+            return point != null;
+        }
+
+        public bool TryGetPointWithId(string pointId, out GeoPoint point)
+        {
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
+            {
+                point = null;
+
+                return false;
+            }
+
+            point = _pointRepo.Data.FirstOrDefault(x => x.Id == id);
+
+            return point != null;
+        }
+
+        public bool TryGetPointWithId(string pointId, Guid listId, out GeoPoint point)
+        {
+            var isId = Guid.TryParse(pointId, out var id);
+
+            if (!isId)
+            {
+                point = null;
+
+                return false;
+            }
+
+            point = _pointRepo.Data.FirstOrDefault(x => x.ListId == listId && 
+                                                        x.Id == id);
+            return point != null;
         }
     }
 }

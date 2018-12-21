@@ -18,12 +18,14 @@ namespace GeoPing.Api.Controllers
         // GET api/token/{tokenId}
         [HttpGet]
         [Route("{token}")]
-        public IActionResult ExamineToken(string token)
+        public IActionResult ExamineSharingToken(string token)
         {
-            var result = _gpTokenSrv.ExamineToken(token);
+            var result = _gpTokenSrv.ExamineSharingToken(token);
 
             if (result.Success)
             {
+                _gpTokenSrv.MarkAsUsed(token);
+
                 return Ok(result);
             }
 

@@ -14,6 +14,8 @@ namespace GeoPing.Core.Services
             (Guid ownerId, string listId, CheckInStatFilterDTO filter, out int totalItems);
         WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat
             (Guid userId, CheckInStatFilterDTO filter, out int totalItems);
+        WebResult<IEnumerable<CheckInHistoryDTO>> GetChecksInHistory
+            (Guid userId, CheckInHistoryFilterDTO filter);
         OperationResult<IEnumerable<UserAutoCompleteDTO>> GetAllowedUsers(Guid guid, string listId);
     }
 }

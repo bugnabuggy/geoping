@@ -16,13 +16,17 @@ namespace GeoPing.Api.Controllers
     public class GeolistController : Controller
     {
         private IGeolistService _geolistSrv;
+        private ISecurityService _securitySrv;
         private IClaimsHelper _helper;
 
-        public GeolistController(IGeolistService geolistSrv,
-                                 IClaimsHelper helper)
+        public GeolistController
+            (IGeolistService geolistSrv,
+            IClaimsHelper helper,
+            ISecurityService securitySrv)
         {
             _geolistSrv = geolistSrv;
             _helper = helper;
+            _securitySrv = securitySrv;
         }
 
         // Get lists where user is owner by filter
@@ -31,6 +35,7 @@ namespace GeoPing.Api.Controllers
         public IActionResult GetListsByFilter(UsersGeolistFilterDTO filter)
         {
             var result = _geolistSrv.GetByFilter(_helper.GetAppUserIdByClaims(User.Claims), filter, out int totalItems);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -50,54 +55,22 @@ namespace GeoPing.Api.Controllers
             return Ok(result);
         }
 
-        // Get all public lists by filter
-        // GET api/geolist/public
-        [HttpGet]
-        [Route("public")]
-        [AllowAnonymous]
-        public IActionResult GetPublicListsByFilter(PublicGeolistFilterDTO filter)
-        {
-            var result = _geolistSrv.GetByFilter(filter, out int totalItems);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        // Get all public list of other user by filter
-        // GET api/geolist/public/{userId}
-        [HttpGet]
-        [Route("public/{userId}")]
-        [AllowAnonymous]
-        public IActionResult GetPublicListsOfUserByFilter(string userId, PublicGeolistFilterDTO filter)
-        {
-            var isId = Guid.TryParse(userId, out Guid ownerId);
-            var result = new WebResult<IQueryable<PublicListDTO>> { Messages = new[] { "Unvalid user identifier" } };
-            if (isId)
-            {
-                result = _geolistSrv.GetByFilter(ownerId, filter, out int totalItems);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-            }
-
-            return BadRequest(result);
-        }
-
         // GET api/geolist/{Id}
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetList(string id)
         {
-            if (_geolistSrv.IsListExistWithThisId(id, out GeoList result))
+            if (!_geolistSrv.TryGetListWithId(id, out var result))
             {
-                return Ok(result);
+                return NotFound();
             }
 
-            return NotFound();
+            if (_securitySrv.IsUserHasAccessToWatchList(_helper.GetAppUserIdByClaims(User.Claims), result))
+            {
+                return Ok(result); 
+            }
+
+            return Unauthorized();
         }
 
         // POST api/geolist/
@@ -110,7 +83,8 @@ namespace GeoPing.Api.Controllers
                 Description = item.Description,
                 IsPublic = item.IsPublic,
                 OwnerId = _helper.GetAppUserIdByClaims(User.Claims),
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                Period = item.Period
             };
 
             var result = _geolistSrv.Add(list);
@@ -128,7 +102,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult EditList(string id, [FromBody]GeolistDTO item)
         {
-            var isListExist = _geolistSrv.IsListExistWithThisId(id, out GeoList list);
+            var isListExist = _geolistSrv.TryGetListWithId(id, out var list);
 
             if (!isListExist)
             {
@@ -139,12 +113,17 @@ namespace GeoPing.Api.Controllers
             list.Description = item.Description;
             list.IsPublic = item.IsPublic;
             list.Edited = DateTime.UtcNow;
+            list.Period = item.Period;
 
             var result = _geolistSrv.Update(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {
                 return Ok(result);
+            }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
             }
 
             return BadRequest(result);
@@ -154,12 +133,15 @@ namespace GeoPing.Api.Controllers
         [HttpDelete]
         public IActionResult RemoveLists(string ids)
         {
-
             var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), ids);
 
             if (result.Success)
             {
                 return Ok(result);
+            }
+            else if (result.Messages.Contains("Unauthorized"))
+            {
+                return Unauthorized();
             }
 
             return BadRequest(result);
@@ -170,7 +152,7 @@ namespace GeoPing.Api.Controllers
         [Route("{Id}")]
         public IActionResult RemoveList(string id)
         {
-            var isListExist = _geolistSrv.IsListExistWithThisId(id, out GeoList list);
+            var isListExist = _geolistSrv.TryGetListWithId(id, out var list);
 
             if (!isListExist)
             {
@@ -183,6 +165,7 @@ namespace GeoPing.Api.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
     }

@@ -13,6 +13,7 @@ import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import { ICheckInGeoPointDTO } from '../DTO/geoPointDTO';
 import { ETimer } from '../enums/timerEnum';
 import { timer } from '../services/helper';
+import { TableCheckInStatistics } from './tableComponents/tableCheckInStatistics';
 
 export class CheckinComponent extends React.Component<ICheckinComponentProps, any> {
   constructor( props: ICheckinComponentProps ) {
@@ -67,6 +68,7 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
         Latitude: this.props.googleMap.position.lat.toString(),
         Longitude: this.props.googleMap.position.lng.toString(),
         Distance: this.props.checkin.difference,
+        Description: this.props.googleMap.position.address,
         // Ip: '',
         // DeviceId: '',
         // UserAgent: '',
@@ -294,6 +296,13 @@ export class CheckinComponent extends React.Component<ICheckinComponentProps, an
           title="Congratulations!"
           onClose={this.closeModal}
         />
+        {this.state.isCheckIn && this.props.googleMap.position.isSuccess &&
+        (
+          <TableCheckInStatistics
+            tableRecordForCheckIn={this.props.checkin.tableRecordForCheckIn}
+          />
+        )
+        }
       </React.Fragment>
     );
   }

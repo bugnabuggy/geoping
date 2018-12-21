@@ -27,6 +27,7 @@ namespace GeoPing.Utilities.Logger
             // Configuration object
             var config = new LoggingConfiguration();
 
+            // Syslog common target
             if (settings.SyslogCommon.IsEnable)
             {
                 var syslogTargetCommon = new SyslogTarget
@@ -34,63 +35,85 @@ namespace GeoPing.Utilities.Logger
                     Name = "sysLogCommon",
                     MessageCreation = new MessageBuilderConfig
                     {
-                        Facility = Facility.Local7
+                        Facility = Facility.Daemons
                     },
                     MessageSend = new MessageTransmitterConfig
                     {
-                        Protocol = ProtocolType.Tcp,
-                        Tcp = new TcpConfig
+                        Protocol = ProtocolType.Udp,
+                        Udp = new UdpConfig()
                         {
                             Server = settings.SyslogCommon.Server,
                             Port = settings.SyslogCommon.Port,
-                            Tls = new TlsConfig
-                            {
-                                Enabled = true
-                            }
+                            ConnectionCheckTimeout = 10000,
+                            ReconnectInterval = 1000
                         }
                     }
                 };
+
                 config.AddTarget(syslogTargetCommon);
-                config.AddRule(LogLevel.FromString(settings.SyslogCommon.Level), LogLevel.Warn, syslogTargetCommon); 
+                config.AddRule
+                    (LogLevel.FromString(settings.SyslogCommon.Level),
+                    LogLevel.Warn,
+                    syslogTargetCommon);
             }
 
-            if (settings.SyslogError.IsEnable)
+            // Syslog business target
+            if (settings.SyslogBusiness.IsEnable)
             {
-                var syslogTargetError = new SyslogTarget
+                var syslogTargetBusiness = new SyslogTarget
                 {
-                    Name = "sysLogError",
+                    Name = "syslogBusiness",
                     MessageCreation = new MessageBuilderConfig
                     {
-                        Facility = Facility.Local7
+                        Facility = Facility.Daemons
                     },
                     MessageSend = new MessageTransmitterConfig
                     {
-                        Protocol = ProtocolType.Tcp,
-                        Tcp = new TcpConfig
+                        Protocol = ProtocolType.Udp,
+                        Udp = new UdpConfig()
                         {
-                            Server = settings.SyslogError.Server,
-                            Port = settings.SyslogError.Port,
-                            Tls = new TlsConfig
-                            {
-                                Enabled = true
-                            }
+                            Server = settings.SyslogBusiness.Server,
+                            Port = settings.SyslogBusiness.Port,
+                            ConnectionCheckTimeout = 10000,
+                            ReconnectInterval = 1000
                         }
                     }
-
                 };
-                config.AddTarget(syslogTargetError);
-                config.AddRule(LogLevel.FromString(settings.SyslogError.Level), LogLevel.Fatal, syslogTargetError); 
+
+                config.AddTarget(syslogTargetBusiness);
+                config.AddRule
+                    (LogLevel.FromString(settings.SyslogBusiness.Level),
+                    LogLevel.Fatal,
+                    syslogTargetBusiness,
+                    nameof(GeoPing) + "*");
             }
 
-            // FileTarget object
-            var fileTarget = new FileTarget("fileLogger")
+            // File common target object
+            var fileCommonTarget = new FileTarget("fileCommonLogger")
             {
-                FileName = settings.File.Directory,
+                FileName = settings.FileCommon.Directory,
                 ArchiveAboveSize = 104857600,
                 MaxArchiveFiles = 1
             };
-            config.AddTarget(fileTarget);
-            config.AddRule(LogLevel.FromString(settings.File.Level), LogLevel.Fatal, fileTarget);
+            config.AddTarget(fileCommonTarget);
+            config.AddRule
+                (LogLevel.FromString(settings.FileCommon.Level), 
+                LogLevel.Fatal, 
+                fileCommonTarget);
+
+            // File business target object
+            var fileBusinessTarget = new FileTarget("fileBusinessLogger")
+            {
+                FileName = settings.FileBusiness.Directory,
+                ArchiveAboveSize = 104857600,
+                MaxArchiveFiles = 1
+            };
+            config.AddTarget(fileBusinessTarget);
+            config.AddRule
+                (LogLevel.FromString(settings.FileBusiness.Level), 
+                LogLevel.Fatal, 
+                fileBusinessTarget,
+                nameof(GeoPing) + "*");
 
             // Activate configuration object
             LogManager.Configuration = config;

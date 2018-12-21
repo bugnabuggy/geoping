@@ -8,6 +8,8 @@ using GeoPing.Infrastructure.Repositories;
 using GeoPing.TestData.Data;
 using GeoPing.TestData.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 
 namespace GeoPing.Services.Tests
@@ -16,6 +18,8 @@ namespace GeoPing.Services.Tests
     public class GeopointServiceTests
     {
         private IServiceProvider _services;
+        private Mock<ILogger<GeopointService>> _mockLogger;
+
         private IGeopointService _sut;
 
         private IRepository<GeoPoint> _geopointRepo;
@@ -27,8 +31,9 @@ namespace GeoPing.Services.Tests
             _services = await new DataBaseDiBootstrapperInMemory().GetServiceProviderWithSeedDb();
 
             _geopointRepo = _services.GetRequiredService<IRepository<GeoPoint>>();
+            _mockLogger = new Mock<ILogger<GeopointService>>();
 
-            _sut = new GeopointService(_geopointRepo);
+            _sut = new GeopointService(_geopointRepo, _mockLogger.Object);
         }
         
         [Test]
@@ -84,7 +89,7 @@ namespace GeoPing.Services.Tests
 
             Assert.That(result.Success);
 
-            var data = _geopointRepo.Data.Where(x => x.Id == expectedPointId).FirstOrDefault();
+            var data = _geopointRepo.Data.FirstOrDefault(x => x.Id == expectedPointId);
 
             Assert.That(data == null);
         }
@@ -92,7 +97,7 @@ namespace GeoPing.Services.Tests
         [Test]
         public void Should_remove_points()
         {
-            var expectedPointId = "10000000-0000-0000-0000-000000000001";
+            const string expectedPointId = "10000000-0000-0000-0000-000000000001";
 
             var pointIds = "&#," + expectedPointId + "," + "446131617979416," + 
                            "10000000-0000-0000-0000-000000000005," + "10000000-0000-0000-0000-000000000004,";
@@ -101,7 +106,7 @@ namespace GeoPing.Services.Tests
 
             Assert.That(result.Success);
 
-            var data = _geopointRepo.Data.Where(x => x.Id == Guid.Parse(expectedPointId)).FirstOrDefault();
+            var data = _geopointRepo.Data.FirstOrDefault(x => x.Id == Guid.Parse(expectedPointId));
 
             Assert.That(data == null);
         }

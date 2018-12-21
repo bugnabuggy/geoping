@@ -11,5 +11,6 @@ namespace GeoPing.Core.Models.Entities
         public DateTime Created { get; set; }
         public DateTime Edited { get; set; }
         public bool IsPublic { get; set; }
+        public string Period { get; set; }
     }
 }

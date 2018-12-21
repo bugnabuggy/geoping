@@ -76,4 +76,10 @@ export default class MockMarkerService implements IMarkerServiceType {
     } );
   }
 
+  getPointsForPublicList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve( 'ok' );
+    } );
+  }
+
 }

@@ -10,4 +10,5 @@ export default interface ICheckinStateType {
   isPointLoading: boolean;
   isStartTimer: ETimer;
   countTimer: 0;
+  tableRecordForCheckIn: Array<any>;
 }

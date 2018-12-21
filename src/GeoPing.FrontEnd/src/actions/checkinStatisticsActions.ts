@@ -1,6 +1,9 @@
 import IDispatchFunction from '../types/functionsTypes/dispatchFunction';
 import {
+  CLEAR_STATISTIC,
+  PAGE_CHECK_IN_STATISTICS,
   STATISTICS_CLEAR,
+  STATISTICS_LOAD_FREE_CHECKS,
   STATISTICS_LOAD_POINTS,
   STATISTICS_LOAD_USERS
 } from '../constantsForReducer/checkinStatistics';
@@ -13,10 +16,6 @@ import IUser from '../types/serviceTypes/userServiceType';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import { LOAD_MY_CHECK_LISTS } from '../constantsForReducer/checkList';
 import { windowBlockingAction } from './windowAction';
-
-export const selectList = () => ( dispatch: IDispatchFunction ) => {
-  return '';
-};
 
 /* Load */
 export const loadLists = () => ( dispatch: IDispatchFunction ) => {
@@ -80,6 +79,31 @@ export const getAllCheckForList = ( idList: string ) => ( dispatch: IDispatchFun
     } );
 };
 
+export const getFreeChecksInStatisticsByFilter = ( dateFrom: string, dateTo: string ) =>
+  ( dispatch: IDispatchFunction ) => {
+    dispatch( windowBlockingAction( true ) );
+    const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
+    checkListService.getFreeChecksInStatisticsByFilter( dateFrom, dateTo )
+      .then( ( points: any ) => {
+        dispatch( loadFreeChecksAction( points ) );
+        dispatch( windowBlockingAction( false ) );
+      } )
+      .catch( ( error: any ) => {
+        dispatch( addNotificationAction(
+          createNotification( error.message + ' getFreeChecksInStatisticsByFilter', EnumNotificationType.Danger )
+        ) );
+        dispatch( windowBlockingAction( false ) );
+      } );
+  };
+
+export const clearStatistic = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( clearStatisticAction() );
+};
+
+export const isCheckInStatistics = () => ( dispatch: IDispatchFunction ) => {
+  dispatch( isCheckInStatisticsAction() );
+};
+
 /* Actions*/
 
 function loadListsAction( checklists: any ): Object {
@@ -96,4 +120,16 @@ function loadPointsAction( points: any ): Object {
 
 function checkInStatisticsClearAction(): { type: string } {
   return { type: STATISTICS_CLEAR };
+}
+
+function loadFreeChecksAction( points: any ) {
+  return { type: STATISTICS_LOAD_FREE_CHECKS, points };
+}
+
+function clearStatisticAction() {
+  return { type: CLEAR_STATISTIC };
+}
+
+function isCheckInStatisticsAction() {
+  return { type: PAGE_CHECK_IN_STATISTICS };
 }

@@ -35,4 +35,7 @@ export default interface ICheckListServiceType {
 
   removeAccessUserForList: ( sharingId: string ) => Promise<any>;
   getGeoListMyAndHasAccess: () => Promise<any>;
+  getFreeChecksInStatisticsByFilter: ( dateFrom: string, dateTo: string ) => Promise<any>;
+
+  getCertainPublicList: (idList: string) => Promise<any>;
 }

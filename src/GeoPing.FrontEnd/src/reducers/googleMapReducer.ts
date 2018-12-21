@@ -22,7 +22,11 @@ import IGeoPoint from '../DTO/geoPointDTO';
 import { defaultMarker } from '../constants/defaultMarker';
 import { CHECK_IN_GEO_POINTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/checkList';
-import { STATISTICS_LOAD_POINTS } from '../constantsForReducer/checkinStatistics';
+import {
+  CLEAR_STATISTIC,
+  STATISTICS_LOAD_FREE_CHECKS,
+  STATISTICS_LOAD_POINTS
+} from '../constantsForReducer/checkinStatistics';
 import { v4 as uuidV4 } from 'uuid';
 
 export default function googleMapReducer( state: IGoogleMapStateType = googleMapState, action: any ) {
@@ -46,6 +50,8 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
     [ CHECK_IN_GEO_POINTS ]: checkInGeoPoint,
     [ SET_ADDRESS_GEO_POINT ]: setAddressGeoPoint,
     [ VALIDATION_POINT ]: validationPoint,
+    [ STATISTICS_LOAD_FREE_CHECKS ]: loadFreeChecks,
+    [ CLEAR_STATISTIC ]: clearStatistic,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -253,22 +259,40 @@ function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogle
 }
 
 function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const geoPoints: Array<IGeoPoint> = action.points.map( ( item: any ) => {
+    const id: string = uuidV4();
+    const point: IGeoPoint = {
+      id: item.pointId,
+      name: item.name,
+      radius: item.radius,
+      idList: '',
+      description: item.address,
+      lng: item.longitude,
+      lat: item.latitude,
+      idForMap: id,
+    };
+    return point;
+  } );
   return {
     ...state,
-    geoPoints: action.points.map( ( item: any ) => {
-      const point: IGeoPoint = {
-        id: item.point.id,
-        name: item.point.name,
-        radius: item.point.radius,
-        idList: '',
-        description: item.point.description,
-        lng: item.point.longitude,
-        lat: item.point.latitude,
-        idForMap: uuidV4(),
+    geoPoints: geoPoints,
+    checkInGeoPoint: action.points.map( ( item: any ) => {
+      return {
+        date: item.checkInDate,
+        deviceId: '',
+        distance: item.distance,
+        geopoint: '',
+        id: '',
+        ip: '',
+        latitude: item.latitude,
+        longitude: item.longitude,
+        pointId: item.pointId,
+        userAgent: '',
+        userId: item.userId,
+        idForMap: geoPoints.find( point => point.id === item.pointId ).idForMap,
+        status: item.type,
       };
-      return point;
     } ),
-    checkInGeoPoint: action.points.map( ( item: any ) => item.check ),
     isGeoPointListIsCreated: false,
   };
 }
@@ -311,5 +335,51 @@ function validationPoint( state: IGoogleMapStateType, action: any ): IGoogleMapS
       ...action.validation,
     },
     isShowWarningModal: false,
+  };
+}
+
+function loadFreeChecks( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const geoPoints: Array<IGeoPoint> = action.points.map( ( item: any ) => {
+    const id: string = uuidV4();
+    const point: IGeoPoint = {
+      id: id,
+      name: item.name,
+      radius: item.radius,
+      idList: '',
+      description: item.address,
+      lng: item.longitude,
+      lat: item.latitude,
+      idForMap: id,
+    };
+    return point;
+  } );
+  return {
+    ...state,
+    geoPoints: geoPoints,
+    checkInGeoPoint: action.points.map( ( item: any, index: number ) => {
+      return {
+        date: item.checkInDate,
+        deviceId: '',
+        distance: item.distance,
+        geopoint: '',
+        id: '',
+        ip: '',
+        latitude: item.latitude,
+        longitude: item.longitude,
+        pointId: geoPoints[index].id,
+        userAgent: '',
+        userId: item.userId,
+        idForMap: geoPoints[index].idForMap,
+        status: item.type,
+      };
+    } ),
+    isGeoPointListIsCreated: false,
+  };
+}
+
+function clearStatistic( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  return {
+    ...state,
+    checkInGeoPoint: [],
   };
 }

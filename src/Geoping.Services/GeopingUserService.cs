@@ -11,6 +11,7 @@ using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace GeoPing.Services
@@ -20,15 +21,18 @@ namespace GeoPing.Services
         private IRepository<GeoPingUser> _gpUserRepo;
         private ApplicationSettings _settings;
         private UserManager<AppIdentityUser> _userManager;
+        private ILogger<GeopingUserService> _logger;
 
         public GeopingUserService
             (IRepository<GeoPingUser> gpUserRepo,
             IOptions<ApplicationSettings> settings,
-            UserManager<AppIdentityUser> userManager)
+            UserManager<AppIdentityUser> userManager,
+            ILogger<GeopingUserService> logger)
         {
             _gpUserRepo = gpUserRepo;
             _settings = settings.Value;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public GeoPingUser GetUser(Expression<Func<GeoPingUser, bool>> func)
@@ -96,6 +100,8 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
         {
+            _logger.LogInformation($"User with Id = [{user.Id} edited his profile.");
+
             return new OperationResult<GeoPingUser>
             {
                 Data = _gpUserRepo.Update(user),
@@ -104,13 +110,16 @@ namespace GeoPing.Services
             };
         }
 
-        public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username)
+        public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username, string timeZone)
         {
+            _logger.LogInformation($"Added GeoPingUser for identity User with Id = [{identityUserId}]");
+
             return _gpUserRepo.Add(new GeoPingUser
             {
                 IdentityId = identityUserId,
                 Email = email,
                 Login = username,
+                TimeZone = timeZone,
                 AccountType = "regular",
                 Avatar = DefaultUserSettings.AvatarImage
             });
