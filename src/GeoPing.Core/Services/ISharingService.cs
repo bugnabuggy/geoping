@@ -20,6 +20,6 @@ namespace GeoPing.Core.Services
         Task<OperationResult<IEnumerable<UserListWasSharedWithDTO>>> 
             InviteUsersByList(Guid actingUserId, string listId, string[] usersData);
         OperationResult RefuseSharing(Guid actingUserId, string sharingId);
-        OperationResult RevokeSharing(Guid ownerUserId, string sharingId);
+        Task<OperationResult> RevokeSharing(Guid ownerUserId, string sharingId);
     }
 }

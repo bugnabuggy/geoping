@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 
@@ -10,8 +11,8 @@ namespace GeoPing.Core.Services
     {
         WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfLists
             (Guid ownerId, CheckInStatFilterDTO filter, out int totalItems);
-        WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfList
-            (Guid ownerId, string listId, CheckInStatFilterDTO filter, out int totalItems);
+        Task<WebResult<IEnumerable<CheckInStatsDTO>>> GetStatOfList
+            (Guid ownerId, string listId, CheckInStatFilterDTO filter);
         WebResult<IEnumerable<CheckInStatsDTO>> GetFreeChecksInStat
             (Guid userId, CheckInStatFilterDTO filter, out int totalItems);
         WebResult<IEnumerable<CheckInHistoryDTO>> GetChecksInHistory

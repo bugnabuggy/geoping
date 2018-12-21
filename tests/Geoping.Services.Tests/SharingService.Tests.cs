@@ -305,11 +305,11 @@ namespace GeoPing.Services.Tests
         //}
 
         [Test]
-        public void Should_revoke_sharing_by_user()
+        public async Task Should_revoke_sharing_by_user()
         {
             Assert.AreEqual(true, _sharingRepo.Get().Any(x => x.Id == Guid.Parse(_sharingId4)));
 
-            var data = _sut.RevokeSharing(_userId1, _sharingId4);
+            var data = await _sut.RevokeSharing(_userId1, _sharingId4);
 
             Assert.AreEqual(true, data.Success);
             Assert.AreEqual(false, _sharingRepo.Get().Any(x => x.Id == Guid.Parse(_sharingId4)));

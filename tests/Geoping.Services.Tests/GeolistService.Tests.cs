@@ -113,19 +113,19 @@ namespace GeoPing.Services.Tests
         //}
 
         [Test]
-        public void Should_remove_a_list()
+        public async Task Should_remove_a_list()
         {
             var expectedListId = Guid.Parse("10000000-0000-0000-0000-000000000001");
 
             var testList = _geolistRepo.Data.FirstOrDefault(x => x.Id == expectedListId);
 
-            var testTry1 = _sut.Delete(_expectedUserId2, testList);
+            var testTry1 = await _sut.Delete(_expectedUserId2, testList);
             Assert.That(!testTry1.Success);
 
-            var testTry2 = _sut.Delete(_expectedUserId1, testList);
+            var testTry2 = await _sut.Delete(_expectedUserId1, testList);
             Assert.That(testTry2.Success);
 
-            var data = _geolistRepo.Data.Where(x => x.Id == _listId1).FirstOrDefault();
+            var data = _geolistRepo.Data.FirstOrDefault(x => x.Id == _listId1);
 
             Assert.That(data == null);
         }

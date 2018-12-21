@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
-using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
@@ -100,7 +100,7 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditList(string id, [FromBody]GeolistDTO item)
+        public async Task<IActionResult> EditList(string id, [FromBody]GeolistDTO item)
         {
             var isListExist = _geolistSrv.TryGetListWithId(id, out var list);
 
@@ -115,7 +115,7 @@ namespace GeoPing.Api.Controllers
             list.Edited = DateTime.UtcNow;
             list.Period = item.Period;
 
-            var result = _geolistSrv.Update(_helper.GetAppUserIdByClaims(User.Claims), list);
+            var result = await _geolistSrv.Update(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {
@@ -131,9 +131,9 @@ namespace GeoPing.Api.Controllers
 
         // DELETE api/geolist/
         [HttpDelete]
-        public IActionResult RemoveLists(string ids)
+        public async Task<IActionResult> RemoveLists(string ids)
         {
-            var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), ids);
+            var result = await _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), ids);
 
             if (result.Success)
             {
@@ -150,7 +150,7 @@ namespace GeoPing.Api.Controllers
         // DELETE api/geolist/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemoveList(string id)
+        public async Task<IActionResult> RemoveList(string id)
         {
             var isListExist = _geolistSrv.TryGetListWithId(id, out var list);
 
@@ -159,7 +159,7 @@ namespace GeoPing.Api.Controllers
                 return NotFound();
             }
 
-            var result = _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), list);
+            var result = await _geolistSrv.Delete(_helper.GetAppUserIdByClaims(User.Claims), list);
 
             if (result.Success)
             {

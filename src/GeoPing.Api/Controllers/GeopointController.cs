@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
@@ -78,14 +79,14 @@ namespace GeoPing.Api.Controllers
 
         // POST api/geolist/{ListId}/geopoint/
         [HttpPost]
-        public IActionResult AddPoint(string listId, [FromBody]GeopointDTO item)
+        public async Task<IActionResult> AddPoint(string listId, [FromBody]GeopointDTO item)
         {
             if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -113,14 +114,14 @@ namespace GeoPing.Api.Controllers
         // PUT api/geolist/{ListId}/geopoint/{Id}
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult EditPoint(string listId, string id, [FromBody]GeopointDTO item)
+        public async Task<IActionResult> EditPoint(string listId, string id, [FromBody]GeopointDTO item)
         {
             if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -149,14 +150,14 @@ namespace GeoPing.Api.Controllers
 
         // DELETE api/geolist/{ListId}/geopoint/
         [HttpDelete]
-        public IActionResult RemovePoints(string listId, string ids)
+        public async Task<IActionResult> RemovePoints(string listId, string ids)
         {
             if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }
@@ -174,14 +175,14 @@ namespace GeoPing.Api.Controllers
         // DELETE api/geolist/{ListId}/geopoint/{Id}
         [HttpDelete]
         [Route("{Id}")]
-        public IActionResult RemovePoint(string listId, string id)
+        public async Task<IActionResult> RemovePoint(string listId, string id)
         {
             if (!_geolistSrv.TryGetListWithId(listId, out var list))
             {
                 return BadRequest($"There is no list with Id = [{listId}].");
             }
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(_helper.GetAppUserIdByClaims(User.Claims), list))
             {
                 return Unauthorized();
             }

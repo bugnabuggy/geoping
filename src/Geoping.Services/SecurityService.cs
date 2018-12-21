@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using GeoPing.Core.Models.Entities;
 using GeoPing.Core.Services;
 using GeoPing.Infrastructure.Models;
@@ -37,11 +38,13 @@ namespace GeoPing.Services
             return result;
         }
 
-        public IEnumerable<GeoPingUser> GetUsersHaveAccessToManipulateList(GeoList list)
+        public async Task<IEnumerable<GeoPingUser>> GetUsersHaveAccessToManipulateList(GeoList list)
         {
             var result = _userRepo.Get(x => x.Id == list.OwnerId);
 
-            return result;
+            var adminIdentities = await _userManager.GetUsersInRoleAsync("admin");
+
+            return result.Concat(_userRepo.Get(x => adminIdentities.Any(y => y.Id == x.IdentityId)));
         }
 
         public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
@@ -51,9 +54,9 @@ namespace GeoPing.Services
             return users.Any(u => u.Id == userId);
         }
 
-        public bool IsUserHasAccessToManipulateList(Guid userId, GeoList list)
+        public async Task<bool> IsUserHasAccessToManipulateList(Guid userId, GeoList list)
         {
-            var users = GetUsersHaveAccessToManipulateList(list);
+            var users = await GetUsersHaveAccessToManipulateList(list);
 
             return users.Any(u => u.Id == userId);
         }

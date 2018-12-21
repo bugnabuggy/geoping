@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using GeoPing.Api.Interfaces;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
@@ -56,10 +57,10 @@ namespace GeoPing.Api.Controllers
         // GET api/statistics/geolist/{listId}
         [HttpGet]
         [Route("geolist/{listId}")]
-        public IActionResult GetCheckInStatisticsForList(string listId, CheckInStatFilterDTO filter)
+        public async Task<IActionResult> GetCheckInStatisticsForList(string listId, CheckInStatFilterDTO filter)
         {
-            var result = _statSrv.GetStatOfList
-                (_helper.GetAppUserIdByClaims(User.Claims), listId, filter, out int totalItems);
+            var result = await _statSrv.GetStatOfList
+                (_helper.GetAppUserIdByClaims(User.Claims), listId, filter);
 
             if (result.Success)
             {

@@ -135,7 +135,7 @@ namespace GeoPing.Services
             }
 
             // Checks if user have rights to call this method
-            if (!_securitySrv.IsUserHasAccessToManipulateList(actingUserId, list))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(actingUserId, list))
             {
                 _logger.LogWarning($"An error occured while sharing list[{listId}] with another users: " +
                                    $"user[{actingUserId}] has no rights to do this action.");
@@ -305,7 +305,7 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult RevokeSharing(Guid ownerUserId, string sharingId)
+        public async Task<OperationResult> RevokeSharing(Guid ownerUserId, string sharingId)
         {
             _logger.LogInformation($"Refusing invite to sharing list [{sharingId}] by user[{ownerUserId}].");
 
@@ -322,7 +322,7 @@ namespace GeoPing.Services
                 };
             }
             
-            if (!_securitySrv.IsUserHasAccessToManipulateList
+            if (!await _securitySrv.IsUserHasAccessToManipulateList
                 (ownerUserId, _listSrv.Get().FirstOrDefault(l => l.Id == sharing.ListId)))
             {
                 _logger.LogWarning($"An error occured while revoking invite to list sharing [{sharingId}] " +

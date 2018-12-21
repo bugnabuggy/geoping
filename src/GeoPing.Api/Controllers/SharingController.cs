@@ -64,9 +64,9 @@ namespace GeoPing.Api.Controllers
         // DELETE api/sharing/{sharingId}
         [HttpDelete]
         [Route("{sharingId}")]
-        public IActionResult RevokeSharing(string sharingId)
+        public async Task<IActionResult> RevokeSharing(string sharingId)
         {
-            var result = _shareSrv.RevokeSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
+            var result = await _shareSrv.RevokeSharing(_helper.GetAppUserIdByClaims(User.Claims), sharingId);
 
             if (result.Success)
             {

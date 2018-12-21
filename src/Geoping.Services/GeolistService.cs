@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
@@ -127,13 +128,13 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoList> Update(Guid userId, GeoList item)
+        public async Task<OperationResult<GeoList>> Update(Guid userId, GeoList item)
         {
             _logger.LogInformation($"Editing list: Id = [{item.Id}], " +
                                    $"Name = [{item.Name}], " +
                                    $"Creator = [{item.OwnerId}]");
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
                 _logger.LogWarning($"An error was occured while editing geolist id = [{item.Id}]: " +
                                        $"user Id = [{userId}] has no rights to do this.");
@@ -174,13 +175,13 @@ namespace GeoPing.Services
         }
 
         // Delete one of list
-        public OperationResult<GeoList> Delete(Guid userId, GeoList item)
+        public async Task<OperationResult<GeoList>> Delete(Guid userId, GeoList item)
         {
             _logger.LogInformation($"Deleting list: Id = [{item.Id}], " +
                                    $"Name = [{item.Name}], " +
                                    $"Creator = [{item.OwnerId}]");
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(userId, item))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
                 _logger.LogWarning($"An error was occured while deleting geolist id = [{item.Id}]: " +
                                    $"user Id = [{userId}] has no rights to do this.");
@@ -205,7 +206,7 @@ namespace GeoPing.Services
         }
 
         // Delete several lists
-        public OperationResult Delete(Guid userId, string listIds)
+        public async Task<OperationResult> Delete(Guid userId, string listIds)
         {
             var ids = listIds.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries)
                              .ToArray();
@@ -228,7 +229,7 @@ namespace GeoPing.Services
                     continue;
                 }
 
-                messages.AddRange(Delete(userId, list).Messages);
+                messages.AddRange((await Delete(userId, list)).Messages);
             }
 
             return new OperationResult

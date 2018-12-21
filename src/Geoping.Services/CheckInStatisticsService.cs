@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using GeoPing.Core.Models;
 using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Models.Entities;
@@ -96,12 +97,12 @@ namespace GeoPing.Services
             };
         }
 
-        public WebResult<IEnumerable<CheckInStatsDTO>> GetStatOfList
-            (Guid userId, string listId, CheckInStatFilterDTO filter, out int totalItems)
+        public async Task<WebResult<IEnumerable<CheckInStatsDTO>>> GetStatOfList
+            (Guid userId, string listId, CheckInStatFilterDTO filter)
         {
             _logger.LogInformation($"User with Id = [{userId}] requested statistics for list with Id = [{listId}]");
 
-            totalItems = 0;
+            var totalItems = 0;
 
             if (!_listSrv.TryGetListWithId(listId, out var list))
             {
@@ -114,7 +115,7 @@ namespace GeoPing.Services
                 };
             }
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(userId, list))
+            if (!await _securitySrv.IsUserHasAccessToManipulateList(userId, list))
             {
                 _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
                                  $"by user with Id = [{userId}] was failed: user has no rights to do this action.");
