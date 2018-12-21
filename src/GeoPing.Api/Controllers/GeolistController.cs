@@ -83,7 +83,8 @@ namespace GeoPing.Api.Controllers
                 Description = item.Description,
                 IsPublic = item.IsPublic,
                 OwnerId = _helper.GetAppUserIdByClaims(User.Claims),
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                Period = item.Period
             };
 
             var result = _geolistSrv.Add(list);
@@ -112,6 +113,7 @@ namespace GeoPing.Api.Controllers
             list.Description = item.Description;
             list.IsPublic = item.IsPublic;
             list.Edited = DateTime.UtcNow;
+            list.Period = item.Period;
 
             var result = _geolistSrv.Update(_helper.GetAppUserIdByClaims(User.Claims), list);
 
