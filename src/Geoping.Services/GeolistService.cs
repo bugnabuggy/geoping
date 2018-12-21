@@ -130,9 +130,9 @@ namespace GeoPing.Services
 
         public async Task<OperationResult<GeoList>> Update(Guid userId, GeoList item)
         {
-            _logger.LogInformation($"Editing list: Id = [{item.Id}], " +
-                                   $"Name = [{item.Name}], " +
-                                   $"Creator = [{item.OwnerId}]");
+            _logger.LogInformation($"Editing list: ListId = [{item.Id}], " +
+                                   $"ListName = [{item.Name}], " +
+                                   $"Editor = [{userId}]");
 
             if (!await _securitySrv.IsUserHasAccessToManipulateList(userId, item))
             {
@@ -162,9 +162,9 @@ namespace GeoPing.Services
 
             var result = _geolistRepo.Update(item);
 
-            _logger.LogInformation($"List was edited: Id = [{item.Id}], " +
-                                   $"Name = [{item.Name}], " +
-                                   $"Creator = [{item.OwnerId}]");
+            _logger.LogInformation($"List was edited: ListId = [{item.Id}], " +
+                                   $"ListName = [{item.Name}], " +
+                                   $"Editor = [{userId}]");
 
             return new OperationResult<GeoList>
             {
