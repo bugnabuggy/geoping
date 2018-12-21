@@ -114,7 +114,8 @@ namespace GeoPing.Services
                 };
             }
 
-            if (!_securitySrv.IsUserHasAccessToManipulateList(userId, list))
+            if (!(_securitySrv.IsUserHasAccessToManipulateList(userId, list) || 
+                (_securitySrv.IsUserHasAccessToWatchList(userId, list) && userId == filter.UserId)))
             {
                 _logger.LogDebug($"Statistics request for list with Id = [{listId}] " +
                                  $"by user with Id = [{userId}] was failed: user has no rights to do this action.");
@@ -330,10 +331,8 @@ namespace GeoPing.Services
         private IQueryable<CheckIn> GetFilteredData
             (IQueryable<CheckIn> data, CheckInStatFilterDTO filter)
         {
-            var isUserId = Guid.TryParse(filter.UserId, out var userId);
-
-            data = isUserId
-                ? data.Where(x => x.UserId == userId)
+            data = filter.UserId != null
+                ? data.Where(x => x.UserId == filter.UserId)
                 : data;
 
             var isDatePeriodFrom = DateTime.TryParse(filter.DatePeriodFrom, out var periodFrom);
