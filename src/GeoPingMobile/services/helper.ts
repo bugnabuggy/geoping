@@ -13,6 +13,7 @@ import {
   profileUrl,
 } from '../constants/routes';
 import { Dimensions } from "react-native";
+import moment from 'moment';
 
 export function createNotification( message: string, notificationType: EnumNotificationType ) {
   const newNotification: INotificationType = {
@@ -94,6 +95,11 @@ export function getWindowWidthAndHeight() {
     height: Dimensions.get ( 'window' ).height,
     width: Dimensions.get ( 'window' ).width,
   };
+}
+
+export function dateFormat( date: Date ) {
+  const newDate: moment.Moment = moment();
+  return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
 }
 
 /**********************************************************************/
