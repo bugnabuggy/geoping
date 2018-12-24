@@ -42,7 +42,7 @@ namespace GeoPing.Services
 
         public WebResult<IQueryable<GeoPoint>> GetByFilter(Guid listId, GeopointFilterDTO filter, out int totalItems)
         {
-            _logger.LogInformation($"Getting geopoints of geolist with Id = [{listId}] by filter.");
+            _logger.LogDebug($"Getting geopoints of geolist with Id = [{listId}] by filter.");
 
             var data = _pointRepo.Get(x => x.ListId == listId);
 

@@ -395,7 +395,7 @@ namespace GeoPing.Services
 
         public OperationResult<GeoPingUser> GetProfile(Guid gpUserId)
         {
-            _logger.LogInformation($"Profile of Geoping user with id = [{gpUserId}] was requested.");
+            _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] was requested.");
 
             var result = _gpUserSrv.GetUser(x => x.Id == gpUserId);
 
@@ -410,7 +410,7 @@ namespace GeoPing.Services
                 };
             }
 
-            _logger.LogInformation($"Profile of Geoping user with id = [{gpUserId}] request was successful.");
+            _logger.LogDebug($"Profile of Geoping user with id = [{gpUserId}] request was successful.");
 
             return new OperationResult<GeoPingUser>
             {

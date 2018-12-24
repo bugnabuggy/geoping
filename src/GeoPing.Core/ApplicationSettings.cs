@@ -54,7 +54,8 @@ namespace GeoPing.Core
         public bool IsScopesIncluded { get; set; }
         public string LogLevelDefault { get; set; }
         public InternalLogSettings InternalLog { get; set; }
-        public FileTargetSettings File { get; set; }
+        public FileTargetSettings FileCommon { get; set; }
+        public FileTargetSettings FileBusiness { get; set; }
         public SyslogTargetSettings SyslogCommon { get; set; }
         public SyslogTargetSettings SyslogBusiness { get; set; }
     }

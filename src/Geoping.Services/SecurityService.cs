@@ -46,6 +46,11 @@ namespace GeoPing.Services
 
         public bool IsUserHasAccessToWatchList(Guid userId, GeoList list)
         {
+            if (list.IsPublic)
+            {
+                return true;
+            }
+
             var users = GetUsersHaveAccessToWatchList(list);
 
             return users.Any(u => u.Id == userId);
