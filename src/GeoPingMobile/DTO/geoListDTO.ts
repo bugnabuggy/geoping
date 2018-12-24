@@ -31,3 +31,13 @@ export interface IGeoListPublickDTO {
   finishersNumber: number;
   isOfficial: boolean;
 }
+
+export interface IGeoListCheckIn {
+  created: string;
+  description: string;
+  edited: string;
+  id: string;
+  isPublic: boolean;
+  name: string;
+  ownerId: string;
+}

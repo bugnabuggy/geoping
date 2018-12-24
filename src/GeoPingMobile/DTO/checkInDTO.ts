@@ -1,7 +1,8 @@
 export interface ICheckInDTO {
-  Latitude: string;
-  Longitude: string;
+  Latitude: number;
+  Longitude: number;
   Distance: number;
+  Description: string;
   DeviceId?: string;
   Ip?: string;
   UserAgent?: string;

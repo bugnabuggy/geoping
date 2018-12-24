@@ -30,4 +30,5 @@ export interface ICheckInGeoPointDTO {
   pointId: string;
   userAgent: any;
   userId: string;
+  description: string;
 }

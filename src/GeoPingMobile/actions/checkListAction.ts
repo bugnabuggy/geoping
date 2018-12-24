@@ -155,8 +155,8 @@ export const clearStateCheckList = () => ( dispatch: IDispatchFunction ) => {
   dispatch( clearStateCheckListAction() );
 };
 
-export const selectCheckList = ( checkList: IGeoListType ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( selectCheckListAction( checkList ) );
+export const selectCheckList = ( checkListId: string ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( selectCheckListAction( checkListId ) );
 };
 
 export const isCheckListPage = ( isCheckList: boolean ) => ( dispatch: IDispatchFunction ) => {
@@ -214,8 +214,8 @@ function loadMarkersForCheckListAction( isLoading: boolean ): { type: string, is
   return { type: LOAD_MARKERS_FOR_CHECK_LIST, isLoading };
 }
 
-function selectCheckListAction( checkList: IGeoListType ): { type: string, checkList: IGeoListType } {
-  return { type: SELECT_CHECK_LIST, checkList };
+function selectCheckListAction( checkListId: string ): { type: string, checkListId: string } {
+  return { type: SELECT_CHECK_LIST, checkListId };
 }
 
 function updateCheckListAction( checkList: any ): { type: string, checkList: any } {

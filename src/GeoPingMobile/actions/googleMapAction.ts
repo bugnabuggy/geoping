@@ -22,18 +22,21 @@ import { EnumNotificationType } from '../enums/notificationTypeEnum';
 import StaticStorage from '../services/staticStorage';
 import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import IGeoPoint from '../DTO/geoPointDTO';
-import { EnumStatusMarker } from '../enums/statusMarker';
 import { editingPermission } from "./checkListAction";
 
 export const getListPoints = ( idCheckList: string ) => ( dispatch: IDispatchFunction ) => {
-  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
-  markerService.getAllMarkersForCheckList ( idCheckList )
-    .then ( ( geoPoints: Array<IGeoPoint> ) => {
-      dispatch ( addListPointsAction ( geoPoints ) );
-    } )
-    .catch ( ( error: any ) => {
-      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
-    } );
+  if ( !!!idCheckList ) {
+    dispatch ( addListPointsAction ( [] ) );
+  } else {
+    const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+    markerService.getAllMarkersForCheckList ( idCheckList )
+      .then ( ( geoPoints: Array<IGeoPoint> ) => {
+        dispatch ( addListPointsAction ( geoPoints ) );
+      } )
+      .catch ( ( error: any ) => {
+        dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
+      } );
+  }
 };
 
 export const selectPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
@@ -44,24 +47,24 @@ export const selectPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunct
 };
 
 export const deleteGeoPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
-    // if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
-      if ( geoPoint.id ) {
-        const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
-        markerService.deleteMarker ( geoPoint.idList, geoPoint.id )
-          .then ( ( response: any ) => {
-            dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
-          } )
-          .catch ( ( error: any ) => {
-            dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
-          } );
-      } else {
-        // dispatch ( deleteGeoPointAction ( '' ) );
-        dispatch ( deleteGeoPointAction ( geoPoint.idForMap ));
-      }
-    // } else if ( statusMarker === EnumStatusMarker.New ) {
-    //   dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
-    // }
-  };
+  // if ( statusMarker === EnumStatusMarker.Edit || statusMarker === EnumStatusMarker.None ) {
+  if ( geoPoint.id ) {
+    const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+    markerService.deleteMarker ( geoPoint.idList, geoPoint.id )
+      .then ( ( response: any ) => {
+        dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
+      } )
+      .catch ( ( error: any ) => {
+        dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
+      } );
+  } else {
+    // dispatch ( deleteGeoPointAction ( '' ) );
+    dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
+  }
+  // } else if ( statusMarker === EnumStatusMarker.New ) {
+  //   dispatch ( deleteGeoPointAction ( geoPoint.idForMap ) );
+  // }
+};
 
 export const addNewPoint = ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => {
   dispatch ( addNewPointAction ( geoPoint ) );
@@ -138,7 +141,7 @@ export const createGeoPoint = ( marker: IGeoPoint ) => ( dispatch: IDispatchFunc
   const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
   markerService.createNewMarker ( marker )
     .then ( ( geoPoint: any ) => {
-      console.log('create');
+      console.log ( 'create' );
       dispatch ( saveGeoPointAction ( geoPoint ) );
     } )
     .catch ( ( error: any ) => {

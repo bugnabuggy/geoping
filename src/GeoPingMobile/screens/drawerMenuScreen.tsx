@@ -25,6 +25,14 @@ export class DrawerMenuScreen extends React.Component<any, any> {
         >
           <Text style={styles.menuItem}>Check in</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItemTouchable}
+          onPress={() => {
+            this.props.navigation.navigate ( 'Check_in_statistics' );
+          }}
+        >
+          <Text style={styles.menuItem}>Check in statistics</Text>
+        </TouchableOpacity>
         <Text>Profile</Text>
         <Text>Exit</Text>
       </View>

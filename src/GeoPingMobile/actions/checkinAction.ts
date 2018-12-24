@@ -17,15 +17,16 @@ import IMarkerServiceType from '../types/serviceTypes/markerServiceType';
 import { addListPointsAction } from './googleMapAction';
 import { ICheckInDTO } from '../DTO/checkInDTO';
 
-export const checkIn = ( idList: string, idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => {
+export const checkIn = ( idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => {
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.addCheckIn( idList, idPoint, data )
+  checkListService.addCheckIn( idPoint, data )
     .then( ( response: any ) => {
       const geoPoint: Array<any> = [ response ];
       dispatch( getAllChecksForUserAndListAction( geoPoint ) );
       dispatch( addNotificationAction( createNotification( 'Point marked', EnumNotificationType.Success ) ) );
     } )
     .catch( ( error: any ) => {
+      console.log('errror', error.message);
       dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
@@ -34,7 +35,7 @@ export const checkIn = ( idList: string, idPoint: string, data: ICheckInDTO ) =>
 export const loadLists = () => ( dispatch: IDispatchFunction ) => {
   dispatch( loadingCheckLists( true ) );
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.loadAllMyCheckLists()
+  checkListService.getGeoListsAccessUser()
     .then( ( response: any ) => {
       dispatch( loadListsAction( response ) );
       dispatch( loadingCheckLists( false ) );
@@ -51,6 +52,7 @@ export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) 
   const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
   checkListService.getAllChecksForUserAndList( idList )
     .then( ( checkInGeoPoint: Array<any> ) => {
+      // console.log('checkInGeoPoint ** ', checkInGeoPoint);//
       dispatch( getAllChecksForUserAndListAction( checkInGeoPoint || [] ) );
       return markerService.getAllMarkersForCheckList( idList );
     } )

@@ -9,10 +9,12 @@ import { getOrientation, getWindowWidthAndHeight } from "../services/helper";
 type Props = {
   state: IinitialStateType;
   orientation: string;
+  myPosition: boolean;
 
   selectPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   changeMovingGeoPoint: ( geoPoint: { lat: number, lng: number } ) => ( dispatch: IDispatchFunction ) => void;
   getGeoLocation: ( latitude: number, longitude: number ) => ( dispatch: IDispatchFunction ) => void;
+  updateGeoPoint: ( marker: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
 };
 type State = {
   windowHeight: number;
@@ -57,10 +59,13 @@ export class WrapperMapComponent extends React.Component<Props, State>{
       <View style={{ ...mapStileSize, padding: 3 }}>
         <MapComponent
           googleMap={this.props.state.googleMap}
+          myPosition={this.props.myPosition}
+          checkin={this.props.state.checkin}
 
           selectPoint={this.props.selectPoint}
           changeMovingGeoPoint={this.props.changeMovingGeoPoint}
           getGeoLocation={this.props.getGeoLocation}
+          updateGeoPoint={this.props.updateGeoPoint}
         />
       </View>
     );

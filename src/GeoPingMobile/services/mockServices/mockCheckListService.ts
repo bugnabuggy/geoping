@@ -155,7 +155,7 @@ export default class MockCheckListService implements ICheckListServiceType {
     } );
   }
 
-  addCheckIn( idList: string, idPoint: string, data: ICheckInDTO ) {
+  addCheckIn( idPoint: string, data: ICheckInDTO ) {
     return new Promise<any>( ( resolve: any, reject: any ) => {
       resolve('ok');
     });
@@ -168,6 +168,12 @@ export default class MockCheckListService implements ICheckListServiceType {
   }
 
   getAllCheckForList( idList: string ) {
+    return new Promise<any>( ( resolve: any, reject: any ) => {
+      resolve('ok');
+    });
+  }
+
+  getGeoListsAccessUser() {
     return new Promise<any>( ( resolve: any, reject: any ) => {
       resolve('ok');
     });

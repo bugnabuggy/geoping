@@ -15,7 +15,7 @@ import {
   getGeoLocation,
   getListPoints,
   saveGeoPoint,
-  selectPoint
+  selectPoint, updateGeoPoint
 } from "../actions/googleMapAction";
 import IDispatchFunction from "../types/functionsTypes/dispatchFunction";
 import IGeoPoint from "../DTO/geoPointDTO";
@@ -39,6 +39,7 @@ type Props = {
   addNewPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   getGeoLocation: ( latitude: number, longitude: number ) => ( dispatch: IDispatchFunction ) => void;
   deleteGeoPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
+  updateGeoPoint: ( marker: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
 };
 type State = {
   orientation: string;
@@ -94,10 +95,12 @@ class CheckListScreen extends React.Component<Props, State> {
           <WrapperMapComponent
             state={this.props.state}
             orientation={this.state.orientation}
+            myPosition={true}
 
             selectPoint={this.props.selectPoint}
             changeMovingGeoPoint={this.props.changeMovingGeoPoint}
             getGeoLocation={this.props.getGeoLocation}
+            updateGeoPoint={this.props.updateGeoPoint}
           />
           <View>
             <View style={styles.container}>
@@ -154,6 +157,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       addNewPoint,
       getGeoLocation,
       deleteGeoPoint,
+      updateGeoPoint,
     },
     dispatch );
 

@@ -12,7 +12,7 @@ import { ADD_DISTANCE_BETWEEN_POINTS, SELECT_MARKER } from '../constantsForReduc
 
 export default function checkinReducer( state: ICheckinStateType = checkinState, action: any ) {
   const reduceObject: any = {
-    [ CHECK_IN_LOAD_LISTS ]: checkinLoadLists,
+    // [ CHECK_IN_LOAD_LISTS ]: checkinLoadLists,
     [ CHECK_IN_SELECT_LIST ]: selectList,
     [ CHECK_IN_FLAG_CHANGE ]: checkinFlag,
     [ ADD_DISTANCE_BETWEEN_POINTS ]: addDistanceBetweenPoints,
@@ -25,12 +25,12 @@ export default function checkinReducer( state: ICheckinStateType = checkinState,
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
 }
 
-function checkinLoadLists( state: ICheckinStateType, action: any ): ICheckinStateType {
-  return {
-    ...state,
-    selectList: action.lists,
-  };
-}
+// function checkinLoadLists( state: ICheckinStateType, action: any ): ICheckinStateType {
+//   return {
+//     ...state,
+//     selectList: action.lists,
+//   };
+// }
 
 function selectList( state: ICheckinStateType, action: any ): ICheckinStateType {
   return {

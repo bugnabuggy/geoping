@@ -14,6 +14,7 @@ import { LoadingScreen } from "./loadingScreen";
 import CheckListScreen from './checkListScreen';
 import { DrawerMenuScreen } from "./drawerMenuScreen";
 import CheckInScreen from './checkInScreen';
+import CheckInStatisticsScreen from './checkInStatisticsScreen';
 
 type Props = {
   navigation?: any,
@@ -51,6 +52,7 @@ const AppNavigator = createDrawerNavigator ( {
     Dashboard: DashboardScreen,
     Check_List: CheckListScreen,
     Check_in: CheckInScreen,
+    Check_in_statistics: CheckInStatisticsScreen,
   },
   {
     initialRouteName: 'Dashboard',
@@ -92,7 +94,7 @@ export class AppScreen extends React.Component<Props, State> {
       .then ( ( token: string ) => {
         if ( !!token ) {
           this.props.authorizationUserFlag ( true );
-          this.props.isRedirect ( 'Check_in' );
+          this.props.isRedirect ( 'Check_in_statistics' );
         } else {
           this.props.isRedirect ( 'SignIn' );
         }

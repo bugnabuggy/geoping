@@ -25,6 +25,7 @@ import {
 } from '../constantsForReducer/googleMap';
 import { CLOSE_MODAL_SHARE } from '../constantsForReducer/modal';
 import { PUBLIC_LIST_LOAD_LISTS } from '../constantsForReducer/publicCheckList';
+import { CHECK_IN_LOAD_LISTS } from "../constantsForReducer/checkin";
 
 export default function checkListReducer( state: ICheckListStateType = checkListState, action: any ) {
   const reduceObject: any = {
@@ -52,6 +53,7 @@ export default function checkListReducer( state: ICheckListStateType = checkList
     [ CLOSE_MODAL_SHARE ]: clearSelectedGeoList,
     [ PUBLIC_LIST_LOAD_LISTS ]: loadPublicCheckLists,
     [ IS_CHECK_LIST_PAGE ]: checkListFlag,
+    [ CHECK_IN_LOAD_LISTS ]: checkinLoadLists,
   };
 
   return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
@@ -172,7 +174,9 @@ function selectCheckList( state: ICheckListStateType, action: any ): ICheckListS
   return {
     ...state,
     selectedGeoList: {
-      ...action.checkList,
+      // ...action.checkList,
+      ...state.selectedGeoList,
+      id: action.checkListId,
     },
   };
 }
@@ -231,5 +235,12 @@ function checkListFlag( state: ICheckListStateType, action: any ): ICheckListSta
   return {
     ...state,
     isCheckList: action.isCheckList,
+  };
+}
+
+function checkinLoadLists( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    checkInLists: action.lists,
   };
 }

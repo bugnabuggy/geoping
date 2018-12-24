@@ -37,9 +37,10 @@ export const updateAvatar: string = `${endpointBaseUrl}/account/profile/avatar`;
 
 /* endpoints for check in */
 export const addCheckIn: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%/check`;
-export const getCheckInForUserAndGivenPoint: string = `${endpointBaseUrl}/api/geolist/%listid%/geopoint/%id%/check`;
-export const getAllChecksInForUserAndGivenList: string = `${endpointBaseUrl}/api/geolist/%listid%/check`;
+export const getCheckInForUserAndGivenPoint: string = `${endpointBaseUrl}/api/check/geopoint/%id%`;
+export const getAllChecksInForUserAndGivenList: string = `${endpointBaseUrl}/api/check/geolist/%listid%`;
 export const getChecksStatisticsForList: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
+export const getGeoListsAccessUser: string = `${endpointBaseUrl}/api/geolist/allowed`;
 
 /* endpoints for check in statistics */
 export const getGeoListStatistics: string = `${endpointBaseUrl}/api/geolist/%listid%/statistics`;
