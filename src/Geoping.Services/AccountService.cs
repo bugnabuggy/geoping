@@ -48,7 +48,7 @@ namespace GeoPing.Services
                                    $"and email = [{registerUser.Email}].");
 
             // Checking if there is another user with given Email and UserName
-            if (IsUserExists(registerUser, out string item))
+            if (DoesUserExist(registerUser, out string item))
             {
                 _logger.LogInformation($"Registration {registerUser.Email}::{registerUser.UserName}" +
                                        $"failed cause of user with the same {item} exists.");
@@ -460,8 +460,6 @@ namespace GeoPing.Services
             user.Country = userData.Country;
             user.TimeZone = userData.TimeZone;
 
-            var result = new OperationResult<GeoPingUser>();
-
             try
             {
                 _gpUserSrv.EditUser(user);
@@ -490,15 +488,13 @@ namespace GeoPing.Services
         {
             _logger.LogInformation($"Geoping user with id = [{userId}] has requested avatar editing.");
 
-            var result = new OperationResult<GeoPingUser>();
-
             var user = _gpUserSrv.GetUser(x => x.Id == userId);
 
             try
             {
                 user.Avatar = item.Avatar ?? DefaultUserSettings.AvatarImage;
 
-                result = _gpUserSrv.EditUser(user);
+                _gpUserSrv.EditUser(user);
             }
             catch (Exception ex)
             {
@@ -520,7 +516,60 @@ namespace GeoPing.Services
             };
         }
 
-        public bool IsUserExists(RegisterUserDTO user, out string item)
+        public OperationResult<GeoPingUser> SetPremiumStatus(Guid actingUserId, PaymentDTO payment)
+        {
+            _logger.LogInformation($"User::[{actingUserId}] requested changing account status.");
+
+            if (!payment.Type.Equals("premium"))
+            {
+                _logger.LogWarning($"Changing account type request by user::[{actingUserId}] " +
+                                   $"was failed because payment type is wrong.");
+
+                return new OperationResult<GeoPingUser>
+                {
+                    Messages = new[] { "Wrong payment type." }
+                };
+            }
+
+            if (payment.DateTime == null)
+            {
+                _logger.LogWarning($"Changing account type request by user::[{actingUserId}] " +
+                                   $"was failed because date format is wrong.");
+
+                return new OperationResult<GeoPingUser>
+                {
+                    Messages = new[] { "Wrong date format." }
+                };
+            }
+
+            var user = _gpUserSrv.GetUser(x => x.Id == actingUserId);
+
+            user.LastPaid = payment.DateTime;
+            user.AccountType = "premium";
+
+            try
+            {
+                _gpUserSrv.EditUser(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occured while changing account type of user::[{actingUserId}] to \"premium\": ", ex);
+
+                return new OperationResult<GeoPingUser>
+                {
+                    Messages = new[] { $"An error occured while changing account type of user::[{actingUserId}] to \"premium\": {ex}" }
+                };
+            }
+
+            return new OperationResult<GeoPingUser>
+            {
+                Success = true,
+                Data = user,
+                Messages = new[] { $"Account type of user::[{actingUserId}] was successfully changed to \"premium\"." }
+            };
+        }
+
+        public bool DoesUserExist(RegisterUserDTO user, out string item)
         {
             if (_userManager.FindByEmailAsync(user.Email).Result != null)
             {
@@ -537,7 +586,7 @@ namespace GeoPing.Services
             return false;
         }
 
-        public bool IsUserExists(string userId)
+        public bool DoesUserExist(string userId)
         {
             if (_userManager.FindByIdAsync(userId).Result != null)
             {

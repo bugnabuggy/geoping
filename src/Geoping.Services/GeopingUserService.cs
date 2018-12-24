@@ -98,16 +98,11 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
+        public GeoPingUser EditUser(GeoPingUser user)
         {
             _logger.LogInformation($"User with Id = [{user.Id} edited his profile.");
 
-            return new OperationResult<GeoPingUser>
-            {
-                Data = _gpUserRepo.Update(user),
-                Messages = new[] { "Profile was successfully edited." },
-                Success = true
-            };
+            return _gpUserRepo.Update(user);
         }
 
         public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username, string timeZone)
