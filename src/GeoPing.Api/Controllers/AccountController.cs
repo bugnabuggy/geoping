@@ -169,5 +169,21 @@ namespace GeoPing.Api.Controllers
             }
             return BadRequest(result);
         }
+
+
+        // TODO: Define if this method still needed
+        //// PUT /account/premium
+        //[HttpPut("premium")]
+        //public IActionResult SetPremiumStatus([FromBody]PaymentDTO payment)
+        //{
+        //    var result = _accountSrv.SetPremiumStatus(_helper.GetAppUserIdByClaims(User.Claims), payment);
+
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+
+        //    return BadRequest(result);
+        //}
     }
 }

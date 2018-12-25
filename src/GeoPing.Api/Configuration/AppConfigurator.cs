@@ -49,6 +49,9 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IValidationService, ValidationService>();
             services.AddScoped<IUtilityService, UtilityService>();
             services.AddScoped<IPublicService, PublicService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+
+            services.AddHttpClient();
         }
 
         public void Initialize(IServiceProvider services)

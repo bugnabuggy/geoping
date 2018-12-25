@@ -10,8 +10,8 @@ namespace GeoPing.Core.Services
     {
         Task<OperationResult> RegisterAsync(RegisterUserDTO registerUser);
         Task<OperationResult> ChangePasswordAsync(string identityUserId, ChangePasswordDTO changePassword);
-        bool IsUserExists(RegisterUserDTO user, out string item);
-        bool IsUserExists(string userId);
+        bool DoesUserExist(RegisterUserDTO user, out string item);
+        bool DoesUserExist(string userId);
         Task<OperationResult> ConfirmEmailAsync(string token);
         Task<OperationResult> ConfirmResetAsync(string token, string newPassword);
         OperationResult<GeoPingUser> GetProfile(Guid gpUserId);
@@ -19,5 +19,8 @@ namespace GeoPing.Core.Services
         OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);
         OperationResult<GeoPingUser> EditProfileAvatar(Guid guid, ProfileAvatarDTO avatar);
         Task<OperationResult> ResetPassword(ResetPasswordDTO form);
+
+        // TODO: Define if this method still needed
+        //OperationResult<GeoPingUser> SetPremiumStatus(Guid actingUserId, PaymentDTO payment);
     }
 }
