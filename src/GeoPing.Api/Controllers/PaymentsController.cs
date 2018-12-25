@@ -7,6 +7,7 @@ using GeoPing.Core.Models.DTO;
 using GeoPing.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace GeoPing.Api.Controllers
 {
@@ -23,11 +24,40 @@ namespace GeoPing.Api.Controllers
             _helper = helper;
         }
 
-        // POST /api/payments/premium
+        // POST /api/payments/result/yandex
+        [HttpPost("result/yandex")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ProcessTheYandexNotification([FromBody] JObject data)
+        {
+            var result = await _paymentSrv.UpgradeUserAccount(data);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // POST /api/payments/premium/yandex
         [HttpPost("premium/yandex")]
         public async Task<IActionResult> PurchasePremiumStatusWithYandex([FromBody]PurchaseDTO purchase)
         {
             var result = await _paymentSrv.PurchasePremiumWithYandex(_helper.GetAppUserIdByClaims(User.Claims), purchase);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        // POST /api/payments/premium/robokassa
+        [HttpPost("premium/robokassa")]
+        public async Task<IActionResult> PurchasePremiumStatusWithRoboKassa([FromBody]PurchaseDTO purchase)
+        {
+            var result = await _paymentSrv.PurchasePremiumWithRoboKassa(_helper.GetAppUserIdByClaims(User.Claims), purchase);
 
             if (result.Success)
             {

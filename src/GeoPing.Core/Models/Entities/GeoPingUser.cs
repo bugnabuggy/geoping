@@ -15,6 +15,7 @@ namespace GeoPing.Core.Models.Entities
         public string TimeZone { get; set; }
         public string AccountType { get; set; }
         public DateTime? LastPaid { get; set; }
+        public DateTime? AccountUpgradeExpirationTime { get; set; }
         public bool IsActivated { get; set; }
         public string IdentityId { get; set; }
         public string Avatar { get; set; }
