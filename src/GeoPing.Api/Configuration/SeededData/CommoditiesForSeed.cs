@@ -13,8 +13,14 @@ namespace GeoPing.Api.Configuration.SeededData
             new Commodity()
             {
                 Cost = 100,
-                Name = "premium",
-                Quantity = 30
+                Name = "premium_10_minutes",
+                Quantity = 600
+            },
+            new Commodity()
+            {
+                Cost = 100,
+                Name = "premium_1_week",
+                Quantity = 604800
             }
         };
 

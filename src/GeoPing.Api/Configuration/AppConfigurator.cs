@@ -53,6 +53,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IUtilityService, UtilityService>();
             services.AddScoped<IPublicService, PublicService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<ICommodityService, CommodityService>();
 
             services.AddHttpClient();
         }
