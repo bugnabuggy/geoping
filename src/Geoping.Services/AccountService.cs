@@ -516,58 +516,59 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoPingUser> SetPremiumStatus(Guid actingUserId, PaymentDTO payment)
-        {
-            _logger.LogInformation($"User::[{actingUserId}] requested changing account status.");
+        // TODO: Define if this method still needed
+        //public OperationResult<GeoPingUser> SetPremiumStatus(Guid actingUserId, PaymentDTO payment)
+        //{
+        //    _logger.LogInformation($"User::[{actingUserId}] requested changing account status.");
 
-            if (!payment.Type.Equals("premium"))
-            {
-                _logger.LogWarning($"Changing account type request by user::[{actingUserId}] " +
-                                   $"was failed because payment type is wrong.");
+        //    if (!payment.Type.Equals("premium"))
+        //    {
+        //        _logger.LogWarning($"Changing account type request by user::[{actingUserId}] " +
+        //                           $"was failed because payment type is wrong.");
 
-                return new OperationResult<GeoPingUser>
-                {
-                    Messages = new[] { "Wrong payment type." }
-                };
-            }
+        //        return new OperationResult<GeoPingUser>
+        //        {
+        //            Messages = new[] { "Wrong payment type." }
+        //        };
+        //    }
 
-            if (payment.DateTime == null)
-            {
-                _logger.LogWarning($"Changing account type request by user::[{actingUserId}] " +
-                                   $"was failed because date format is wrong.");
+        //    if (payment.DateTime == null)
+        //    {
+        //        _logger.LogWarning($"Changing account type request by user::[{actingUserId}] " +
+        //                           $"was failed because date format is wrong.");
 
-                return new OperationResult<GeoPingUser>
-                {
-                    Messages = new[] { "Wrong date format." }
-                };
-            }
+        //        return new OperationResult<GeoPingUser>
+        //        {
+        //            Messages = new[] { "Wrong date format." }
+        //        };
+        //    }
 
-            var user = _gpUserSrv.GetUser(x => x.Id == actingUserId);
+        //    var user = _gpUserSrv.GetUser(x => x.Id == actingUserId);
 
-            user.LastPaid = payment.DateTime;
-            user.AccountType = "premium";
+        //    user.LastPaid = payment.DateTime;
+        //    user.AccountType = "premium";
 
-            try
-            {
-                _gpUserSrv.EditUser(user);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An error occured while changing account type of user::[{actingUserId}] to \"premium\": ", ex);
+        //    try
+        //    {
+        //        _gpUserSrv.EditUser(user);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"An error occured while changing account type of user::[{actingUserId}] to \"premium\": ", ex);
 
-                return new OperationResult<GeoPingUser>
-                {
-                    Messages = new[] { $"An error occured while changing account type of user::[{actingUserId}] to \"premium\": {ex}" }
-                };
-            }
+        //        return new OperationResult<GeoPingUser>
+        //        {
+        //            Messages = new[] { $"An error occured while changing account type of user::[{actingUserId}] to \"premium\": {ex}" }
+        //        };
+        //    }
 
-            return new OperationResult<GeoPingUser>
-            {
-                Success = true,
-                Data = user,
-                Messages = new[] { $"Account type of user::[{actingUserId}] was successfully changed to \"premium\"." }
-            };
-        }
+        //    return new OperationResult<GeoPingUser>
+        //    {
+        //        Success = true,
+        //        Data = user,
+        //        Messages = new[] { $"Account type of user::[{actingUserId}] was successfully changed to \"premium\"." }
+        //    };
+        //}
 
         public bool DoesUserExist(RegisterUserDTO user, out string item)
         {

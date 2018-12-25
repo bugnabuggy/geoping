@@ -10,6 +10,13 @@ namespace GeoPing.Core
         public GeopingTokenSettings GeopingToken { get; set; }
         public LoggerSettings Logger { get; set; }
         public UrlsSettings Urls { get; set; }
+        public YandexCashSettings YandexCash { get; set; }
+    }
+
+    public class YandexCashSettings
+    {
+        public string StoreId { get; set; }
+        public string Key { get; set; }
     }
 
     public class GeopingTokenSettings

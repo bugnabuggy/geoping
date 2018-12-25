@@ -19,6 +19,8 @@ namespace GeoPing.Core.Services
         OperationResult<GeoPingUser> EditProfile(Guid loggedUserId, GeoPingUserDTO user);
         OperationResult<GeoPingUser> EditProfileAvatar(Guid guid, ProfileAvatarDTO avatar);
         Task<OperationResult> ResetPassword(ResetPasswordDTO form);
-        OperationResult<GeoPingUser> SetPremiumStatus(Guid actingUserId, PaymentDTO payment);
+
+        // TODO: Define if this method still needed
+        //OperationResult<GeoPingUser> SetPremiumStatus(Guid actingUserId, PaymentDTO payment);
     }
 }
