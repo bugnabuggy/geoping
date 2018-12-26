@@ -78,6 +78,27 @@ namespace GeoPing.Services
                 });
         }
 
+        public void UpgradeToPremiumForATime(Guid userId, int duration)
+        {
+            var user = _gpUserRepo.Data.FirstOrDefault(x => x.Id == userId);
+            
+            user.LastPaid = DateTime.UtcNow;
+
+            if (!user.AccountUpgradeExpirationTime.HasValue ||
+                user.AccountUpgradeExpirationTime.Value < user.LastPaid)
+            {
+                user.AccountUpgradeExpirationTime = user.LastPaid.Value.AddSeconds(duration);
+            }
+            else
+            {
+                user.AccountUpgradeExpirationTime = user.AccountUpgradeExpirationTime.Value.AddSeconds(duration);
+            }
+
+            user.AccountType = "premium";
+
+            _gpUserRepo.Update(user);
+        }
+
         public async Task<ShortUserInfoDTO> GetUserCommonInfo(string userId)
         {
             var gpUser = GetUser(x => x.IdentityId == userId);
@@ -98,16 +119,11 @@ namespace GeoPing.Services
             };
         }
 
-        public OperationResult<GeoPingUser> EditUser(GeoPingUser user)
+        public GeoPingUser EditUser(GeoPingUser user)
         {
             _logger.LogInformation($"User with Id = [{user.Id} edited his profile.");
 
-            return new OperationResult<GeoPingUser>
-            {
-                Data = _gpUserRepo.Update(user),
-                Messages = new[] { "Profile was successfully edited." },
-                Success = true
-            };
+            return _gpUserRepo.Update(user);
         }
 
         public GeoPingUser AddGPUserForIdentity(string identityUserId, string email, string username, string timeZone)

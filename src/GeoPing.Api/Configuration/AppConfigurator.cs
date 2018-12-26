@@ -13,6 +13,7 @@ using GeoPing.Services;
 using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TimeZone = GeoPing.Core.Models.Entities.TimeZone;
 
 namespace GeoPing.Api.Configuration
@@ -33,6 +34,8 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IRepository<UserDevice>, DbRepository<UserDevice>>();
             services.AddScoped<IRepository<TimeZone>, DbRepository<TimeZone>>();
             services.AddScoped<IRepository<Country>, DbRepository<Country>>();
+            services.AddScoped<IRepository<Order>, DbRepository<Order>>();
+            services.AddScoped<IRepository<Commodity>, DbRepository<Commodity>>();
 
             services.AddTransient<IEmailService, EmailService>();
 
@@ -49,6 +52,10 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IValidationService, ValidationService>();
             services.AddScoped<IUtilityService, UtilityService>();
             services.AddScoped<IPublicService, PublicService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<ICommodityService, CommodityService>();
+
+            services.AddHttpClient();
         }
 
         public void Initialize(IServiceProvider services)
@@ -59,7 +66,7 @@ namespace GeoPing.Api.Configuration
             var appUserRoles = new UserRoles();
             var appUsers = new Users();
             var ctx = services.GetRequiredService<ApplicationDbContext>();
-            //var logger = services.GetRequiredService<ILogger>();
+            var logger = services.GetRequiredService<ILogger<AppConfigurator>>();
 
             var roles = appUserRoles.ToList();
 
@@ -81,22 +88,22 @@ namespace GeoPing.Api.Configuration
                     task.Wait(10000);
                     if (!task.Result.Succeeded)
                     {
-                        //logger.LogInformation($"User with UserName [{user.UserName}] and Email [{user.Email}] was created.");
+                        logger.LogInformation($"User with UserName [{user.UserName}] and Email [{user.Email}] was created.");
                     }
                     if (user.UserName == "testadmin")
                     {
                         task = userManager.AddToRolesAsync(user, roles);
-                        //logger.LogInformation("Roles [user] and [admin] were added for user [testadmin].");
+                        logger.LogInformation("Roles [user] and [admin] were added for user [testadmin].");
                     }
                     else
                     {
                         task = userManager.AddToRoleAsync(user, appUserRoles.User);
-                        //logger.LogInformation("Role [user] and was added for user [testuser].") ;
+                        logger.LogInformation("Role [user] and was added for user [testuser].") ;
                     }
                     task.Wait(10000);
                     if (!task.Result.Succeeded)
                     {
-                        //logger.LogError("Something went wrong while addition roles for test users");
+                        logger.LogError("Something went wrong while addition roles for test users");
                     }
 
                     ctx.GPUsers.Add(new GeoPingUser
@@ -112,6 +119,20 @@ namespace GeoPing.Api.Configuration
                     ctx.SaveChanges();
                 }
             }
+
+            if (!ctx.Commodities.Any())
+            {
+                SeedCommodities(ctx); 
+            }
+        }
+
+        private void SeedCommodities(ApplicationDbContext ctx)
+        {
+            var commodities = new CommoditiesForSeed().Get();
+
+            ctx.Commodities.AddRange(commodities);
+
+            ctx.SaveChanges();
         }
     }
 }

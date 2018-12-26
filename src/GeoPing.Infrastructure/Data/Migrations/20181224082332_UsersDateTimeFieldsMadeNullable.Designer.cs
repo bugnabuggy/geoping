@@ -4,14 +4,16 @@ using GeoPing.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GeoPing.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181224082332_UsersDateTimeFieldsMadeNullable")]
+    partial class UsersDateTimeFieldsMadeNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,22 +51,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.HasIndex("PointId");
 
                     b.ToTable("CheckIns");
-                });
-
-            modelBuilder.Entity("GeoPing.Core.Models.Entities.Commodity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<double>("Cost");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Quantity");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Commodities");
                 });
 
             modelBuilder.Entity("GeoPing.Core.Models.Entities.Country", b =>
@@ -132,8 +118,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccountType");
-
-                    b.Property<DateTime?>("AccountUpgradeExpirationTime");
 
                     b.Property<string>("Avatar");
 
@@ -229,24 +213,6 @@ namespace GeoPing.Infrastructure.Data.Migrations
                     b.HasIndex("ListId");
 
                     b.ToTable("ListSharings");
-                });
-
-            modelBuilder.Entity("GeoPing.Core.Models.Entities.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Amount");
-
-                    b.Property<Guid>("CommodityId");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("GeoPing.Core.Models.Entities.PublicList", b =>
