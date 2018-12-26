@@ -69,7 +69,7 @@ namespace GeoPing.Services
                 },
                 confirmation = new PaymentConfirmationDTO
                 {
-                    return_url = _settings.Urls.SiteUrl,
+                    return_url = _settings.YandexCash.RedirectPage,
                     type = "redirect"
                 },
                 capture = true,

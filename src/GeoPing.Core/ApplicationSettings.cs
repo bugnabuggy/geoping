@@ -17,6 +17,7 @@ namespace GeoPing.Core
     {
         public string StoreId { get; set; }
         public string Key { get; set; }
+        public string RedirectPage { get; set; }
     }
 
     public class GeopingTokenSettings
