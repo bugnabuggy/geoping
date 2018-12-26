@@ -78,6 +78,27 @@ namespace GeoPing.Services
                 });
         }
 
+        public void UpgradeToPremiumForATime(Guid userId, int duration)
+        {
+            var user = _gpUserRepo.Data.FirstOrDefault(x => x.Id == userId);
+            
+            user.LastPaid = DateTime.UtcNow;
+
+            if (!user.AccountUpgradeExpirationTime.HasValue ||
+                user.AccountUpgradeExpirationTime.Value < user.LastPaid)
+            {
+                user.AccountUpgradeExpirationTime = user.LastPaid.Value.AddSeconds(duration);
+            }
+            else
+            {
+                user.AccountUpgradeExpirationTime = user.AccountUpgradeExpirationTime.Value.AddSeconds(duration);
+            }
+
+            user.AccountType = "premium";
+
+            _gpUserRepo.Update(user);
+        }
+
         public async Task<ShortUserInfoDTO> GetUserCommonInfo(string userId)
         {
             var gpUser = GetUser(x => x.IdentityId == userId);

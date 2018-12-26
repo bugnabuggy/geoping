@@ -18,5 +18,6 @@ namespace GeoPing.Core.Services
         GeoPingUser EditUser(GeoPingUser user);
         void ActivateUser(string id);
         IEnumerable<UserAutoCompleteDTO> GetUsersShortInfoList(string firstLetters);
+        void UpgradeToPremiumForATime(Guid userId, int duration);
     }
 }
