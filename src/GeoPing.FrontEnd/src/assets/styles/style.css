@@ -5,6 +5,7 @@
   --marker-not-check-select-color: #d97524;
   --marker-free-check-color: #343ff9;
   --marker-free-check-select-color: #c03ff9;
+  --precent-background-color: aliceblue;
 }
 
 html, body {
@@ -1834,6 +1835,117 @@ select.form-control:not([size]):not([multiple]) {
 .public-list-card-body-point-item {
   max-height: 800px;
   overflow: auto;
+}
+
+/*****************************************************************************************/
+
+/* Yandex checkout*/
+.yandex-checkout-card-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.yandex-checkout-form-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000000cf;
+  z-index: 1000;
+}
+
+/*****************************************************************************************/
+
+/* purchase subscription */
+.subscribers-list-container {
+  display: flex;
+}
+
+.subscribers-item-container {
+  height: 200px;
+  width: 200px;
+  border: 1px solid #e5b980;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  border-radius: 4px;
+  background: #f5dfc2;
+  margin: 10px;
+
+  transition: all 0.5s linear;
+}
+
+.subscribers-item-container:hover {
+  background: #b8ba96;
+  transform: scale(1.1);
+  z-index: 2;
+}
+
+.subscribers-item-header-container {
+  width: 50px;
+  height: 20px;
+  background: var(--precent-background-color);
+  position: absolute;
+  left: 0;
+  clip-path: polygon(0 0, 50px 0, 30px 40px, 0 45px);
+  display: flex;
+  justify-content: center;
+}
+
+.subscribers-item-body-container {
+  position: relative;
+  top: 50px;
+  text-align: center;
+  height: max-content;
+  z-index: 2;
+}
+
+.subscribers-item-body-price-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.subscribers-item-body-price {
+  margin: 10px 5px 0 10px;
+}
+
+.subscribers-item-footer-container {
+  position: absolute;
+  bottom: 10px;
+  z-index: 2;
+}
+
+.subscribers-triangle-art-1, .subscribers-triangle-art-2, .subscribers-triangle-art-3 {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: #fffbf580;
+  z-index: 1;
+}
+
+.subscribers-triangle-art-1 {
+  clip-path: polygon(100% 100%, 100% 40%, 15% 100%);
+}
+
+.subscribers-triangle-art-2 {
+  clip-path: polygon(0 100%, 0 85%, 30% 100%);
+}
+
+.subscribers-yandex-frame {
+  width: 100%;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.subscribers-yandex-frame iframe {
+  width: 100%;
 }
 
 /*****************************************************************************************/

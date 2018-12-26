@@ -16,6 +16,7 @@ import { myCheckList } from './myCheckListState';
 import { invitationsState } from './invitationsState';
 import { sharedCheckList } from './sharedCheckListState';
 import { windowState } from './windowState';
+import { paymentState } from './paymentState';
 
 const initialState: IinitialStateType = {
   form: {},
@@ -35,6 +36,7 @@ const initialState: IinitialStateType = {
   publicCheckList: publicCheckListState,
   notifications: notificationState,
   invitations: invitationsState,
+  payment: paymentState,
   router: {},
   window: windowState,
 };

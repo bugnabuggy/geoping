@@ -15,6 +15,7 @@ import IinvitationsStateType from './invitationsStateType';
 import IMyCheckListsStateType from './myCheckListsStateType';
 import ISharedCheckListStateType from './sharedCheckListStateType';
 import IWindowStateType from './windowStateType';
+import IPaymentStateType from './paymentStateType';
 
 export default interface IinitialStateType {
   form: any;
@@ -34,6 +35,7 @@ export default interface IinitialStateType {
   publicCheckList: IPublicCheckListType;
   notifications: INotificationStateType;
   invitations: IinvitationsStateType;
+  payment: IPaymentStateType;
   router: any;
   window: IWindowStateType;
 }

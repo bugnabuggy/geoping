@@ -68,3 +68,7 @@ export const getTimeZones: string = `${endpointBaseUrl}/api/utility/timezones`;
 /* endpoints public lists */
 export const getCertainPublicList: string = `${endpointBaseUrl}/api/publiclists/%listid%`;
 export const getPointsForPublicList: string = `${endpointBaseUrl}/api/publiclists/%listid%/geopoints`;
+
+/* endpoints payment */
+export const paymentYandexCheckout: string = `${endpointBaseUrl}/api/payments/premium/yandex`;
+export const getCommoditiesList: string = `${endpointBaseUrl}/api/commodities`;

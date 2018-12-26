@@ -15,6 +15,7 @@ import ProfileService from './httpServices/profileService';
 import UserService from './httpServices/userService';
 import MockProfileService from './mockServices/mockProfileService';
 import { AxiosRequestConfig } from 'axios';
+import PaymentService from './httpServices/paymentService';
 
 export function configurationDependencyInjerction() {
 
@@ -33,6 +34,7 @@ export function configurationDependencyInjerction() {
   httpServiceLocator.set( 'IMarkerServiceType', new MarkerService() );
   httpServiceLocator.set( 'IUser', new UserService() );
   httpServiceLocator.set( 'IProfileServiceType', new ProfileService() );
+  httpServiceLocator.set( 'IPaymentServiceType', new PaymentService() );
 
   /* test services */
   testServiceLocator.set( 'IAuthorization', new MockAuthorizationService() );

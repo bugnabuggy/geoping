@@ -20,6 +20,7 @@ import invitationsReducer from './invitationsReducer';
 import myCheckListReducer from './myCheckListReducer';
 import sharedCheckListReducer from './sharedCheckListReducer';
 import windowReducer from './windowReduser';
+import paymentReducer from './paymentReducer';
 
 export default function createReducer( injectedReducers: any ) {
   return combineReducers( {
@@ -41,6 +42,7 @@ export default function createReducer( injectedReducers: any ) {
     notifications: notificationsReducer,
     invitations: invitationsReducer,
     allChecklistFilter: allChecklistFilterReducer,
+    payment: paymentReducer,
     router: routerReducer,
     window: windowReducer,
     ...injectedReducers,
