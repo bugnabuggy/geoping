@@ -131,7 +131,7 @@ namespace GeoPing.Services
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> UpgradeUserAccount(JObject data)
+        public async Task<OperationResult> UpgradeUserAccount(object data)
         {
             // TODO: Should this code be there. (No)
             //
@@ -145,11 +145,13 @@ namespace GeoPing.Services
             //    };
             //}
 
+            var jData = JObject.FromObject(data);
+
             Guid paymentId;
 
             try
             {
-                paymentId = data["object"]["id"].ToObject<Guid>();
+                paymentId = jData["object"]["id"].ToObject<Guid>();
             }
             catch (Exception ex)
             {
