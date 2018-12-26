@@ -17,6 +17,7 @@ namespace GeoPing.Api.Controllers
             _commoditySrv = commoditySrv;
         }
 
+        [HttpGet]
         public IActionResult GetCommoditiesList()
         {
             return Ok(_commoditySrv.Get());
