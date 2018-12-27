@@ -1,0 +1,3 @@
+export const GET_PAYMENT_YANDEX_URL: string = 'GET_PAYMENT_YANDEX_URL';
+export const LOAD_PRODUCTS_LIST: string = 'LOAD_PRODUCTS_LIST';
+export const SELECT_COMMODITIES: string = 'SELECT_COMMODITIES';

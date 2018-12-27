@@ -1,15 +1,20 @@
 import * as React from 'react';
 import ProfileReduxForm from './reduxForms/profileReduxForm';
-import { Button } from 'react-bootstrap';
+import { Button } from 'reactstrap';
 
 import { IProfileComponentProps } from '../../componentProps/profileComponentProps';
 import { ModalChangePasswordComponent } from '../modalComponents/modalChangePasswordComponent';
+import { ModalPayments } from '../modalComponents/modalPayments';
 import moment = require('moment');
 
 class ProfileComponent extends React.Component<IProfileComponentProps, any> {
+  window: any = window;
 
   constructor( props: any ) {
     super( props );
+    this.state = {
+      showPayments: false,
+    };
     this.submit = this.submit.bind( this );
   }
 
@@ -17,6 +22,17 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
     this.props.loadProfileData( 'id' );
 
   }
+
+  openPaymentsModal = () => {
+    this.setState( {
+      showPayments: true,
+    } );
+  };
+  closePaymentsModal = () => {
+    this.setState( {
+      showPayments: false,
+    } );
+  };
 
   submit( e: any ) {
     const newProfileData: any /*IUserType*/ = {
@@ -37,6 +53,10 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
     };
     this.props.updateProfileData( newProfileData );
   }
+
+  upgradeAccount = () => {
+    this.openPaymentsModal();
+  };
 
   render() {
     const date: any = moment( this.props.profileState.lastPaid );
@@ -67,13 +87,24 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
               Last paid <em>{date.format( 'L' )}</em>
             </div>
             <Button
-              bsStyle="primary"
-              type="button"
-              href="#"
+              color="primary"
+              onClick={this.upgradeAccount}
+              disabled={!!this.props.payment.yandexPaymentURL}
             >
               Upgrade Account
             </Button>
           </div>
+          {this.state.showPayments &&
+          (
+            <ModalPayments
+              show={this.state.showPayments}
+              payment={this.props.payment}
+
+              close={this.closePaymentsModal}
+              paymentYandexCheckout={this.props.paymentYandexCheckout}
+              selectCommodities={this.props.selectCommodities}
+            />
+          )}
         </div>
       </div>
     );

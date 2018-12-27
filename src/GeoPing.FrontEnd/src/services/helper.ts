@@ -114,7 +114,7 @@ export function dateFormatter( date: moment.Moment ) {
   // debugger
   // console.log(date.utc());
   // return `${date.year()}-${date.month() + 1}-${date.date()}T${date.hours()}:${date.minutes()}:${date.seconds()}Z`;
-  return date.utc().startOf('day').format();
+  return date.utc().startOf( 'day' ).format();
 }
 
 export function formattingGeoPoints( geoPoints: Array<any> ): Array<IGeoPoint> {
