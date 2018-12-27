@@ -1482,6 +1482,23 @@ header nav {
 
 /*************************************************************************************/
 
+/* Admin payment statistics */
+.admin-payment-statistics-container {
+  display: grid;
+  padding: 10px;
+  height: 100%;
+  grid-template-rows: [row1] 50px [row2] max-content [row3] 1fr;
+  grid-template-columns: [col1] 1fr;
+  grid-gap: 5px;
+}
+
+.filter-payment-container {
+  border: 1px solid black;
+  padding: 10px;
+  display: flex;
+}
+/*************************************************************************************/
+
 /* Check in Statistics*/
 .check-in-statistics {
   height: 100%;

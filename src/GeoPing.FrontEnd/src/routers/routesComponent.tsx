@@ -9,6 +9,7 @@ import {
   adminAllCheckLists,
   adminAllUsersUrl,
   adminDashboardUrl,
+  adminPaymentStatistics,
   baseUrl,
   checkInStatistics,
   checkInUrl,
@@ -44,6 +45,7 @@ import AdminDashboardPage from '../pagesAdmin/adminDashboardPage';
 import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import { PublicCheckListInfoPage } from '../pages/publicCheckListInfoPage';
+import { AdminPaymentStatisticsPage } from '../pagesAdmin/adminPaymentStatisticsPage';
 // import routersMap from '../mapForComponents/routersMap';
 // import LoginPage from '../pages/loginPage';
 // import { AboutComponent } from '../pages/aboutPage';
@@ -202,6 +204,13 @@ export const Routes = ( props: any ) =>
             exact={true}
             path={adminAllCheckLists}
             component={AdminAllChecklistPage}
+          />
+          <AdminRoute
+            isAllowed={props.isTokenVerified}
+            userRoles={props.userRoles}
+            exact={true}
+            path={adminPaymentStatistics}
+            component={AdminPaymentStatisticsPage}
           />
           <Redirect from="*" to={notFoundUrl}/>
           {/*<Route component={NotFoundPage}/>*/}
