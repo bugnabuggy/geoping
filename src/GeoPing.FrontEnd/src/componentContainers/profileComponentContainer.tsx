@@ -31,9 +31,9 @@ class ProfileComponentContainer extends React.Component<IProfileComponentContain
     prevProps: Readonly<IProfileComponentContainerProps>,
     prevState: Readonly<any>, snapshot?: any
   ): void {
-    // if ( !!this.props.payment.yandexPaymentURL ) {
-    //   window.location.href = this.props.payment.yandexPaymentURL;
-    // }
+    if ( !prevProps.payment.yandexPaymentURL && !!this.props.payment.yandexPaymentURL ) {
+      window.location.href = this.props.payment.yandexPaymentURL;
+    }
   }
 
   saveAvatar = () => {
@@ -59,16 +59,6 @@ class ProfileComponentContainer extends React.Component<IProfileComponentContain
           paymentYandexCheckout={this.props.paymentYandexCheckout}
           selectCommodities={this.props.selectCommodities}
         />
-        {/*<ModalFramePaymentsComponent*/}
-        {/*link={this.props.payment.yandexPaymentURL}*/}
-        {/*/>*/}
-        {!!this.props.payment.yandexPaymentURL &&
-        (
-          <div className="subscribers-yandex-frame">
-            <iframe src={this.props.payment.yandexPaymentURL}/>
-          </div>
-        )
-        }
       </React.Fragment>
     );
   }

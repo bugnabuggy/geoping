@@ -1948,6 +1948,20 @@ select.form-control:not([size]):not([multiple]) {
   width: 100%;
 }
 
+.brand-yandex-button {
+  width: 170px;
+  height: 60px;
+  background: #FFCC00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.brand-yandex-button:hover {
+  background: rgb(255, 219, 77);
+}
+
 /*****************************************************************************************/
 /*  Media queries*/
 @media (max-width: 800px) {

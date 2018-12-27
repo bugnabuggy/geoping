@@ -4,7 +4,6 @@ import { Button } from 'reactstrap';
 
 import { IProfileComponentProps } from '../../componentProps/profileComponentProps';
 import { ModalChangePasswordComponent } from '../modalComponents/modalChangePasswordComponent';
-import { YandexCheckoutComponent } from '../payments/yandexCheckoutComponent';
 import { ModalPayments } from '../modalComponents/modalPayments';
 import moment = require('moment');
 
@@ -105,10 +104,6 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
               paymentYandexCheckout={this.props.paymentYandexCheckout}
               selectCommodities={this.props.selectCommodities}
             />
-          )}
-          {false &&
-          (
-            <YandexCheckoutComponent/>
           )}
         </div>
       </div>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ModalComponent } from './checklist/modalComponent';
 import IModalPaymentsProps from '../../componentProps/modalComponentProps/modalPaymentsProps';
 import { SubscribersItemComponent } from '../subscribersItemComponent';
-import { Button } from 'reactstrap';
 
 export class ModalPayments extends React.Component<IModalPaymentsProps, any> {
   handleAmount = ( commodityId: string ) => {
@@ -39,12 +38,12 @@ export class ModalPayments extends React.Component<IModalPaymentsProps, any> {
           {!!this.props.payment.selectCommodityId ?
             (
               <div>
-                <Button
-                  color="primary"
+                <div
+                  className="brand-yandex-button"
                   onClick={this.handleClick}
                 >
-                  Yandex payment
-                </Button>
+                  <img src="https://kassa.yandex.ru/files/Guide_files/logo-black.svg"/>
+                </div>
                 <div>
                   <div id="paypal-button"/>
                 </div>
