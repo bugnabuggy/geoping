@@ -25,3 +25,4 @@ export const adminPrefixUrl: string = 'admin/';
 export const adminDashboardUrl: string = `${baseUrl + adminPrefixUrl}dashboard`;
 export const adminAllUsersUrl: string = `${baseUrl + adminPrefixUrl}all_users`;
 export const adminAllCheckLists: string = `${baseUrl + adminPrefixUrl}all_check_lists`;
+export const adminPaymentStatistics: string = `${baseUrl + adminPrefixUrl}payment_statistics`;

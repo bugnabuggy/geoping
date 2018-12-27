@@ -38,6 +38,10 @@ export const loadCommoditiesList = () => ( dispatch: IDispatchFunction ) => {
     } );
 };
 
+export const changeFilterField = ( field: string, data: string|number|Date ) => ( dispatch: IDispatchFunction ) => {
+  console.info(field);
+};
+
 export const selectCommodities = ( commodityId: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectCommoditiesAction( commodityId ) );
 };

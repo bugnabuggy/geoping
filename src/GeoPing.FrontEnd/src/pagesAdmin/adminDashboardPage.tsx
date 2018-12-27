@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import IAdminDashboardPageProps from '../pageAdminProps/adminDashboardPageProps';
-import { adminAllCheckLists, adminAllUsersUrl } from '../constants/routes';
+import { adminAllCheckLists, adminAllUsersUrl, adminPaymentStatistics } from '../constants/routes';
 
 export default class AdminDashboardPage extends React.Component<IAdminDashboardPageProps, any> {
   render() {
@@ -12,6 +12,8 @@ export default class AdminDashboardPage extends React.Component<IAdminDashboardP
         </Link>
         <Link to={adminAllCheckLists} className="admin-dashboard-link" >
           All Checklists
+        </Link><Link to={adminPaymentStatistics} className="admin-dashboard-link" >
+          Payment Statistics
         </Link>
       </div>
     );
