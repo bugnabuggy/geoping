@@ -10,6 +10,7 @@ using GeoPing.Infrastructure.Data;
 using GeoPing.Infrastructure.Models;
 using GeoPing.Infrastructure.Repositories;
 using GeoPing.Services;
+using GeoPing.Services.Interfaces;
 using GeoPing.Utilities.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,6 +55,7 @@ namespace GeoPing.Api.Configuration
             services.AddScoped<IPublicService, PublicService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<ICommodityService, CommodityService>();
+            services.AddScoped<IPayPalTokenHelper, PayPalTokenHelper>();
 
             services.AddHttpClient();
         }

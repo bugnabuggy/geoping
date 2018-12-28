@@ -11,6 +11,7 @@ namespace GeoPing.Core
         public LoggerSettings Logger { get; set; }
         public UrlsSettings Urls { get; set; }
         public YandexCashSettings YandexCash { get; set; }
+        public PayPalCashSettings PayPalCash { get; set; }
     }
 
     public class YandexCashSettings
@@ -18,6 +19,14 @@ namespace GeoPing.Core
         public string StoreId { get; set; }
         public string Key { get; set; }
         public string RedirectPage { get; set; }
+    }
+
+    public class PayPalCashSettings
+    {
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
+        public string ReturnRedirectPage { get; set; }
+        public string CancelRedirectPage { get; set; }
     }
 
     public class GeopingTokenSettings
