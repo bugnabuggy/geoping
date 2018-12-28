@@ -19,6 +19,7 @@ import {
   loginUrl,
   logOutUrl,
   notFoundUrl,
+  paymentPayPalUrl,
   profileUrl,
   publicCheckListInfoUrl,
   publicCheckListUrl,
@@ -46,6 +47,7 @@ import AdminAllUsersPage from '../pagesAdmin/adminAllUsersPage';
 import AdminAllChecklistPage from '../pagesAdmin/adminAllChecklistPage';
 import { PublicCheckListInfoPage } from '../pages/publicCheckListInfoPage';
 import { AdminPaymentStatisticsPage } from '../pagesAdmin/adminPaymentStatisticsPage';
+import PaymentPayPalContainer from '../componentContainers/paymentPayPalContainer';
 // import routersMap from '../mapForComponents/routersMap';
 // import LoginPage from '../pages/loginPage';
 // import { AboutComponent } from '../pages/aboutPage';
@@ -98,7 +100,7 @@ import { AdminPaymentStatisticsPage } from '../pagesAdmin/adminPaymentStatistics
 
 const AdminRoute = ( { isAllowed, userRoles, ...props }: any ) => {
   const userRole: ERoleUser = userRoles.find( ( item: string ) => item === ERoleUser.Admin );
-  return isAllowed /*&& !!userRole */ ?
+  return isAllowed /*&& !!userRole*/ ?
     <Route {...props}/>
     :
     <Redirect to={dashboardUrl}/>;
@@ -130,6 +132,7 @@ export const Routes = ( props: any ) =>
           <Route exact={true} path={token} component={TokenPageContainer}/>
           <Route exact={true} path={tokenError} component={TokenErrorContainer}/>
           <Route exact={true} path={notFoundUrl} component={NotFoundPage}/>
+          <Route exact={true} path={paymentPayPalUrl} component={PaymentPayPalContainer}/>
           <NotAuthorizeRoute
             isAllowed={props.isTokenVerified}
             exact={true}

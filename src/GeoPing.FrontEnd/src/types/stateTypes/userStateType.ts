@@ -5,6 +5,7 @@ export default interface IUserStateType {
   roles: Array<ERoleUser>;
   redirectDashboard: boolean;
   userId: string;
+  isLoaded: boolean;
 }
 
 export enum ERoleUser {

@@ -22,4 +22,5 @@ export interface IProfileComponentContainerProps {
   paymentYandexCheckout: ( commoditiesId: string ) => ( dispatch: IDispatchFunction ) => void;
   loadCommoditiesList: () => ( dispatch: IDispatchFunction ) => void;
   selectCommodities: ( commodityId: string ) => ( dispatch: IDispatchFunction ) => void;
+  paymentPayPalCheckout: ( commoditiesId: string ) => ( dispatch: IDispatchFunction ) => void;
 }

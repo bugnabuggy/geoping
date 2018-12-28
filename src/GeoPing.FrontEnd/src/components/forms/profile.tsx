@@ -32,6 +32,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
     this.setState( {
       showPayments: false,
     } );
+    this.props.selectCommodities( '' );
   };
 
   submit( e: any ) {
@@ -103,6 +104,7 @@ class ProfileComponent extends React.Component<IProfileComponentProps, any> {
               close={this.closePaymentsModal}
               paymentYandexCheckout={this.props.paymentYandexCheckout}
               selectCommodities={this.props.selectCommodities}
+              paymentPayPalCheckout={this.props.paymentPayPalCheckout}
             />
           )}
         </div>

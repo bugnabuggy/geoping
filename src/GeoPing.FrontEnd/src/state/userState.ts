@@ -7,4 +7,5 @@ export const userState: IUserState = {
   roles: [],
   redirectDashboard: false,
   userId: '',
+  isLoaded: false,
 };

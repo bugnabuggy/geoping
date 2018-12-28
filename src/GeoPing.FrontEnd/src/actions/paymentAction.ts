@@ -24,6 +24,23 @@ export const paymentYandexCheckout = ( commoditiesId: string ) => ( dispatch: ID
     } );
 };
 
+export const paymentPayPalCheckout = ( commoditiesId: string ) => ( dispatch: IDispatchFunction ) => {
+  dispatch( windowBlockingAction( true ) );
+  const paymentService: IPaymentServiceType = StaticStorage.serviceLocator.get( 'IPaymentServiceType' );
+  paymentService.paypalCheckout( commoditiesId )
+    .then( ( resp: any ) => {
+      // dispatch( paymentYandexCheckoutAction( resp ) );
+      console.info( 'resp', resp );
+      dispatch( windowBlockingAction( false ) );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' paymentYandexCheckout', EnumNotificationType.Danger )
+      ) );
+      dispatch( windowBlockingAction( false ) );
+    } );
+};
+
 export const loadCommoditiesList = () => ( dispatch: IDispatchFunction ) => {
   const paymentService: IPaymentServiceType = StaticStorage.serviceLocator.get( 'IPaymentServiceType' );
   paymentService.getCommoditiesList()
@@ -38,12 +55,25 @@ export const loadCommoditiesList = () => ( dispatch: IDispatchFunction ) => {
     } );
 };
 
-export const changeFilterField = ( field: string, data: string|number|Date ) => ( dispatch: IDispatchFunction ) => {
-  console.info(field);
+export const changeFilterField = ( field: string, data: string | number | Date ) => ( dispatch: IDispatchFunction ) => {
+  console.info( field );
 };
 
 export const selectCommodities = ( commodityId: string ) => ( dispatch: IDispatchFunction ) => {
   dispatch( selectCommoditiesAction( commodityId ) );
+};
+
+export const paymentPayPal = ( token: string, payerId: string ) => ( dispatch: IDispatchFunction ) => {
+  const paymentService: IPaymentServiceType = StaticStorage.serviceLocator.get( 'IPaymentServiceType' );
+  paymentService.sendPaymentDataPayPal( token, payerId )
+    .then( ( resp: any ) => {
+      console.info( 'resp', resp );
+    } )
+    .catch( ( error: any ) => {
+      dispatch( addNotificationAction(
+        createNotification( error.message + ' paymentYandexCheckout', EnumNotificationType.Danger )
+      ) );
+    } );
 };
 
 /* Actions */

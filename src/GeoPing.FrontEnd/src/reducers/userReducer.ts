@@ -56,6 +56,7 @@ function loadUserData( state: IUserStateType, action: any ): IUserStateType {
   return {
     ...state,
     ...action.userData,
+    isLoaded: true,
   };
 }
 
