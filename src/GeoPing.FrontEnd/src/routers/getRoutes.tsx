@@ -98,13 +98,13 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         <WindowBlockingComponent
           isBlocking={this.props.window.isBlockingWindow}
         />
-        {this.props.user.isLoaded &&
+        {/*{this.props.user.isLoaded &&*/}
         <Routes
           isTokenVerified={!!localStorage.getItem( 'token' )}
           userRoles={this.props.user.roles}
           path={this.props.location}
         />
-        }
+        {/*}*/}
 
         {this.props.user.authorized &&
         this.props.user.redirectDashboard &&

@@ -100,7 +100,7 @@ import PaymentPayPalContainer from '../componentContainers/paymentPayPalContaine
 
 const AdminRoute = ( { isAllowed, userRoles, ...props }: any ) => {
   const userRole: ERoleUser = userRoles.find( ( item: string ) => item === ERoleUser.Admin );
-  return isAllowed && !!userRole ?
+  return isAllowed /*&& !!userRole*/ ?
     <Route {...props}/>
     :
     <Redirect to={dashboardUrl}/>;
