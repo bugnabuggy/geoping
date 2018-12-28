@@ -13,6 +13,7 @@ namespace GeoPing.Core.Services
         PublicListDTO GetPublicList(Guid listId);
         IEnumerable<GeoPoint> GetPointsOfPublicList(Guid listId);
         GeoPoint GetPointOfPublicList(Guid listId, Guid pointId);
+        OperationResult SubscribeToList(GeoPingUser actingUser, Guid listId);
 
         bool DoesPublicListExist(Guid listId);
     }

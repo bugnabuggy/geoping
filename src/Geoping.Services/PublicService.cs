@@ -30,6 +30,7 @@ namespace GeoPing.Services
         private IGeolistService _geolistSrv;
         private IGeopointService _geopointSrv;
         private IGeopingUserService _userSrv;
+        private ISharingService _sharingSrv;
         private IRepository<PublicList> _publicListRepo;
         private ILogger<PublicService> _logger;
 
@@ -37,12 +38,14 @@ namespace GeoPing.Services
             (IGeolistService geolistSrv,
             IGeopointService geopointSrv,
             IGeopingUserService userSrv,
+            ISharingService sharingSrv,
             IRepository<PublicList> publicListRepo,
             ILogger<PublicService> logger)
         {
             _geolistSrv = geolistSrv;
             _geopointSrv = geopointSrv;
             _userSrv = userSrv;
+            _sharingSrv = sharingSrv;
             _publicListRepo = publicListRepo;
             _logger = logger;
         }
@@ -123,6 +126,40 @@ namespace GeoPing.Services
             return _geopointSrv.Get(x => x.ListId == listId && x.Id == pointId).FirstOrDefault();
         }
 
+        public OperationResult SubscribeToList(GeoPingUser actingUser, Guid listId)
+        {
+            _logger.LogInformation($"User::[{actingUser.Id}] tries to subscribe to public list::[{listId}]");
+
+            if (_sharingSrv.DoesSharingExist(listId, actingUser.Email))
+            {
+                _logger.LogInformation($"An error occured while user::[{actingUser.Id}] " +
+                                       $"try to subscribe to public list::[{listId}]: he has been already subscribed.");
+
+                return new OperationResult
+                {
+                    Messages = new[] { $"User::[{actingUser.Id}] has been subscribed to public geolist::[{listId}] already." }
+                };
+            }
+
+            var sub = new ListSharing
+            {
+                Email = actingUser.Email,
+                InvitationDate = DateTime.UtcNow,
+                ListId = listId,
+                Status = "accepted",
+                UserId = actingUser.Id
+            };
+
+            _logger.LogInformation($"User::[{actingUser.Id}] has subscribed to public geolist::[{listId}].");
+
+            return new OperationResult
+            {
+                Data = _sharingSrv.Add(sub),
+                Success = true,
+                Messages = new[] { $"User::[{actingUser.Id}] has subscribed to public geolist::[{listId}]." }
+            };
+        }
+
         public bool DoesPublicListExist(Guid listId)
         {
             return _geolistSrv.Get(x => x.IsPublic && x.Id == listId).Any();
@@ -136,7 +173,7 @@ namespace GeoPing.Services
                 from gl in data
                 from pl in _publicListRepo.Get()
                 from u in owners
-                where gl.Id == pl.ListId && 
+                where gl.Id == pl.ListId &&
                       gl.OwnerId == u.Id
                 select new PublicListDTO
                 {
