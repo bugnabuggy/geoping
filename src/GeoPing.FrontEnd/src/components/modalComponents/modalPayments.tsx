@@ -7,8 +7,12 @@ export class ModalPayments extends React.Component<IModalPaymentsProps, any> {
   handleAmount = ( commodityId: string ) => {
     this.props.selectCommodities( commodityId );
   };
-  handleClick = () => {
+  handleClickYandex = () => {
     this.props.paymentYandexCheckout( this.props.payment.selectCommodityId );
+    this.props.close();
+  };
+  handleClickPayPal = () => {
+    this.props.paymentPayPalCheckout( this.props.payment.selectCommodityId );
     this.props.close();
   };
 
@@ -37,15 +41,26 @@ export class ModalPayments extends React.Component<IModalPaymentsProps, any> {
         >
           {!!this.props.payment.selectCommodityId ?
             (
-              <div>
+              <div className="payment-checkout-container">
                 <div
                   className="brand-yandex-button"
-                  onClick={this.handleClick}
+                  onClick={this.handleClickYandex}
                 >
                   <img src="https://kassa.yandex.ru/files/Guide_files/logo-black.svg"/>
                 </div>
-                <div>
-                  <div id="paypal-button"/>
+                <div
+                  className="brand-paypal-button"
+                  onClick={this.handleClickPayPal}
+                >
+                  {/*<div id="paypal-button"/>*/}
+                  <img
+                    src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png"
+                    alt="Buy now with PayPal"
+                  />
+                </div>
+                <div className="robokassa-formV">
+                    <div className="">Buy</div>
+                    <img className="robokassa-formV-image" src="../../assets/images/logo-s.png"/>
                 </div>
               </div>
             ) :

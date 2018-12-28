@@ -14,7 +14,12 @@ import {
 } from '../actions/profileAction';
 import IinitialStateType from '../types/stateTypes/initialStateType';
 import { getCountries, getTimeZones } from '../actions/utilitiesAction';
-import { loadCommoditiesList, paymentYandexCheckout, selectCommodities } from '../actions/paymentAction';
+import {
+  loadCommoditiesList,
+  paymentPayPalCheckout,
+  paymentYandexCheckout,
+  selectCommodities
+} from '../actions/paymentAction';
 
 class ProfileComponentContainer extends React.Component<IProfileComponentContainerProps, any> {
   constructor( props: IProfileComponentContainerProps ) {
@@ -58,6 +63,7 @@ class ProfileComponentContainer extends React.Component<IProfileComponentContain
           saveAvatar={this.saveAvatar}
           paymentYandexCheckout={this.props.paymentYandexCheckout}
           selectCommodities={this.props.selectCommodities}
+          paymentPayPalCheckout={this.props.paymentPayPalCheckout}
         />
       </React.Fragment>
     );
@@ -87,6 +93,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       paymentYandexCheckout,
       loadCommoditiesList,
       selectCommodities,
+      paymentPayPalCheckout,
     },
     dispatch );
 

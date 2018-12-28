@@ -14,8 +14,9 @@ import { dashboardUrl, loginUrl } from '../constants/routes';
 import WindowBlockingComponent from '../components/windowBlockingComponent';
 import { isRedirect, redirectOnSignInForm } from '../actions/windowAction';
 import { checkLocation } from '../services/helper';
-import { NotificationPersonalInformationTrackingComponent }
-from '../components/notificationPersonalInformationTrackingComponent';
+import {
+  NotificationPersonalInformationTrackingComponent
+} from '../components/notificationPersonalInformationTrackingComponent';
 
 class GetRoutes extends React.Component<IGetRoutesProps, any> {
   constructor( props: IGetRoutesProps ) {
@@ -97,11 +98,13 @@ class GetRoutes extends React.Component<IGetRoutesProps, any> {
         <WindowBlockingComponent
           isBlocking={this.props.window.isBlockingWindow}
         />
+        {this.props.user.isLoaded &&
         <Routes
           isTokenVerified={!!localStorage.getItem( 'token' )}
           userRoles={this.props.user.roles}
           path={this.props.location}
         />
+        }
 
         {this.props.user.authorized &&
         this.props.user.redirectDashboard &&
