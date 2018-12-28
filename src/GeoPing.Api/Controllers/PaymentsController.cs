@@ -23,22 +23,7 @@ namespace GeoPing.Api.Controllers
             _paymentSrv = paymentSrv;
             _helper = helper;
         }
-
-        // POST /api/payments/result/yandex
-        [HttpPost("result/yandex")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ProcessTheYandexNotification([FromBody] JObject data)
-        {
-            var result = await _paymentSrv.ProcessTheYandexCallback(data);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
+        
         // POST /api/payments/premium/yandex
         [HttpPost("premium/yandex")]
         public async Task<IActionResult> PurchasePremiumStatusWithYandex([FromBody]PurchaseDTO purchase)
@@ -67,8 +52,24 @@ namespace GeoPing.Api.Controllers
             return BadRequest(result);
         }
 
+        // POST /api/payments/result/yandex
+        [HttpPost("result/yandex")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ProcessTheYandexNotification([FromBody] JObject data)
+        {
+            var result = await _paymentSrv.ProcessTheYandexCallback(data);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         // POST /api/payment/result/paypal
         [HttpPost("result/paypal")]
+        [AllowAnonymous]
         public async Task<IActionResult> ProcessThePayPalCallback(string token, string payerId, string paymentId)
         {
             var result = await _paymentSrv.ProcessThePayPalCallback
