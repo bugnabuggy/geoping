@@ -95,25 +95,29 @@ export class CheckListGeoPointComponent extends React.Component<ICheckListGeoPoi
                 >
                   Lat
                 </Label>
-                <Input
-                  name="lat"
-                  type="number"
-                  value={this.props.googleMap.selectedGeoPoint.lat}
-                  onChange={this.handleChangeCoords}
-                  disabled={!this.props.checkList.isEditing}
-                />
+                <div>
+                  <Input
+                    name="lat"
+                    type="number"
+                    value={this.props.googleMap.selectedGeoPoint.lat}
+                    onChange={this.handleChangeCoords}
+                    disabled={!this.props.checkList.isEditing}
+                  />
+                </div>
                 <Label
                   className="check-list-geo-point-form-label-long"
                 >
                   Long
                 </Label>
-                <Input
-                  name="lng"
-                  type="number"
-                  value={this.props.googleMap.selectedGeoPoint.lng}
-                  onChange={this.handleChangeCoords}
-                  disabled={!this.props.checkList.isEditing}
-                />
+                <div>
+                  <Input
+                    name="lng"
+                    type="number"
+                    value={this.props.googleMap.selectedGeoPoint.lng}
+                    onChange={this.handleChangeCoords}
+                    disabled={!this.props.checkList.isEditing}
+                  />
+                </div>
               </FormGroup>
               <FormGroup
                 className="check-list-geo-point-form-group-radius"
