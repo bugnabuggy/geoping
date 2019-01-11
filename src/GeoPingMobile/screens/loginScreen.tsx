@@ -66,6 +66,7 @@ export class LoginScreen extends React.Component<Props, State> {
         <Text style={styles.loginText}>Password</Text>
         <TextInput
           style={styles.textInput}
+          secureTextEntry={true}
           placeholder="Password"
           onChangeText={this.handleChangePassword}
           value={this.state.password}

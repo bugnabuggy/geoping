@@ -18,79 +18,81 @@ import { addListPointsAction } from './googleMapAction';
 import { ICheckInDTO } from '../DTO/checkInDTO';
 
 export const checkIn = ( idPoint: string, data: ICheckInDTO ) => ( dispatch: IDispatchFunction ) => {
-  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.addCheckIn( idPoint, data )
-    .then( ( response: any ) => {
-      const geoPoint: Array<any> = [ response ];
-      dispatch( getAllChecksForUserAndListAction( geoPoint ) );
-      dispatch( addNotificationAction( createNotification( 'Point marked', EnumNotificationType.Success ) ) );
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get ( 'ICheckListServiceType' );
+  checkListService.addCheckIn ( idPoint, data )
+    .then ( ( response: any ) => {
+      const geoPoint: Array<any> = [response];
+      dispatch ( getAllChecksForUserAndListAction ( geoPoint ) );
+      dispatch ( addNotificationAction ( createNotification ( 'Point marked', EnumNotificationType.Success ) ) );
     } )
-    .catch( ( error: any ) => {
-      console.log('errror', error.message);
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    .catch ( ( error: any ) => {
+      console.log ( 'errror', error.message );
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 /* load */
 export const loadLists = () => ( dispatch: IDispatchFunction ) => {
-  dispatch( loadingCheckLists( true ) );
-  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.getGeoListsAccessUser()
-    .then( ( response: any ) => {
-      dispatch( loadListsAction( response ) );
-      dispatch( loadingCheckLists( false ) );
+  dispatch ( loadingCheckLists ( true ) );
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get ( 'ICheckListServiceType' );
+  checkListService.getGeoListsAccessUser ()
+    .then ( ( response: any ) => {
+      dispatch ( loadListsAction ( response ) );
+      dispatch ( loadingCheckLists ( false ) );
     } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-      dispatch( loadingCheckLists( false ) );
+    .catch ( ( error: any ) => {
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
+      dispatch ( loadingCheckLists ( false ) );
     } );
 };
 
 export const loadPoints = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( loadingGeoPoints( true ) );
-  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get( 'IMarkerServiceType' );
-  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.getAllChecksForUserAndList( idList )
-    .then( ( checkInGeoPoint: Array<any> ) => {
+  dispatch ( loadingGeoPoints ( true ) );
+  const markerService: IMarkerServiceType = StaticStorage.serviceLocator.get ( 'IMarkerServiceType' );
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get ( 'ICheckListServiceType' );
+  markerService.getAllMarkersForCheckList ( idList )
+    .then ( ( response: any ) => {
+      dispatch ( addListPointsAction ( response ) );
+      dispatch ( loadingGeoPoints ( false ) );
+      return checkListService.getAllChecksForUserAndList ( idList );
+    } )
+    .then ( ( checkInGeoPoint: Array<any> ) => {
       // console.log('checkInGeoPoint ** ', checkInGeoPoint);//
-      dispatch( getAllChecksForUserAndListAction( checkInGeoPoint || [] ) );
-      return markerService.getAllMarkersForCheckList( idList );
+      dispatch ( getAllChecksForUserAndListAction ( checkInGeoPoint || [] ) );
+      // return markerService.getAllMarkersForCheckList( idList );
     } )
-    .then( ( response: any ) => {
-      dispatch( addListPointsAction( response ) );
-      dispatch( loadingGeoPoints( false ) );
-    } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
-      dispatch( loadingGeoPoints( false ) );
+
+    .catch ( ( error: any ) => {
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
+      dispatch ( loadingGeoPoints ( false ) );
     } );
 };
 
 export const checkinFlag = ( isCheckin: boolean ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( checkinFlagAction( isCheckin ) );
+  dispatch ( checkinFlagAction ( isCheckin ) );
 };
 
 export const checkInClear = () => ( dispatch: IDispatchFunction ) => {
-  dispatch( checkInClearAction() );
+  dispatch ( checkInClearAction () );
 };
 
 export const messagesForUser = ( message: string, type: EnumNotificationType ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( addNotificationAction( createNotification( message, type ) ) );
+  dispatch ( addNotificationAction ( createNotification ( message, type ) ) );
 };
 
 export const getAllChecksForUserAndList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
-  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get( 'ICheckListServiceType' );
-  checkListService.getAllChecksForUserAndList( idList )
-    .then( ( checkInGeoPoint: Array<any> ) => {
-      dispatch( getAllChecksForUserAndListAction( checkInGeoPoint ) );
+  const checkListService: ICheckListServiceType = StaticStorage.serviceLocator.get ( 'ICheckListServiceType' );
+  checkListService.getAllChecksForUserAndList ( idList )
+    .then ( ( checkInGeoPoint: Array<any> ) => {
+      dispatch ( getAllChecksForUserAndListAction ( checkInGeoPoint ) );
     } )
-    .catch( ( error: any ) => {
-      dispatch( addNotificationAction( createNotification( error.message, EnumNotificationType.Danger ) ) );
+    .catch ( ( error: any ) => {
+      dispatch ( addNotificationAction ( createNotification ( error.message, EnumNotificationType.Danger ) ) );
     } );
 };
 
 export const selectList = ( idList: string ) => ( dispatch: IDispatchFunction ) => {
-  dispatch( selectedListAction( idList ) );
+  dispatch ( selectedListAction ( idList ) );
   // getAllChecksForUserAndList( idList )( dispatch );
 };
 

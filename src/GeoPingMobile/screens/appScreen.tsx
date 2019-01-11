@@ -94,7 +94,7 @@ export class AppScreen extends React.Component<Props, State> {
       .then ( ( token: string ) => {
         if ( !!token ) {
           this.props.authorizationUserFlag ( true );
-          this.props.isRedirect ( 'Check_in_statistics' );
+          this.props.isRedirect ( 'Dashboard' );
         } else {
           this.props.isRedirect ( 'SignIn' );
         }

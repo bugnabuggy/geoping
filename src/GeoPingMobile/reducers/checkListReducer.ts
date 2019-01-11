@@ -18,45 +18,43 @@ import {
   UPDATE_CHECK_LIST
 } from '../constantsForReducer/checkList';
 import { CLOSE_FILTER_CHECKLIST, FILTER_CHECKLIST_LIST, } from '../constantsForReducer/filters';
-import {
-  CANCEL_GEO_POINT,
-  SAVE_GEO_POINT,
-  SELECT_GEO_POINT
-} from '../constantsForReducer/googleMap';
+import { CANCEL_GEO_POINT, SAVE_GEO_POINT, SELECT_GEO_POINT } from '../constantsForReducer/googleMap';
 import { CLOSE_MODAL_SHARE } from '../constantsForReducer/modal';
 import { PUBLIC_LIST_LOAD_LISTS } from '../constantsForReducer/publicCheckList';
 import { CHECK_IN_LOAD_LISTS } from "../constantsForReducer/checkin";
+import { LOAD_CHECK_LISTS_STATISTICS } from "../constantsForReducer/checkinStatistics";
 
 export default function checkListReducer( state: ICheckListStateType = checkListState, action: any ) {
   const reduceObject: any = {
-    [ OPEN_MODAL_FOR_CREATE_CHECK_LIST ]: openModalForCreateCheckList,
-    [ CLOSE_MODAL_FOR_CREATE_CHECK_LIST ]: closeModalForCreateCheckList,
-    [ CREATE_CHECK_LIST ]: createCheckList,
-    [ EDITING_PERMISSION_POINT ]: editingPermissionPoint,
-    [ CHANGE_NAME_CHECK_LIST ]: changeNameChecklist,
-    [ MODAL_PERIOD_OPEN_CLOSE ]: modalPeriodOpenClose,
-    [ FILTER_CHECKLIST_LIST ]: filterCheckLists,
-    [ CLOSE_FILTER_CHECKLIST ]: closeFilterCheckLists,
+    [OPEN_MODAL_FOR_CREATE_CHECK_LIST]: openModalForCreateCheckList,
+    [CLOSE_MODAL_FOR_CREATE_CHECK_LIST]: closeModalForCreateCheckList,
+    [CREATE_CHECK_LIST]: createCheckList,
+    [EDITING_PERMISSION_POINT]: editingPermissionPoint,
+    [CHANGE_NAME_CHECK_LIST]: changeNameChecklist,
+    [MODAL_PERIOD_OPEN_CLOSE]: modalPeriodOpenClose,
+    [FILTER_CHECKLIST_LIST]: filterCheckLists,
+    [CLOSE_FILTER_CHECKLIST]: closeFilterCheckLists,
 
-    [ SAVE_GEO_POINT ]: saveGeoPoint,
-    [ SELECT_GEO_POINT ]: selectGeoPoint,
-    [ CANCEL_GEO_POINT ]: cancelGeoPoint,
-    [ ADD_GEO_POINT_FROM_MY_POSITION ]: addGeoPointFromMyPosition,
-    [ LOAD_CHECK_LIST_DATA ]: loadCheckListData,
-    [ CLEAR_STATE_CHECK_LIST ]: clearStateCheckList,
-    [ LOAD_MARKERS_FOR_CHECK_LIST ]: loadMarkersForReducer,
-    [ SELECT_CHECK_LIST ]: selectCheckList,
+    [SAVE_GEO_POINT]: saveGeoPoint,
+    [SELECT_GEO_POINT]: selectGeoPoint,
+    [CANCEL_GEO_POINT]: cancelGeoPoint,
+    [ADD_GEO_POINT_FROM_MY_POSITION]: addGeoPointFromMyPosition,
+    [LOAD_CHECK_LIST_DATA]: loadCheckListData,
+    [CLEAR_STATE_CHECK_LIST]: clearStateCheckList,
+    [LOAD_MARKERS_FOR_CHECK_LIST]: loadMarkersForReducer,
+    [SELECT_CHECK_LIST]: selectCheckList,
 
-    [ LOAD_MY_CHECK_LISTS ]: loadCheckLists,
-    [ DELETE_MY_CHECK_LISTS ]: deleteCheckList,
-    [ UPDATE_CHECK_LIST ]: updateCheckList,
-    [ CLOSE_MODAL_SHARE ]: clearSelectedGeoList,
-    [ PUBLIC_LIST_LOAD_LISTS ]: loadPublicCheckLists,
-    [ IS_CHECK_LIST_PAGE ]: checkListFlag,
-    [ CHECK_IN_LOAD_LISTS ]: checkinLoadLists,
+    [LOAD_MY_CHECK_LISTS]: loadCheckLists,
+    [DELETE_MY_CHECK_LISTS]: deleteCheckList,
+    [UPDATE_CHECK_LIST]: updateCheckList,
+    [CLOSE_MODAL_SHARE]: clearSelectedGeoList,
+    [PUBLIC_LIST_LOAD_LISTS]: loadPublicCheckLists,
+    [IS_CHECK_LIST_PAGE]: checkListFlag,
+    [CHECK_IN_LOAD_LISTS]: checkinLoadLists,
+    [LOAD_CHECK_LISTS_STATISTICS]: getCheckListStatistics,
   };
 
-  return reduceObject.hasOwnProperty( action.type ) ? reduceObject[ action.type ]( state, action ) : state;
+  return reduceObject.hasOwnProperty ( action.type ) ? reduceObject[action.type] ( state, action ) : state;
 }
 
 function createCheckList( state: ICheckListStateType, action: any ): ICheckListStateType {
@@ -191,7 +189,7 @@ function loadCheckLists( state: ICheckListStateType, action: any ): ICheckListSt
 function deleteCheckList( state: ICheckListStateType, action: any ): ICheckListStateType {
   return {
     ...state,
-    checkLists: state.checkLists.filter( ( item: any ) => item.id !== action.checkListId )
+    checkLists: state.checkLists.filter ( ( item: any ) => item.id !== action.checkListId )
   };
 }
 
@@ -203,7 +201,7 @@ function updateCheckList( state: ICheckListStateType, action: any ): ICheckListS
       ...action.checkList,
     },
     checkLists: [
-      ...state.checkLists.map( item => {
+      ...state.checkLists.map ( item => {
         if ( item.id === action.checkList.id ) {
           return {
             ...item,
@@ -242,5 +240,12 @@ function checkinLoadLists( state: ICheckListStateType, action: any ): ICheckList
   return {
     ...state,
     checkInLists: action.lists,
+  };
+}
+
+function getCheckListStatistics( state: ICheckListStateType, action: any ): ICheckListStateType {
+  return {
+    ...state,
+    checkInStatisticsLists: action.checklists,
   };
 }

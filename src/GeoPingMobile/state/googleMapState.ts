@@ -28,9 +28,10 @@ export const googleMapState: IGoogleMapStateType = {
     name: '',
     lat: 0,
     lng: 0,
-    radius: 0,
+    radius: 50,
     description: '',
     idForMap: '',
+    color: 'red',
   },
   isAddMarker: false,
   moveStartMarker: {

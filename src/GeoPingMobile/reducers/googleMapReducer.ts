@@ -16,7 +16,7 @@ import {
   SELECT_GEO_POINT
 } from '../constantsForReducer/googleMap';
 import { EnumStatusMarker } from '../enums/statusMarker';
-import IGeoPoint from '../DTO/geoPointDTO';
+import IGeoPoint, { ETypeCheckInPoint, ICheckInGeoPointDTO } from '../DTO/geoPointDTO';
 import { defaultMarker } from '../constants/defaultMarker';
 import { CHECK_IN_GEO_POINTS, CHECK_IN_SELECT_LIST } from '../constantsForReducer/checkin';
 import { ADD_GEO_POINT_FROM_MY_POSITION } from '../constantsForReducer/checkList';
@@ -50,7 +50,12 @@ export default function googleMapReducer( state: IGoogleMapStateType = googleMap
 function addListPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    geoPoints: action.geoPoints,
+    geoPoints: action.geoPoints.map ( item => {
+      return {
+        ...item,
+        color: 'red',
+      }
+    } ),
     isGeoPointListIsCreated: false,
   };
 }
@@ -58,7 +63,10 @@ function addListPoints( state: IGoogleMapStateType, action: any ): IGoogleMapSta
 function selectGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
-    selectedGeoPoint: state.geoPoints.find ( geoPoint => geoPoint.id === action.geoPoint.id ) || action.geoPoint,
+    selectedGeoPoint: {
+      ...state.geoPoints.find ( geoPoint => geoPoint.idForMap === action.geoPoint.idForMap ),
+      color: '#bfb914',
+    },
     statusMarker: action.geoPoint.id ? EnumStatusMarker.Edit : EnumStatusMarker.None,
   };
 }
@@ -129,7 +137,7 @@ function saveGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStat
   const newGeoListGeopoints: Array<IGeoPoint> =
     state.statusMarker === EnumStatusMarker.New ?
       [
-        ...state.geoPoints.filter( item => !!item.id),
+        ...state.geoPoints.filter ( item => !!item.id ),
         action.geoPoint,
       ]
       :
@@ -239,22 +247,45 @@ function clearStateGoogleMap( state: IGoogleMapStateType, action: any ): IGoogle
 }
 
 function statisticsLoadPoints( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
+  const colorMarker = {
+    [ETypeCheckInPoint.FreeCheck]: '#2f36ff',
+    [ETypeCheckInPoint.Unchecked]: '#d71f27',
+    [ETypeCheckInPoint.Checked]: '#188c25',
+  };
   return {
     ...state,
-    geoPoints: action.points.map ( ( item: any ) => {
+    geoPoints: action.points.map ( ( item ) => {
       const point: IGeoPoint = {
-        id: item.point.id,
-        name: item.point.name,
-        radius: item.point.radius,
+        id: item.pointId,
+        name: item.name,
+        radius: item.radius || 50,
         idList: '',
-        description: item.point.description,
-        lng: item.point.longitude,
-        lat: item.point.latitude,
+        description: item.address,
+        lng: item.longitude,
+        lat: item.latitude,
         idForMap: uuidV4 (),
+        color: colorMarker[item.type],
       };
       return point;
     } ),
-    checkInGeoPoint: action.points.map ( ( item: any ) => item.check ),
+    checkInGeoPoint: action.points.map ( ( item ) => {
+      const check: ICheckInGeoPointDTO = {
+        pointId: item.checkInId && item.pointId,
+        userId: item.userId,
+        date: item.checkInDate,
+        distance: item.distance,
+        longitude: item.longitude,
+        latitude: item.latitude,
+        description: item.address,
+        deviceId: '',
+        checkInId: item.checkInId,
+        ip: '',
+        userAgent: '',
+        geopoint: '',
+        type: item.type,
+      };
+      return check;
+    } ),
     isGeoPointListIsCreated: false,
   };
 }
@@ -272,6 +303,14 @@ function clearGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapSta
 function checkInGeoPoint( state: IGoogleMapStateType, action: any ): IGoogleMapStateType {
   return {
     ...state,
+    geoPoints: [
+      ...state.geoPoints.map ( item => {
+        return {
+          ...item,
+          color: action.checkInGeoPoint.find( check => check.pointId === item.id )  ? '#188c25' : '#d71f27',
+        };
+      } ),
+    ],
     checkInGeoPoint: [
       ...state.checkInGeoPoint,
       ...action.checkInGeoPoint

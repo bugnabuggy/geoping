@@ -5,6 +5,7 @@ import {
   createGeoNewPoint,
   getChecksStatisticsForList,
   getGeoPointsForList,
+  getStatisticsFreeCheck,
   removeGeoPoint,
   updateGeoPoint
 } from '../../constants/endpoints';
@@ -16,11 +17,11 @@ export default class MarkerService implements IMarkerServiceType {
   private communicator: IHttpCommunicator;
 
   constructor() {
-    this.communicator = StaticStorage.serviceLocator.get( 'IHttpCommunicator' );
+    this.communicator = StaticStorage.serviceLocator.get ( 'IHttpCommunicator' );
   }
 
   createNewMarker( marker: IGeoPoint ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
       const idList: string = marker.idList;
       const GeoPoint: IGeoPintForCreateDTO = {
         Name: marker.name,
@@ -30,72 +31,73 @@ export default class MarkerService implements IMarkerServiceType {
         Radius: marker.radius,
         Address: marker.description,
       };
-      this.communicator.post( createGeoNewPoint.replace( '%listid%', idList ), GeoPoint )
-        .then( ( response: any ) => {
-          const tempMarker: any = getDataFromResponse( response );
+      this.communicator.post ( createGeoNewPoint.replace ( '%listid%', idList ), GeoPoint )
+        .then ( ( response: any ) => {
+          const tempMarker: any = getDataFromResponse ( response );
           const geoPoint: IGeoPoint = {
             id: tempMarker.id,
             name: tempMarker.name,
             radius: tempMarker.radius,
-            lat: Number( tempMarker.latitude ),
-            lng: Number( tempMarker.longitude ),
+            lat: Number ( tempMarker.latitude ),
+            lng: Number ( tempMarker.longitude ),
             description: tempMarker.description,
             idList: tempMarker.listId,
             idForMap: marker.idForMap,
+            color: 'red',
           };
-          resolve( geoPoint );
+          resolve ( geoPoint );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   deleteMarker( idCheckList: string, markerId: string ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.delete(
-        removeGeoPoint.replace( '%listid%', idCheckList ).replace( '%id%', markerId )
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.delete (
+        removeGeoPoint.replace ( '%listid%', idCheckList ).replace ( '%id%', markerId )
       )
-        .then( ( response: any ) => {
+        .then ( ( response: any ) => {
           if ( response.data.success ) {
-            resolve();
+            resolve ();
           } else {
-            reject( { message: 'failed to delete point' } );
+            reject ( { message: 'failed to delete point' } );
           }
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   getAllMarkersForCheckList( idCheckList: string ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.get( getGeoPointsForList.replace( '%listid%', idCheckList ) )
-        .then( ( response: any ) => {
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.get ( getGeoPointsForList.replace ( '%listid%', idCheckList ) )
+        .then ( ( response: any ) => {
 
-          const markers: Array<any> = getDataFromResponse( response ).map( ( item: any ) => {
+          const markers: Array<any> = getDataFromResponse ( response ).map ( ( item: any ) => {
             return {
               id: item.id,
               name: item.name,
               radius: item.radius,
-              lat: Number( item.latitude ),
-              lng: Number( item.longitude ),
+              lat: Number ( item.latitude ),
+              lng: Number ( item.longitude ),
               description: item.description,
               idList: item.listId,
-              idForMap: uuidV4(),
+              idForMap: uuidV4 (),
             };
           } );
-          resolve( markers );
+          resolve ( markers );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   updateMarker( marker: IGeoPoint ) {
-    return new Promise( ( resolve: any, reject: any ) => {
+    return new Promise ( ( resolve: any, reject: any ) => {
       const idList: string = marker.idList;
       const GeoPoint: IGeoPintForCreateDTO = {
         Name: marker.name,
@@ -105,46 +107,60 @@ export default class MarkerService implements IMarkerServiceType {
         Radius: marker.radius,
         Address: marker.description,
       };
-      this.communicator.put(
-        updateGeoPoint.replace( '%listid%', idList ).replace( '%id%', marker.id ),
+      this.communicator.put (
+        updateGeoPoint.replace ( '%listid%', idList ).replace ( '%id%', marker.id ),
         GeoPoint
       )
-        .then( ( response: any ) => {
-          const tempMarker: any = getDataFromResponse( response );
+        .then ( ( response: any ) => {
+          const tempMarker: any = getDataFromResponse ( response );
           const geoPoint: IGeoPoint = {
             id: tempMarker.id,
             name: tempMarker.name,
             radius: tempMarker.radius,
-            lat: Number( tempMarker.latitude ),
-            lng: Number( tempMarker.longitude ),
+            lat: Number ( tempMarker.latitude ),
+            lng: Number ( tempMarker.longitude ),
             description: tempMarker.description,
             idList: tempMarker.listId,
             idForMap: marker.idForMap,
+            color: 'red',
           };
-          resolve( geoPoint );
+          resolve ( geoPoint );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   getMarkersForListAndUser( idList: string, idUser: string ) {
     // return this.communicator.get( '' );
-    return new Promise( resolve => '' );
+    return new Promise ( resolve => '' );
   }
 
   getChecksStatisticsForList( listId: string, userId: string, dateFrom: string, dateTo: string ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.get(
-        getChecksStatisticsForList.replace( '%listid%', listId ) +
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.get (
+        getChecksStatisticsForList.replace ( '%listid%', listId ) +
         `/?UserId=${userId}&DatePeriodFrom=${dateFrom}&DatePeriodTo=${dateTo}`
       )
-        .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
+        } );
+    } );
+  }
+
+  getStatisticsFreeCheck( dateFrom: string, dateTo: string ) {
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      const url: string = getStatisticsFreeCheck + `?DatePeriodFrom=${dateFrom}&DatePeriodTo=${dateTo}`;
+      this.communicator.get ( url )
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
+        } )
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }

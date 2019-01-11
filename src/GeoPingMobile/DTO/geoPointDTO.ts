@@ -7,6 +7,7 @@ export default interface IGeoPoint {
   radius: number;
   description: string;
   idForMap: string;
+  color: string;
 }
 
 export interface IGeoPintForCreateDTO {
@@ -18,12 +19,18 @@ export interface IGeoPintForCreateDTO {
   Address: string;
 }
 
+export enum ETypeCheckInPoint {
+  Checked = 'Checked',
+  Unchecked = 'Unchecked',
+  FreeCheck = 'FreeCheck',
+}
+
 export interface ICheckInGeoPointDTO {
   date: string;
   deviceId: string;
   distance: number;
   geopoint: any;
-  id: string;
+  checkInId: string;
   ip: any;
   latitude: number;
   longitude: number;
@@ -31,4 +38,5 @@ export interface ICheckInGeoPointDTO {
   userAgent: any;
   userId: string;
   description: string;
+  type: ETypeCheckInPoint;
 }

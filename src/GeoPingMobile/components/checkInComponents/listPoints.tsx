@@ -18,8 +18,6 @@ type Props = {
 type State = {};
 
 export class ListPoints extends React.Component<Props, State> {
-  myFlatList: any;
-
   constructor( props: Props ) {
     super ( props );
     this.state = {};
@@ -75,7 +73,6 @@ export class ListPoints extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <FlatList
-          ref={( list ) => this.myFlatList = list}
           data={this.props.googleMap.geoPoints}
           renderItem={this._renderListPoints}
           keyExtractor={this._keyExtractor}

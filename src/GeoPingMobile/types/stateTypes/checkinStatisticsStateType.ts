@@ -6,9 +6,16 @@ interface ISelectPeriod {
   to: string;
 }
 
+export interface ISelectUser {
+  email: string;
+  fullName: string;
+  userId: string;
+  userName: string;
+}
+
 export default interface ICheckinStatisticsStateType {
   selectList: Array<ICheckListStateType>;
-  selectUser: Array<IUserStateType>;
+  selectUser: Array<ISelectUser>;
   selectPeriod: ISelectPeriod;
   isCheckInStatistics: boolean;
 }

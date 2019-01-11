@@ -6,7 +6,6 @@ import IDispatchFunction from "../types/functionsTypes/dispatchFunction";
 import { defaultMarker } from "../constants/defaultMarker";
 import { v4 as uuidV4 } from 'uuid';
 import { IGoogleMapStateType } from "../types/stateTypes/googleMapStateType";
-import { EnumStatusMarker } from "../enums/statusMarker";
 import ICheckinStateType from "../types/stateTypes/checkinStateType";
 import { geoCodePosition } from "../services/httpMapService";
 
@@ -74,16 +73,11 @@ export class MapComponent extends React.Component<Props, State> {
 
   setColorMarker = ( marker ) => {
     let color: string = 'red';
-    if ( this.props.googleMap.statusMarker === EnumStatusMarker.New ||
-      this.props.googleMap.checkInGeoPoint.find ( check => check.pointId === marker.id ) ) {
-      if (marker.idForMap === this.props.googleMap.selectedGeoPoint.idForMap) {
-        color = '#bfb914';
-      } else {
-        color = '#188c25';
-      }
-    } else if ( this.props.googleMap.statusMarker === EnumStatusMarker.Edit && marker.idForMap === this.props.googleMap.selectedGeoPoint.idForMap) {
-      color = '#bfb914';
-    }
+    if ( this.props.googleMap.selectedGeoPoint.idForMap === marker.idForMap ) {
+      color = this.props.googleMap.selectedGeoPoint.color;
+    } else {
+      color = marker.color;
+    }//
     return color;
   };
 
@@ -96,48 +90,10 @@ export class MapComponent extends React.Component<Props, State> {
       const colorMarker: string = this.setColorMarker ( marker );
       const id: string = uuidV4 ();
       return (
-        <React.Fragment key={marker.id}>
-          {/*{marker.idForMap === this.props.googleMap.selectedGeoPoint.idForMap ||*/}
-          {/*{*/}
-          {/*this.props.googleMap.checkInGeoPoint.find ( item => item.pointId === marker.id ) ?*/}
-          {/*( */}
-          {/*<React.Fragment>*/}
-          {/*<Marker*/}
-          {/*// key={id}*/}
-          {/*coordinate={latlang}*/}
-          {/*title={this.props.googleMap.selectedGeoPoint.name}*/}
-          {/*description={this.props.googleMap.selectedGeoPoint.description}*/}
-          {/*pinColor={colorMarker}*/}
-          {/*draggable={true}*/}
-          {/*onDragEnd={( e ) => {*/}
-          {/*const coords: { lat: number, lng: number } = {*/}
-          {/*lng: e.nativeEvent.coordinate.longitude,*/}
-          {/*lat: e.nativeEvent.coordinate.latitude,*/}
-          {/*};*/}
-          {/*this.props.changeMovingGeoPoint ( coords );*/}
-          {/*}}*/}
-          {/*// onDrag={( e ) => {*/}
-          {/*//   const coords: { lat: number, lng: number } = {*/}
-          {/*//     lng: e.nativeEvent.coordinate.longitude,*/}
-          {/*//     lat: e.nativeEvent.coordinate.latitude,*/}
-          {/*//   };*/}
-          {/*//   console.log ( 'e.nativeEvent.coordinate', e.nativeEvent.coordinate );*/}
-          {/*//   this.props.changeMovingGeoPoint ( coords );*/}
-          {/*// }}*/}
-          {/*/>*/}
-          {/*< Circle*/}
-          {/*center={latlang}*/}
-          {/*radius={this.props.googleMap.selectedGeoPoint.radius}*/}
-          {/*fillColor="rgba(237, 9, 17, 0.3)"*/}
-          {/*strokeColor="rgb(237, 9, 17)"*/}
-          {/*/>*/}
-          {/*</React.Fragment>*/}
-          {/*//   )*/}
-          {/*//   :*/}
-          {/*//   ( */}
+        <React.Fragment key={id}>
           <React.Fragment>
             <Marker
-              key={ id}
+              key={id}
               coordinate={latlang}
               title={marker.name}
               pinColor={colorMarker}
@@ -146,20 +102,13 @@ export class MapComponent extends React.Component<Props, State> {
               onPress={() => {
                 if ( this.props.googleMap.selectedGeoPoint.idForMap && marker.idForMap === this.props.googleMap.selectedGeoPoint.idForMap ) {
                   this.props.selectPoint ( defaultMarker );
-                } else if ( !this.props.googleMap.selectedGeoPoint.idForMap ) {
+                } else {//if ( !this.props.googleMap.selectedGeoPoint.idForMap ) {//
                   this.props.selectPoint ( marker );
                 }
               }}
               onDragEnd={( e ) => {
-                // const coords: { lat: number, lng: number } = {
-                //   lng: e.nativeEvent.coordinate.longitude,
-                //   lat: e.nativeEvent.coordinate.latitude,
-                // };
-                // this.props.changeMovingGeoPoint ( coords );
-                //
-                // console.log('coordinate', e.nativeEvent.coordinate.latitude);
-                geoCodePosition(Number(e.nativeEvent.coordinate.latitude), Number(e.nativeEvent.coordinate.longitude))
-                  .then( ( response: any ) => {
+                geoCodePosition ( Number ( e.nativeEvent.coordinate.latitude ), Number ( e.nativeEvent.coordinate.longitude ) )
+                  .then ( ( response: any ) => {
                     const point: IGeoPoint = {
                       ...marker,
                       lng: e.nativeEvent.coordinate.longitude,
@@ -167,11 +116,11 @@ export class MapComponent extends React.Component<Props, State> {
                       description: response[0].formattedAddress,
                     };
                     // console.log('response', response[0].formattedAddress);
-                    this.props.updateGeoPoint(point);
-                  })
-                  .catch( (error: any ) => {
-                    console.log('error --', error);
-                  });
+                    this.props.updateGeoPoint ( point );
+                  } )
+                  .catch ( ( error: any ) => {
+                    console.log ( 'error --', error );
+                  } );
               }}
             />
             < Circle

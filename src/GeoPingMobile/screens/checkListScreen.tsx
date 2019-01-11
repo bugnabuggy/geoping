@@ -11,11 +11,13 @@ import {
   cancelGeoPoint,
   changeDataGeoPoint,
   changeMovingGeoPoint,
+  clearStateGoogleMap,
   deleteGeoPoint,
   getGeoLocation,
   getListPoints,
   saveGeoPoint,
-  selectPoint, updateGeoPoint
+  selectPoint,
+  updateGeoPoint
 } from "../actions/googleMapAction";
 import IDispatchFunction from "../types/functionsTypes/dispatchFunction";
 import IGeoPoint from "../DTO/geoPointDTO";
@@ -40,6 +42,7 @@ type Props = {
   getGeoLocation: ( latitude: number, longitude: number ) => ( dispatch: IDispatchFunction ) => void;
   deleteGeoPoint: ( geoPoint: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
   updateGeoPoint: ( marker: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
+  clearStateGoogleMap: () => ( dispatch: IDispatchFunction ) => void;
 };
 type State = {
   orientation: string;
@@ -49,13 +52,17 @@ class CheckListScreen extends React.Component<Props, State> {
   constructor( props: Props ) {
     super ( props );
     this.state = {
-      orientation: getOrientation(),
+      orientation: getOrientation (),
     };
     Dimensions.addEventListener ( 'change', () => {
       this.setState ( {
-        orientation: getOrientation(),
+        orientation: getOrientation (),
       } );
     } );
+  }
+
+  componentWillUnmount(): void {
+    this.props.clearStateGoogleMap ();
   }
 
   componentDidMount(): void {
@@ -158,6 +165,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       getGeoLocation,
       deleteGeoPoint,
       updateGeoPoint,
+      clearStateGoogleMap,
     },
     dispatch );
 

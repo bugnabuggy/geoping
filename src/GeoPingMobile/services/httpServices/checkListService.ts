@@ -9,7 +9,8 @@ import {
   getAllGeoLists,
   getAllPublicGeoLosts,
   getCheckInForUserAndGivenPoint,
-  getGeoListForId, getGeoListsAccessUser,
+  getGeoListForId,
+  getGeoListsAccessUser,
   getGeoListStatistics,
   getUsersHasAccess,
   removeGeoList,
@@ -95,7 +96,7 @@ export default class CheckListService implements ICheckListServiceType {
 
   addCheckIn( idPoint: string, data: ICheckInDTO ) {
     return new Promise ( ( resolve: any, reject: any ) => {
-      console.log('idPoint', idPoint);
+      console.log ( 'idPoint', idPoint );
       this.communicator.post ( getCheckInForUserAndGivenPoint.replace ( '%id%', idPoint ), data )
         .then ( ( response: any ) => {
           resolve ( getDataFromResponse ( response ) );
@@ -161,7 +162,7 @@ export default class CheckListService implements ICheckListServiceType {
 
   getGeoListsAccessUser() {
     return new Promise<any> ( ( resolve: any, reject: any ) => {
-      this.communicator.get(getGeoListsAccessUser)
+      this.communicator.get ( getGeoListsAccessUser )
         .then ( ( response: any ) => {
           resolve ( getDataFromResponse ( response ) );
         } )

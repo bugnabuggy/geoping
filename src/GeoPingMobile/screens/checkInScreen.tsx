@@ -12,6 +12,7 @@ import { ListPoints } from "../components/checkInComponents/listPoints";
 import {
   addDistance,
   changeMovingGeoPoint,
+  clearStateGoogleMap,
   getGeoLocation,
   getListPoints,
   selectPoint,
@@ -39,6 +40,7 @@ type Props = {
   loadPoints: ( idList: string ) => ( dispatch: IDispatchFunction ) => void;
   checkinFlag: ( isCheckin: boolean ) => ( dispatch: IDispatchFunction ) => void;
   updateGeoPoint: ( marker: IGeoPoint ) => ( dispatch: IDispatchFunction ) => void;
+  clearStateGoogleMap: () => ( dispatch: IDispatchFunction ) => void;
 };
 type State = {
   orientation: string;
@@ -86,6 +88,7 @@ class CheckInScreen extends React.Component<Props, State> {
 
   componentWillUnmount(): void {
     this.props.checkinFlag ( false );
+    this.props.clearStateGoogleMap ();
   }
 
   // setStateButton = () => {
@@ -295,6 +298,7 @@ const mapDispatchToProps = ( dispatch: any ) =>
       loadPoints,
       checkinFlag,
       updateGeoPoint,
+      clearStateGoogleMap,
     },
     dispatch );
 

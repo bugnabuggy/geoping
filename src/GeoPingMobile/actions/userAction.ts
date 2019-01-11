@@ -91,6 +91,7 @@ export const loadUserData = () => ( dispatch: IDispatchFunction ) => {
       if ( error.response.status === 401 ) {
         // redirectOnSignInForm( true )( dispatch );
         isRedirect('SignIn')(dispatch);
+        AsyncStorage.removeItem( 'token' );
       } else {
         dispatch( addNotificationAction(
           createNotification(

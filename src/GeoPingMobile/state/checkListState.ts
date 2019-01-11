@@ -30,4 +30,6 @@ export const checkListState: ICheckListStateType = {
   checkLists: [],
   checkListPublic: [],
   checkInLists: [],
+  checkInStatisticsLists: [],
+  selectCheckInStatisticsListId: null,
 };

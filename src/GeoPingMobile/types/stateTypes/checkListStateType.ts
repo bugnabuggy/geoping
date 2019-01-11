@@ -19,4 +19,6 @@ export default interface ICheckListStateType {
   checkLists: Array<IGeoListType>;
   checkListPublic: Array<IGeoListPublickDTO>;
   checkInLists: Array<IGeoListCheckIn>;
+  checkInStatisticsLists: Array<IGeoListCheckIn>;
+  selectCheckInStatisticsListId: string;
 }

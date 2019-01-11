@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export class DrawerMenuScreen extends React.Component<any, any> {
   static navigationOptions = {
@@ -34,7 +34,15 @@ export class DrawerMenuScreen extends React.Component<any, any> {
           <Text style={styles.menuItem}>Check in statistics</Text>
         </TouchableOpacity>
         <Text>Profile</Text>
-        <Text>Exit</Text>
+        <TouchableOpacity
+          style={styles.menuItemTouchable}
+          onPress={() => {
+            AsyncStorage.removeItem ( 'token' )
+            this.props.navigation.navigate ( 'SignIn' );
+          }}
+        >
+          <Text style={styles.menuItem}>Exit</Text>
+        </TouchableOpacity>
       </View>
     );
   }

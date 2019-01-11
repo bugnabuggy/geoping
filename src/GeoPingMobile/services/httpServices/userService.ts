@@ -2,8 +2,9 @@ import IUser from '../../types/serviceTypes/userServiceType';
 import IHttpCommunicator from '../../types/serviceTypes/httpCommunicatorType';
 import StaticStorage from '../staticStorage';
 import {
-  changeUserPassword, confirmEmail,
-  getUserAccessedToList,
+  changeUserPassword,
+  confirmEmail,
+  getCheckInStatisticsUser,
   loadUserData,
   resetPassword,
   sendLoginOrEmail
@@ -14,21 +15,21 @@ export default class UserService implements IUser {
   private communicator: IHttpCommunicator;
 
   constructor() {
-    this.communicator = StaticStorage.serviceLocator.get( 'IHttpCommunicator' );
+    this.communicator = StaticStorage.serviceLocator.get ( 'IHttpCommunicator' );
   }
 
   loadUsersForSharedList( idChecklists: string ) {
-    return new Promise( resolve => '' );
+    return new Promise ( resolve => '' );
   }
 
   loadUserForStatistic( idList: string ) {
-    return new Promise( ( resolve: any, reject: any ) => {
-      this.communicator.get( getUserAccessedToList.replace( '%listid%', idList ) )
-        .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+    return new Promise ( ( resolve: any, reject: any ) => {
+      this.communicator.get ( getCheckInStatisticsUser.replace ( '%listid%', idList ) )
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
@@ -38,16 +39,16 @@ export default class UserService implements IUser {
       'OldPassword': password,
       'NewPassword': newPassword,
     };
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post( changeUserPassword, data )
-        .then( ( response: any ) => {
-          resolve( response.data.messages[ 0 ] );
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.post ( changeUserPassword, data )
+        .then ( ( response: any ) => {
+          resolve ( response.data.messages[0] );
         } )
-        .catch( ( error: any ) => {
+        .catch ( ( error: any ) => {
           if ( error.response.status === 400 ) {
-            reject( { message: error.response.data.messages[ 0 ] } );
+            reject ( { message: error.response.data.messages[0] } );
           } else {
-            reject( error );
+            reject ( error );
           }
         } );
     } );
@@ -56,52 +57,52 @@ export default class UserService implements IUser {
   }
 
   loadUserData() {
-    return new Promise( ( resolve: any, reject: any ) => {
-      this.communicator.get( loadUserData )
-        .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+    return new Promise ( ( resolve: any, reject: any ) => {
+      this.communicator.get ( loadUserData )
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   sendLoginOrEmail( loginOrEmail: string ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post( sendLoginOrEmail.replace( '%login%', loginOrEmail ), loginOrEmail )
-        .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.post ( sendLoginOrEmail.replace ( '%login%', loginOrEmail ), loginOrEmail )
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   sendNewPassword( userId: string, token: string, newPassword: string ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.post(
-        resetPassword.replace( '%id%', userId ).replace( '%token%', token ).replace( '%pass%', newPassword ),
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.post (
+        resetPassword.replace ( '%id%', userId ).replace ( '%token%', token ).replace ( '%pass%', newPassword ),
         ''
       )
-        .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }
 
   confirmEmail( userId: string, token: string ) {
-    return new Promise<any>( ( resolve: any, reject: any ) => {
-      this.communicator.get( confirmEmail.replace( '%userId%', userId ).replace( '%token%', token ) )
-        .then( ( response: any ) => {
-          resolve( getDataFromResponse( response ) );
+    return new Promise<any> ( ( resolve: any, reject: any ) => {
+      this.communicator.get ( confirmEmail.replace ( '%userId%', userId ).replace ( '%token%', token ) )
+        .then ( ( response: any ) => {
+          resolve ( getDataFromResponse ( response ) );
         } )
-        .catch( ( error: any ) => {
-          reject( error );
+        .catch ( ( error: any ) => {
+          reject ( error );
         } );
     } );
   }

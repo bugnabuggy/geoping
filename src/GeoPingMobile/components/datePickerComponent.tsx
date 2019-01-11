@@ -4,31 +4,30 @@ import moment from 'moment';
 import { RenderItemComponent } from "./renderItemComponent";
 import { ECodeImage } from "../enums/codeImage";
 
-// import { dateFormat } from "../services/helper";
-
-type Props = {};
+type Props = {
+  date: moment.Moment;
+  periodDate: string;
+  setDate: ( field: string, date: moment.Moment ) => void;
+  maxDate?: moment.Moment;
+  minDate?: moment.Moment;
+};
 type State = {
-  date: moment.Moment,
 };
 
 export class DatePickerComponent extends React.Component<Props, State> {
   constructor( props: Props ) {
     super ( props );
-    this.state = {
-      date: moment (),
-    };
   }
 
   openDatePicker = () => {
     DatePickerAndroid.open ( {
-      date: this.state.date.toDate(),
-      maxDate: moment().toDate(),
+      date: this.props.date.toDate (),
+      maxDate: this.props.maxDate && this.props.maxDate.toDate (),
+      minDate: this.props.minDate && this.props.minDate.toDate (),
     } )
       .then ( ( date: any ) => {
         if ( date.action !== DatePickerAndroid.dismissedAction ) {
-          this.setState ( {
-            date: moment ( [date.year, date.month, date.day] ),
-          } );
+          this.props.setDate ( this.props.periodDate, moment ( [date.year, date.month, date.day] ) );
         }
       } )
       .catch ( ( error: any ) => {
@@ -37,7 +36,6 @@ export class DatePickerComponent extends React.Component<Props, State> {
   };
 
   render() {
-    // console.log ( this.state.date );
     return (
       <View>
         <TouchableNativeFeedback
@@ -45,7 +43,7 @@ export class DatePickerComponent extends React.Component<Props, State> {
           onPress={this.openDatePicker}
         >
           <View style={styles.dateTextContainer}>
-            <Text style={styles.dateText}>{this.state.date.format ( 'LL' )}</Text>
+            <Text style={styles.dateText}>{this.props.date.format ( 'LL' )}</Text>
             <RenderItemComponent
               codeIcon={ECodeImage.CalendarAlt}
               style={styles.imageCalendar}
